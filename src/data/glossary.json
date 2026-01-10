@@ -1,0 +1,74 @@
+{
+  "terms": [
+    {
+      "term": "LLM",
+      "slug": "llm",
+      "definition": "Large Language Model의 약자로, '거대 언어 모델'이라고 해요. ChatGPT, Claude 같은 AI가 바로 LLM이에요. 엄청나게 많은 텍스트를 학습해서 사람처럼 글을 쓰고 대화할 수 있어요.",
+      "example": "ChatGPT는 GPT-4라는 LLM을 기반으로 만들어졌어요.",
+      "relatedTools": ["chatgpt", "claude", "gemini"]
+    },
+    {
+      "term": "프롬프트",
+      "slug": "prompt",
+      "definition": "AI에게 보내는 질문이나 명령이에요. '프롬프트를 잘 쓴다'는 건 AI가 원하는 답을 잘 하도록 질문을 잘 작성한다는 뜻이에요. 프롬프트 엔지니어링이라는 말도 여기서 나왔어요.",
+      "example": "'맛있는 파스타 레시피 알려줘'라고 치면, 이게 프롬프트예요.",
+      "relatedTools": ["chatgpt", "claude", "midjourney"]
+    },
+    {
+      "term": "토큰",
+      "slug": "token",
+      "definition": "AI가 텍스트를 처리하는 단위예요. 대략 한글 1글자 = 1-2토큰, 영어 1단어 = 1토큰 정도로 생각하면 돼요. AI 서비스 요금은 보통 토큰 수로 계산해요.",
+      "example": "'안녕하세요'는 약 5토큰 정도예요.",
+      "relatedTools": ["chatgpt", "claude"]
+    },
+    {
+      "term": "API",
+      "slug": "api",
+      "definition": "Application Programming Interface의 약자예요. 개발자가 AI 기능을 자기 앱에 연결할 때 사용하는 방법이에요. 일반 사용자는 몰라도 되지만, 앱 개발할 때 필요해요.",
+      "example": "ChatGPT API를 사용하면 내 앱에서 ChatGPT 기능을 쓸 수 있어요.",
+      "relatedTools": ["chatgpt", "claude"]
+    },
+    {
+      "term": "파인튜닝",
+      "slug": "fine-tuning",
+      "definition": "이미 만들어진 AI 모델을 특정 목적에 맞게 추가 학습시키는 거예요. 예를 들어 의료 전문 AI를 만들려면 의학 데이터로 파인튜닝해요.",
+      "example": "법률 회사가 ChatGPT를 법률 문서에 특화되게 파인튜닝했어요.",
+      "relatedTools": ["chatgpt"]
+    },
+    {
+      "term": "컨텍스트 윈도우",
+      "slug": "context-window",
+      "definition": "AI가 한 번에 기억할 수 있는 대화/문서의 길이예요. 컨텍스트 윈도우가 크면 긴 문서도 한 번에 처리할 수 있어요. Claude는 특히 이게 커서 긴 문서 처리에 강해요.",
+      "example": "Claude는 20만 토큰까지 기억해서 책 한 권도 한 번에 읽어요.",
+      "relatedTools": ["claude", "chatgpt", "gemini"]
+    },
+    {
+      "term": "할루시네이션",
+      "slug": "hallucination",
+      "definition": "AI가 사실이 아닌 내용을 마치 사실인 것처럼 자신있게 말하는 현상이에요. AI의 가장 큰 단점 중 하나예요. 중요한 정보는 항상 확인이 필요해요.",
+      "example": "AI가 존재하지 않는 연구 논문을 인용하는 게 할루시네이션이에요.",
+      "relatedTools": ["chatgpt", "claude", "gemini"]
+    },
+    {
+      "term": "RAG",
+      "slug": "rag",
+      "definition": "Retrieval-Augmented Generation의 약자예요. AI가 답변할 때 외부 데이터베이스에서 관련 정보를 찾아서 참고하는 기술이에요. 할루시네이션을 줄이고 최신 정보를 제공할 수 있어요.",
+      "example": "Perplexity는 RAG를 써서 웹 검색 결과를 답변에 포함해요.",
+      "relatedTools": ["perplexity"]
+    },
+    {
+      "term": "임베딩",
+      "slug": "embedding",
+      "definition": "텍스트나 이미지를 AI가 이해할 수 있는 숫자 형태로 변환하는 거예요. 비슷한 의미의 문장은 비슷한 숫자가 돼서, AI가 의미를 이해할 수 있어요.",
+      "example": "'강아지'와 '개'의 임베딩은 서로 비슷한 값을 가져요.",
+      "relatedTools": ["chatgpt", "claude"]
+    },
+    {
+      "term": "에이전트",
+      "slug": "agent",
+      "definition": "AI가 단순히 답변만 하는 게 아니라, 스스로 도구를 사용하고 작업을 수행하는 형태예요. 검색하고, 코드 실행하고, 파일을 수정하는 등 능동적으로 움직여요.",
+      "example": "Cursor의 AI가 알아서 코드를 수정하고 테스트하는 게 에이전트 방식이에요.",
+      "relatedTools": ["cursor", "chatgpt"]
+    }
+  ]
+}

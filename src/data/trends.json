@@ -1,0 +1,126 @@
+{
+  "lastUpdated": "2025-01-09",
+  "trends": [
+    {
+      "id": 1,
+      "title": "AI 에이전트의 부상",
+      "description": "2025년 AI의 핵심 키워드는 '에이전트'입니다. 단순 질의응답을 넘어 스스로 계획하고, 도구를 사용하고, 작업을 수행하는 AI가 주목받고 있어요.",
+      "keywords": ["AI Agent", "Agentic AI", "자율 에이전트"],
+      "relatedTools": ["cursor", "github-copilot"],
+      "category": "핵심 트렌드",
+      "icon": "🤖"
+    },
+    {
+      "id": 2,
+      "title": "멀티모달 AI의 진화",
+      "description": "텍스트, 이미지, 음성, 비디오를 동시에 이해하고 생성하는 멀티모달 AI가 표준이 되고 있습니다. GPT-4o, Gemini 2.0 등이 대표적이에요.",
+      "keywords": ["멀티모달", "GPT-4o", "Gemini 2.0"],
+      "relatedTools": ["chatgpt", "gemini"],
+      "category": "핵심 트렌드",
+      "icon": "🎭"
+    },
+    {
+      "id": 3,
+      "title": "AI 코딩 도구 경쟁 심화",
+      "description": "Cursor, GitHub Copilot, Claude Code 등 AI 코딩 도구들의 경쟁이 치열해지고 있습니다. 개발자 생산성을 혁신적으로 높여주고 있어요.",
+      "keywords": ["AI 코딩", "Cursor", "Copilot", "코드 자동완성"],
+      "relatedTools": ["cursor", "github-copilot", "claude"],
+      "category": "개발",
+      "icon": "💻"
+    },
+    {
+      "id": 4,
+      "title": "오픈소스 AI 모델의 성장",
+      "description": "Meta의 Llama, Mistral 등 오픈소스 AI 모델들이 상용 모델에 근접한 성능을 보여주고 있습니다. 기업들의 로컬 AI 도입이 늘어나고 있어요.",
+      "keywords": ["오픈소스", "Llama", "Mistral", "로컬 AI"],
+      "relatedTools": [],
+      "category": "기술",
+      "icon": "🔓"
+    },
+    {
+      "id": 5,
+      "title": "AI 검색의 대중화",
+      "description": "Perplexity, Google AI Overview 등 AI 기반 검색이 전통적 검색 엔진을 위협하고 있습니다. 출처와 함께 정리된 답변을 제공해요.",
+      "keywords": ["AI 검색", "Perplexity", "RAG"],
+      "relatedTools": ["perplexity", "gemini"],
+      "category": "검색",
+      "icon": "🔍"
+    },
+    {
+      "id": 6,
+      "title": "이미지 생성 AI 품질 향상",
+      "description": "Midjourney v6, DALL-E 3, Stable Diffusion 3 등 이미지 생성 AI의 품질이 크게 향상되었습니다. 실사 수준의 이미지 생성이 가능해졌어요.",
+      "keywords": ["이미지 생성", "Midjourney", "DALL-E 3"],
+      "relatedTools": ["midjourney", "dall-e"],
+      "category": "크리에이티브",
+      "icon": "🎨"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "OpenAI, GPT-5 개발 중",
+      "summary": "OpenAI가 차세대 대규모 언어 모델 GPT-5를 개발 중인 것으로 알려졌습니다. 더 강력한 추론 능력과 멀티모달 기능이 예상됩니다.",
+      "date": "2025-01",
+      "source": "TechCrunch",
+      "category": "모델",
+      "icon": "📰"
+    },
+    {
+      "id": 2,
+      "title": "Anthropic Claude 3.5 Sonnet 업데이트",
+      "summary": "Claude 3.5 Sonnet이 컴퓨터 사용(Computer Use) 기능을 추가하며 에이전트 능력을 강화했습니다.",
+      "date": "2024-12",
+      "source": "Anthropic",
+      "category": "모델",
+      "icon": "🆕"
+    },
+    {
+      "id": 3,
+      "title": "Google Gemini 2.0 출시",
+      "summary": "Google이 Gemini 2.0을 발표하며 에이전트 기능과 멀티모달 성능을 대폭 강화했습니다.",
+      "date": "2024-12",
+      "source": "Google",
+      "category": "모델",
+      "icon": "✨"
+    },
+    {
+      "id": 4,
+      "title": "AI 코딩 도구 시장 급성장",
+      "summary": "AI 코딩 도구 시장이 2025년 100억 달러 규모로 성장할 것으로 전망됩니다. Cursor가 빠르게 점유율을 높이고 있습니다.",
+      "date": "2025-01",
+      "source": "Bloomberg",
+      "category": "시장",
+      "icon": "📈"
+    },
+    {
+      "id": 5,
+      "title": "EU AI Act 시행",
+      "summary": "유럽연합의 AI 규제법이 본격 시행되며 AI 서비스들의 투명성과 안전성 기준이 강화되고 있습니다.",
+      "date": "2024-12",
+      "source": "Reuters",
+      "category": "규제",
+      "icon": "⚖️"
+    }
+  ],
+  "quickStats": [
+    {
+      "label": "ChatGPT 주간 활성 사용자",
+      "value": "2억+",
+      "trend": "up",
+      "source": "OpenAI 발표 (2024.11)"
+    },
+    {
+      "label": "AI 스타트업 투자액 (2024)",
+      "value": "$500억+",
+      "trend": "up",
+      "source": "CB Insights"
+    },
+    {
+      "label": "AI 도구 도입 기업 비율",
+      "value": "72%",
+      "trend": "up",
+      "source": "McKinsey 보고서 (2024)"
+    }
+  ]
+}
