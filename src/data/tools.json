@@ -604,6 +604,907 @@
           "한글 폰트 옵션이 제한적이에요"
         ]
       }
+    },
+    {
+      "slug": "obsidian",
+      "name": "Obsidian",
+      "tagline": "AI와 함께하는 지식 관리",
+      "description": "마크다운 기반의 노트 앱으로, 로컬에 저장되어 프라이버시가 보장됩니다. 플러그인으로 AI 기능을 추가하면 노트 작성, 검색, 요약이 강력해져요.",
+      "category": "productivity",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Personal", "price": 0, "features": ["무료 사용", "로컬 저장"] },
+          { "name": "Sync", "price": 4, "features": ["기기간 동기화"] },
+          { "name": "Publish", "price": 8, "features": ["웹 퍼블리싱"] }
+        ]
+      },
+      "features": ["로컬 저장 (프라이버시)", "양방향 링크", "AI 플러그인 연동"],
+      "bestFor": ["개인 지식 관리가 필요한 분", "프라이버시가 중요한 분", "장기적인 노트 시스템을 원하는 분"],
+      "url": "https://obsidian.md",
+      "alternatives": ["notion-ai", "logseq"],
+      "icon": "💎",
+      "color": "from-purple-600 to-violet-800",
+      "guide": {
+        "gettingStarted": [
+          "obsidian.md에서 무료 다운로드 후 설치하세요",
+          "Vault(보관함)를 생성하면 바로 노트 작성이 가능해요",
+          "설정 > 커뮤니티 플러그인에서 AI 플러그인을 설치하세요"
+        ],
+        "proTips": [
+          "Copilot 플러그인으로 ChatGPT/Claude를 연동하세요",
+          "Smart Connections 플러그인은 관련 노트를 AI가 찾아줘요",
+          "[[대괄호]]로 노트를 연결하면 지식 그래프가 만들어져요",
+          "템플릿 기능으로 일관된 노트 형식을 유지하세요"
+        ],
+        "useCases": [
+          {
+            "title": "제텔카스텐 노트",
+            "description": "AI가 연결고리를 찾아주는 지식 관리 시스템",
+            "example": "노트를 쓰면 AI가 관련 노트를 자동으로 추천해요"
+          },
+          {
+            "title": "독서 노트",
+            "description": "책 내용을 정리하고 AI로 요약/질문 생성",
+            "example": "하이라이트를 붙여넣고 핵심 아이디어 정리해줘"
+          },
+          {
+            "title": "일일 저널",
+            "description": "매일 기록하고 AI가 패턴을 분석",
+            "example": "이번 달 일기에서 반복되는 주제가 뭐야?"
+          },
+          {
+            "title": "프로젝트 문서",
+            "description": "프로젝트별로 정리하고 AI로 검색",
+            "example": "우리 프로젝트에서 결제 관련 내용 모두 찾아줘"
+          }
+        ],
+        "limitations": [
+          "AI 기능은 별도 플러그인 설치가 필요해요",
+          "초기 설정이 복잡할 수 있어요",
+          "클라우드 동기화는 유료예요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "Obsidian 설치",
+            "description": "obsidian.md에서 운영체제에 맞는 버전을 다운로드하세요",
+            "details": ["Windows, Mac, Linux, iOS, Android 모두 지원", "설치 파일 실행 후 지시에 따라 설치"]
+          },
+          {
+            "title": "Vault 생성",
+            "description": "노트가 저장될 폴더(Vault)를 선택하거나 새로 만드세요",
+            "details": ["원하는 폴더를 지정하면 그곳에 .md 파일이 저장됩니다", "Dropbox, iCloud 폴더를 선택하면 자동 백업!"]
+          },
+          {
+            "title": "AI 플러그인 설치",
+            "description": "설정 > 커뮤니티 플러그인 > 커뮤니티 플러그인 켜기",
+            "details": ["'Copilot' 검색 후 설치 > 활성화", "설정에서 OpenAI API 키 입력", "Cmd/Ctrl + P로 AI 명령 실행"]
+          }
+        ],
+        "requirements": ["컴퓨터 또는 모바일 기기", "AI 플러그인 사용 시 OpenAI API 키 (유료)"],
+        "timeToSetup": "10분"
+      }
+    },
+    {
+      "slug": "hex",
+      "name": "Hex",
+      "tagline": "AI 데이터 분석 노트북",
+      "description": "데이터 분석가와 엔지니어를 위한 협업 노트북입니다. SQL, Python을 AI가 도와주고, 자연어로 데이터를 질문하면 분석해줍니다.",
+      "category": "data",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Community", "price": 0, "features": ["1 커넥터", "기본 AI"] },
+          { "name": "Professional", "price": 50, "features": ["무제한 커넥터", "고급 AI", "협업"] },
+          { "name": "Team", "price": 75, "features": ["팀 관리", "보안 강화"] }
+        ]
+      },
+      "features": ["자연어 → SQL 변환", "AI 데이터 분석", "시각화 자동 생성"],
+      "bestFor": ["데이터 분석가", "비개발자도 SQL 쓰고 싶은 분", "팀 데이터 협업이 필요한 분"],
+      "url": "https://hex.tech",
+      "alternatives": ["deepnote", "databricks"],
+      "icon": "📊",
+      "color": "from-amber-500 to-orange-600",
+      "guide": {
+        "gettingStarted": [
+          "hex.tech에서 계정 생성 후 무료로 시작하세요",
+          "데이터베이스를 연결하거나 CSV를 업로드하세요",
+          "AI 패널에서 자연어로 질문하면 SQL이 생성돼요"
+        ],
+        "proTips": [
+          "\"지난 달 매출 상위 10개 상품 알려줘\"처럼 자연어로 질문하세요",
+          "생성된 SQL을 수정해서 학습할 수 있어요",
+          "차트 유형을 AI가 자동으로 추천해줘요",
+          "노트북을 팀과 공유하면 실시간 협업이 가능해요"
+        ],
+        "useCases": [
+          {
+            "title": "매출 분석",
+            "description": "자연어로 복잡한 매출 데이터를 분석",
+            "example": "이번 분기 카테고리별 매출 증감률 분석해줘"
+          },
+          {
+            "title": "사용자 행동 분석",
+            "description": "유저 데이터에서 인사이트 추출",
+            "example": "이탈한 사용자들의 공통 패턴 찾아줘"
+          },
+          {
+            "title": "대시보드 생성",
+            "description": "분석 결과를 시각화해서 공유",
+            "example": "주간 KPI 대시보드 만들어줘"
+          },
+          {
+            "title": "SQL 학습",
+            "description": "AI가 생성한 SQL을 보며 배울 수 있어요",
+            "example": "이 질문에 맞는 SQL 쿼리 설명해줘"
+          }
+        ],
+        "limitations": [
+          "무료 버전은 데이터 커넥터가 1개로 제한돼요",
+          "복잡한 분석은 SQL 지식이 있으면 더 좋아요",
+          "대용량 데이터 처리 시 느려질 수 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "hex.tech에서 이메일 또는 구글 계정으로 가입",
+            "details": ["무료 Community 플랜으로 시작 가능", "신용카드 없이 가입"]
+          },
+          {
+            "title": "데이터 연결",
+            "description": "분석할 데이터 소스를 연결하세요",
+            "details": ["CSV 파일 직접 업로드 가능", "PostgreSQL, MySQL, BigQuery 등 DB 연결", "Snowflake, Redshift도 지원"]
+          },
+          {
+            "title": "노트북 생성",
+            "description": "New Project로 분석 노트북을 만드세요",
+            "details": ["SQL, Python 셀 추가", "AI 버튼으로 자연어 쿼리 작성", "시각화 셀로 차트 생성"]
+          }
+        ],
+        "requirements": ["웹 브라우저", "분석할 데이터 (CSV 또는 DB)"],
+        "timeToSetup": "5분"
+      }
+    },
+    {
+      "slug": "v0",
+      "name": "v0 by Vercel",
+      "tagline": "AI로 UI 만들기",
+      "description": "프롬프트만 입력하면 React 컴포넌트를 생성해주는 AI입니다. 디자인 아이디어를 바로 코드로 만들어주고, shadcn/ui 기반이라 바로 프로젝트에 사용할 수 있어요.",
+      "category": "coding",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["일일 제한 있는 생성"] },
+          { "name": "Premium", "price": 20, "features": ["빠른 생성", "더 많은 요청"] }
+        ]
+      },
+      "features": ["텍스트 → React 컴포넌트", "실시간 미리보기", "shadcn/ui 기반"],
+      "bestFor": ["빠르게 UI 프로토타입이 필요한 분", "React 개발자", "디자인을 코드로 바꾸고 싶은 분"],
+      "url": "https://v0.dev",
+      "alternatives": ["cursor", "bolt"],
+      "icon": "🎨",
+      "color": "from-black to-gray-800",
+      "guide": {
+        "gettingStarted": [
+          "v0.dev에 접속해서 프롬프트를 입력하세요",
+          "원하는 UI를 자연어로 설명하면 코드가 생성돼요",
+          "생성된 코드는 바로 복사해서 프로젝트에 사용 가능해요"
+        ],
+        "proTips": [
+          "참고 이미지를 첨부하면 더 정확한 결과가 나와요",
+          "\"shadcn 스타일로\"라고 명시하면 일관된 디자인이 적용돼요",
+          "반복 수정으로 점점 원하는 디자인에 가까워질 수 있어요",
+          "npx 명령어로 프로젝트에 바로 추가할 수 있어요"
+        ],
+        "useCases": [
+          {
+            "title": "랜딩 페이지",
+            "description": "SaaS 랜딩 페이지 히어로 섹션 생성",
+            "example": "모던한 SaaS 랜딩 페이지 히어로 섹션 만들어줘"
+          },
+          {
+            "title": "대시보드",
+            "description": "관리자 대시보드 UI 빠르게 프로토타이핑",
+            "example": "매출 차트가 있는 관리자 대시보드 만들어줘"
+          },
+          {
+            "title": "폼 컴포넌트",
+            "description": "로그인, 회원가입 등 폼 UI 생성",
+            "example": "이메일/비밀번호 로그인 폼 만들어줘"
+          },
+          {
+            "title": "카드 레이아웃",
+            "description": "상품 목록, 블로그 카드 등 생성",
+            "example": "이커머스 상품 카드 그리드 만들어줘"
+          }
+        ],
+        "limitations": [
+          "React/Next.js 프로젝트에서만 바로 사용 가능해요",
+          "복잡한 인터랙션은 추가 코딩이 필요해요",
+          "무료 버전은 생성 횟수가 제한돼요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "v0.dev 접속",
+            "description": "별도 설치 없이 웹에서 바로 사용 가능",
+            "details": ["v0.dev 접속", "GitHub 계정으로 로그인"]
+          },
+          {
+            "title": "컴포넌트 생성",
+            "description": "프롬프트로 원하는 UI 설명",
+            "details": ["자연어로 UI 설명 입력", "이미지 첨부 가능", "여러 버전 중 선택"]
+          },
+          {
+            "title": "프로젝트에 추가",
+            "description": "npx 명령어로 바로 추가",
+            "details": ["코드 복사 또는 npx shadcn@latest add 명령어 사용", "import해서 바로 사용"]
+          }
+        ],
+        "requirements": ["Next.js 또는 React 프로젝트", "Node.js 환경"],
+        "timeToSetup": "2분"
+      }
+    },
+    {
+      "slug": "bolt",
+      "name": "Bolt.new",
+      "tagline": "AI로 풀스택 앱 만들기",
+      "description": "프롬프트만으로 전체 웹 앱을 생성하는 AI입니다. 프론트엔드, 백엔드, 배포까지 한 번에 해결해요. 코딩을 모르는 분도 아이디어를 앱으로 만들 수 있습니다.",
+      "category": "coding",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["일일 토큰 제한"] },
+          { "name": "Pro", "price": 20, "features": ["더 많은 토큰", "빠른 응답"] },
+          { "name": "Team", "price": 50, "features": ["팀 기능", "무제한 사용"] }
+        ]
+      },
+      "features": ["풀스택 앱 생성", "실시간 미리보기", "원클릭 배포"],
+      "bestFor": ["비개발자도 앱 만들고 싶은 분", "프로토타입이 급한 분", "사이드 프로젝트 빌더"],
+      "url": "https://bolt.new",
+      "alternatives": ["v0", "cursor", "replit"],
+      "icon": "⚡",
+      "color": "from-yellow-500 to-orange-500",
+      "guide": {
+        "gettingStarted": [
+          "bolt.new에 접속해서 바로 프롬프트를 입력하세요",
+          "만들고 싶은 앱을 자연어로 설명하면 전체 코드가 생성돼요",
+          "Deploy 버튼으로 바로 배포할 수 있어요"
+        ],
+        "proTips": [
+          "구체적인 기능 목록을 나열하면 더 정확해요",
+          "\"Supabase를 백엔드로 써줘\" 같은 기술 스택 지정 가능",
+          "에러가 나면 \"이 에러 고쳐줘\"라고 하면 수정해줘요",
+          "생성된 코드를 GitHub으로 내보낼 수 있어요"
+        ],
+        "useCases": [
+          {
+            "title": "간단한 SaaS",
+            "description": "아이디어를 MVP로 빠르게 구현",
+            "example": "할일 관리 앱 만들어줘, 로그인 기능 포함해서"
+          },
+          {
+            "title": "포트폴리오 사이트",
+            "description": "개인 포트폴리오 웹사이트 생성",
+            "example": "개발자 포트폴리오 사이트 만들어줘"
+          },
+          {
+            "title": "내부 도구",
+            "description": "회사에서 쓸 간단한 관리 도구",
+            "example": "직원 휴가 신청 시스템 만들어줘"
+          },
+          {
+            "title": "랜딩 페이지",
+            "description": "서비스 소개 랜딩 페이지 생성",
+            "example": "피트니스 앱 랜딩 페이지 만들어줘"
+          }
+        ],
+        "limitations": [
+          "복잡한 비즈니스 로직은 추가 개발이 필요해요",
+          "무료 버전은 토큰 제한이 있어요",
+          "코드 커스터마이징에는 개발 지식이 도움 돼요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "bolt.new 접속",
+            "description": "별도 설치 없이 웹에서 바로 사용",
+            "details": ["bolt.new 접속", "로그인 없이도 사용 가능"]
+          },
+          {
+            "title": "앱 설명 입력",
+            "description": "만들고 싶은 앱을 자세히 설명",
+            "details": ["기능, 디자인, 기술 스택 명시", "AI가 전체 앱 구조 생성"]
+          },
+          {
+            "title": "수정 및 배포",
+            "description": "실시간으로 수정하고 배포",
+            "details": ["채팅으로 수정 요청", "Deploy 버튼으로 배포", "URL 받아서 공유"]
+          }
+        ],
+        "requirements": ["웹 브라우저"],
+        "timeToSetup": "즉시"
+      }
+    },
+    {
+      "slug": "runway",
+      "name": "Runway",
+      "tagline": "AI 영상 생성 및 편집",
+      "description": "텍스트나 이미지로 영상을 생성하는 AI입니다. 영상 편집 도구도 강력해서, AI로 배경 제거, 객체 추적 등도 가능해요.",
+      "category": "video",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["125 크레딧", "720p 내보내기"] },
+          { "name": "Standard", "price": 15, "features": ["625 크레딧/월", "무제한 프로젝트"] },
+          { "name": "Pro", "price": 35, "features": ["2250 크레딧/월", "4K 내보내기"] }
+        ]
+      },
+      "features": ["텍스트 → 영상 생성", "이미지 → 영상", "AI 영상 편집"],
+      "bestFor": ["영상 크리에이터", "마케터", "콘텐츠 제작자"],
+      "url": "https://runway.ml",
+      "alternatives": ["pika", "sora"],
+      "icon": "🎬",
+      "color": "from-red-500 to-pink-600",
+      "guide": {
+        "gettingStarted": [
+          "runwayml.com에서 계정을 만드세요",
+          "Gen-3 Alpha로 텍스트 → 영상 생성을 체험하세요",
+          "무료 크레딧으로 다양한 도구를 사용해볼 수 있어요"
+        ],
+        "proTips": [
+          "이미지를 업로드하고 영상으로 변환하면 더 정확해요",
+          "Motion Brush로 특정 부분만 움직이게 할 수 있어요",
+          "Camera Control로 카메라 움직임을 지정하세요",
+          "Extend로 생성된 영상 길이를 늘릴 수 있어요"
+        ],
+        "useCases": [
+          {
+            "title": "광고 영상",
+            "description": "제품 이미지를 영상 광고로 변환",
+            "example": "제품 사진을 업로드하고 영상으로 만들어줘"
+          },
+          {
+            "title": "SNS 콘텐츠",
+            "description": "인스타그램, 틱톡용 짧은 영상 생성",
+            "example": "일몰 해변 장면 영상 만들어줘"
+          },
+          {
+            "title": "배경 제거",
+            "description": "영상에서 배경을 자동으로 제거",
+            "example": "이 영상에서 배경만 제거해줘"
+          },
+          {
+            "title": "객체 제거",
+            "description": "영상에서 불필요한 요소 삭제",
+            "example": "영상에서 이 로고만 지워줘"
+          }
+        ],
+        "limitations": [
+          "고품질 영상 생성에 크레딧이 많이 들어요",
+          "복잡한 장면은 결과가 불안정할 수 있어요",
+          "생성 시간이 다소 걸릴 수 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "runway.ml에서 계정 생성",
+            "details": ["이메일 또는 구글 계정으로 가입", "무료 크레딧 125개 제공"]
+          },
+          {
+            "title": "도구 선택",
+            "description": "원하는 AI 도구 선택",
+            "details": ["Gen-3 Alpha: 텍스트/이미지 → 영상", "Remove Background: 배경 제거", "Inpainting: 객체 제거/수정"]
+          },
+          {
+            "title": "생성 및 다운로드",
+            "description": "프롬프트 입력 후 생성",
+            "details": ["생성 완료 후 미리보기", "원하는 형식으로 내보내기"]
+          }
+        ],
+        "requirements": ["웹 브라우저", "크레딧 (무료/유료)"],
+        "timeToSetup": "3분"
+      }
+    },
+    {
+      "slug": "elevenlabs",
+      "name": "ElevenLabs",
+      "tagline": "AI 음성 합성의 끝판왕",
+      "description": "텍스트를 자연스러운 음성으로 변환하는 AI입니다. 목소리를 복제할 수도 있고, 다국어 더빙도 가능해요. 유튜브, 팟캐스트, 오디오북에 많이 사용됩니다.",
+      "category": "audio",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["월 10,000자", "3개 커스텀 보이스"] },
+          { "name": "Starter", "price": 5, "features": ["월 30,000자", "10개 커스텀 보이스"] },
+          { "name": "Creator", "price": 22, "features": ["월 100,000자", "30개 커스텀 보이스"] }
+        ]
+      },
+      "features": ["고품질 TTS", "목소리 복제", "다국어 지원"],
+      "bestFor": ["유튜버/팟캐스터", "오디오북 제작자", "영상 더빙이 필요한 분"],
+      "url": "https://elevenlabs.io",
+      "alternatives": ["murf", "play-ht"],
+      "icon": "🎙️",
+      "color": "from-emerald-500 to-teal-600",
+      "guide": {
+        "gettingStarted": [
+          "elevenlabs.io에서 계정을 만드세요",
+          "Speech Synthesis에서 텍스트를 입력하고 음성을 선택하세요",
+          "Generate를 누르면 음성 파일이 생성돼요"
+        ],
+        "proTips": [
+          "한국어 목소리도 매우 자연스러워요",
+          "Voice Lab에서 나만의 목소리를 복제할 수 있어요",
+          "숫자나 약어 발음은 풀어서 쓰는 게 정확해요",
+          "음성 설정에서 Stability를 조절해 표현력을 바꾸세요"
+        ],
+        "useCases": [
+          {
+            "title": "유튜브 나레이션",
+            "description": "영상 설명을 AI 음성으로 녹음",
+            "example": "스크립트를 입력해서 전문 성우 수준 나레이션 생성"
+          },
+          {
+            "title": "팟캐스트",
+            "description": "AI 음성으로 팟캐스트 에피소드 제작",
+            "example": "뉴스레터 내용을 팟캐스트로 변환"
+          },
+          {
+            "title": "오디오북",
+            "description": "긴 텍스트를 오디오북으로 변환",
+            "example": "전자책을 AI 음성으로 오디오북 제작"
+          },
+          {
+            "title": "다국어 더빙",
+            "description": "한 언어를 여러 언어로 더빙",
+            "example": "한국어 영상을 영어로 더빙"
+          }
+        ],
+        "limitations": [
+          "무료 버전은 월 10,000자 제한이 있어요",
+          "매우 긴 텍스트는 분할 처리가 필요해요",
+          "특수한 발음이나 용어는 수동 수정이 필요할 수 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "elevenlabs.io에서 계정 생성",
+            "details": ["구글 계정으로 간편 가입", "무료로 월 10,000자 사용"]
+          },
+          {
+            "title": "목소리 선택",
+            "description": "Voice Library에서 원하는 목소리 선택",
+            "details": ["한국어/영어 등 다양한 언어", "남성/여성, 젊은/성숙한 등 다양한 스타일"]
+          },
+          {
+            "title": "텍스트 입력 및 생성",
+            "description": "Speech Synthesis에서 텍스트 입력",
+            "details": ["텍스트 붙여넣기", "Generate 클릭", "MP3로 다운로드"]
+          }
+        ],
+        "requirements": ["웹 브라우저"],
+        "timeToSetup": "2분"
+      }
+    },
+    {
+      "slug": "suno",
+      "name": "Suno",
+      "tagline": "AI로 음악 만들기",
+      "description": "텍스트 프롬프트만으로 노래를 만들어주는 AI입니다. 가사도, 멜로디도, 보컬도 AI가 생성해요. 음악 지식 없이도 나만의 노래를 만들 수 있습니다.",
+      "category": "audio",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["일 50 크레딧", "비상업적 사용"] },
+          { "name": "Pro", "price": 10, "features": ["월 2,500 크레딧", "상업적 사용 가능"] },
+          { "name": "Premier", "price": 30, "features": ["월 10,000 크레딧", "우선 생성"] }
+        ]
+      },
+      "features": ["텍스트 → 음악", "가사 자동 생성", "다양한 장르"],
+      "bestFor": ["음악 창작에 관심 있는 분", "영상 배경음악이 필요한 분", "취미로 노래 만들고 싶은 분"],
+      "url": "https://suno.ai",
+      "alternatives": ["udio", "musicfy"],
+      "icon": "🎵",
+      "color": "from-fuchsia-500 to-purple-600",
+      "guide": {
+        "gettingStarted": [
+          "suno.ai에 접속해서 Discord나 구글로 로그인하세요",
+          "Create에서 원하는 스타일과 주제를 입력하세요",
+          "몇 초 만에 노래가 생성돼요"
+        ],
+        "proTips": [
+          "장르를 명확히 지정하면 더 원하는 스타일이 나와요",
+          "Custom Mode에서 직접 가사를 입력할 수 있어요",
+          "Extend로 생성된 노래를 더 길게 만들 수 있어요",
+          "여러 버전을 생성해서 가장 좋은 것을 선택하세요"
+        ],
+        "useCases": [
+          {
+            "title": "유튜브 BGM",
+            "description": "영상에 사용할 배경음악 제작",
+            "example": "밝고 신나는 브이로그 배경음악 만들어줘"
+          },
+          {
+            "title": "생일 축하 노래",
+            "description": "특별한 날을 위한 맞춤 노래",
+            "example": "친구 생일 축하 노래, 힙합 스타일로"
+          },
+          {
+            "title": "광고 징글",
+            "description": "브랜드용 짧은 징글 제작",
+            "example": "커피샵 광고용 15초 징글"
+          },
+          {
+            "title": "취미 창작",
+            "description": "순수하게 음악 창작을 즐기기",
+            "example": "가을 감성의 어쿠스틱 발라드"
+          }
+        ],
+        "limitations": [
+          "무료 버전은 일일 크레딧 제한이 있어요",
+          "생성된 음악 품질이 일정하지 않을 수 있어요",
+          "특정 아티스트 스타일 지정은 저작권 문제가 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "로그인",
+            "description": "suno.ai에서 로그인",
+            "details": ["Discord, Google, Microsoft 계정 지원", "무료로 일 50 크레딧"]
+          },
+          {
+            "title": "스타일 설정",
+            "description": "Create 탭에서 설정",
+            "details": ["Song Description에 원하는 내용 입력", "장르, 분위기 등 설명"]
+          },
+          {
+            "title": "생성 및 다운로드",
+            "description": "Create 버튼으로 생성",
+            "details": ["2개 버전 동시 생성", "마음에 드는 것 선택 후 다운로드"]
+          }
+        ],
+        "requirements": ["웹 브라우저"],
+        "timeToSetup": "1분"
+      }
+    },
+    {
+      "slug": "canva-ai",
+      "name": "Canva AI",
+      "tagline": "디자인에 AI를 더하다",
+      "description": "누구나 쉽게 쓰는 디자인 툴 Canva에 AI 기능이 추가되었어요. 이미지 생성, 배경 제거, 텍스트 생성까지 디자인 작업이 훨씬 쉬워집니다.",
+      "category": "design",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["제한된 AI 사용", "기본 템플릿"] },
+          { "name": "Pro", "price": 15, "features": ["더 많은 AI 크레딧", "프리미엄 템플릿"] },
+          { "name": "Teams", "price": 10, "features": ["팀 협업", "브랜드 키트"] }
+        ]
+      },
+      "features": ["Magic Write (AI 글쓰기)", "Magic Eraser (배경 제거)", "Text to Image"],
+      "bestFor": ["디자인 초보자", "SNS 콘텐츠 제작자", "마케터"],
+      "url": "https://canva.com",
+      "alternatives": ["figma-ai", "adobe-firefly"],
+      "icon": "🎨",
+      "color": "from-cyan-500 to-blue-500",
+      "guide": {
+        "gettingStarted": [
+          "canva.com에서 무료 계정을 만드세요",
+          "디자인 생성 후 왼쪽 '앱' 메뉴에서 AI 기능을 찾으세요",
+          "Magic Studio에서 다양한 AI 도구를 사용할 수 있어요"
+        ],
+        "proTips": [
+          "Magic Write로 카피 문구를 자동 생성할 수 있어요",
+          "배경 제거는 원클릭으로 깔끔하게 처리돼요",
+          "프레젠테이션을 AI가 자동으로 만들어주는 기능도 있어요",
+          "이미지 확대, 일부 수정 등 AI 편집 기능을 활용하세요"
+        ],
+        "useCases": [
+          {
+            "title": "인스타그램 포스트",
+            "description": "AI로 이미지와 카피를 한번에",
+            "example": "여름 세일 인스타 포스트 만들어줘"
+          },
+          {
+            "title": "프레젠테이션",
+            "description": "주제만 입력하면 프레젠테이션 완성",
+            "example": "마케팅 전략 발표자료 만들어줘"
+          },
+          {
+            "title": "상품 사진 편집",
+            "description": "배경 제거하고 새 배경 합성",
+            "example": "제품 사진 배경을 흰색으로 바꿔줘"
+          },
+          {
+            "title": "썸네일 생성",
+            "description": "유튜브 썸네일 빠르게 제작",
+            "example": "요리 유튜브 썸네일 만들어줘"
+          }
+        ],
+        "limitations": [
+          "무료 버전은 AI 기능 사용에 제한이 있어요",
+          "전문 디자인 툴만큼 세밀한 편집은 어려워요",
+          "복잡한 이미지 생성은 한계가 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "canva.com에서 계정 생성",
+            "details": ["구글, 페이스북, 이메일로 가입", "무료 플랜으로 시작"]
+          },
+          {
+            "title": "디자인 시작",
+            "description": "원하는 형식 선택",
+            "details": ["인스타 포스트, 프레젠테이션, 포스터 등", "템플릿 선택 또는 빈 캔버스"]
+          },
+          {
+            "title": "AI 도구 사용",
+            "description": "Magic Studio 또는 앱 메뉴에서 AI 선택",
+            "details": ["Magic Write: 텍스트 생성", "Magic Eraser: 객체/배경 제거", "Text to Image: 이미지 생성"]
+          }
+        ],
+        "requirements": ["웹 브라우저 또는 모바일 앱"],
+        "timeToSetup": "2분"
+      }
+    },
+    {
+      "slug": "deepl",
+      "name": "DeepL",
+      "tagline": "가장 자연스러운 AI 번역",
+      "description": "구글 번역보다 훨씬 자연스럽다는 평가를 받는 AI 번역 서비스입니다. 특히 유럽어와 영어 번역에 강하고, 문서 통번역도 지원해요.",
+      "category": "productivity",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["월 50만자", "3개 문서/월"] },
+          { "name": "Starter", "price": 9, "features": ["무제한 텍스트", "5개 문서/월"] },
+          { "name": "Advanced", "price": 29, "features": ["무제한 문서", "용어집 기능"] }
+        ]
+      },
+      "features": ["고품질 번역", "문서 번역", "용어집 커스터마이징"],
+      "bestFor": ["번역 품질이 중요한 분", "비즈니스 문서 번역", "다국어 콘텐츠 제작자"],
+      "url": "https://deepl.com",
+      "alternatives": ["google-translate", "papago"],
+      "icon": "🌐",
+      "color": "from-blue-600 to-indigo-700",
+      "guide": {
+        "gettingStarted": [
+          "deepl.com에 접속해서 바로 번역을 시작하세요",
+          "텍스트를 붙여넣거나 문서 파일을 업로드하세요",
+          "데스크톱 앱을 설치하면 단축키로 더 빠르게 번역해요"
+        ],
+        "proTips": [
+          "Ctrl+C+C (Windows) / Cmd+C+C (Mac)로 빠른 번역 가능해요",
+          "단어를 클릭하면 대안 번역을 선택할 수 있어요",
+          "용어집에 자주 쓰는 표현을 등록해두면 일관성이 올라가요",
+          "PDF, Word, PowerPoint 파일도 통번역할 수 있어요"
+        ],
+        "useCases": [
+          {
+            "title": "비즈니스 이메일",
+            "description": "영문 비즈니스 메일을 자연스럽게 번역",
+            "example": "계약서 관련 영문 이메일 작성할 때"
+          },
+          {
+            "title": "문서 번역",
+            "description": "PDF, Word 파일 통번역",
+            "example": "외국 논문이나 보고서 번역"
+          },
+          {
+            "title": "웹사이트 번역",
+            "description": "브라우저 확장으로 웹페이지 번역",
+            "example": "해외 뉴스 기사 읽을 때"
+          },
+          {
+            "title": "콘텐츠 현지화",
+            "description": "블로그, 마케팅 자료 다국어화",
+            "example": "한국어 콘텐츠를 영어로 번역해서 글로벌 확장"
+          }
+        ],
+        "limitations": [
+          "한국어 ↔ 영어는 강하지만 다른 언어는 구글에 뒤질 수 있어요",
+          "무료 버전은 월 문서 3개로 제한돼요",
+          "구어체나 은어는 번역이 부자연스러울 수 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "웹에서 사용",
+            "description": "deepl.com에서 바로 번역",
+            "details": ["회원가입 없이 사용 가능", "텍스트 붙여넣기 또는 파일 업로드"]
+          },
+          {
+            "title": "데스크톱 앱 설치",
+            "description": "더 빠른 사용을 위해 앱 설치",
+            "details": ["deepl.com/app에서 다운로드", "Ctrl+C+C로 즉시 번역"]
+          },
+          {
+            "title": "브라우저 확장 설치",
+            "description": "웹페이지 번역을 위한 확장 프로그램",
+            "details": ["Chrome, Firefox, Edge 지원", "페이지 내 텍스트 선택 후 바로 번역"]
+          }
+        ],
+        "requirements": ["웹 브라우저 또는 데스크톱 앱"],
+        "timeToSetup": "1분"
+      }
+    },
+    {
+      "slug": "otter",
+      "name": "Otter.ai",
+      "tagline": "AI 회의록 자동 작성",
+      "description": "회의를 녹음하면 실시간으로 받아쓰기하고 요약해주는 AI입니다. Zoom, Teams와 연동되어 자동으로 회의록을 만들어줘요.",
+      "category": "productivity",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Basic", "price": 0, "features": ["월 300분 녹음", "실시간 받아쓰기"] },
+          { "name": "Pro", "price": 17, "features": ["월 1,200분", "화자 구분"] },
+          { "name": "Business", "price": 30, "features": ["월 6,000분", "팀 관리"] }
+        ]
+      },
+      "features": ["실시간 받아쓰기", "자동 회의록", "Zoom/Teams 연동"],
+      "bestFor": ["회의가 많은 직장인", "인터뷰 진행자", "강의/세미나 기록이 필요한 분"],
+      "url": "https://otter.ai",
+      "alternatives": ["notta", "fireflies"],
+      "icon": "📝",
+      "color": "from-sky-500 to-blue-600",
+      "guide": {
+        "gettingStarted": [
+          "otter.ai에서 계정을 만드세요",
+          "모바일 앱을 설치하면 녹음이 편해요",
+          "Zoom 연동을 설정하면 자동으로 회의에 참여해요"
+        ],
+        "proTips": [
+          "Zoom 앱과 연동하면 회의 시작 시 자동 녹음돼요",
+          "화자 이름을 지정하면 누가 말했는지 구분돼요",
+          "하이라이트 기능으로 중요한 부분을 표시하세요",
+          "녹음 후 AI 요약으로 핵심만 빠르게 파악할 수 있어요"
+        ],
+        "useCases": [
+          {
+            "title": "팀 회의록",
+            "description": "회의 내용을 자동으로 기록",
+            "example": "Zoom 회의 연동해서 자동 회의록 생성"
+          },
+          {
+            "title": "인터뷰 녹취",
+            "description": "인터뷰 내용을 텍스트로 변환",
+            "example": "채용 인터뷰 기록 및 공유"
+          },
+          {
+            "title": "강의 필기",
+            "description": "온라인 강의를 녹음해서 복습",
+            "example": "유튜브 강의 오디오 텍스트 변환"
+          },
+          {
+            "title": "아이디어 메모",
+            "description": "음성으로 아이디어를 빠르게 기록",
+            "example": "이동 중 아이디어 음성 메모"
+          }
+        ],
+        "limitations": [
+          "영어가 가장 정확하고, 한국어는 정확도가 낮을 수 있어요",
+          "무료 버전은 월 300분으로 제한돼요",
+          "배경 소음이 많으면 인식률이 떨어져요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "otter.ai에서 계정 생성",
+            "details": ["구글 계정으로 간편 가입", "무료로 월 300분 사용"]
+          },
+          {
+            "title": "앱 설치",
+            "description": "모바일/데스크톱 앱 설치",
+            "details": ["iOS, Android 앱 제공", "크롬 확장 프로그램도 있어요"]
+          },
+          {
+            "title": "연동 설정",
+            "description": "Zoom, Teams 등과 연동",
+            "details": ["Settings > Integrations에서 설정", "회의 시 자동으로 참여하고 녹음"]
+          }
+        ],
+        "requirements": ["웹 브라우저 또는 모바일 앱"],
+        "timeToSetup": "5분"
+      }
+    },
+    {
+      "slug": "grammarly",
+      "name": "Grammarly",
+      "tagline": "AI 영어 글쓰기 도우미",
+      "description": "영어 문법, 맞춤법, 문체를 실시간으로 교정해주는 AI입니다. 이메일, 문서 작성 시 브라우저에서 바로 도움을 받을 수 있어요.",
+      "category": "writing",
+      "pricing": {
+        "free": true,
+        "plans": [
+          { "name": "Free", "price": 0, "features": ["기본 문법 검사", "맞춤법 교정"] },
+          { "name": "Premium", "price": 12, "features": ["문체 제안", "표절 검사"] },
+          { "name": "Business", "price": 15, "features": ["팀 기능", "브랜드 톤 설정"] }
+        ]
+      },
+      "features": ["실시간 문법 검사", "문체 개선 제안", "표절 검사"],
+      "bestFor": ["영어 글쓰기가 많은 분", "비즈니스 이메일 작성자", "영어 학습자"],
+      "url": "https://grammarly.com",
+      "alternatives": ["quillbot", "hemingway"],
+      "icon": "✍️",
+      "color": "from-green-500 to-emerald-600",
+      "guide": {
+        "gettingStarted": [
+          "grammarly.com에서 계정을 만드세요",
+          "브라우저 확장 프로그램을 설치하세요",
+          "영어로 글을 쓰면 자동으로 교정해줘요"
+        ],
+        "proTips": [
+          "Goals에서 문체(Formal, Casual 등)를 설정하면 맞춤 제안을 받아요",
+          "밑줄 친 부분을 클릭하면 교정 이유를 설명해줘요",
+          "웹, Word, 이메일 등 어디서든 작동해요",
+          "AI 글쓰기 기능으로 초안 작성도 가능해요"
+        ],
+        "useCases": [
+          {
+            "title": "비즈니스 이메일",
+            "description": "전문적인 영어 이메일 작성",
+            "example": "Gmail에서 이메일 쓸 때 실시간 교정"
+          },
+          {
+            "title": "영어 보고서",
+            "description": "문법 오류 없는 깔끔한 문서",
+            "example": "Word에서 보고서 작성 시 자동 교정"
+          },
+          {
+            "title": "영어 학습",
+            "description": "왜 틀렸는지 설명을 보며 학습",
+            "example": "문법 오류 이유를 배우면서 실력 향상"
+          },
+          {
+            "title": "SNS 글쓰기",
+            "description": "링크드인, 트위터 영어 포스트",
+            "example": "링크드인 포스트 작성 시 교정"
+          }
+        ],
+        "limitations": [
+          "영어만 지원해요 (한국어 X)",
+          "무료 버전은 기본 문법 검사만 가능해요",
+          "창의적인 글쓰기에는 과도한 교정이 될 수 있어요"
+        ]
+      },
+      "installation": {
+        "steps": [
+          {
+            "title": "회원가입",
+            "description": "grammarly.com에서 계정 생성",
+            "details": ["구글, 페이스북, 이메일 가입", "무료로 기본 기능 사용"]
+          },
+          {
+            "title": "브라우저 확장 설치",
+            "description": "Chrome, Firefox, Safari 등 지원",
+            "details": ["확장 프로그램 설치", "Gmail, 구글 문서 등에서 자동 작동"]
+          },
+          {
+            "title": "데스크톱 앱 설치 (선택)",
+            "description": "더 강력한 기능 사용",
+            "details": ["grammarly.com/desktop에서 다운로드", "Word, Outlook과 연동"]
+          }
+        ],
+        "requirements": ["웹 브라우저"],
+        "timeToSetup": "2분"
+      }
     }
   ]
 }

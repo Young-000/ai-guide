@@ -1,6 +1,6 @@
 // AI 도구 타입 정의
 
-export type Category = 'chatbot' | 'coding' | 'image' | 'video' | 'productivity' | 'search';
+export type Category = 'chatbot' | 'coding' | 'image' | 'video' | 'productivity' | 'search' | 'data' | 'audio' | 'design' | 'writing';
 
 export interface PricingPlan {
   name: string;
@@ -26,6 +26,18 @@ export interface Guide {
   limitations: string[];
 }
 
+export interface InstallationStep {
+  title: string;
+  description: string;
+  details?: string[];
+}
+
+export interface Installation {
+  steps: InstallationStep[];
+  requirements: string[];
+  timeToSetup: string;
+}
+
 export interface Tool {
   slug: string;
   name: string;
@@ -40,6 +52,7 @@ export interface Tool {
   icon?: string;
   color?: string;
   guide?: Guide;
+  installation?: Installation;
 }
 
 export interface GlossaryTerm {
@@ -92,4 +105,60 @@ export interface Situation {
   expectedResult: string;
   timeToComplete: string;
   difficulty: 'easy' | 'medium' | 'hard';
+  // 검색용 필드
+  searchKeywords?: string[];
+  naturalQueries?: string[];
+  priority?: number;
+}
+
+// 카테고리 정보 타입
+export interface CategoryInfo {
+  id: SituationCategory;
+  name: string;
+  icon: string;
+  description: string;
+}
+
+// 도구 그룹 타입 (용도별 분류)
+export interface ToolGroup {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  color: string;
+  tools: string[]; // Tool slugs
+}
+
+// 설문조사 타입
+export interface SurveyOption {
+  value: string;
+  label: string;
+  icon: string;
+  description?: string;
+  tags?: string[];
+  difficulty?: 'easy' | 'medium' | 'any';
+  freeOnly?: boolean;
+}
+
+export interface SurveyQuestion {
+  id: string;
+  title: string;
+  options: SurveyOption[];
+  dependsOn?: {
+    [questionId: string]: {
+      [optionValue: string]: SurveyOption[];
+    };
+  };
+}
+
+export interface SurveyAnswer {
+  questionId: string;
+  value: string;
+}
+
+export interface SurveyResult {
+  recommendedGroups: ToolGroup[];
+  recommendedSituations: Situation[];
+  bestMatch: Situation | null; // 가장 적합한 상황 (바로 가이드로 이동용)
+  matchReason: string; // 매칭 이유 설명
 }

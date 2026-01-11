@@ -15,6 +15,9 @@
       "category": "work",
       "icon": "📄",
       "problem": "긴 PDF 문서를 읽을 시간이 없는데, 핵심 내용은 파악해야 할 때",
+      "searchKeywords": ["pdf", "문서", "요약", "보고서", "논문", "정리", "핵심", "읽기", "분석", "파일"],
+      "naturalQueries": ["PDF 요약해줘", "긴 문서 빨리 읽고 싶어", "보고서 핵심만 뽑아줘", "문서 정리해줘"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "claude",
@@ -64,6 +67,9 @@
       "category": "work",
       "icon": "📧",
       "problem": "영어 이메일, 거절 메일, 요청 메일 등 어떻게 써야 할지 막막할 때",
+      "searchKeywords": ["이메일", "메일", "영어", "비즈니스", "거절", "요청", "편지", "작성", "답장", "회신"],
+      "naturalQueries": ["이메일 써줘", "영어 메일 작성해줘", "거절 메일 어떻게 써", "비즈니스 메일 양식"],
+      "priority": 2,
       "recommendedTools": [
         {
           "slug": "chatgpt",
@@ -107,6 +113,9 @@
       "category": "work",
       "icon": "📊",
       "problem": "발표 자료를 만들어야 하는데, 디자인 감각도 없고 시간도 없을 때",
+      "searchKeywords": ["발표", "ppt", "슬라이드", "프레젠테이션", "자료", "파워포인트", "keynote", "디자인"],
+      "naturalQueries": ["발표자료 만들어줘", "PPT 만들고 싶어", "슬라이드 디자인해줘", "프레젠테이션 준비"],
+      "priority": 3,
       "recommendedTools": [
         {
           "slug": "gamma",
@@ -145,6 +154,9 @@
       "category": "coding",
       "icon": "🐛",
       "problem": "코드에서 에러가 나는데, 구글링해도 해결이 안 될 때",
+      "searchKeywords": ["코드", "에러", "버그", "디버깅", "오류", "개발", "프로그래밍", "수정", "해결"],
+      "naturalQueries": ["코드 에러 해결해줘", "버그 찾아줘", "에러 메시지 해석해줘", "디버깅 도와줘"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "claude",
@@ -189,6 +201,9 @@
       "category": "coding",
       "icon": "🔍",
       "problem": "작성한 코드가 좋은 코드인지, 개선할 점이 있는지 확인하고 싶을 때",
+      "searchKeywords": ["코드", "리뷰", "점검", "개선", "품질", "최적화", "리팩토링", "검토"],
+      "naturalQueries": ["코드 리뷰해줘", "코드 품질 확인해줘", "코드 개선점 알려줘", "리팩토링 도와줘"],
+      "priority": 2,
       "recommendedTools": [
         {
           "slug": "claude",
@@ -227,6 +242,9 @@
       "category": "design",
       "icon": "🎨",
       "problem": "앱이나 웹사이트 디자인이 필요한데, 디자이너가 없을 때",
+      "searchKeywords": ["ui", "ux", "디자인", "앱", "웹사이트", "목업", "인터페이스", "화면", "레이아웃"],
+      "naturalQueries": ["UI 디자인해줘", "앱 화면 만들어줘", "웹 디자인 필요해", "목업 만들어줘"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "midjourney",
@@ -270,6 +288,9 @@
       "category": "design",
       "icon": "🖼️",
       "problem": "유튜브 영상을 올리는데, 눈에 띄는 썸네일을 만들기 어려울 때",
+      "searchKeywords": ["썸네일", "유튜브", "이미지", "배너", "그래픽", "표지", "커버"],
+      "naturalQueries": ["썸네일 만들어줘", "유튜브 썸네일 디자인", "영상 표지 만들어줘"],
+      "priority": 2,
       "recommendedTools": [
         {
           "slug": "midjourney",
@@ -308,6 +329,9 @@
       "category": "study",
       "icon": "📝",
       "problem": "읽어야 할 논문이 많은데, 각 논문의 핵심을 빠르게 파악하고 싶을 때",
+      "searchKeywords": ["논문", "학술", "연구", "요약", "학교", "대학", "리서치", "저널", "학위"],
+      "naturalQueries": ["논문 요약해줘", "논문 핵심 알려줘", "연구 내용 정리해줘", "학술자료 분석"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "claude",
@@ -346,6 +370,9 @@
       "category": "study",
       "icon": "💡",
       "problem": "공부하다가 이해 안 되는 개념이 있는데, 검색해도 설명이 어려울 때",
+      "searchKeywords": ["개념", "이해", "설명", "공부", "학습", "쉽게", "비유", "예시", "교육"],
+      "naturalQueries": ["이거 설명해줘", "개념 이해가 안 돼", "쉽게 알려줘", "비유로 설명해줘"],
+      "priority": 2,
       "recommendedTools": [
         {
           "slug": "chatgpt",
@@ -390,6 +417,9 @@
       "category": "content",
       "icon": "✍️",
       "problem": "블로그를 운영하고 싶은데, 글쓰기가 어렵거나 시간이 없을 때",
+      "searchKeywords": ["블로그", "글쓰기", "포스트", "글", "작성", "seo", "콘텐츠", "아티클", "기사"],
+      "naturalQueries": ["블로그 글 써줘", "글 작성 도와줘", "포스팅 해줘", "콘텐츠 만들어줘"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "claude",
@@ -439,6 +469,9 @@
       "category": "research",
       "icon": "🔎",
       "problem": "경쟁사나 시장에 대한 분석 자료가 필요한데, 시간이 많이 걸릴 때",
+      "searchKeywords": ["경쟁사", "분석", "시장", "조사", "리서치", "비교", "트렌드", "산업"],
+      "naturalQueries": ["경쟁사 분석해줘", "시장 조사해줘", "트렌드 알려줘", "비교 분석해줘"],
+      "priority": 1,
       "recommendedTools": [
         {
           "slug": "perplexity",
@@ -482,6 +515,9 @@
       "category": "work",
       "icon": "📋",
       "problem": "회의는 했는데, 내용 정리할 시간이 없을 때",
+      "searchKeywords": ["회의록", "회의", "정리", "노트", "메모", "기록", "미팅", "요약"],
+      "naturalQueries": ["회의록 정리해줘", "회의 내용 요약해줘", "미팅 노트 만들어줘"],
+      "priority": 3,
       "recommendedTools": [
         {
           "slug": "claude",

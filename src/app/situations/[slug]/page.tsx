@@ -1,51 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import type { Tool, Situation } from '@/types';
 import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 
-interface Tool {
-  slug: string;
-  name: string;
-  url: string;
-  icon?: string;
-}
-
-interface RecommendedTool {
-  slug: string;
-  name: string;
-  reason: string;
-  isPrimary: boolean;
-}
-
-interface Step {
-  order: number;
-  title: string;
-  description: string;
-}
-
-interface Prompt {
-  title: string;
-  content: string;
-  tip?: string;
-}
-
-interface Situation {
-  slug: string;
-  title: string;
-  subtitle: string;
-  category: string;
-  icon: string;
-  problem: string;
-  recommendedTools: RecommendedTool[];
-  steps: Step[];
-  prompts: Prompt[];
-  expectedResult: string;
-  timeToComplete: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-}
+// 컴포넌트 외부에서 한 번만 파싱 (안정적 참조)
+const situations = situationsData.situations as Situation[];
+const tools = toolsData.tools as Tool[];
 
 const difficultyLabels = {
   easy: { text: '쉬움', color: 'bg-green-100 text-green-700', description: '처음 해도 쉽게 따라할 수 있어요' },
@@ -53,11 +17,12 @@ const difficultyLabels = {
   hard: { text: '어려움', color: 'bg-red-100 text-red-700', description: '약간의 사전 지식이 필요해요' },
 };
 
+// 도구 정보 조회 헬퍼 함수 (모듈 레벨)
+const getToolInfo = (slug: string): Tool | undefined => tools.find((t) => t.slug === slug);
+
 export default function SituationDetailPage({ params }: { params: { slug: string } }) {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const situations = situationsData.situations as Situation[];
-  const tools = toolsData.tools as Tool[];
   const situation = situations.find((s) => s.slug === params.slug);
 
   if (!situation) {
@@ -68,13 +33,19 @@ export default function SituationDetailPage({ params }: { params: { slug: string
   const primaryTool = situation.recommendedTools.find(t => t.isPrimary);
   const otherTools = situation.recommendedTools.filter(t => !t.isPrimary);
 
-  const getToolInfo = (slug: string) => tools.find((t) => t.slug === slug);
-
-  const copyToClipboard = (text: string, index: number) => {
-    navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000);
-  };
+  const copyToClipboard = useCallback(async (text: string, index: number) => {
+    // SSR 환경에서는 navigator가 없으므로 체크
+    if (typeof window === 'undefined' || !navigator?.clipboard) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (err) {
+      console.error('클립보드 복사 실패:', err);
+    }
+  }, []);
 
   // 같은 카테고리의 다른 상황 추천
   const relatedSituations = situations
@@ -130,34 +101,50 @@ export default function SituationDetailPage({ params }: { params: { slug: string
         <h2 className="text-2xl font-bold text-gray-900 mb-6">추천 AI 도구</h2>
 
         {/* 최우선 추천 */}
-        {primaryTool && (
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-4 border-2 border-blue-200">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 bg-blue-500 text-white text-xs font-bold rounded">
-                    BEST
-                  </span>
-                  <h3 className="text-xl font-bold text-gray-900">
-                    {getToolInfo(primaryTool.slug)?.icon} {primaryTool.name}
-                  </h3>
+        {primaryTool && (() => {
+          const primaryToolInfo = getToolInfo(primaryTool.slug);
+          return (
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-4 border-2 border-blue-200">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-blue-500 text-white text-xs font-bold rounded">
+                      BEST
+                    </span>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {primaryToolInfo?.icon} {primaryTool.name}
+                    </h3>
+                  </div>
+                  <p className="text-gray-700 mb-4">{primaryTool.reason}</p>
+                  <div className="flex flex-wrap gap-3">
+                    {primaryToolInfo?.url && (
+                      <a
+                        href={primaryToolInfo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                      >
+                        {primaryTool.name} 바로가기
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    )}
+                    <Link
+                      href={`/tools/${primaryTool.slug}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors font-medium"
+                    >
+                      📖 사용법 & 설치 가이드
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
-                <p className="text-gray-700 mb-4">{primaryTool.reason}</p>
-                <a
-                  href={getToolInfo(primaryTool.slug)?.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
-                >
-                  {primaryTool.name} 바로가기
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* 대안 도구 */}
         {otherTools.length > 0 && (
