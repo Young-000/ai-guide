@@ -19,8 +19,14 @@ export interface UseCase {
   example: string;
 }
 
+export interface BasicUsageStep {
+  title: string;
+  description: string;
+}
+
 export interface Guide {
   gettingStarted: string[];
+  basicUsage?: BasicUsageStep[];
   proTips: string[];
   useCases: UseCase[];
   limitations: string[];

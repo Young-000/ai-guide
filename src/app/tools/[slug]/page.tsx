@@ -134,6 +134,81 @@ export default async function ToolPage({ params }: PageProps) {
         </section>
       )}
 
+      {/* 기본 사용법 */}
+      {tool.guide?.basicUsage && (
+        <section className="mb-10">
+          <h2 className="text-lg font-bold text-gray-900 mb-3">📱 기본 사용법</h2>
+          <div className="bg-blue-50 rounded-xl p-5">
+            <div className="space-y-4">
+              {tool.guide.basicUsage.map((item: { title: string; description: string }, i: number) => (
+                <div key={i} className="flex gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="font-medium text-gray-900">{item.title}</p>
+                    <p className="text-sm text-gray-600">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 더 잘 쓰기 (Pro Tips) */}
+      {tool.guide?.proTips && (
+        <section className="mb-10">
+          <h2 className="text-lg font-bold text-gray-900 mb-3">💡 더 잘 쓰는 팁</h2>
+          <div className="bg-amber-50 rounded-xl p-5">
+            <ul className="space-y-3">
+              {tool.guide.proTips.map((tip: string, i: number) => (
+                <li key={i} className="flex items-start gap-2 text-gray-700">
+                  <span className="text-amber-500 mt-0.5">💡</span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* 활용 사례 */}
+      {tool.guide?.useCases && (
+        <section className="mb-10">
+          <h2 className="text-lg font-bold text-gray-900 mb-3">🎯 이렇게 활용해보세요</h2>
+          <div className="space-y-4">
+            {tool.guide.useCases.map((useCase: { title: string; description: string; example: string }, i: number) => (
+              <div key={i} className="bg-gray-50 rounded-xl p-4">
+                <h3 className="font-medium text-gray-900 mb-1">{useCase.title}</h3>
+                <p className="text-sm text-gray-600 mb-2">{useCase.description}</p>
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-sm text-gray-500 mb-1">예시 프롬프트:</p>
+                  <p className="text-sm text-gray-800 font-mono">&quot;{useCase.example}&quot;</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 한계점 */}
+      {tool.guide?.limitations && (
+        <section className="mb-10">
+          <h2 className="text-lg font-bold text-gray-900 mb-3">⚠️ 알아두세요</h2>
+          <div className="bg-red-50 rounded-xl p-5">
+            <ul className="space-y-2">
+              {tool.guide.limitations.map((limitation: string, i: number) => (
+                <li key={i} className="flex items-start gap-2 text-gray-700 text-sm">
+                  <span className="text-red-400">•</span>
+                  <span>{limitation}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* 가격 */}
       <section className="mb-10">
         <h2 className="text-lg font-bold text-gray-900 mb-3">가격</h2>

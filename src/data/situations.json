@@ -548,6 +548,59 @@
       "expectedResult": "바로 공유 가능한 깔끔한 회의록",
       "timeToComplete": "5-10분",
       "difficulty": "easy"
+    },
+    {
+      "slug": "data-analysis",
+      "title": "데이터 분석하기",
+      "subtitle": "엑셀, CSV 데이터를 AI로 빠르게 분석",
+      "category": "work",
+      "icon": "📊",
+      "problem": "데이터를 분석해야 하는데, 엑셀 수식이나 통계 지식이 부족할 때",
+      "searchKeywords": ["데이터", "분석", "엑셀", "csv", "통계", "차트", "그래프", "인사이트", "피벗"],
+      "naturalQueries": ["데이터 분석해줘", "엑셀 분석 도와줘", "통계 분석해줘", "데이터에서 인사이트 찾아줘"],
+      "priority": 2,
+      "recommendedTools": [
+        {
+          "slug": "claude",
+          "name": "Claude",
+          "reason": "CSV 파일 업로드 후 자연어로 분석 요청 가능, 복잡한 분석도 단계별 설명",
+          "isPrimary": true
+        },
+        {
+          "slug": "chatgpt",
+          "name": "ChatGPT (Code Interpreter)",
+          "reason": "Plus 구독 시 파일 업로드 + 파이썬 코드 실행으로 정교한 분석",
+          "isPrimary": false
+        },
+        {
+          "slug": "gemini",
+          "name": "Gemini",
+          "reason": "구글 시트 연동으로 스프레드시트 데이터 바로 분석",
+          "isPrimary": false
+        }
+      ],
+      "steps": [
+        { "order": 1, "title": "데이터 준비", "description": "분석할 엑셀이나 CSV 파일을 준비합니다" },
+        { "order": 2, "title": "Claude 접속", "description": "claude.ai에 접속하여 로그인합니다" },
+        { "order": 3, "title": "파일 업로드", "description": "채팅창 옆 클립 아이콘을 눌러 파일을 첨부합니다" },
+        { "order": 4, "title": "분석 요청", "description": "아래 프롬프트를 참고하여 원하는 분석을 요청합니다" },
+        { "order": 5, "title": "추가 질문", "description": "결과를 보고 더 깊은 분석이나 시각화를 요청합니다" }
+      ],
+      "prompts": [
+        {
+          "title": "기본 데이터 분석",
+          "content": "이 데이터를 분석해줘:\n\n1. 데이터 개요 (행/열 수, 컬럼 설명)\n2. 주요 통계 (평균, 중앙값, 최대/최소)\n3. 눈에 띄는 패턴이나 트렌드\n4. 이상치가 있다면 알려줘\n5. 추가로 분석하면 좋을 포인트 제안",
+          "tip": "분석 목적을 구체적으로 말하면 더 유용한 인사이트를 얻을 수 있어요"
+        },
+        {
+          "title": "비즈니스 인사이트 요청",
+          "content": "이 [매출/고객/마케팅] 데이터를 분석해서:\n\n1. 핵심 KPI 요약\n2. 전월/전년 대비 변화\n3. 가장 주목해야 할 3가지 인사이트\n4. 실행 가능한 액션 아이템 제안\n\n경영진에게 보고할 수 있는 형태로 정리해줘.",
+          "tip": "업종과 상황을 설명하면 더 맥락에 맞는 분석을 받을 수 있어요"
+        }
+      ],
+      "expectedResult": "데이터에서 핵심 인사이트 도출 + 시각화 가이드",
+      "timeToComplete": "10-30분",
+      "difficulty": "medium"
     }
   ]
 }

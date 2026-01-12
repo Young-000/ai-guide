@@ -231,18 +231,18 @@
     }
   ],
   "taskToSituationMap": {
-    "document": ["pdf-summarize", "meeting-notes", "report-writing"],
-    "email": ["business-email", "formal-letter"],
-    "presentation": ["presentation-create", "slide-design"],
-    "coding": ["code-debug", "code-review", "code-explain"],
-    "image": ["ui-design", "logo-create", "thumbnail-create"],
-    "paper": ["paper-summarize", "research-assist"],
-    "summary": ["pdf-summarize", "paper-summarize"],
-    "concept": ["concept-explain", "study-assist"],
-    "research": ["competitor-analysis", "market-research"],
-    "content": ["blog-writing", "sns-content"],
-    "video": ["video-script", "thumbnail-create"],
-    "music": ["music-create", "audio-edit"],
-    "analysis": ["data-analysis", "competitor-analysis"]
+    "document": ["pdf-summary", "meeting-notes"],
+    "email": ["email-writing"],
+    "presentation": ["presentation-slides"],
+    "coding": ["code-debug", "code-review"],
+    "image": ["ui-design", "thumbnail-creation"],
+    "paper": ["paper-summary"],
+    "summary": ["pdf-summary", "paper-summary"],
+    "concept": ["concept-explanation"],
+    "research": ["competitor-research"],
+    "content": ["blog-writing"],
+    "video": ["thumbnail-creation"],
+    "music": [],
+    "analysis": ["data-analysis", "competitor-research"]
   }
 }
