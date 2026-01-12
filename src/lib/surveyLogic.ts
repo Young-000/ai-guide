@@ -197,10 +197,15 @@ function filterAndSortSituations(
   freeOnly: boolean,
   preferQuick: boolean
 ): Situation[] {
+  // taskToSituationMap에서 직접 매핑된 상황들은 항상 포함 (난이도 무시)
+  const taskSituationSlugs = survey.taskToSituationMap[task] || [];
+
   let filtered = [...situations];
 
-  // 난이도 필터링
-  filtered = filtered.filter(s => difficultyFilter.includes(s.difficulty));
+  // 난이도 필터링 (단, 직접 매핑된 상황은 난이도 필터 우회)
+  filtered = filtered.filter(s =>
+    taskSituationSlugs.includes(s.slug) || difficultyFilter.includes(s.difficulty)
+  );
 
   // 무료만: 추천 도구 중 무료가 있는 상황만
   if (freeOnly) {
@@ -211,9 +216,6 @@ function filterAndSortSituations(
       });
     });
   }
-
-  // taskToSituationMap 기반 우선순위 점수
-  const taskSituationSlugs = survey.taskToSituationMap[task] || [];
 
   // 점수 기반 정렬
   filtered.sort((a, b) => {
