@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type { SurveyQuestion, SurveyAnswer, SurveyResult, Situation, SurveyOption } from '@/types';
 import surveyData from '@/data/survey.json';
 import { getSurveyResult, getDynamicOptions } from '@/lib/surveyLogic';
@@ -33,9 +33,29 @@ export default function SurveyWizard({
   const [result, setResult] = useState<SurveyResult | null>(null);
   const [showGuide, setShowGuide] = useState(false);
 
+  // setTimeout 정리를 위한 ref
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 컴포넌트 언마운트 시 setTimeout 정리
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const totalSteps = questions.length;
   const isLastQuestion = currentStep === totalSteps - 1;
   const showResult = currentStep >= totalSteps && !showGuide;
+
+  // 결과 계산 및 표시 (중복 로직 통합)
+  const completeAndShowResult = useCallback((finalAnswers: SurveyAnswer[]) => {
+    const surveyResult = getSurveyResult(finalAnswers);
+    setResult(surveyResult);
+    onComplete(surveyResult);
+    setCurrentStep(totalSteps);
+  }, [onComplete, totalSteps]);
 
   // 현재 질문
   const currentQuestion = questions[currentStep] as SurveyQuestion | undefined;
@@ -62,19 +82,20 @@ export default function SurveyWizard({
     ];
     setAnswers(newAnswers);
 
-    // 자동으로 다음 단계로
-    setTimeout(() => {
+    // 이전 timeout 정리
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // 자동으로 다음 단계로 (ref로 관리하여 언마운트 시 정리 가능)
+    timeoutRef.current = setTimeout(() => {
       if (isLastQuestion) {
-        // 결과 계산
-        const surveyResult = getSurveyResult(newAnswers);
-        setResult(surveyResult);
-        onComplete(surveyResult);
-        setCurrentStep(totalSteps);
+        completeAndShowResult(newAnswers);
       } else {
         setCurrentStep(prev => prev + 1);
       }
     }, 250);
-  }, [currentQuestion, isLastQuestion, totalSteps, answers, onComplete]);
+  }, [currentQuestion, isLastQuestion, answers, completeAndShowResult]);
 
   // 이전 단계
   const handleBack = useCallback(() => {
@@ -393,10 +414,7 @@ export default function SurveyWizard({
                     type="button"
                     onClick={() => {
                       if (isLastQuestion) {
-                        const surveyResult = getSurveyResult(answers);
-                        setResult(surveyResult);
-                        onComplete(surveyResult);
-                        setCurrentStep(totalSteps);
+                        completeAndShowResult(answers);
                       } else {
                         setCurrentStep(prev => prev + 1);
                       }
