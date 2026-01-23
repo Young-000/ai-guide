@@ -88,6 +88,7 @@ export default function SearchInput({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -108,6 +109,9 @@ export default function SearchInput({
           onBlur={handleBlur}
           placeholder={placeholder}
           className="flex-1 py-4 pr-4 text-gray-900 placeholder-gray-400 bg-transparent outline-none text-lg"
+          aria-label="AI 도구 검색"
+          aria-describedby="search-suggestions"
+          autoComplete="off"
         />
 
         {/* 클리어 버튼 */}
@@ -115,9 +119,10 @@ export default function SearchInput({
           <button
             type="button"
             onClick={handleClear}
-            className="pr-4 text-gray-400 hover:text-gray-600 transition-colors"
+            className="pr-4 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:text-gray-600"
+            aria-label="검색어 지우기"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -131,7 +136,12 @@ export default function SearchInput({
 
       {/* 제안 드롭다운 */}
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+        <div
+          id="search-suggestions"
+          className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
+          role="listbox"
+          aria-label="검색 제안"
+        >
           <div className="px-4 py-2 text-xs text-gray-500 bg-gray-50 font-medium">
             이런 걸 물어보세요
           </div>
@@ -139,10 +149,13 @@ export default function SearchInput({
             <button
               key={index}
               type="button"
+              role="option"
+              aria-selected={false}
               onClick={() => handleSuggestionClick(suggestion)}
-              className="w-full px-4 py-3 text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2"
+              className="w-full px-4 py-3 text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center gap-2 focus:outline-none focus:bg-blue-50 focus:text-blue-600"
+              aria-label={`${suggestion} 검색하기`}
             >
-              <span className="text-gray-400">💡</span>
+              <span className="text-gray-400" aria-hidden="true">💡</span>
               {suggestion}
             </button>
           ))}

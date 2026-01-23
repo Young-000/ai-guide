@@ -1,40 +1,13 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { Step } from '@/types';
+import { getProgressManager } from '@/lib/progress';
 
 interface ProgressStepperProps {
   steps: Step[];
-  situationSlug: string; // 로컬 스토리지 키용
+  situationSlug: string;
   onStepComplete?: (stepIndex: number, completed: boolean) => void;
-}
-
-const STORAGE_KEY = 'ai-guide-progress';
-
-// 로컬 스토리지에서 진행 상태 불러오기
-function getProgress(slug: string): number[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return [];
-    const progress = JSON.parse(stored);
-    return progress[slug] || [];
-  } catch {
-    return [];
-  }
-}
-
-// 로컬 스토리지에 진행 상태 저장
-function saveProgress(slug: string, completedSteps: number[]) {
-  if (typeof window === 'undefined') return;
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const progress = stored ? JSON.parse(stored) : {};
-    progress[slug] = completedSteps;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch {
-    // 저장 실패 무시
-  }
 }
 
 export default function ProgressStepper({
@@ -43,36 +16,64 @@ export default function ProgressStepper({
   onStepComplete
 }: ProgressStepperProps) {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [xpGained, setXpGained] = useState<number | null>(null);
+  const celebrationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (celebrationTimeoutRef.current) {
+        clearTimeout(celebrationTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // 컴포넌트 마운트 시 저장된 진행 상태 불러오기
   useEffect(() => {
-    const saved = getProgress(situationSlug);
-    setCompletedSteps(saved);
+    const manager = getProgressManager();
+    setCompletedSteps(manager.getCompletedSteps(situationSlug));
+
+    const unsubscribe = manager.subscribe((progress) => {
+      setCompletedSteps(progress.completedSteps[situationSlug] || []);
+    });
+
+    return unsubscribe;
   }, [situationSlug]);
 
   // 단계 토글 핸들러
   const handleStepClick = useCallback((stepOrder: number) => {
-    setCompletedSteps(prev => {
-      const isCompleted = prev.includes(stepOrder);
-      let newCompleted: number[];
+    const manager = getProgressManager();
+    const isCompleted = completedSteps.includes(stepOrder);
 
-      if (isCompleted) {
-        // 완료 해제
-        newCompleted = prev.filter(s => s !== stepOrder);
-      } else {
-        // 완료 표시
-        newCompleted = [...prev, stepOrder].sort((a, b) => a - b);
+    if (!isCompleted) {
+      // 완료 표시 + XP 획득
+      manager.markStepComplete(situationSlug, stepOrder, steps.length);
+
+      // XP 표시
+      setXpGained(10);
+      if (celebrationTimeoutRef.current) {
+        clearTimeout(celebrationTimeoutRef.current);
+      }
+      celebrationTimeoutRef.current = setTimeout(() => setXpGained(null), 1500);
+
+      // 모든 스텝 완료 시 축하 애니메이션
+      const newCompleted = [...completedSteps, stepOrder];
+      if (newCompleted.length === steps.length) {
+        setShowCelebration(true);
+        if (celebrationTimeoutRef.current) {
+          clearTimeout(celebrationTimeoutRef.current);
+        }
+        celebrationTimeoutRef.current = setTimeout(() => {
+          setShowCelebration(false);
+          setXpGained(null);
+        }, 3000);
       }
 
-      // 로컬 스토리지에 저장
-      saveProgress(situationSlug, newCompleted);
-
       // 콜백 호출
-      onStepComplete?.(stepOrder, !isCompleted);
-
-      return newCompleted;
-    });
-  }, [situationSlug, onStepComplete]);
+      onStepComplete?.(stepOrder, true);
+    }
+  }, [completedSteps, situationSlug, steps.length, onStepComplete]);
 
   // 진행률 계산
   const progressPercent = steps.length > 0
@@ -83,16 +84,41 @@ export default function ProgressStepper({
     <div className="space-y-4">
       {/* 진행률 바 */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div
+          className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"
+          role="progressbar"
+          aria-valuenow={progressPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`진행률 ${progressPercent}%`}
+        >
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <span className="text-sm font-medium text-gray-500 min-w-[3rem] text-right">
+        <span className="text-sm font-medium text-gray-500 min-w-[3rem] text-right" aria-live="polite">
           {completedSteps.length}/{steps.length}
         </span>
       </div>
+
+      {/* XP 획득 알림 */}
+      {xpGained && !showCelebration && (
+        <div className="text-center animate-bounce" role="status" aria-live="polite">
+          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-bold">
+            +{xpGained} XP 획득
+          </span>
+        </div>
+      )}
+
+      {/* 완료 축하 메시지 */}
+      {showCelebration && (
+        <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 text-center animate-pulse" role="alert" aria-live="assertive">
+          <span className="text-3xl mb-2 block" aria-hidden="true">🎉</span>
+          <p className="text-green-700 font-bold">모든 단계 완료!</p>
+          <p className="text-green-600 text-sm">+30 XP 보너스 획득!</p>
+        </div>
+      )}
 
       {/* 스테퍼 */}
       <div className="relative">
@@ -111,19 +137,22 @@ export default function ProgressStepper({
                   className={`
                     w-8 h-8 rounded-full flex items-center justify-center
                     transition-all duration-200 cursor-pointer
+                    focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
                     ${isCompleted
-                      ? 'bg-green-500 text-white hover:bg-green-600'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border-2 border-gray-300'
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600 border-2 border-gray-300 hover:border-blue-400'
                     }
                   `}
-                  title={isCompleted ? '완료 해제' : '완료 표시'}
+                  aria-label={isCompleted ? `${step.order}단계 ${step.title} 완료됨` : `${step.order}단계 ${step.title} 완료 표시하기`}
+                  aria-pressed={isCompleted}
+                  disabled={isCompleted}
                 >
                   {isCompleted ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   ) : (
-                    <span className="text-sm font-bold">{step.order}</span>
+                    <span className="text-sm font-bold" aria-hidden="true">{step.order}</span>
                   )}
                 </button>
 
@@ -144,16 +173,24 @@ export default function ProgressStepper({
                   type="button"
                   onClick={() => handleStepClick(step.order)}
                   className="text-left w-full group"
+                  disabled={isCompleted}
                 >
-                  <h4 className={`
-                    font-medium text-sm transition-colors
-                    ${isCompleted
-                      ? 'text-gray-400 line-through'
-                      : 'text-gray-900 group-hover:text-blue-600'
-                    }
-                  `}>
-                    {step.title}
-                  </h4>
+                  <div className="flex items-center gap-2">
+                    <h4 className={`
+                      font-medium text-sm transition-colors flex-1
+                      ${isCompleted
+                        ? 'text-gray-400 line-through'
+                        : 'text-gray-900 group-hover:text-blue-600'
+                      }
+                    `}>
+                      {step.title}
+                    </h4>
+                    {!isCompleted && (
+                      <span className="text-xs text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                        +10 XP
+                      </span>
+                    )}
+                  </div>
                   <p className={`
                     text-xs mt-1 transition-colors
                     ${isCompleted ? 'text-gray-300' : 'text-gray-500'}
@@ -166,15 +203,6 @@ export default function ProgressStepper({
           );
         })}
       </div>
-
-      {/* 완료 메시지 */}
-      {progressPercent === 100 && (
-        <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200 text-center">
-          <span className="text-green-600 font-medium text-sm">
-            🎉 모든 단계를 완료했어요!
-          </span>
-        </div>
-      )}
     </div>
   );
 }

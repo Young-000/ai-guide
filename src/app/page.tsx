@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Situation, SituationCategory, SurveyResult } from '@/types';
 import situationsData from '@/data/situations.json';
 import { searchSituations, getPopularSituations } from '@/lib/search';
+import { loadProgress, saveProgress } from '@/lib/levelSystem';
 import SearchInput from '@/components/SearchInput';
 import CategoryButtons from '@/components/CategoryButtons';
 import ResultCard from '@/components/ResultCard';
 import GuidePanel from '@/components/GuidePanel';
 import SurveyWizard from '@/components/SurveyWizard';
+import OnboardingModal from '@/components/OnboardingModal';
 
 // 모듈 레벨에서 데이터 파싱
 const situations = situationsData.situations as Situation[];
@@ -26,8 +28,36 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<SituationCategory | null>(null);
   const [selectedSituation, setSelectedSituation] = useState<Situation | null>(null);
   const [showSurvey, setShowSurvey] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [surveyResult, setSurveyResult] = useState<SurveyResult | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // 온보딩 체크
+  useEffect(() => {
+    const progress = loadProgress();
+    if (!progress.isOnboarded) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
+  // 온보딩 완료 핸들러
+  const handleOnboardingComplete = () => {
+    const progress = loadProgress();
+    const updatedProgress = {
+      ...progress,
+      isOnboarded: true,
+      totalXp: progress.totalXp + 10, // 첫 방문 보너스
+    };
+    saveProgress(updatedProgress);
+    setShowOnboarding(false);
+  };
+
+  // 설문 결과 활용 (레벨업 시스템 연동 준비)
+  useEffect(() => {
+    if (surveyResult) {
+      // 설문 결과에 따른 추천 상황 표시 등 활용 가능
+      console.log('설문 결과:', surveyResult);
+    }
+  }, [surveyResult]);
 
   // 검색 결과
   const searchResults = useMemo(() => {
@@ -86,9 +116,10 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setShowSurvey(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+              aria-label="맞춤 설문을 통해 AI 도구 추천받기"
             >
-              <span className="text-xl">🤷</span>
+              <span className="text-xl" aria-hidden="true">🤷</span>
               뭘 해야 할지 모르겠어요
             </button>
           </div>
@@ -100,21 +131,34 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           {/* 검색 결과 또는 인기 상황 */}
           {showPopular ? (
-            // 인기 상황 표시
-            <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4 text-center">
-                🔥 인기 상황
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                {popularSituations.map((situation) => (
-                  <ResultCard
-                    key={situation.slug}
-                    situation={situation}
-                    isSelected={selectedSituation?.slug === situation.slug}
-                    onClick={() => handleSelectSituation(situation)}
-                  />
-                ))}
+            // 인기 상황 표시 (2열 레이아웃: 결과 + 가이드 패널)
+            <div className="flex gap-6">
+              {/* 인기 상황 리스트 */}
+              <div className={`${selectedSituation ? 'w-1/2' : 'w-full'} transition-all duration-300`}>
+                <h2 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                  🔥 인기 상황
+                </h2>
+                <div className={`grid ${selectedSituation ? 'grid-cols-1 lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} gap-4 ${selectedSituation ? '' : 'max-w-4xl mx-auto'}`}>
+                  {popularSituations.map((situation) => (
+                    <ResultCard
+                      key={situation.slug}
+                      situation={situation}
+                      isSelected={selectedSituation?.slug === situation.slug}
+                      onClick={() => handleSelectSituation(situation)}
+                    />
+                  ))}
+                </div>
               </div>
+
+              {/* 가이드 패널 (데스크톱용) */}
+              {selectedSituation && (
+                <div className="hidden lg:block w-1/2 sticky top-4 h-[calc(100vh-200px)]">
+                  <GuidePanel
+                    situation={selectedSituation}
+                    onClose={handleClosePanel}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             // 검색 결과 표시 (2열 레이아웃: 결과 + 가이드 패널)
@@ -135,7 +179,8 @@ export default function Home() {
                         setSelectedCategory(null);
                         setSelectedSituation(null);
                       }}
-                      className="text-sm text-gray-500 hover:text-gray-700"
+                      className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded px-2 py-1"
+                      aria-label="검색어와 필터 초기화"
                     >
                       초기화
                     </button>
@@ -183,14 +228,21 @@ export default function Home() {
 
       {/* 선택된 상황이 있을 때 모바일용 패널 (하단에서 슬라이드업) */}
       {selectedSituation && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-guide-title"
+        >
           {/* 배경 오버레이 */}
           <div
             className="absolute inset-0 bg-black/50"
             onClick={handleClosePanel}
+            aria-label="가이드 패널 닫기"
           />
           {/* 패널 */}
           <div className="absolute bottom-0 left-0 right-0 h-[85vh] bg-white rounded-t-3xl overflow-hidden">
+            <h2 id="mobile-guide-title" className="sr-only">{selectedSituation.title} 가이드</h2>
             <GuidePanel
               situation={selectedSituation}
               onClose={handleClosePanel}
@@ -207,6 +259,11 @@ export default function Home() {
           }}
           onClose={() => setShowSurvey(false)}
         />
+      )}
+
+      {/* 온보딩 모달 */}
+      {showOnboarding && (
+        <OnboardingModal onComplete={handleOnboardingComplete} />
       )}
     </div>
   );

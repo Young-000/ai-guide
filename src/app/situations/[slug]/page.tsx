@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import type { Tool, Situation } from '@/types';
+import type { Situation } from '@/types';
 import situationsData from '@/data/situations.json';
-import toolsData from '@/data/tools.json';
+import { getToolBySlug } from '@/lib/tools';
+import { ShareButton } from '@/components';
 
 // 컴포넌트 외부에서 한 번만 파싱 (안정적 참조)
 const situations = situationsData.situations as Situation[];
-const tools = toolsData.tools as Tool[];
 
 const difficultyLabels = {
   easy: { text: '쉬움', color: 'bg-green-100 text-green-700', description: '처음 해도 쉽게 따라할 수 있어요' },
@@ -17,11 +17,18 @@ const difficultyLabels = {
   hard: { text: '어려움', color: 'bg-red-100 text-red-700', description: '약간의 사전 지식이 필요해요' },
 };
 
-// 도구 정보 조회 헬퍼 함수 (모듈 레벨)
-const getToolInfo = (slug: string): Tool | undefined => tools.find((t) => t.slug === slug);
-
 export default function SituationDetailPage({ params }: { params: { slug: string } }) {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const situation = situations.find((s) => s.slug === params.slug);
 
@@ -41,7 +48,11 @@ export default function SituationDetailPage({ params }: { params: { slug: string
     try {
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
+      // 이전 timeout 정리
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
       console.error('클립보드 복사 실패:', err);
     }
@@ -67,11 +78,17 @@ export default function SituationDetailPage({ params }: { params: { slug: string
 
       {/* 헤더 */}
       <header className="mb-10">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-4xl">{situation.icon}</span>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficulty.color}`}>
-            {difficulty.text}
-          </span>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-4xl">{situation.icon}</span>
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficulty.color}`}>
+              {difficulty.text}
+            </span>
+          </div>
+          <ShareButton
+            title={`${situation.title} - AI 가이드`}
+            description={situation.subtitle}
+          />
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
           {situation.title}
@@ -102,7 +119,7 @@ export default function SituationDetailPage({ params }: { params: { slug: string
 
         {/* 최우선 추천 */}
         {primaryTool && (() => {
-          const primaryToolInfo = getToolInfo(primaryTool.slug);
+          const primaryToolInfo = getToolBySlug(primaryTool.slug);
           return (
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-4 border-2 border-blue-200">
               <div className="flex items-start justify-between">
@@ -151,7 +168,7 @@ export default function SituationDetailPage({ params }: { params: { slug: string
           <div className="space-y-3">
             <p className="text-sm text-gray-500 font-medium">다른 선택지</p>
             {otherTools.map((tool) => {
-              const toolInfo = getToolInfo(tool.slug);
+              const toolInfo = getToolBySlug(tool.slug);
               return (
                 <div
                   key={tool.slug}

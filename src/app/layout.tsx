@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Header, Footer } from "@/components";
+import { Header, Footer, FeedbackWidget } from "@/components";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -15,13 +15,41 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AI 가이드 | AI 초보자를 위한 도구 안내",
-  description: "ChatGPT, Claude, Cursor 등 AI 도구를 쉽게 알아보세요. AI 초보자를 위한 가이드입니다.",
-  keywords: ["AI", "ChatGPT", "Claude", "Cursor", "인공지능", "AI 도구", "AI 가이드"],
+  title: "AI 가이드 | 상황별 맞춤 AI 도구 추천",
+  description: "PDF 요약, 번역, 이미지 생성 등 상황에 맞는 AI 도구를 찾아보세요. 초보자도 쉽게 따라할 수 있는 단계별 가이드를 제공합니다.",
+  keywords: [
+    "AI",
+    "AI 가이드",
+    "AI 도구",
+    "ChatGPT",
+    "Claude",
+    "Cursor",
+    "인공지능",
+    "PDF 요약",
+    "AI 번역",
+    "이미지 생성",
+    "AI 글쓰기",
+    "코딩 도우미",
+    "AI 초보자",
+    "상황별 AI",
+  ],
+  authors: [{ name: "AI Guide Team" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
-    title: "AI 가이드 | AI 초보자를 위한 도구 안내",
-    description: "ChatGPT, Claude, Cursor 등 AI 도구를 쉽게 알아보세요.",
+    title: "AI 가이드 | 상황별 맞춤 AI 도구 추천",
+    description: "PDF 요약, 번역, 이미지 생성 등 상황에 맞는 AI 도구를 찾아보세요. 초보자도 쉽게 따라할 수 있는 단계별 가이드를 제공합니다.",
     type: "website",
+    url: "https://ai-guide-nu.vercel.app",
+    siteName: "AI 가이드",
+    locale: "ko_KR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI 가이드 | 상황별 맞춤 AI 도구 추천",
+    description: "PDF 요약, 번역, 이미지 생성 등 상황에 맞는 AI 도구를 찾아보세요. 초보자도 쉽게 따라할 수 있는 단계별 가이드를 제공합니다.",
   },
 };
 
@@ -40,6 +68,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <FeedbackWidget />
       </body>
     </html>
   );

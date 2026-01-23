@@ -1,14 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import type { Situation, Tool } from '@/types';
-import toolsData from '@/data/tools.json';
+import type { Situation } from '@/types';
+import { getToolBySlug } from '@/lib/tools';
 import ProgressStepper from './ProgressStepper';
-
-const tools = toolsData.tools as Tool[];
-
-const getToolInfo = (slug: string): Tool | undefined => tools.find((t) => t.slug === slug);
 
 const difficultyLabels = {
   easy: { text: '쉬움', color: 'bg-green-100 text-green-700' },
@@ -24,6 +20,16 @@ interface GuidePanelProps {
 
 export default function GuidePanel({ situation, onClose, embedded = false }: GuidePanelProps) {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const difficulty = difficultyLabels[situation.difficulty];
   const primaryTool = situation.recommendedTools.find((t) => t.isPrimary);
@@ -36,7 +42,11 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
     try {
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
+      // 이전 timeout 정리
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
       console.error('클립보드 복사 실패:', err);
     }
@@ -58,8 +68,9 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
               type="button"
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="가이드 패널 닫기"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -89,7 +100,7 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
 
           {/* 최우선 추천 */}
           {primaryTool && (() => {
-            const toolInfo = getToolInfo(primaryTool.slug);
+            const toolInfo = getToolBySlug(primaryTool.slug);
             return (
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200 mb-3">
                 <div className="flex items-center gap-2 mb-2">
@@ -106,9 +117,10 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                      aria-label={`${primaryTool.name} 공식 사이트로 이동 (새 탭)`}
                     >
                       바로가기
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -116,8 +128,9 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
                   <Link
                     href={`/tools/${primaryTool.slug}`}
                     className="inline-flex items-center gap-1 px-3 py-1.5 bg-white text-blue-600 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors"
+                    aria-label={`${primaryTool.name} 설치 및 사용법 가이드`}
                   >
-                    📖 설치/사용법
+                    <span aria-hidden="true">📖</span> 설치/사용법
                   </Link>
                 </div>
               </div>
@@ -128,7 +141,7 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
           {otherTools.length > 0 && (
             <div className="space-y-2">
               {otherTools.map((tool) => {
-                const toolInfo = getToolInfo(tool.slug);
+                const toolInfo = getToolBySlug(tool.slug);
                 return (
                   <div key={tool.slug} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
@@ -175,6 +188,8 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
                         ? 'bg-green-500 text-white'
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
+                    aria-label={`${prompt.title} 프롬프트 클립보드에 복사`}
+                    aria-live="polite"
                   >
                     {copiedIndex === index ? '✓ 복사됨' : '복사'}
                   </button>

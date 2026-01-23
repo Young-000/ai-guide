@@ -75,56 +75,56 @@
       ]
     },
     {
-      "id": "urgency",
-      "title": "얼마나 급하세요?",
+      "id": "goal",
+      "title": "AI가 어떻게 도와주면 좋겠어요?",
       "options": [
         {
-          "value": "now",
-          "label": "지금 당장",
-          "icon": "🔥",
-          "description": "5분 안에 시작해야 해요"
+          "value": "create",
+          "label": "처음부터 만들어줘",
+          "icon": "✨",
+          "description": "새로운 문서, 이미지 등 생성"
         },
         {
-          "value": "today",
-          "label": "오늘 중으로",
-          "icon": "⏰",
-          "description": "몇 시간 여유 있어요"
+          "value": "improve",
+          "label": "내가 만든 거 다듬어줘",
+          "icon": "✏️",
+          "description": "초안 수정, 문법 교정 등"
         },
         {
-          "value": "week",
-          "label": "이번 주 내",
-          "icon": "📅",
-          "description": "천천히 해도 돼요"
+          "value": "explain",
+          "label": "이해하기 쉽게 설명해줘",
+          "icon": "💡",
+          "description": "어려운 개념, 코드 설명"
         },
         {
-          "value": "explore",
-          "label": "그냥 탐색 중",
+          "value": "find",
+          "label": "정보 찾아서 정리해줘",
           "icon": "🔍",
-          "description": "급하지 않아요"
+          "description": "자료 검색, 요약, 비교"
         }
       ]
     },
     {
-      "id": "quality",
-      "title": "어떤 결과를 원하세요?",
+      "id": "preference",
+      "title": "어떤 가이드가 좋아요?",
       "options": [
         {
-          "value": "quick",
-          "label": "빠르게 대충",
+          "value": "simple",
+          "label": "핵심만 간단히",
           "icon": "⚡",
-          "description": "80%만 되면 OK"
+          "description": "빠르게 시작할 수 있게"
         },
         {
-          "value": "balanced",
-          "label": "적당히 깔끔하게",
-          "icon": "⚖️",
-          "description": "시간과 품질 밸런스"
+          "value": "detailed",
+          "label": "차근차근 자세히",
+          "icon": "📖",
+          "description": "하나하나 따라할 수 있게"
         },
         {
-          "value": "perfect",
-          "label": "제대로 완벽하게",
-          "icon": "✨",
-          "description": "시간이 걸려도 고품질"
+          "value": "example",
+          "label": "예시 위주로",
+          "icon": "🎯",
+          "description": "실제 사용 예시 중심으로"
         }
       ]
     },
