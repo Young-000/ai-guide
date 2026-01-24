@@ -42,6 +42,7 @@ export interface Installation {
   steps: InstallationStep[];
   requirements: string[];
   timeToSetup: string;
+  quickStart?: string[];
 }
 
 export interface Tool {

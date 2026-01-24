@@ -98,6 +98,24 @@ export default async function ToolPage({ params }: PageProps) {
               <span>⏱️ {tool.installation.timeToSetup}</span>
               <span>📋 {tool.installation.requirements.join(', ')}</span>
             </div>
+
+            {/* 빠른 시작 (복붙용) */}
+            {tool.installation.quickStart && (
+              <div className="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-100">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">⚡</span>
+                  <span className="font-bold text-indigo-900">빠른 시작</span>
+                  <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">복사해서 따라하기</span>
+                </div>
+                <div className="space-y-1.5 font-mono text-sm">
+                  {tool.installation.quickStart.map((step: string, i: number) => (
+                    <p key={i} className="text-gray-800">{step}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <p className="text-sm text-gray-500 mb-4">📖 자세한 안내</p>
             <ol className="space-y-4">
               {tool.installation.steps.map((step, i) => (
                 <li key={i} className="flex gap-3">
