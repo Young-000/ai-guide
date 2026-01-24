@@ -20,6 +20,36 @@
       "alternatives": ["claude", "gemini", "perplexity"],
       "icon": "🤖",
       "color": "from-green-500 to-emerald-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "2분",
+        "requirements": ["이메일 또는 Google/Apple/Microsoft 계정"],
+        "steps": [
+          {
+            "title": "ChatGPT 사이트 접속",
+            "description": "웹브라우저에서 chat.openai.com 입력하거나 아래 '시작하기' 버튼 클릭",
+            "action": "https://chat.openai.com"
+          },
+          {
+            "title": "회원가입 또는 로그인",
+            "description": "'Sign up' 클릭 → Google/Apple/Microsoft 계정 선택 또는 이메일로 가입. 이미 계정이 있다면 'Log in' 클릭"
+          },
+          {
+            "title": "이메일 인증 (이메일 가입 시)",
+            "description": "받은편지함에서 OpenAI 인증 메일 확인 → 'Verify email address' 버튼 클릭"
+          },
+          {
+            "title": "대화 시작하기",
+            "description": "로그인 후 화면 하단 채팅창에 질문 입력 → Enter 누르면 대화 시작!"
+          }
+        ],
+        "interface": {
+          "mainInput": "화면 하단 'Message ChatGPT...' 입력창",
+          "fileUpload": "입력창 왼쪽 📎 클립 아이콘 클릭",
+          "newChat": "왼쪽 사이드바 상단 '+ New chat' 버튼",
+          "history": "왼쪽 사이드바에서 이전 대화 목록 확인"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "chat.openai.com에 접속해서 구글/애플 계정으로 가입하세요",
@@ -183,6 +213,36 @@
       "alternatives": ["chatgpt", "claude"],
       "icon": "✨",
       "color": "from-blue-500 to-indigo-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "1분",
+        "requirements": ["Google 계정"],
+        "steps": [
+          {
+            "title": "Gemini 사이트 접속",
+            "description": "웹브라우저에서 gemini.google.com 입력",
+            "action": "https://gemini.google.com"
+          },
+          {
+            "title": "Google 계정으로 로그인",
+            "description": "Google 계정이 있다면 바로 로그인. 없다면 '계정 만들기'로 무료 가입"
+          },
+          {
+            "title": "바로 시작!",
+            "description": "로그인하면 바로 채팅 화면이 나타납니다. 별도 회원가입 불필요!"
+          }
+        ],
+        "interface": {
+          "mainInput": "화면 하단 'Enter a prompt here' 입력창",
+          "fileUpload": "입력창 왼쪽 이미지/파일 아이콘",
+          "newChat": "왼쪽 상단 '+ New chat'",
+          "extensions": "설정 → Extensions에서 Gmail, Docs 등 연동 가능"
+        },
+        "googleIntegration": {
+          "description": "Google Workspace 앱에서도 Gemini 사용 가능",
+          "apps": ["Gmail 오른쪽 사이드바", "Google Docs '도움말' 메뉴", "Google Sheets 수식 도우미"]
+        }
+      },
       "guide": {
         "gettingStarted": [
           "gemini.google.com에서 구글 계정으로 바로 시작하세요",
@@ -243,6 +303,32 @@
       "alternatives": ["gemini", "chatgpt"],
       "icon": "🔍",
       "color": "from-cyan-500 to-blue-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "30초",
+        "requirements": ["없음 (로그인 없이 사용 가능)"],
+        "steps": [
+          {
+            "title": "사이트 접속",
+            "description": "perplexity.ai 접속 - 로그인 없이 바로 사용 가능!",
+            "action": "https://perplexity.ai"
+          },
+          {
+            "title": "바로 검색 시작",
+            "description": "화면 중앙 검색창에 궁금한 것을 입력하면 끝!"
+          },
+          {
+            "title": "(선택) 계정 만들기",
+            "description": "검색 기록 저장, Pro 검색 더 많이 쓰려면 Google/Apple 계정으로 가입"
+          }
+        ],
+        "interface": {
+          "mainInput": "화면 중앙 'Ask anything...' 검색창",
+          "focus": "검색창 아래 Focus 버튼으로 검색 범위 지정 (All, Academic, YouTube 등)",
+          "sources": "답변 아래 [1][2] 숫자를 클릭하면 출처 확인",
+          "collections": "왼쪽 메뉴 'Collections'에서 검색 결과 저장/정리"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "perplexity.ai에 접속하면 바로 검색할 수 있어요",
@@ -304,6 +390,51 @@
       "alternatives": ["github-copilot", "claude"],
       "icon": "⌨️",
       "color": "from-violet-500 to-purple-600",
+      "installation": {
+        "type": "desktop",
+        "timeToSetup": "5분",
+        "requirements": ["Mac, Windows, 또는 Linux 컴퓨터"],
+        "steps": [
+          {
+            "title": "다운로드",
+            "description": "cursor.sh 접속 → 'Download' 버튼 클릭 → 운영체제에 맞는 버전 자동 다운로드",
+            "action": "https://cursor.sh"
+          },
+          {
+            "title": "설치하기",
+            "description": "Mac: .dmg 파일 열고 Applications 폴더로 드래그 / Windows: .exe 실행 후 설치 진행 / Linux: AppImage 실행 권한 부여"
+          },
+          {
+            "title": "VS Code 설정 가져오기 (선택)",
+            "description": "첫 실행 시 'Import VS Code settings?' 물어봄 → 'Yes'하면 확장, 테마, 설정 자동 이전"
+          },
+          {
+            "title": "계정 로그인",
+            "description": "Google/GitHub 계정으로 로그인하면 무료 사용량 제공"
+          },
+          {
+            "title": "시작하기",
+            "description": "프로젝트 폴더를 열고 코딩 시작! Tab 누르면 AI 자동완성"
+          }
+        ],
+        "shortcuts": {
+          "mac": {
+            "aiChat": "Cmd + L (AI와 대화)",
+            "aiEdit": "Cmd + K (선택 영역 AI 수정)",
+            "composer": "Cmd + I (여러 파일 동시 수정)"
+          },
+          "windows": {
+            "aiChat": "Ctrl + L (AI와 대화)",
+            "aiEdit": "Ctrl + K (선택 영역 AI 수정)",
+            "composer": "Ctrl + I (여러 파일 동시 수정)"
+          }
+        },
+        "interface": {
+          "aiPanel": "오른쪽 사이드바 AI 채팅 패널",
+          "autocomplete": "코드 작성 중 회색 텍스트로 제안 표시 → Tab으로 적용",
+          "composer": "Cmd/Ctrl + I로 Composer 열기 → 여러 파일 한번에 수정"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "cursor.sh에서 다운로드 후 설치하세요",
@@ -365,6 +496,48 @@
       "alternatives": ["cursor", "claude"],
       "icon": "🐙",
       "color": "from-gray-700 to-gray-900",
+      "installation": {
+        "type": "extension",
+        "timeToSetup": "5분",
+        "requirements": ["GitHub 계정", "VS Code, JetBrains IDE, Neovim 등"],
+        "steps": [
+          {
+            "title": "GitHub Copilot 구독",
+            "description": "github.com/features/copilot 접속 → 'Start my free trial' 클릭 → GitHub 로그인 → 결제 정보 입력 (30일 무료 체험)",
+            "action": "https://github.com/features/copilot",
+            "note": "학생/교사는 GitHub Education으로 무료! github.com/education"
+          },
+          {
+            "title": "VS Code에 확장 설치",
+            "description": "VS Code 실행 → 왼쪽 Extensions 아이콘(□) 클릭 → 'GitHub Copilot' 검색 → 'Install' 클릭"
+          },
+          {
+            "title": "GitHub 계정 연동",
+            "description": "설치 후 VS Code 우측 하단에 Copilot 아이콘 클릭 → 'Sign in to GitHub' → 브라우저에서 인증"
+          },
+          {
+            "title": "시작하기!",
+            "description": "코드 파일 열고 타이핑 시작 → 회색 텍스트로 제안 표시 → Tab으로 적용"
+          }
+        ],
+        "ideSetup": {
+          "vscode": "Extensions → 'GitHub Copilot' 검색 → Install",
+          "jetbrains": "Settings → Plugins → 'GitHub Copilot' 검색 → Install",
+          "neovim": "github/copilot.vim 플러그인 설치"
+        },
+        "shortcuts": {
+          "accept": "Tab (제안 수락)",
+          "reject": "Esc (제안 거절)",
+          "nextSuggestion": "Alt + ] (다음 제안)",
+          "prevSuggestion": "Alt + [ (이전 제안)",
+          "showAll": "Ctrl + Enter (모든 제안 보기)"
+        },
+        "interface": {
+          "suggestions": "코드 작성 중 회색 텍스트로 제안 표시",
+          "copilotChat": "사이드바 Copilot 아이콘 → 대화형 AI 질문",
+          "inline": "코드 선택 → 우클릭 → Copilot → Explain/Fix 등"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "GitHub 계정에서 Copilot 구독을 시작하세요",
@@ -426,6 +599,45 @@
       "alternatives": ["dall-e", "stable-diffusion"],
       "icon": "🎨",
       "color": "from-pink-500 to-rose-600",
+      "installation": {
+        "type": "discord",
+        "timeToSetup": "10분",
+        "requirements": ["Discord 계정", "Midjourney 유료 구독 ($10/월~)"],
+        "steps": [
+          {
+            "title": "Discord 가입 (없다면)",
+            "description": "discord.com 접속 → '등록' 클릭 → 이메일로 가입하고 앱 다운로드 (데스크톱 또는 모바일)",
+            "action": "https://discord.com"
+          },
+          {
+            "title": "Midjourney 서버 참여",
+            "description": "midjourney.com 접속 → 'Join the Beta' 클릭 → Discord 로그인 → Midjourney 서버에 자동 참여",
+            "action": "https://midjourney.com"
+          },
+          {
+            "title": "유료 구독 시작",
+            "description": "Discord에서 아무 채널이나 들어가서 /subscribe 입력 → 결제 페이지에서 플랜 선택 ($10 Basic부터)",
+            "note": "무료 체험이 없어서 유료 구독 필수!"
+          },
+          {
+            "title": "이미지 생성하기",
+            "description": "Discord 채팅창에 /imagine prompt: [원하는 이미지 설명] 입력 → Enter"
+          }
+        ],
+        "commands": {
+          "generate": "/imagine prompt: [설명] - 이미지 생성",
+          "variations": "V1~V4 버튼 - 선택한 이미지 변형",
+          "upscale": "U1~U4 버튼 - 선택한 이미지 고화질로",
+          "rerun": "🔄 버튼 - 다시 생성",
+          "aspectRatio": "--ar 16:9 또는 --ar 1:1 (가로세로 비율)",
+          "version": "--v 6 (최신 모델 사용)"
+        },
+        "interface": {
+          "channels": "#newbies-XX 채널에서 연습 (다른 사람 결과도 보임)",
+          "dmBot": "Midjourney Bot에 DM으로 명령하면 비공개로 생성 가능",
+          "web": "midjourney.com/app에서 웹으로도 이용 가능 (최근 추가)"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "Discord 계정이 필요해요 - discord.com에서 가입",
@@ -486,6 +698,33 @@
       "alternatives": ["midjourney", "stable-diffusion"],
       "icon": "🖼️",
       "color": "from-teal-500 to-green-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "2분 (ChatGPT Plus 구독 시)",
+        "requirements": ["ChatGPT Plus 구독 ($20/월)"],
+        "steps": [
+          {
+            "title": "ChatGPT Plus 구독",
+            "description": "chat.openai.com 로그인 → 왼쪽 하단 'Upgrade to Plus' 클릭 → 결제 정보 입력",
+            "action": "https://chat.openai.com"
+          },
+          {
+            "title": "DALL-E 사용하기",
+            "description": "ChatGPT 채팅창에 '~한 이미지 그려줘'라고 입력하면 자동으로 DALL-E가 이미지 생성"
+          },
+          {
+            "title": "이미지 다운로드",
+            "description": "생성된 이미지 클릭 → 우측 상단 다운로드 아이콘 클릭"
+          }
+        ],
+        "interface": {
+          "generate": "채팅창에 자연어로 요청 (예: '귀여운 고양이 일러스트 그려줘')",
+          "edit": "'이 이미지에서 ~ 바꿔줘'로 수정 요청",
+          "variations": "'비슷한 스타일로 다른 버전 만들어줘'로 변형 생성",
+          "aspectRatio": "'가로로 넓게' 또는 '세로로 길게' 등 자연어로 비율 지정"
+        },
+        "note": "별도 앱/사이트 없이 ChatGPT 안에서 바로 사용!"
+      },
       "guide": {
         "gettingStarted": [
           "ChatGPT Plus 구독이 필요해요 (월 $20)",
@@ -606,6 +845,42 @@
       "alternatives": ["notion-ai", "canva"],
       "icon": "📊",
       "color": "from-indigo-500 to-blue-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "2분",
+        "requirements": ["Google 계정"],
+        "steps": [
+          {
+            "title": "Gamma 접속",
+            "description": "gamma.app 접속 → 'Sign up free' 클릭",
+            "action": "https://gamma.app"
+          },
+          {
+            "title": "Google 계정으로 가입",
+            "description": "'Continue with Google' 클릭 → Google 계정 선택하면 가입 완료"
+          },
+          {
+            "title": "새 프레젠테이션 만들기",
+            "description": "대시보드에서 '+ Create new' → 'Generate' 선택"
+          },
+          {
+            "title": "주제 입력",
+            "description": "발표 주제를 입력 (예: 'AI 시대의 마케팅 전략') → AI가 자동으로 슬라이드 생성"
+          }
+        ],
+        "interface": {
+          "generate": "'Generate' - 주제만 입력하면 전체 슬라이드 자동 생성",
+          "paste": "'Paste' - 기존 텍스트를 붙여넣으면 슬라이드로 변환",
+          "import": "'Import' - 기존 PPT/PDF 가져와서 리디자인",
+          "edit": "생성 후 각 슬라이드 클릭해서 직접 수정 가능",
+          "theme": "오른쪽 패널에서 테마/색상 한 번에 변경"
+        },
+        "export": {
+          "present": "오른쪽 상단 'Present' → 바로 발표 모드",
+          "share": "'Share' → 링크로 공유 (뷰어에게 슬라이드 애니메이션 지원)",
+          "download": "'Export' → PDF, PPT 형식으로 다운로드 (Plus 이상)"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "gamma.app에서 구글 계정으로 가입하세요",
@@ -830,6 +1105,41 @@
       "alternatives": ["cursor", "bolt"],
       "icon": "🎨",
       "color": "from-black to-gray-800",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "1분",
+        "requirements": ["GitHub 계정 (선택)", "React/Next.js 프로젝트 (코드 적용 시)"],
+        "steps": [
+          {
+            "title": "v0.dev 접속",
+            "description": "v0.dev 사이트 접속 → 로그인 없이도 바로 사용 가능",
+            "action": "https://v0.dev"
+          },
+          {
+            "title": "UI 설명 입력",
+            "description": "입력창에 원하는 UI를 자연어로 설명 (예: '모던한 로그인 폼 만들어줘')"
+          },
+          {
+            "title": "결과 확인 및 수정",
+            "description": "생성된 UI 미리보기 확인 → 마음에 안 들면 '이 부분 바꿔줘' 요청"
+          },
+          {
+            "title": "코드 복사/적용",
+            "description": "'Add to Codebase' 클릭 → npx 명령어 복사 → 터미널에서 실행하면 프로젝트에 자동 추가"
+          }
+        ],
+        "codeUsage": {
+          "copy": "오른쪽 상단 'Code' 탭에서 코드 직접 복사",
+          "npx": "npx shadcn@latest add '링크' 명령어로 프로젝트에 자동 추가",
+          "dependencies": "shadcn/ui, Tailwind CSS가 프로젝트에 설정되어 있어야 함"
+        },
+        "interface": {
+          "prompt": "화면 하단 입력창에 자연어로 요청",
+          "preview": "왼쪽에서 생성된 UI 실시간 미리보기",
+          "code": "오른쪽 'Code' 탭에서 React/TypeScript 코드 확인",
+          "iterate": "추가 요청으로 디자인 수정 가능"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "v0.dev에 접속해서 프롬프트를 입력하세요",
@@ -1076,6 +1386,45 @@
       "alternatives": ["murf", "play-ht"],
       "icon": "🎙️",
       "color": "from-emerald-500 to-teal-600",
+      "installation": {
+        "type": "web",
+        "timeToSetup": "2분",
+        "requirements": ["이메일 또는 Google 계정"],
+        "steps": [
+          {
+            "title": "ElevenLabs 접속",
+            "description": "elevenlabs.io 접속 → 'Get Started Free' 클릭",
+            "action": "https://elevenlabs.io"
+          },
+          {
+            "title": "계정 만들기",
+            "description": "Google 계정으로 가입하거나 이메일로 회원가입"
+          },
+          {
+            "title": "텍스트 입력",
+            "description": "대시보드 'Speech Synthesis' 메뉴 → 텍스트 입력창에 원하는 내용 입력"
+          },
+          {
+            "title": "목소리 선택",
+            "description": "왼쪽 'Voice' 드롭다운에서 목소리 선택 (한국어 목소리도 있음)"
+          },
+          {
+            "title": "음성 생성",
+            "description": "'Generate' 클릭 → 음성 미리듣기 → 마음에 들면 다운로드"
+          }
+        ],
+        "interface": {
+          "speechSynthesis": "Text to Speech - 텍스트를 음성으로 변환",
+          "voiceLab": "Voice Lab - 목소리 복제 (본인 목소리 3초 이상 녹음 업로드)",
+          "voiceLibrary": "Voice Library - 커뮤니티가 공유한 다양한 목소리",
+          "projects": "Projects - 긴 텍스트(책, 스크립트)를 음성으로 변환"
+        },
+        "voiceSettings": {
+          "stability": "높을수록 일관된 톤, 낮을수록 감정적",
+          "clarity": "높을수록 또렷하게",
+          "style": "표현력 정도 조절"
+        }
+      },
       "guide": {
         "gettingStarted": [
           "elevenlabs.io에서 계정을 만드세요",
