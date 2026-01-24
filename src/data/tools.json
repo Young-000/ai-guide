@@ -1350,27 +1350,6 @@
           "복잡한 인터랙션은 추가 코딩이 필요해요",
           "무료 버전은 생성 횟수가 제한돼요"
         ]
-      },
-      "installation": {
-        "steps": [
-          {
-            "title": "v0.dev 접속",
-            "description": "별도 설치 없이 웹에서 바로 사용 가능",
-            "details": ["v0.dev 접속", "GitHub 계정으로 로그인"]
-          },
-          {
-            "title": "컴포넌트 생성",
-            "description": "프롬프트로 원하는 UI 설명",
-            "details": ["자연어로 UI 설명 입력", "이미지 첨부 가능", "여러 버전 중 선택"]
-          },
-          {
-            "title": "프로젝트에 추가",
-            "description": "npx 명령어로 바로 추가",
-            "details": ["코드 복사 또는 npx shadcn@latest add 명령어 사용", "import해서 바로 사용"]
-          }
-        ],
-        "requirements": ["Next.js 또는 React 프로젝트", "Node.js 환경"],
-        "timeToSetup": "2분"
       }
     },
     {
@@ -1689,27 +1668,6 @@
           "매우 긴 텍스트는 분할 처리가 필요해요",
           "특수한 발음이나 용어는 수동 수정이 필요할 수 있어요"
         ]
-      },
-      "installation": {
-        "steps": [
-          {
-            "title": "회원가입",
-            "description": "elevenlabs.io에서 계정 생성",
-            "details": ["구글 계정으로 간편 가입", "무료로 월 10,000자 사용"]
-          },
-          {
-            "title": "목소리 선택",
-            "description": "Voice Library에서 원하는 목소리 선택",
-            "details": ["한국어/영어 등 다양한 언어", "남성/여성, 젊은/성숙한 등 다양한 스타일"]
-          },
-          {
-            "title": "텍스트 입력 및 생성",
-            "description": "Speech Synthesis에서 텍스트 입력",
-            "details": ["텍스트 붙여넣기", "Generate 클릭", "MP3로 다운로드"]
-          }
-        ],
-        "requirements": ["웹 브라우저"],
-        "timeToSetup": "2분"
       }
     },
     {
