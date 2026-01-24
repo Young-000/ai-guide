@@ -88,6 +88,64 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
 
       {/* 스크롤 영역 */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {/* 바로 실행 - 최상단 */}
+        {primaryTool && (() => {
+          const toolInfo = getToolBySlug(primaryTool.slug);
+          const firstPrompt = situation.prompts[0];
+          return (
+            <section className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-5 text-white shadow-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">⚡</span>
+                <h3 className="text-lg font-bold">바로 실행</h3>
+                <span className="text-xs bg-white/20 px-2 py-1 rounded-full">3단계</span>
+              </div>
+              <div className="space-y-3 font-mono text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="bg-white/20 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs">1</span>
+                  <div>
+                    <a
+                      href={toolInfo?.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white underline hover:text-white/80"
+                    >
+                      {toolInfo?.url?.replace('https://', '')}
+                    </a>
+                    <span className="text-white/70"> 접속</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-white/20 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs">2</span>
+                  <span className="text-white/90">{situation.steps[0]?.description}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-white/20 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs">3</span>
+                  <span className="text-white/90">아래 프롬프트 복사 → 붙여넣기</span>
+                </div>
+              </div>
+              {firstPrompt && (
+                <div className="mt-4 bg-white/10 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-white/70">{firstPrompt.title}</span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(firstPrompt.content, -1)}
+                      className={`px-2 py-1 rounded text-xs font-medium transition-all ${
+                        copiedIndex === -1
+                          ? 'bg-green-500 text-white'
+                          : 'bg-white/20 text-white hover:bg-white/30'
+                      }`}
+                    >
+                      {copiedIndex === -1 ? '✓ 복사됨' : '복사'}
+                    </button>
+                  </div>
+                  <p className="text-xs text-white/90 line-clamp-2">{firstPrompt.content}</p>
+                </div>
+              )}
+            </section>
+          );
+        })()}
+
         {/* 문제 상황 */}
         <section className="bg-gray-50 rounded-xl p-4">
           <h3 className="text-sm font-bold text-gray-700 mb-2">💭 이런 상황이라면</h3>
