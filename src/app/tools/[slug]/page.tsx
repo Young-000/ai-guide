@@ -56,7 +56,7 @@ export default async function ToolPage({ params }: PageProps) {
       </header>
 
       {/* 시작 버튼 */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-6">
         <a
           href={tool.url}
           target="_blank"
@@ -69,6 +69,24 @@ export default async function ToolPage({ params }: PageProps) {
           <p className="mt-2 text-sm text-green-600">무료로 시작 가능</p>
         )}
       </div>
+
+      {/* 빠른 시작 - 최상단 배치 */}
+      {tool.installation?.quickStart && (
+        <section className="mb-10">
+          <div className="p-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl text-white shadow-lg">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">⚡</span>
+              <h2 className="text-lg font-bold">바로 시작하기</h2>
+              <span className="text-xs bg-white/20 px-2 py-1 rounded-full">복붙 OK</span>
+            </div>
+            <div className="space-y-2 font-mono text-sm bg-white/10 rounded-xl p-4">
+              {tool.installation.quickStart.map((step: string, i: number) => (
+                <p key={i} className="text-white/95">{step}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 설명 */}
       <section className="mb-10">
@@ -89,33 +107,15 @@ export default async function ToolPage({ params }: PageProps) {
         </ul>
       </section>
 
-      {/* 설치/시작 가이드 */}
+      {/* 상세 시작 가이드 */}
       {tool.installation && (
         <section className="mb-10">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">시작 방법</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3">📖 상세 가이드</h2>
           <div className="bg-gray-50 rounded-xl p-5">
             <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-200 text-sm text-gray-500">
               <span>⏱️ {tool.installation.timeToSetup}</span>
               <span>📋 {tool.installation.requirements.join(', ')}</span>
             </div>
-
-            {/* 빠른 시작 (복붙용) */}
-            {tool.installation.quickStart && (
-              <div className="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-100">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">⚡</span>
-                  <span className="font-bold text-indigo-900">빠른 시작</span>
-                  <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">복사해서 따라하기</span>
-                </div>
-                <div className="space-y-1.5 font-mono text-sm">
-                  {tool.installation.quickStart.map((step: string, i: number) => (
-                    <p key={i} className="text-gray-800">{step}</p>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p className="text-sm text-gray-500 mb-4">📖 자세한 안내</p>
             <ol className="space-y-4">
               {tool.installation.steps.map((step, i) => (
                 <li key={i} className="flex gap-3">
