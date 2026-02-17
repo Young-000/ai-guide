@@ -40,15 +40,32 @@ export function Header() {
             <span className="font-bold text-gray-900">AI 가이드</span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* 레벨 뱃지 */}
             {mounted && progress.isOnboarded && (
               <LevelBadge progress={progress} showXp size="sm" />
             )}
 
+            {/* 맞춤 추천 CTA */}
+            {mounted && !progress.isOnboarded ? (
+              <Link
+                href="/onboarding"
+                className="px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors"
+              >
+                AI 추천받기
+              </Link>
+            ) : mounted && progress.isOnboarded ? (
+              <Link
+                href="/onboarding"
+                className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+              >
+                다시 추천받기
+              </Link>
+            ) : null}
+
             <Link
               href="/projects"
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
               aria-label="토이 프로젝트 보기"
             >
               토이 프로젝트

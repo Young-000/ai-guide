@@ -2,6 +2,10 @@ import Link from 'next/link';
 import compareData from '@/data/compare.json';
 import toolsData from '@/data/tools.json';
 import type { Tool } from '@/types';
+import { buildToolUrl } from '@/lib/affiliateLinks';
+import OutboundToolLink from '@/components/OutboundToolLink';
+import AdUnit from '@/components/AdUnit';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure';
 
 export const metadata = {
   title: 'ChatGPT vs Claude vs Gemini 비교 - AI 가이드',
@@ -84,6 +88,14 @@ export default function ComparePage() {
         </table>
       </div>
 
+      {/* Ad: between comparison table and 결론 */}
+      <AdUnit
+        slot="1234567890"
+        format="horizontal"
+        className="mb-12"
+        dataPage="compare"
+      />
+
       {/* 결론 섹션 */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-green-50 rounded-2xl p-6">
@@ -130,32 +142,34 @@ export default function ComparePage() {
           일단 무료로 다 써보세요! 3개 모두 무료 플랜이 있어요.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <a
-            href="https://chat.openai.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <OutboundToolLink
+            href={buildToolUrl(chatgpt?.url ?? 'https://chat.openai.com', 'chatgpt', 'compare')}
+            toolName="ChatGPT"
+            sourcePage="compare"
             className="px-6 py-3 bg-white text-gray-900 font-medium rounded-xl hover:bg-gray-100 transition-colors"
           >
             ChatGPT 시작하기
-          </a>
-          <a
-            href="https://claude.ai"
-            target="_blank"
-            rel="noopener noreferrer"
+          </OutboundToolLink>
+          <OutboundToolLink
+            href={buildToolUrl(claude?.url ?? 'https://claude.ai', 'claude', 'compare')}
+            toolName="Claude"
+            sourcePage="compare"
             className="px-6 py-3 bg-white/10 text-white font-medium rounded-xl hover:bg-white/20 transition-colors border border-white/20"
           >
             Claude 시작하기
-          </a>
-          <a
-            href="https://gemini.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          </OutboundToolLink>
+          <OutboundToolLink
+            href={buildToolUrl(gemini?.url ?? 'https://gemini.google.com', 'gemini', 'compare')}
+            toolName="Gemini"
+            sourcePage="compare"
             className="px-6 py-3 bg-white/10 text-white font-medium rounded-xl hover:bg-white/20 transition-colors border border-white/20"
           >
             Gemini 시작하기
-          </a>
+          </OutboundToolLink>
         </div>
       </section>
+
+      <AffiliateDisclosure />
     </div>
   );
 }

@@ -2,6 +2,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import toolsData from '@/data/tools.json';
 import type { Tool } from '@/types';
+import { buildToolUrl } from '@/lib/affiliateLinks';
+import OutboundToolLink from '@/components/OutboundToolLink';
+import AdUnit from '@/components/AdUnit';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,6 +17,8 @@ export async function generateStaticParams() {
   }));
 }
 
+const BASE_URL = 'https://ai-guide-nu.vercel.app';
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const tool = toolsData.tools.find((t) => t.slug === slug) as Tool | undefined;
@@ -22,8 +28,19 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `${tool.name} - AI 가이드`,
-    description: tool.tagline,
+    title: `${tool.name} 사용법 & 가이드 | AI 가이드`,
+    description: tool.description,
+    alternates: {
+      canonical: `${BASE_URL}/tools/${slug}`,
+    },
+    openGraph: {
+      title: `${tool.name} 사용법 & 가이드 | AI 가이드`,
+      description: tool.description,
+      url: `${BASE_URL}/tools/${slug}`,
+      siteName: 'AI 가이드',
+      locale: 'ko_KR',
+      type: 'article',
+    },
   };
 }
 
@@ -57,14 +74,14 @@ export default async function ToolPage({ params }: PageProps) {
 
       {/* 시작 버튼 */}
       <div className="text-center mb-6">
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
+        <OutboundToolLink
+          href={buildToolUrl(tool.url, tool.slug, 'tool-detail')}
+          toolName={tool.name}
+          sourcePage="tool-detail"
           className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-colors"
         >
           {tool.name} 시작하기 →
-        </a>
+        </OutboundToolLink>
         {tool.pricing.free && (
           <p className="mt-2 text-sm text-green-600">무료로 시작 가능</p>
         )}
@@ -106,6 +123,14 @@ export default async function ToolPage({ params }: PageProps) {
           ))}
         </ul>
       </section>
+
+      {/* Ad: between 주요 기능 and 상세 가이드 */}
+      <AdUnit
+        slot="1234567890"
+        format="rectangle"
+        className="my-8"
+        dataPage="tool-detail"
+      />
 
       {/* 상세 시작 가이드 */}
       {tool.installation && (
@@ -253,15 +278,17 @@ export default async function ToolPage({ params }: PageProps) {
 
       {/* 다시 시작 버튼 */}
       <div className="text-center pt-6 border-t border-gray-100">
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
+        <OutboundToolLink
+          href={buildToolUrl(tool.url, tool.slug, 'tool-detail')}
+          toolName={tool.name}
+          sourcePage="tool-detail"
           className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-colors"
         >
           {tool.name} 시작하기 →
-        </a>
+        </OutboundToolLink>
       </div>
+
+      <AffiliateDisclosure />
     </div>
   );
 }

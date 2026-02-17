@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { trackShare } from '@/lib/analytics';
 
 interface ShareButtonProps {
   title: string;
@@ -19,6 +20,8 @@ export default function ShareButton({ title, description, url }: ShareButtonProp
       text: description || title,
       url: shareUrl,
     };
+
+    trackShare('page', title);
 
     // Web Share API 지원 확인
     if (typeof navigator !== 'undefined' && navigator.share) {

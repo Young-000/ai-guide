@@ -1,0 +1,16 @@
+# Pipeline State
+
+> 현재 진행 중인 feature와 단계를 추적합니다.
+
+## In-Flight Features
+
+| Feature | Branch | Current Phase | Status | Started |
+|---------|--------|---------------|--------|---------|
+| monetization | feature/situation-based-pivot | Phase 4 (PD) | 🔄 In Progress | Cycle 8 |
+| seo-optimization | feature/situation-based-pivot | Phase 4 (PD) | 🔄 In Progress | Cycle 8 |
+
+## Completed Features
+- [x] prd-v2 (Cycle 1) — PRD v2.0 완성
+- [x] landing-redesign (Cycle 2) — 랜딩 페이지 전면 재설계 + QA/PD 수정 완료
+- [x] onboarding-flow (Cycle 2) — 스마트 온보딩 플로우 + QA/PD 수정 완료
+- [x] guide-ux-improvement (Cycle 3-7) — quickStart UI, 설치가이드, 레벨시스템, FeedbackWidget
