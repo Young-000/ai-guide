@@ -198,3 +198,50 @@ export interface SurveyResult {
   bestMatch: Situation | null; // 가장 적합한 상황 (바로 가이드로 이동용)
   matchReason: string; // 매칭 이유 설명
 }
+
+// AI 활용 팁 타입
+export type TipCategory = 'productivity' | 'writing' | 'coding' | 'learning' | 'creative' | 'business';
+
+export type TipContent =
+  | { type: 'paragraph'; text: string }
+  | { type: 'heading'; text: string }
+  | { type: 'list'; items: string[] }
+  | { type: 'tip-box'; text: string }
+  | { type: 'prompt-example'; title: string; content: string };
+
+export interface Tip {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: TipCategory;
+  tags: string[];
+  content: TipContent[];
+  relatedTools: string[];
+  relatedSituations: string[];
+  relatedTips: string[];
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  publishedDate: string;
+}
+
+export interface TipCategoryInfo {
+  id: TipCategory;
+  name: string;
+  icon: string;
+  description: string;
+}
+
+// FAQ 타입
+export interface FaqCategory {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+export interface FaqItem {
+  id: string;
+  category: string;
+  question: string;
+  answer: string;
+  relatedTips?: string[];
+  relatedSituations?: string[];
+}

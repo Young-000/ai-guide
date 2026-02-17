@@ -1,17 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { loadProgress, getLevelInfo, getXpToNextLevel, ACHIEVEMENTS } from '@/lib/levelSystem';
 import type { UserProgress } from '@/lib/levelSystem';
 import { getProgressManager } from '@/lib/progress';
-import { getRecommendations } from '@/lib/recommendations';
-import type { RecommendedSituation } from '@/lib/recommendations';
+import { getEnhancedRecommendations } from '@/lib/recommendations';
+import { calculateToolProficiencies } from '@/lib/toolProficiency';
+import { calculateCategoryProgress } from '@/lib/categoryProgress';
+import { generateWeeklyReport } from '@/lib/weeklyReport';
 import situationsData from '@/data/situations.json';
-import type { Situation } from '@/types';
+import type { Situation, SituationCategory } from '@/types';
 import AchievementBadge from '@/components/AchievementBadge';
+import CategoryProgressMap from '@/components/CategoryProgressMap';
+import ToolProficiencyPanel from '@/components/ToolProficiencyPanel';
+import EnhancedRecommendations from '@/components/EnhancedRecommendations';
+import WeeklyLearningReport from '@/components/WeeklyLearningReport';
 
 const allSituations = situationsData.situations as Situation[];
+const categories = situationsData.categories as Array<{ id: SituationCategory; name: string; icon: string }>;
 
 const DEFAULT_PROGRESS: UserProgress = {
   completedSituations: [],
@@ -28,6 +35,8 @@ const DEFAULT_PROGRESS: UserProgress = {
   currentStreak: 0,
   longestStreak: 0,
   lastActiveDate: '',
+  promptCopyByTool: {},
+  toolFirstUsedAt: {},
 };
 
 export default function MyProgressPage() {
@@ -46,6 +55,30 @@ export default function MyProgressPage() {
     return unsubscribe;
   }, []);
 
+  // Cycle 10: 카테고리 진행률, 도구 숙련도, 주간 리포트, 추천 2-트랙 계산
+  // (모든 hooks는 early return 전에 호출해야 함)
+  const categoryProgressData = useMemo(
+    () => calculateCategoryProgress(progress, allSituations, categories),
+    [progress],
+  );
+
+  const toolProficiencies = useMemo(
+    () => calculateToolProficiencies(progress, allSituations),
+    [progress],
+  );
+
+  const weeklyReport = useMemo(
+    () => generateWeeklyReport(progress),
+    [progress],
+  );
+
+  const enhancedRecs = useMemo(
+    () => getEnhancedRecommendations(progress, allSituations, toolProficiencies, categoryProgressData),
+    [progress, toolProficiencies, categoryProgressData],
+  );
+
+  const allCompleted = progress.completedSituations.length >= allSituations.length;
+
   if (!mounted) {
     return <ProgressSkeleton />;
   }
@@ -59,10 +92,25 @@ export default function MyProgressPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* 1. ProgressHero (기존) */}
       <ProgressHero progress={progress} />
+      {/* 2. StatsGrid (기존) */}
       <StatsGrid progress={progress} />
-      <SmartRecommendations progress={progress} />
+      {/* 3. CategoryProgressMap (신규) */}
+      <CategoryProgressMap categoryProgress={categoryProgressData} />
+      {/* 4. ToolProficiencyPanel (신규) */}
+      <ToolProficiencyPanel proficiencies={toolProficiencies} />
+      {/* 5. EnhancedRecommendations (기존 SmartRecommendations 교체) */}
+      <EnhancedRecommendations
+        deepen={enhancedRecs.deepen}
+        explore={enhancedRecs.explore}
+        allCompleted={allCompleted}
+      />
+      {/* 6. WeeklyLearningReport (신규) */}
+      <WeeklyLearningReport report={weeklyReport} />
+      {/* 7. AchievementsGrid (기존) */}
       <AchievementsGrid progress={progress} />
+      {/* 8. CompletionTimeline (기존) */}
       <CompletionTimeline progress={progress} />
     </div>
   );
@@ -158,59 +206,6 @@ function StatsGrid({ progress }: { progress: UserProgress }) {
   );
 }
 
-function SmartRecommendations({ progress }: { progress: UserProgress }) {
-  const recommendations: RecommendedSituation[] = getRecommendations(
-    progress,
-    allSituations,
-    3,
-  );
-
-  // All completed
-  if (progress.completedSituations.length >= allSituations.length) {
-    return (
-      <section className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 text-center">
-        <span className="text-4xl block mb-2" aria-hidden="true">🎉</span>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">모든 가이드를 완료했어요!</h2>
-        <p className="text-gray-600 text-sm">
-          대단해요! 모든 상황 가이드를 마스터했습니다.
-        </p>
-      </section>
-    );
-  }
-
-  if (recommendations.length === 0) {
-    return null;
-  }
-
-  return (
-    <section>
-      <h2 className="text-lg font-bold text-gray-900 mb-4">다음에 도전해보세요</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {recommendations.map(({ situation, reason }) => (
-          <Link
-            key={situation.slug}
-            href={`/situations/${situation.slug}`}
-            className="bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-blue-200 transition-all group"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl" aria-hidden="true">{situation.icon}</span>
-              <DifficultyTag difficulty={situation.difficulty} />
-            </div>
-            <h3 className="font-bold text-gray-900 text-sm group-hover:text-blue-600 transition-colors mb-1">
-              {situation.title}
-            </h3>
-            <p className="text-xs text-gray-500 mb-3">{situation.subtitle}</p>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-blue-500 font-medium">{reason}</span>
-              <span className="text-xs text-gray-400">{situation.timeToComplete}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function AchievementsGrid({ progress }: { progress: UserProgress }) {
   const earnedMap = new Map(progress.achievements.map((a) => [a.id, a]));
 
@@ -277,21 +272,6 @@ function CompletionTimeline({ progress }: { progress: UserProgress }) {
 }
 
 // --- Helper Components ---
-
-function DifficultyTag({ difficulty }: { difficulty: 'easy' | 'medium' | 'hard' }) {
-  const styles = {
-    easy: 'bg-green-100 text-green-700',
-    medium: 'bg-yellow-100 text-yellow-700',
-    hard: 'bg-red-100 text-red-700',
-  };
-  const labels = { easy: '쉬움', medium: '보통', hard: '어려움' };
-
-  return (
-    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[difficulty]}`}>
-      {labels[difficulty]}
-    </span>
-  );
-}
 
 function EmptyState() {
   return (

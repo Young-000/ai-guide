@@ -43,9 +43,9 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
     try {
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
-      // 프롬프트 복사 추적
+      // 프롬프트 복사 추적 (primary tool slug 전달)
       const manager = getProgressManager();
-      manager.trackPromptCopy();
+      manager.trackPromptCopy(primaryTool?.slug);
       // 이전 timeout 정리
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -54,7 +54,7 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
     } catch (err) {
       console.error('클립보드 복사 실패:', err);
     }
-  }, []);
+  }, [primaryTool?.slug]);
 
   return (
     <div className={`bg-white overflow-hidden h-full flex flex-col ${embedded ? '' : 'rounded-2xl border border-gray-200 shadow-lg'}`}>

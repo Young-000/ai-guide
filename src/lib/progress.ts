@@ -67,9 +67,14 @@ export class ProgressManager {
       const situation = allSituations.find((s) => s.slug === situationSlug);
       const primaryTool = situation?.recommendedTools.find((t) => t.isPrimary);
       if (primaryTool && !this.progress.toolsUsed.includes(primaryTool.slug)) {
+        const today = new Date().toISOString().split('T')[0] ?? '';
         this.progress = {
           ...this.progress,
           toolsUsed: [...this.progress.toolsUsed, primaryTool.slug],
+          toolFirstUsedAt: {
+            ...this.progress.toolFirstUsedAt,
+            [primaryTool.slug]: today,
+          },
         };
       }
     }
@@ -106,12 +111,19 @@ export class ProgressManager {
   }
 
   /**
-   * 프롬프트 복사 추적
+   * 프롬프트 복사 추적 (도구 정보 포함)
+   * 기존 promptCopyCount 증가 + promptCopyByTool 도구별 카운트 추가
    */
-  trackPromptCopy(): void {
+  trackPromptCopy(toolSlug?: string): void {
     this.progress = {
       ...this.progress,
       promptCopyCount: this.progress.promptCopyCount + 1,
+      ...(toolSlug ? {
+        promptCopyByTool: {
+          ...this.progress.promptCopyByTool,
+          [toolSlug]: (this.progress.promptCopyByTool[toolSlug] ?? 0) + 1,
+        },
+      } : {}),
     };
 
     // 업적 체크

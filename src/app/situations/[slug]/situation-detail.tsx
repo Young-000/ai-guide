@@ -11,7 +11,8 @@ import { getProgressManager } from '@/lib/progress';
 import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
 import useCasesData from '@/data/use-cases.json';
-import type { UseCaseStory } from '@/types';
+import tipsData from '@/data/tips.json';
+import type { UseCaseStory, Tip } from '@/types';
 
 const difficultyLabels = {
   easy: { text: '쉬움', color: 'bg-green-100 text-green-700', description: '처음 해도 쉽게 따라할 수 있어요' },
@@ -289,6 +290,40 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
                   <p className="text-xs text-green-700 font-medium">{uc.resultHighlight}</p>
                 </Link>
               ))}
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* 관련 팁 */}
+      {(() => {
+        const relatedTips = (tipsData.tips as Tip[])
+          .filter((tip) => tip.relatedSituations.includes(situation.slug))
+          .slice(0, 3);
+
+        if (relatedTips.length === 0) return null;
+
+        return (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">관련 팁</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {relatedTips.map((tip) => {
+                const tipCategory = tipsData.categories.find((c) => c.id === tip.category);
+                return (
+                  <Link
+                    key={tip.slug}
+                    href={`/tips/${tip.slug}`}
+                    className="bg-white rounded-xl p-4 border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all"
+                  >
+                    <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                      {tipCategory?.icon} {tipCategory?.name}
+                    </span>
+                    <h3 className="font-bold text-gray-900 text-sm mt-2 leading-snug">
+                      {tip.title}
+                    </h3>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         );

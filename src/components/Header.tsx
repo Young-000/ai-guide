@@ -22,6 +22,8 @@ const DEFAULT_PROGRESS: UserProgress = {
   currentStreak: 0,
   longestStreak: 0,
   lastActiveDate: '',
+  promptCopyByTool: {},
+  toolFirstUsedAt: {},
 };
 
 export function Header() {
@@ -78,6 +80,14 @@ export function Header() {
                 다시 추천받기
               </Link>
             ) : null}
+
+            <Link
+              href="/learn"
+              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
+              aria-label="AI 학습센터"
+            >
+              학습센터
+            </Link>
 
             <Link
               href="/use-cases"

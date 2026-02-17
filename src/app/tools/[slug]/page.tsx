@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import toolsData from '@/data/tools.json';
-import type { Tool } from '@/types';
+import tipsData from '@/data/tips.json';
+import type { Tool, Tip } from '@/types';
 import { buildToolUrl } from '@/lib/affiliateLinks';
 import OutboundToolLink from '@/components/OutboundToolLink';
 import AdUnit from '@/components/AdUnit';
@@ -251,6 +252,45 @@ export default async function ToolPage({ params }: PageProps) {
           </div>
         </section>
       )}
+
+      {/* 활용 팁 */}
+      {(() => {
+        const relatedTips = (tipsData.tips as Tip[])
+          .filter((tip) => tip.relatedTools.includes(tool.slug))
+          .slice(0, 3);
+
+        if (relatedTips.length === 0) return null;
+
+        return (
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-gray-900 mb-3">활용 팁</h2>
+            <div className="space-y-3">
+              {relatedTips.map((tip) => {
+                const tipCategory = tipsData.categories.find((c) => c.id === tip.category);
+                return (
+                  <Link
+                    key={tip.slug}
+                    href={`/tips/${tip.slug}`}
+                    className="block bg-gray-50 rounded-xl p-4 hover:bg-blue-50 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                          {tipCategory?.icon} {tipCategory?.name}
+                        </span>
+                        <h3 className="font-medium text-gray-900 text-sm mt-1.5 leading-snug">
+                          {tip.title}
+                        </h3>
+                      </div>
+                      <span className="text-blue-500 text-sm font-medium ml-4 flex-shrink-0">→</span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* 가격 */}
       <section className="mb-10">

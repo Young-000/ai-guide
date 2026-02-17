@@ -101,6 +101,9 @@ export interface UserProgress {
   currentStreak: number;
   longestStreak: number;
   lastActiveDate: string;
+  // Cycle 10 신규 필드
+  promptCopyByTool: Record<string, number>;
+  toolFirstUsedAt: Record<string, string>;
 }
 
 export interface LevelInfo {
@@ -148,6 +151,8 @@ const DEFAULT_PROGRESS: UserProgress = {
   currentStreak: 0,
   longestStreak: 0,
   lastActiveDate: '',
+  promptCopyByTool: {},
+  toolFirstUsedAt: {},
 };
 
 const STORAGE_KEY = 'ai-guide-progress';

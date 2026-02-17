@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
+import tipsData from '@/data/tips.json';
 
 const BASE_URL = 'https://ai-guide-nu.vercel.app';
 
@@ -12,6 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/situations`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/tools`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/use-cases`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/tips`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/learn`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/faq`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/compare`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/glossary`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/quiz`, changeFrequency: 'monthly', priority: 0.5 },
@@ -37,5 +41,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...situationRoutes, ...toolRoutes, ...useCaseRoutes];
+  const tipRoutes: MetadataRoute.Sitemap = tipsData.tips.map((t) => ({
+    url: `${BASE_URL}/tips/${t.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...situationRoutes, ...toolRoutes, ...useCaseRoutes, ...tipRoutes];
 }
