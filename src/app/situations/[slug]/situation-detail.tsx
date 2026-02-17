@@ -7,8 +7,11 @@ import { getToolBySlug } from '@/lib/tools';
 import { ShareButton } from '@/components';
 import { buildToolUrl } from '@/lib/affiliateLinks';
 import { trackToolClick, trackPromptCopy } from '@/lib/analytics';
+import { getProgressManager } from '@/lib/progress';
 import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
+import useCasesData from '@/data/use-cases.json';
+import type { UseCaseStory } from '@/types';
 
 const difficultyLabels = {
   easy: { text: '쉬움', color: 'bg-green-100 text-green-700', description: '처음 해도 쉽게 따라할 수 있어요' },
@@ -47,6 +50,9 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
       trackPromptCopy(situation.slug, index);
+      // 프롬프트 복사 추적 (진도 시스템)
+      const manager = getProgressManager();
+      manager.trackPromptCopy();
       // 이전 timeout 정리
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -255,6 +261,38 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
         </h2>
         <p className="text-gray-700">{situation.expectedResult}</p>
       </section>
+
+      {/* 관련 활용 사례 */}
+      {(() => {
+        const relatedUseCases = (useCasesData.useCases as UseCaseStory[])
+          .filter((uc) => uc.situation === situation.slug)
+          .slice(0, 2);
+
+        if (relatedUseCases.length === 0) return null;
+
+        return (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">이 상황의 활용 사례</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {relatedUseCases.map((uc) => (
+                <Link
+                  key={uc.slug}
+                  href={`/use-cases/${uc.slug}`}
+                  className="bg-white rounded-xl p-4 border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all"
+                >
+                  <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
+                    {uc.professionLabel}
+                  </span>
+                  <h3 className="font-bold text-gray-900 text-sm mt-2 mb-1 leading-snug">
+                    {uc.title}
+                  </h3>
+                  <p className="text-xs text-green-700 font-medium">{uc.resultHighlight}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* 관련 상황 */}
       {relatedSituations.length > 0 && (

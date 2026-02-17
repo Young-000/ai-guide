@@ -118,6 +118,35 @@ export interface Situation {
   priority?: number;
 }
 
+// 활용 사례 라이브러리 타입
+export type UseCaseDifficulty = 'easy' | 'medium' | 'hard';
+
+export type Profession =
+  | 'marketer'
+  | 'developer'
+  | 'designer'
+  | 'student'
+  | 'office-worker'
+  | 'freelancer'
+  | 'business-owner';
+
+export interface UseCaseStory {
+  slug: string;
+  title: string;
+  profession: Profession;
+  professionLabel: string;
+  situation: string;
+  persona: string;
+  challenge: string;
+  solution: string;
+  result: string;
+  resultHighlight: string;
+  toolUsed: string;
+  additionalTools?: string[];
+  difficulty: UseCaseDifficulty;
+  tags: string[];
+}
+
 // 카테고리 정보 타입
 export interface CategoryInfo {
   id: SituationCategory;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { Header, Footer, FeedbackWidget } from "@/components";
+import AchievementToast from "@/components/AchievementToast";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -105,6 +106,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <FeedbackWidget />
+        <AchievementToast />
       </body>
     </html>
   );

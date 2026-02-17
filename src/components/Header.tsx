@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { loadProgress, type UserProgress } from '@/lib/levelSystem';
 import { getProgressManager } from '@/lib/progress';
 import LevelBadge from './LevelBadge';
+import StreakCounter from './StreakCounter';
 
 const DEFAULT_PROGRESS: UserProgress = {
   completedSituations: [],
@@ -13,6 +14,14 @@ const DEFAULT_PROGRESS: UserProgress = {
   currentLevel: 1,
   lastVisit: new Date().toISOString(),
   isOnboarded: false,
+  achievements: [],
+  dailyActivities: [],
+  situationCompletions: [],
+  toolsUsed: [],
+  promptCopyCount: 0,
+  currentStreak: 0,
+  longestStreak: 0,
+  lastActiveDate: '',
 };
 
 export function Header() {
@@ -41,9 +50,16 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-4">
-            {/* 레벨 뱃지 */}
+            {/* 스트릭 카운터 */}
             {mounted && progress.isOnboarded && (
-              <LevelBadge progress={progress} showXp size="sm" />
+              <StreakCounter streak={progress.currentStreak} />
+            )}
+
+            {/* 레벨 뱃지 (클릭하면 /my-progress로 이동) */}
+            {mounted && progress.isOnboarded && (
+              <Link href="/my-progress" aria-label="내 학습 현황 보기">
+                <LevelBadge progress={progress} size="sm" />
+              </Link>
             )}
 
             {/* 맞춤 추천 CTA */}
@@ -57,18 +73,18 @@ export function Header() {
             ) : mounted && progress.isOnboarded ? (
               <Link
                 href="/onboarding"
-                className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                className="hidden sm:inline text-sm text-blue-500 hover:text-blue-600 transition-colors"
               >
                 다시 추천받기
               </Link>
             ) : null}
 
             <Link
-              href="/projects"
+              href="/use-cases"
               className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
-              aria-label="토이 프로젝트 보기"
+              aria-label="AI 활용 사례 보기"
             >
-              토이 프로젝트
+              활용 사례
             </Link>
 
             <Link

@@ -6,7 +6,8 @@
 
 | Feature | Branch | Current Phase | Status | Started |
 |---------|--------|---------------|--------|---------|
-| (없음 — Cycle 9 시작 대기) | - | - | - | - |
+| use-case-library | feature/situation-based-pivot | Phase 4 (PD) | 🔄 In Progress | Cycle 9 |
+| progress-tracking | feature/situation-based-pivot | Phase 4 (PD) | 🔄 In Progress | Cycle 9 |
 
 ## Completed Features
 - [x] prd-v2 (Cycle 1) — PRD v2.0 완성

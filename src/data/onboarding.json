@@ -1,0 +1,98 @@
+{
+  "questions": [
+    {
+      "id": "role",
+      "title": "주로 어떤 일을 하세요?",
+      "subtitle": "가장 가까운 것을 골라주세요",
+      "showSkip": true,
+      "options": [
+        { "value": "office_worker", "label": "직장인/회사원", "icon": "💼", "description": "보고서, 이메일, 발표 등 회사 업무" },
+        { "value": "student", "label": "학생/연구자", "icon": "📚", "description": "과제, 논문, 시험 준비" },
+        { "value": "creator", "label": "크리에이터/디자이너", "icon": "🎨", "description": "콘텐츠 제작, 디자인, 영상" },
+        { "value": "business_owner", "label": "자영업자/사업가", "icon": "🏪", "description": "쇼핑몰, 마케팅, 고객 관리" }
+      ]
+    },
+    {
+      "id": "purpose",
+      "title": "AI로 뭘 해보고 싶으세요?",
+      "subtitle": null,
+      "showSkip": false,
+      "options": [],
+      "dynamicOptions": {
+        "office_worker": [
+          { "value": "writing", "label": "문서/보고서 작성", "icon": "📄", "description": "보고서, 기획서, 회의록 정리" },
+          { "value": "email", "label": "이메일/메시지", "icon": "📧", "description": "비즈니스 이메일, 메신저 답변" },
+          { "value": "presentation", "label": "발표 자료", "icon": "📊", "description": "PPT, 슬라이드 제작" },
+          { "value": "data", "label": "데이터 분석", "icon": "📈", "description": "엑셀, CSV, 통계 분석" },
+          { "value": "translation", "label": "번역", "icon": "🌐", "description": "영어 문서 번역, 해외 소통" }
+        ],
+        "student": [
+          { "value": "paper", "label": "논문/레포트", "icon": "📝", "description": "논문 분석, 레포트 작성" },
+          { "value": "concept", "label": "개념 이해", "icon": "💡", "description": "어려운 개념 쉽게 설명" },
+          { "value": "coding", "label": "코딩 과제", "icon": "💻", "description": "코딩 숙제, 디버깅" },
+          { "value": "english", "label": "영어 공부", "icon": "💬", "description": "영어 회화, 작문 연습" },
+          { "value": "research", "label": "자료 조사", "icon": "🔍", "description": "정보 검색, 리서치" }
+        ],
+        "creator": [
+          { "value": "image", "label": "이미지/그래픽", "icon": "🖼️", "description": "이미지 생성, 그래픽 디자인" },
+          { "value": "video", "label": "영상/음악", "icon": "🎬", "description": "영상 편집, 음악 생성" },
+          { "value": "sns", "label": "SNS 콘텐츠", "icon": "📱", "description": "인스타, 유튜브 캡션" },
+          { "value": "blog", "label": "블로그/글쓰기", "icon": "✍️", "description": "블로그, 뉴스레터 작성" },
+          { "value": "ui_design", "label": "UI/UX 디자인", "icon": "🎨", "description": "앱/웹 디자인, 목업" }
+        ],
+        "business_owner": [
+          { "value": "product_desc", "label": "상품 설명 작성", "icon": "🏷️", "description": "쇼핑몰 상품 설명, 카피라이팅" },
+          { "value": "marketing", "label": "마케팅/광고", "icon": "📣", "description": "광고 카피, 마케팅 전략" },
+          { "value": "customer", "label": "고객 응대", "icon": "💬", "description": "FAQ 작성, 답변 자동화" },
+          { "value": "analysis", "label": "매출/시장 분석", "icon": "📊", "description": "매출 데이터 분석, 시장 조사" },
+          { "value": "sns_biz", "label": "SNS 운영", "icon": "📱", "description": "비즈니스 SNS 콘텐츠" }
+        ]
+      }
+    },
+    {
+      "id": "experience",
+      "title": "AI 도구 써본 적 있으세요?",
+      "subtitle": "솔직하게 선택하면 더 정확한 추천을 받을 수 있어요",
+      "showSkip": false,
+      "options": [
+        { "value": "never", "label": "처음이에요", "icon": "🌱", "description": "AI가 뭔지도 잘 모르겠어요" },
+        { "value": "basic", "label": "ChatGPT 정도만", "icon": "🌿", "description": "기본적인 대화는 해봤어요" },
+        { "value": "some", "label": "몇 개 써봤어요", "icon": "🌲", "description": "다양한 AI 도구 경험 있어요" },
+        { "value": "expert", "label": "잘 쓰고 있어요", "icon": "🏆", "description": "프롬프트도 직접 잘 짜요" }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "비용은 어떻게 생각하세요?",
+      "subtitle": "대부분의 AI 도구는 무료로 시작할 수 있어요",
+      "showSkip": false,
+      "options": [
+        { "value": "free_only", "label": "무료만 쓸래요", "icon": "💚", "description": "돈 쓰기 싫어요" },
+        { "value": "affordable", "label": "저렴하면 OK", "icon": "💰", "description": "월 1~2만원 정도는 괜찮아요" },
+        { "value": "any", "label": "좋으면 투자할게요", "icon": "💎", "description": "효과 좋으면 비용 상관없어요" }
+      ]
+    }
+  ],
+  "purposeToSituationMap": {
+    "writing": ["pdf-summary", "meeting-notes", "blog-writing"],
+    "email": ["email-writing", "translation"],
+    "presentation": ["presentation-slides"],
+    "data": ["data-analysis", "excel-formula"],
+    "translation": ["translation", "email-writing"],
+    "paper": ["paper-summary", "pdf-summary"],
+    "concept": ["concept-explanation"],
+    "coding": ["code-debug", "code-review"],
+    "english": ["english-conversation", "translation"],
+    "research": ["competitor-research", "paper-summary"],
+    "image": ["ui-design", "thumbnail-creation"],
+    "video": ["thumbnail-creation"],
+    "sns": ["sns-content", "blog-writing"],
+    "blog": ["blog-writing", "sns-content"],
+    "ui_design": ["ui-design"],
+    "product_desc": ["blog-writing", "email-writing"],
+    "marketing": ["sns-content", "blog-writing", "brainstorming"],
+    "customer": ["email-writing", "brainstorming"],
+    "analysis": ["data-analysis", "competitor-research"],
+    "sns_biz": ["sns-content", "brainstorming"]
+  }
+}

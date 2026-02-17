@@ -3,13 +3,104 @@
  * 사용자의 AI 학습 진도를 추적하고 레벨을 관리합니다.
  */
 
+// --- Achievement Types ---
+
+export type AchievementId =
+  | 'first-step'
+  | 'habit-forming'
+  | 'ai-explorer'
+  | 'expert-path'
+  | 'prompt-master';
+
+export type Achievement = {
+  id: AchievementId;
+  title: string;
+  description: string;
+  icon: string;
+  xpReward: number;
+  condition: string;
+};
+
+export type EarnedAchievement = {
+  id: AchievementId;
+  earnedAt: string;
+};
+
+export type DailyActivity = {
+  date: string;
+  stepsCompleted: number;
+  xpEarned: number;
+};
+
+export type SituationCompletion = {
+  slug: string;
+  completedAt: string;
+};
+
+// --- Achievement Definitions ---
+
+export const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: 'first-step',
+    title: '첫 발걸음',
+    description: '첫 번째 상황 가이드를 완료했어요!',
+    icon: '👣',
+    xpReward: 20,
+    condition: '상황 가이드 1개 완료',
+  },
+  {
+    id: 'habit-forming',
+    title: '습관 형성',
+    description: '3일 연속으로 학습했어요!',
+    icon: '🔥',
+    xpReward: 30,
+    condition: '3일 연속 스트릭 달성',
+  },
+  {
+    id: 'ai-explorer',
+    title: 'AI 탐험가',
+    description: '3가지 이상의 AI 도구를 경험했어요!',
+    icon: '🧭',
+    xpReward: 25,
+    condition: '3개 이상 도구 사용',
+  },
+  {
+    id: 'expert-path',
+    title: '전문가의 길',
+    description: '10개 상황 가이드를 완료한 진정한 전문가!',
+    icon: '🎓',
+    xpReward: 100,
+    condition: '상황 가이드 10개 완료',
+  },
+  {
+    id: 'prompt-master',
+    title: '프롬프트 마스터',
+    description: '프롬프트를 10번 이상 복사해서 활용했어요!',
+    icon: '✨',
+    xpReward: 30,
+    condition: '프롬프트 10회 복사',
+  },
+];
+
+// --- User Progress ---
+
 export interface UserProgress {
-  completedSituations: string[]; // 완료한 상황 slug 목록
-  completedSteps: Record<string, number[]>; // 상황별 완료한 스텝 번호
+  // 기존 필드
+  completedSituations: string[];
+  completedSteps: Record<string, number[]>;
   totalXp: number;
   currentLevel: number;
-  lastVisit: string; // ISO date string
+  lastVisit: string;
   isOnboarded: boolean;
+  // 신규 필드
+  achievements: EarnedAchievement[];
+  dailyActivities: DailyActivity[];
+  situationCompletions: SituationCompletion[];
+  toolsUsed: string[];
+  promptCopyCount: number;
+  currentStreak: number;
+  longestStreak: number;
+  lastActiveDate: string;
 }
 
 export interface LevelInfo {
@@ -32,10 +123,13 @@ export const LEVELS: LevelInfo[] = [
 
 // XP 보상 정의
 export const XP_REWARDS = {
-  situationView: 5, // 상황 가이드 열람
-  stepComplete: 10, // 스텝 1개 완료
-  situationComplete: 30, // 상황 전체 완료
-  firstVisit: 10, // 첫 방문
+  situationView: 5,
+  stepComplete: 10,
+  situationComplete: 30,
+  firstVisit: 10,
+  streakBonus3: 5,
+  streakBonus7: 10,
+  streakBonus30: 20,
 };
 
 // 초기 상태
@@ -46,6 +140,14 @@ const DEFAULT_PROGRESS: UserProgress = {
   currentLevel: 1,
   lastVisit: new Date().toISOString(),
   isOnboarded: false,
+  achievements: [],
+  dailyActivities: [],
+  situationCompletions: [],
+  toolsUsed: [],
+  promptCopyCount: 0,
+  currentStreak: 0,
+  longestStreak: 0,
+  lastActiveDate: '',
 };
 
 const STORAGE_KEY = 'ai-guide-progress';

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import type { Step } from '@/types';
 import { getProgressManager } from '@/lib/progress';
 
@@ -116,7 +117,13 @@ export default function ProgressStepper({
         <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 text-center animate-pulse" role="alert" aria-live="assertive">
           <span className="text-3xl mb-2 block" aria-hidden="true">🎉</span>
           <p className="text-green-700 font-bold">모든 단계 완료!</p>
-          <p className="text-green-600 text-sm">+30 XP 보너스 획득!</p>
+          <p className="text-green-600 text-sm mb-2">+30 XP 보너스 획득!</p>
+          <Link
+            href="/my-progress"
+            className="inline-block text-xs text-blue-500 hover:text-blue-600 font-medium"
+          >
+            내 학습 현황 보기 →
+          </Link>
         </div>
       )}
 

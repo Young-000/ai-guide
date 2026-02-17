@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import type { Situation } from '@/types';
 import { getToolBySlug } from '@/lib/tools';
+import { getProgressManager } from '@/lib/progress';
 import ProgressStepper from './ProgressStepper';
 
 const difficultyLabels = {
@@ -42,6 +43,9 @@ export default function GuidePanel({ situation, onClose, embedded = false }: Gui
     try {
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
+      // 프롬프트 복사 추적
+      const manager = getProgressManager();
+      manager.trackPromptCopy();
       // 이전 timeout 정리
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
