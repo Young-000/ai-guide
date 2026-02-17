@@ -8,9 +8,9 @@
 ## Next
 
 ### Phase 1: 기반 설계 (Foundation) — 남은 작업
-- [ ] **monetization**: 수익 모델 구현 (제휴 링크 통합 + AdSense 배치 + GA4 이벤트 추적)
-- [ ] **header-onboarding-cta**: Header에 "맞춤 추천" 진입점 추가 (PD P1-4)
-- [ ] **seo-optimization**: SEO 최적화 (메타태그, 구조화 데이터, sitemap, robots.txt)
+- [x] **monetization**: 수익 모델 구현 (제휴 링크 통합 + AdSense 배치 + GA4 이벤트 추적) ✅ (Cycle 8)
+- [x] **header-onboarding-cta**: Header에 "맞춤 추천" 진입점 추가 ✅ (Cycle 8, seo-optimization에 포함)
+- [x] **seo-optimization**: SEO 최적화 (메타태그, 구조화 데이터, sitemap, robots.txt) ✅ (Cycle 8)
 - [ ] **guide-ux-improvement**: 기존 19개 가이드 UX 개선 (실습형 스텝 UI + 프롬프트 복사)
 
 ### Phase 2: 핵심 기능 (Core Features)
@@ -38,3 +38,6 @@
 - [x] **landing-redesign**: 랜딩 페이지 전면 재설계 ✅ (Cycle 2)
 - [x] **onboarding-flow**: 스마트 온보딩 플로우 (설문 + 추천 + 결과) ✅ (Cycle 2)
 - [x] **personalized-recommendation**: 5요소 추천 알고리즘 ✅ (Cycle 2, onboarding-flow에 포함)
+- [x] **monetization**: 수익 모델 구현 ✅ (Cycle 8)
+- [x] **header-onboarding-cta**: Header "AI 추천받기" CTA ✅ (Cycle 8)
+- [x] **seo-optimization**: SEO 최적화 ✅ (Cycle 8)
