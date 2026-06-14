@@ -24,6 +24,7 @@ function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
   if (lang !== 'ko' && lang !== 'en') {
     throw new Error(`news frontmatter: invalid lang '${lang}'`);
   }
+  // tags는 선택값 — 배열이 아니거나 비-문자열 항목은 의도적으로 버린다.
   const tags = Array.isArray(data.tags)
     ? data.tags.filter((t): t is string => typeof t === 'string')
     : [];
