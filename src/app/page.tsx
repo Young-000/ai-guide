@@ -1,101 +1,270 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useMemo, useEffect } from 'react';
+import type { Situation, SituationCategory, SurveyResult } from '@/types';
+import situationsData from '@/data/situations.json';
+import { searchSituations, getPopularSituations } from '@/lib/search';
+import { loadProgress, saveProgress } from '@/lib/levelSystem';
+import SearchInput from '@/components/SearchInput';
+import CategoryButtons from '@/components/CategoryButtons';
+import ResultCard from '@/components/ResultCard';
+import GuidePanel from '@/components/GuidePanel';
+import SurveyWizard from '@/components/SurveyWizard';
+import OnboardingModal from '@/components/OnboardingModal';
+
+// 모듈 레벨에서 데이터 파싱
+const situations = situationsData.situations as Situation[];
+
+// 검색 제안
+const searchSuggestions = [
+  'PDF 요약하고 싶어요',
+  '코드 에러 해결해줘',
+  '발표 자료 만들어야 해',
+  '영어 이메일 작성',
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [query, setQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<SituationCategory | null>(null);
+  const [selectedSituation, setSelectedSituation] = useState<Situation | null>(null);
+  const [showSurvey, setShowSurvey] = useState(false);
+  const [surveyResult, setSurveyResult] = useState<SurveyResult | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  // 온보딩 체크
+  useEffect(() => {
+    const progress = loadProgress();
+    if (!progress.isOnboarded) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
+  // 온보딩 완료 핸들러
+  const handleOnboardingComplete = () => {
+    const progress = loadProgress();
+    const updatedProgress = {
+      ...progress,
+      isOnboarded: true,
+      totalXp: progress.totalXp + 10, // 첫 방문 보너스
+    };
+    saveProgress(updatedProgress);
+    setShowOnboarding(false);
+  };
+
+  // 설문 결과 활용 (레벨업 시스템 연동 준비)
+  useEffect(() => {
+    if (surveyResult) {
+      // 설문 결과에 따른 추천 상황 표시 등 활용 가능
+      console.log('설문 결과:', surveyResult);
+    }
+  }, [surveyResult]);
+
+  // 검색 결과
+  const searchResults = useMemo(() => {
+    return searchSituations(query, situations, selectedCategory);
+  }, [query, selectedCategory]);
+
+  // 인기 상황 (검색어 없을 때)
+  const popularSituations = useMemo(() => {
+    if (query || selectedCategory) return [];
+    return getPopularSituations(situations, 6);
+  }, [query, selectedCategory]);
+
+  // 결과 선택 핸들러
+  const handleSelectSituation = (situation: Situation) => {
+    setSelectedSituation(situation);
+  };
+
+  // 패널 닫기 핸들러
+  const handleClosePanel = () => {
+    setSelectedSituation(null);
+  };
+
+  // 표시할 결과 (검색 결과 또는 인기 상황)
+  const displayResults = query || selectedCategory ? searchResults : [];
+  const showPopular = !query && !selectedCategory;
+
+  return (
+    <div className="min-h-[calc(100vh-160px)] flex flex-col">
+      {/* 검색 영역 */}
+      <div className="bg-gradient-to-b from-gray-50 to-white py-12 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            무엇을 하고 싶으세요?
+          </h1>
+          <p className="text-gray-500 mb-8">
+            상황을 말씀해주시면 딱 맞는 AI 도구와 사용법을 알려드려요
+          </p>
+
+          {/* 검색 입력 */}
+          <div className="mb-6">
+            <SearchInput
+              value={query}
+              onChange={setQuery}
+              suggestions={searchSuggestions}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+
+          {/* 카테고리 버튼 */}
+          <CategoryButtons
+            selected={selectedCategory}
+            onChange={setSelectedCategory}
+          />
+
+          {/* 모르겠어요 버튼 */}
+          <div className="mt-6">
+            <button
+              type="button"
+              onClick={() => setShowSurvey(true)}
+              className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+              aria-label="맞춤 설문을 통해 AI 도구 추천받기"
+            >
+              <span className="text-xl" aria-hidden="true">🤷</span>
+              뭘 해야 할지 모르겠어요
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+
+      {/* 결과 영역 */}
+      <div className="flex-1 px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          {/* 검색 결과 또는 인기 상황 */}
+          {showPopular ? (
+            // 인기 상황 표시 (2열 레이아웃: 결과 + 가이드 패널)
+            <div className="flex gap-6">
+              {/* 인기 상황 리스트 */}
+              <div className={`${selectedSituation ? 'w-1/2' : 'w-full'} transition-all duration-300`}>
+                <h2 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                  🔥 인기 상황
+                </h2>
+                <div className={`grid ${selectedSituation ? 'grid-cols-1 lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} gap-4 ${selectedSituation ? '' : 'max-w-4xl mx-auto'}`}>
+                  {popularSituations.map((situation) => (
+                    <ResultCard
+                      key={situation.slug}
+                      situation={situation}
+                      isSelected={selectedSituation?.slug === situation.slug}
+                      onClick={() => handleSelectSituation(situation)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* 가이드 패널 (데스크톱용) */}
+              {selectedSituation && (
+                <div className="hidden lg:block w-1/2 sticky top-4 h-[calc(100vh-200px)]">
+                  <GuidePanel
+                    situation={selectedSituation}
+                    onClose={handleClosePanel}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            // 검색 결과 표시 (2열 레이아웃: 결과 + 가이드 패널)
+            <div className="flex gap-6">
+              {/* 결과 리스트 */}
+              <div className={`${selectedSituation ? 'w-1/2' : 'w-full max-w-4xl mx-auto'} transition-all duration-300`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-gray-900">
+                    {displayResults.length > 0
+                      ? `${displayResults.length}개의 추천 상황`
+                      : '검색 결과'}
+                  </h2>
+                  {(query || selectedCategory) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuery('');
+                        setSelectedCategory(null);
+                        setSelectedSituation(null);
+                      }}
+                      className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded px-2 py-1"
+                      aria-label="검색어와 필터 초기화"
+                    >
+                      초기화
+                    </button>
+                  )}
+                </div>
+
+                {displayResults.length > 0 ? (
+                  <div className="space-y-3">
+                    {displayResults.map((result) => (
+                      <ResultCard
+                        key={result.situation.slug}
+                        situation={result.situation}
+                        isSelected={selectedSituation?.slug === result.situation.slug}
+                        onClick={() => handleSelectSituation(result.situation)}
+                        matchedKeywords={result.matchedKeywords}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="text-4xl mb-4">🤔</div>
+                    <p className="text-gray-500 mb-2">
+                      &quot;{query}&quot;에 맞는 상황을 찾지 못했어요
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      다른 키워드로 검색하거나 카테고리를 선택해보세요
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 가이드 패널 */}
+              {selectedSituation && (
+                <div className="w-1/2 sticky top-4 h-[calc(100vh-200px)]">
+                  <GuidePanel
+                    situation={selectedSituation}
+                    onClose={handleClosePanel}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 선택된 상황이 있을 때 모바일용 패널 (하단에서 슬라이드업) */}
+      {selectedSituation && (
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-guide-title"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          {/* 배경 오버레이 */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={handleClosePanel}
+            aria-label="가이드 패널 닫기"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {/* 패널 */}
+          <div className="absolute bottom-0 left-0 right-0 h-[85vh] bg-white rounded-t-3xl overflow-hidden">
+            <h2 id="mobile-guide-title" className="sr-only">{selectedSituation.title} 가이드</h2>
+            <GuidePanel
+              situation={selectedSituation}
+              onClose={handleClosePanel}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 설문조사 위저드 */}
+      {showSurvey && (
+        <SurveyWizard
+          onComplete={(result) => {
+            setSurveyResult(result);
+          }}
+          onClose={() => setShowSurvey(false)}
+        />
+      )}
+
+      {/* 온보딩 모달 */}
+      {showOnboarding && (
+        <OnboardingModal onComplete={handleOnboardingComplete} />
+      )}
     </div>
   );
 }

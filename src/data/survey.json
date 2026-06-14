@@ -1,0 +1,248 @@
+{
+  "questions": [
+    {
+      "id": "context",
+      "title": "지금 어떤 상황인가요?",
+      "options": [
+        {
+          "value": "work",
+          "label": "업무/직장",
+          "icon": "💼",
+          "description": "회사 일, 보고서, 이메일 등"
+        },
+        {
+          "value": "study",
+          "label": "학습/공부",
+          "icon": "📚",
+          "description": "과제, 논문, 시험 준비 등"
+        },
+        {
+          "value": "personal",
+          "label": "개인 프로젝트",
+          "icon": "🏠",
+          "description": "취미, 사이드 프로젝트 등"
+        },
+        {
+          "value": "creative",
+          "label": "창작 활동",
+          "icon": "🎨",
+          "description": "콘텐츠 제작, 디자인 등"
+        }
+      ]
+    },
+    {
+      "id": "task",
+      "title": "구체적으로 뭘 해야 하나요?",
+      "dependsOn": {
+        "context": {
+          "work": [
+            { "value": "document", "label": "문서 작성/요약", "icon": "📄" },
+            { "value": "email", "label": "이메일/메시지", "icon": "📧" },
+            { "value": "presentation", "label": "발표/PT 자료", "icon": "📊" },
+            { "value": "analysis", "label": "데이터 분석", "icon": "📈" },
+            { "value": "other", "label": "기타", "icon": "💡" }
+          ],
+          "study": [
+            { "value": "paper", "label": "논문/레포트", "icon": "📝" },
+            { "value": "summary", "label": "자료 요약", "icon": "📋" },
+            { "value": "concept", "label": "개념 이해", "icon": "💡" },
+            { "value": "coding", "label": "코딩 과제", "icon": "💻" },
+            { "value": "other", "label": "기타", "icon": "🔮" }
+          ],
+          "personal": [
+            { "value": "coding", "label": "코딩/개발", "icon": "💻" },
+            { "value": "writing", "label": "글쓰기", "icon": "✍️" },
+            { "value": "research", "label": "정보 조사", "icon": "🔍" },
+            { "value": "automation", "label": "자동화", "icon": "⚙️" },
+            { "value": "other", "label": "기타", "icon": "🔮" }
+          ],
+          "creative": [
+            { "value": "image", "label": "이미지 생성", "icon": "🖼️" },
+            { "value": "video", "label": "영상 편집", "icon": "🎬" },
+            { "value": "music", "label": "음악/오디오", "icon": "🎵" },
+            { "value": "content", "label": "SNS 콘텐츠", "icon": "📱" },
+            { "value": "other", "label": "기타", "icon": "🔮" }
+          ]
+        }
+      },
+      "options": [
+        { "value": "document", "label": "문서 작성/요약", "icon": "📄" },
+        { "value": "email", "label": "이메일/메시지", "icon": "📧" },
+        { "value": "presentation", "label": "발표/PT 자료", "icon": "📊" },
+        { "value": "coding", "label": "코딩/개발", "icon": "💻" },
+        { "value": "image", "label": "이미지 생성", "icon": "🖼️" },
+        { "value": "other", "label": "기타", "icon": "🔮" }
+      ]
+    },
+    {
+      "id": "goal",
+      "title": "AI가 어떻게 도와주면 좋겠어요?",
+      "options": [
+        {
+          "value": "create",
+          "label": "처음부터 만들어줘",
+          "icon": "✨",
+          "description": "새로운 문서, 이미지 등 생성"
+        },
+        {
+          "value": "improve",
+          "label": "내가 만든 거 다듬어줘",
+          "icon": "✏️",
+          "description": "초안 수정, 문법 교정 등"
+        },
+        {
+          "value": "explain",
+          "label": "이해하기 쉽게 설명해줘",
+          "icon": "💡",
+          "description": "어려운 개념, 코드 설명"
+        },
+        {
+          "value": "find",
+          "label": "정보 찾아서 정리해줘",
+          "icon": "🔍",
+          "description": "자료 검색, 요약, 비교"
+        }
+      ]
+    },
+    {
+      "id": "preference",
+      "title": "어떤 가이드가 좋아요?",
+      "options": [
+        {
+          "value": "simple",
+          "label": "핵심만 간단히",
+          "icon": "⚡",
+          "description": "빠르게 시작할 수 있게"
+        },
+        {
+          "value": "detailed",
+          "label": "차근차근 자세히",
+          "icon": "📖",
+          "description": "하나하나 따라할 수 있게"
+        },
+        {
+          "value": "example",
+          "label": "예시 위주로",
+          "icon": "🎯",
+          "description": "실제 사용 예시 중심으로"
+        }
+      ]
+    },
+    {
+      "id": "experience",
+      "title": "AI 도구 써본 적 있으세요?",
+      "options": [
+        {
+          "value": "never",
+          "label": "처음이에요",
+          "icon": "🌱",
+          "description": "뭐가 뭔지 모르겠어요"
+        },
+        {
+          "value": "basic",
+          "label": "ChatGPT 정도만",
+          "icon": "🌿",
+          "description": "기본적인 대화는 해봤어요"
+        },
+        {
+          "value": "some",
+          "label": "몇 개 써봤어요",
+          "icon": "🌲",
+          "description": "다양한 AI 경험 있어요"
+        },
+        {
+          "value": "expert",
+          "label": "잘 알아요",
+          "icon": "🏆",
+          "description": "프롬프트도 잘 짜요"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "비용은 어떻게 생각하세요?",
+      "options": [
+        {
+          "value": "free",
+          "label": "무료만 쓸래요",
+          "icon": "💚",
+          "description": "돈 쓰기 싫어요"
+        },
+        {
+          "value": "cheap",
+          "label": "저렴하면 OK",
+          "icon": "💰",
+          "description": "월 1-2만원 정도는 OK"
+        },
+        {
+          "value": "any",
+          "label": "상관없어요",
+          "icon": "💎",
+          "description": "좋으면 투자할 의향 있어요"
+        }
+      ]
+    }
+  ],
+  "toolGroups": [
+    {
+      "id": "text-ai",
+      "name": "텍스트 AI",
+      "icon": "✍️",
+      "description": "글쓰기, 대화, 문서 작성",
+      "color": "from-blue-500 to-indigo-500",
+      "tools": ["claude", "chatgpt", "gemini"],
+      "tags": ["text", "chatbot", "writing", "document", "email", "summary"]
+    },
+    {
+      "id": "image-ai",
+      "name": "이미지 AI",
+      "icon": "🎨",
+      "description": "이미지 생성 및 편집",
+      "color": "from-pink-500 to-rose-500",
+      "tools": ["midjourney", "dall-e", "ideogram"],
+      "tags": ["image", "design", "creative"]
+    },
+    {
+      "id": "code-ai",
+      "name": "코드 AI",
+      "icon": "💻",
+      "description": "코딩, 디버깅, 개발 도움",
+      "color": "from-violet-500 to-purple-500",
+      "tools": ["github-copilot", "cursor", "claude"],
+      "tags": ["code", "coding", "automation"]
+    },
+    {
+      "id": "search-ai",
+      "name": "검색 AI",
+      "icon": "🔍",
+      "description": "정보 검색 및 리서치",
+      "color": "from-cyan-500 to-teal-500",
+      "tools": ["perplexity", "chatgpt"],
+      "tags": ["search", "research", "analysis"]
+    },
+    {
+      "id": "media-ai",
+      "name": "미디어 AI",
+      "icon": "🎬",
+      "description": "PPT, 음악, 음성 생성",
+      "color": "from-amber-500 to-orange-500",
+      "tools": ["gamma", "suno", "elevenlabs"],
+      "tags": ["media", "audio", "video", "presentation", "content"]
+    }
+  ],
+  "taskToSituationMap": {
+    "document": ["pdf-summary", "meeting-notes"],
+    "email": ["email-writing"],
+    "presentation": ["presentation-slides"],
+    "coding": ["code-debug", "code-review"],
+    "image": ["ui-design", "thumbnail-creation"],
+    "paper": ["paper-summary"],
+    "summary": ["pdf-summary", "paper-summary"],
+    "concept": ["concept-explanation"],
+    "research": ["competitor-research"],
+    "content": ["blog-writing"],
+    "video": ["thumbnail-creation"],
+    "music": [],
+    "analysis": ["data-analysis", "competitor-research"]
+  }
+}
