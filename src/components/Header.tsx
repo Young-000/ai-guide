@@ -98,6 +98,14 @@ export function Header() {
             </Link>
 
             <Link
+              href="/news"
+              className="text-sm text-gray-600 hover:text-gray-900"
+              aria-label="AI·LLM 뉴스 보기"
+            >
+              뉴스
+            </Link>
+
+            <Link
               href="/tools"
               className="text-sm text-gray-600 hover:text-gray-900"
               aria-label="전체 AI 도구 목록 보기"

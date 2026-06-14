@@ -3,6 +3,7 @@ import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
+import { getAllNews } from '@/lib/news';
 
 const BASE_URL = 'https://ai-guide-nu.vercel.app';
 
@@ -47,5 +48,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...situationRoutes, ...toolRoutes, ...useCaseRoutes, ...tipRoutes];
+  const newsListRoutes: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/news`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE_URL}/en/news`, changeFrequency: 'daily', priority: 0.8 },
+  ];
+
+  const newsKo: MetadataRoute.Sitemap = getAllNews('ko').map((n) => ({
+    url: `${BASE_URL}/news/${n.slug}`,
+    lastModified: n.date,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  const newsEn: MetadataRoute.Sitemap = getAllNews('en').map((n) => ({
+    url: `${BASE_URL}/en/news/${n.slug}`,
+    lastModified: n.date,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...situationRoutes,
+    ...toolRoutes,
+    ...useCaseRoutes,
+    ...tipRoutes,
+    ...newsListRoutes,
+    ...newsKo,
+    ...newsEn,
+  ];
 }
