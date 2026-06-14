@@ -20,7 +20,12 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
     description: article.summary,
     alternates: {
       canonical: urlEn,
-      languages: { 'ko-KR': urlKo, 'en-US': urlEn, 'x-default': urlKo },
+      languages: (() => {
+        const koExists = !!getNewsBySlug('ko', article.slug);
+        const languages: Record<string, string> = { 'en-US': urlEn, 'x-default': koExists ? urlKo : urlEn };
+        if (koExists) languages['ko-KR'] = urlKo;
+        return languages;
+      })(),
     },
     openGraph: {
       title: article.title,

@@ -12,7 +12,7 @@ export default function ArticleJsonLd({ article, url }: ArticleJsonLdProps): JSX
     headline: article.title,
     description: article.summary,
     datePublished: article.date,
-    inLanguage: article.lang,
+    inLanguage: article.lang === 'ko' ? 'ko-KR' : 'en-US',
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     author: { '@type': 'Organization', name: 'AI Guide' },
     publisher: { '@type': 'Organization', name: 'AI Guide' },
@@ -20,7 +20,7 @@ export default function ArticleJsonLd({ article, url }: ArticleJsonLdProps): JSX
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') }}
     />
   );
 }

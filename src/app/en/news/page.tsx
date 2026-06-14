@@ -14,6 +14,9 @@ export const metadata: Metadata = {
       'x-default': `${BASE_URL}/news`,
     },
   },
+  openGraph: {
+    locale: 'en_US',
+  },
 };
 
 export default function EnNewsPage(): JSX.Element {

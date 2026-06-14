@@ -4,8 +4,7 @@ import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
 import { getAllNews } from '@/lib/news';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
