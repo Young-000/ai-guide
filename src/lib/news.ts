@@ -77,3 +77,23 @@ export function getNewsBySlug(lang: NewsLang, slug: string, root: string = CONTE
 export function getNewsSlugs(lang: NewsLang, root: string = CONTENT_ROOT): string[] {
   return getAllNews(lang, root).map((item) => item.slug);
 }
+
+/**
+ * Returns a sorted list of unique tags across all articles in the given lang.
+ */
+export function getAllTags(lang: NewsLang, root: string = CONTENT_ROOT): string[] {
+  const tagSet = new Set<string>();
+  for (const article of getAllNews(lang, root)) {
+    for (const tag of article.tags) {
+      tagSet.add(tag);
+    }
+  }
+  return [...tagSet].sort();
+}
+
+/**
+ * Returns articles (date-desc) that include the given tag.
+ */
+export function getNewsByTag(lang: NewsLang, tag: string, root: string = CONTENT_ROOT): NewsMeta[] {
+  return getAllNews(lang, root).filter((a) => a.tags.includes(tag));
+}
