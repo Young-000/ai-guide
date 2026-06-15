@@ -97,3 +97,21 @@ export function getAllTags(lang: NewsLang, root: string = CONTENT_ROOT): string[
 export function getNewsByTag(lang: NewsLang, tag: string, root: string = CONTENT_ROOT): NewsMeta[] {
   return getAllNews(lang, root).filter((a) => a.tags.includes(tag));
 }
+
+/**
+ * Returns all tags with article counts, sorted by count desc then alphabetically.
+ */
+export function getTagsWithCount(
+  lang: NewsLang,
+  root: string = CONTENT_ROOT,
+): { tag: string; count: number }[] {
+  const countMap = new Map<string, number>();
+  for (const article of getAllNews(lang, root)) {
+    for (const tag of article.tags) {
+      countMap.set(tag, (countMap.get(tag) ?? 0) + 1);
+    }
+  }
+  return Array.from(countMap.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
