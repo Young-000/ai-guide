@@ -7,6 +7,8 @@ interface OutboundToolLinkProps {
   href: string;
   toolName: string;
   sourcePage: string;
+  /** True when href is an affiliate/sponsored URL. Switches rel to "sponsored noopener". */
+  isAffiliate?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -15,6 +17,7 @@ export default function OutboundToolLink({
   href,
   toolName,
   sourcePage,
+  isAffiliate = false,
   className = '',
   children,
 }: OutboundToolLinkProps): JSX.Element {
@@ -22,11 +25,13 @@ export default function OutboundToolLink({
     trackToolClick(toolName, sourcePage);
   }, [toolName, sourcePage]);
 
+  const rel = isAffiliate ? 'sponsored noopener' : 'noopener noreferrer';
+
   return (
     <a
       href={href}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={rel}
       className={className}
       onClick={handleClick}
       aria-label={`${toolName} (새 창에서 열림)`}
