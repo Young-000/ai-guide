@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { trackToolClick } from '@/lib/analytics';
+import { trackToolClick, track } from '@/lib/analytics';
 
 interface OutboundToolLinkProps {
   href: string;
@@ -23,7 +23,8 @@ export default function OutboundToolLink({
 }: OutboundToolLinkProps): JSX.Element {
   const handleClick = useCallback((): void => {
     trackToolClick(toolName, sourcePage);
-  }, [toolName, sourcePage]);
+    void track('tool_outbound_click', { slug: toolName, isAffiliate });
+  }, [toolName, sourcePage, isAffiliate]);
 
   const rel = isAffiliate ? 'sponsored noopener' : 'noopener noreferrer';
 

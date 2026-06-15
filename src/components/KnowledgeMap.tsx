@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { track } from '@/lib/analytics';
 // react-force-graph-2d is canvas-only; this component is always dynamic-imported
 // by src/app/map/page.tsx with { ssr: false }, so `window` is guaranteed to exist.
 import ForceGraph2D from 'react-force-graph-2d';
@@ -120,6 +121,7 @@ export default function KnowledgeMap({ data }: Props): JSX.Element {
   const handleClick = useCallback(
     (rawNode: unknown): void => {
       const node = rawNode as SimNode;
+      void track('map_node_click', { type: node.type });
       router.push(node.url);
     },
     [router],

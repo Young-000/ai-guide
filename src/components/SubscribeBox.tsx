@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { track } from '@/lib/analytics';
 
 type SubmitState = 'idle' | 'pending' | 'success' | 'error';
 
@@ -21,6 +22,7 @@ export default function SubscribeBox(): JSX.Element {
 
       if (res.ok) {
         setState('success');
+        void track('newsletter_subscribe');
       } else {
         setState('error');
       }

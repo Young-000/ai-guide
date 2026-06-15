@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getAllTags, getNewsByTag } from '@/lib/news';
 import TagChips from '@/components/news/TagChips';
 import NewsCard from '@/components/news/NewsCard';
+import CategoryViewTracker from '@/components/news/CategoryViewTracker';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { tag: string };
@@ -31,6 +32,7 @@ export default function TopicPage({ params }: { params: Params }): JSX.Element {
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-10">
+      <CategoryViewTracker tag={tag} />
       {/* Back link */}
       <Link
         href="/news"

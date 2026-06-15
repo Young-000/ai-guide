@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AdUnit from '@/components/AdUnit';
 import ArticleJsonLd from './ArticleJsonLd';
+import ArticleViewTracker from './ArticleViewTracker';
 import SubscribeBox from '@/components/SubscribeBox';
 import NewsCard from './NewsCard';
 import { BASE_URL } from '@/lib/site';
@@ -38,6 +39,7 @@ export default function NewsArticleView({
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <ArticleJsonLd article={article} url={url} />
+      <ArticleViewTracker slug={article.slug} lang={lang} />
 
       {/* Back link */}
       <Link
