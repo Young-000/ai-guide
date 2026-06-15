@@ -32,43 +32,99 @@
       "term": "파인튜닝",
       "slug": "fine-tuning",
       "definition": "이미 만들어진 AI 모델을 특정 목적에 맞게 추가 학습시키는 거예요. 예를 들어 의료 전문 AI를 만들려면 의학 데이터로 파인튜닝해요.",
-      "example": "법률 회사가 ChatGPT를 법률 문서에 특화되게 파인튜닝했어요.",
+      "example": "법률 회사가 LLM을 자사 법률 문서에 특화되게 파인튜닝했어요.",
       "relatedTools": ["chatgpt"]
     },
     {
       "term": "컨텍스트 윈도우",
       "slug": "context-window",
-      "definition": "AI가 한 번에 기억할 수 있는 대화/문서의 길이예요. 컨텍스트 윈도우가 크면 긴 문서도 한 번에 처리할 수 있어요. Claude는 특히 이게 커서 긴 문서 처리에 강해요.",
-      "example": "Claude는 20만 토큰까지 기억해서 책 한 권도 한 번에 읽어요.",
+      "definition": "AI가 한 번에 기억할 수 있는 대화/문서의 길이예요. 컨텍스트 윈도우가 크면 긴 문서도 한 번에 처리할 수 있어요. 2026년에는 주요 모델 대부분이 100만 토큰까지 지원해서, 책 한 권이나 코드베이스 전체를 통째로 넣을 수 있게 됐어요.",
+      "example": "Claude Opus 4.8은 100만 토큰까지 기억해서 두꺼운 보고서 여러 개도 한 번에 읽어요.",
       "relatedTools": ["claude", "chatgpt", "gemini"]
     },
     {
       "term": "할루시네이션",
       "slug": "hallucination",
-      "definition": "AI가 사실이 아닌 내용을 마치 사실인 것처럼 자신있게 말하는 현상이에요. AI의 가장 큰 단점 중 하나예요. 중요한 정보는 항상 확인이 필요해요.",
+      "definition": "AI가 사실이 아닌 내용을 마치 사실인 것처럼 자신있게 말하는 현상이에요. AI의 가장 큰 단점 중 하나예요. 중요한 정보는 항상 출처를 확인하는 습관이 필요해요.",
       "example": "AI가 존재하지 않는 연구 논문을 인용하는 게 할루시네이션이에요.",
       "relatedTools": ["chatgpt", "claude", "gemini"]
     },
     {
       "term": "RAG",
       "slug": "rag",
-      "definition": "Retrieval-Augmented Generation의 약자예요. AI가 답변할 때 외부 데이터베이스에서 관련 정보를 찾아서 참고하는 기술이에요. 할루시네이션을 줄이고 최신 정보를 제공할 수 있어요.",
-      "example": "Perplexity는 RAG를 써서 웹 검색 결과를 답변에 포함해요.",
+      "definition": "Retrieval-Augmented Generation의 약자예요. AI가 답변할 때 외부 데이터베이스나 웹에서 관련 정보를 찾아서 참고하는 기술이에요. 할루시네이션을 줄이고 최신 정보를 제공할 수 있어요.",
+      "example": "Perplexity는 RAG를 써서 웹 검색 결과를 출처와 함께 답변에 포함해요.",
       "relatedTools": ["perplexity"]
     },
     {
       "term": "임베딩",
       "slug": "embedding",
-      "definition": "텍스트나 이미지를 AI가 이해할 수 있는 숫자 형태로 변환하는 거예요. 비슷한 의미의 문장은 비슷한 숫자가 돼서, AI가 의미를 이해할 수 있어요.",
+      "definition": "텍스트나 이미지를 AI가 이해할 수 있는 숫자 형태로 변환하는 거예요. 비슷한 의미의 문장은 비슷한 숫자가 돼서, AI가 의미를 이해하고 검색할 수 있어요.",
       "example": "'강아지'와 '개'의 임베딩은 서로 비슷한 값을 가져요.",
       "relatedTools": ["chatgpt", "claude"]
     },
     {
       "term": "에이전트",
       "slug": "agent",
-      "definition": "AI가 단순히 답변만 하는 게 아니라, 스스로 도구를 사용하고 작업을 수행하는 형태예요. 검색하고, 코드 실행하고, 파일을 수정하는 등 능동적으로 움직여요.",
-      "example": "Cursor의 AI가 알아서 코드를 수정하고 테스트하는 게 에이전트 방식이에요.",
-      "relatedTools": ["cursor", "chatgpt"]
+      "definition": "AI가 단순히 답변만 하는 게 아니라, 스스로 계획을 세우고 도구를 사용해 여러 단계의 작업을 수행하는 형태예요. 검색하고, 코드 실행하고, 파일을 수정하는 등 능동적으로 움직여요. 2026년 AI의 핵심 키워드예요.",
+      "example": "Cursor나 Claude Code가 알아서 코드를 수정하고 테스트까지 돌리는 게 에이전트 방식이에요.",
+      "relatedTools": ["cursor", "claude", "chatgpt"]
+    },
+    {
+      "term": "멀티모달",
+      "slug": "multimodal",
+      "definition": "텍스트뿐 아니라 이미지, 음성, 영상까지 함께 이해하고 만들어내는 AI를 말해요. 사진을 보여주며 질문하거나, 말로 대화하거나, 영상을 분석하는 게 모두 멀티모달 능력이에요. 지금은 거의 모든 주요 모델이 멀티모달이에요.",
+      "example": "냉장고 사진을 올리고 '이걸로 만들 수 있는 요리 알려줘'라고 묻는 게 멀티모달 활용이에요.",
+      "relatedTools": ["chatgpt", "gemini", "claude"]
+    },
+    {
+      "term": "추론 모델",
+      "slug": "reasoning-model",
+      "definition": "답을 바로 내놓지 않고, 사람처럼 단계적으로 '생각'한 뒤 답하는 AI예요. 복잡한 수학, 코딩, 논리 문제에서 정확도가 훨씬 높아요. 2026년에는 이런 추론 능력이 기본 기능이 됐어요.",
+      "example": "어려운 문제에 Gemini의 Deep Think나 GPT-5의 추론 모드를 쓰면 풀이 과정까지 보여줘요.",
+      "relatedTools": ["chatgpt", "claude", "gemini"]
+    },
+    {
+      "term": "코딩 에이전트",
+      "slug": "coding-agent",
+      "definition": "개발자가 자연어로 요청하면 코드를 직접 작성·수정하고, 에러를 고치고, 테스트까지 돌려주는 AI 도구예요. 단순 자동완성을 넘어 작업 전체를 맡길 수 있어서, 2026년 개발 방식을 크게 바꾸고 있어요.",
+      "example": "Cursor, Claude Code, GitHub Copilot이 대표적인 코딩 에이전트예요.",
+      "relatedTools": ["cursor", "claude", "github-copilot"]
+    },
+    {
+      "term": "MCP",
+      "slug": "mcp",
+      "definition": "Model Context Protocol의 약자예요. AI가 외부 도구·데이터(파일, 데이터베이스, 앱 등)에 연결되는 표준 방식이에요. MCP 덕분에 AI 에이전트가 다양한 서비스를 손쉽게 다룰 수 있게 됐어요.",
+      "example": "MCP로 AI를 회사 문서함에 연결하면, AI가 그 문서들을 직접 찾아 답해줘요.",
+      "relatedTools": ["claude", "cursor"]
+    },
+    {
+      "term": "오픈소스 모델",
+      "slug": "open-source-model",
+      "definition": "누구나 내려받아 직접 돌리거나 수정할 수 있게 공개된 AI 모델이에요. Llama, Mistral, DeepSeek 등이 대표적이고, 상용 모델에 근접한 성능을 내면서 기업의 자체 AI 도입을 늘리고 있어요.",
+      "example": "보안이 중요한 회사는 오픈소스 모델을 사내 서버에 직접 설치해서 써요.",
+      "relatedTools": []
+    },
+    {
+      "term": "파라미터",
+      "slug": "parameter",
+      "definition": "AI 모델이 학습으로 갖게 되는 '지식의 매듭' 같은 거예요. 보통 수십억~수조 개로, 많을수록 더 똑똑해지는 경향이 있지만 비용과 속도도 함께 늘어나요. 그래서 요즘은 크기보다 효율을 중시해요.",
+      "example": "같은 회사도 큰 모델(Pro)과 작고 빠른 모델(Flash)을 파라미터 규모로 나눠 제공해요.",
+      "relatedTools": ["gemini", "chatgpt"]
+    },
+    {
+      "term": "벤치마크",
+      "slug": "benchmark",
+      "definition": "여러 AI 모델의 성능을 같은 기준으로 비교하는 시험이에요. 코딩, 수학, 추론 등 항목별 점수로 순위를 매겨요. 실제 사용자 투표로 순위를 정하는 LM Arena가 특히 많이 인용돼요.",
+      "example": "GPT Image 2는 이미지 생성 벤치마크(LM Arena)에서 1위를 기록했어요.",
+      "relatedTools": ["chatgpt", "claude", "gemini"]
+    },
+    {
+      "term": "AEO",
+      "slug": "aeo",
+      "definition": "Answer Engine Optimization의 약자예요. 구글 검색 노출(SEO)을 넘어, ChatGPT·Perplexity 같은 AI가 답변할 때 내 콘텐츠를 인용하도록 최적화하는 거예요. AI 검색이 일상화되면서 새롭게 중요해진 개념이에요.",
+      "example": "AI가 출처로 잘 인용하도록 정보를 명확하게 정리하는 게 AEO의 핵심이에요.",
+      "relatedTools": ["perplexity", "chatgpt"]
     }
   ]
 }

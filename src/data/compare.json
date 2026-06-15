@@ -1,7 +1,7 @@
 {
   "comparison": {
     "title": "ChatGPT vs Claude vs Gemini",
-    "description": "가장 인기있는 AI 챗봇 3가지를 비교해봤어요.",
+    "description": "가장 인기있는 AI 챗봇 3가지를 2026년 6월 현재 기준으로 비교해봤어요. 세 서비스 모두 빠르게 발전 중이라, 핵심 차이 위주로 정리했습니다.",
     "items": [
       {
         "feature": "만든 회사",
@@ -10,40 +10,52 @@
         "gemini": "Google"
       },
       {
+        "feature": "대표 모델",
+        "chatgpt": "GPT-5.5 / GPT-5.4",
+        "claude": "Opus 4.8 / Sonnet 4.6",
+        "gemini": "3.5 Flash / 3.1 Pro"
+      },
+      {
         "feature": "무료 사용",
-        "chatgpt": "가능 (제한적)",
-        "claude": "가능 (제한적)",
-        "gemini": "가능"
+        "chatgpt": "가능 (GPT-5 일일 제한)",
+        "claude": "가능 (Sonnet 4.6 제한)",
+        "gemini": "가능 (Gemini 3 Flash)"
       },
       {
         "feature": "유료 가격",
-        "chatgpt": "$20/월 (Plus)",
+        "chatgpt": "$20/월 (Plus), $8 Go",
         "claude": "$20/월 (Pro)",
-        "gemini": "$20/월 (Advanced)"
+        "gemini": "$20/월 (Google AI Pro)"
       },
       {
         "feature": "긴 문서 처리",
-        "chatgpt": "보통 (12.8만 토큰)",
-        "claude": "최고 (20만 토큰)",
+        "chatgpt": "좋음 (Pro는 100만 토큰)",
+        "claude": "최고 (최대 100만 토큰)",
         "gemini": "좋음 (100만 토큰)"
       },
       {
         "feature": "최신 정보",
-        "chatgpt": "웹 검색 가능",
-        "claude": "학습 데이터까지만",
-        "gemini": "구글 검색 연동"
+        "chatgpt": "웹 검색 (ChatGPT Search)",
+        "claude": "웹 검색 지원",
+        "gemini": "구글 검색 연동 (AI Mode)"
       },
       {
         "feature": "이미지 생성",
-        "chatgpt": "GPT Image 내장",
-        "claude": "불가능",
-        "gemini": "Imagen 내장"
+        "chatgpt": "GPT Image 2 내장 (벤치 1위)",
+        "claude": "불가능 (텍스트 전용)",
+        "gemini": "Imagen 4 내장"
       },
       {
         "feature": "코딩 능력",
-        "chatgpt": "우수",
-        "claude": "최고",
-        "gemini": "우수"
+        "chatgpt": "우수 (GPT-5.5)",
+        "claude": "최고 (Claude Code)",
+        "gemini": "우수 (Gemini CLI)"
+      },
+      {
+        "feature": "추론(생각하는) 능력",
+        "chatgpt": "강함 (GPT-5.x)",
+        "claude": "강함 (Opus 4.8)",
+        "gemini": "강함 (Deep Think)"
       },
       {
         "feature": "한국어",
@@ -53,9 +65,9 @@
       },
       {
         "feature": "특징",
-        "chatgpt": "가장 유명, 플러그인 많음",
-        "claude": "안전하고 정직한 답변",
-        "gemini": "구글 서비스 연동"
+        "chatgpt": "가장 대중적, 에이전트·Sora 영상",
+        "claude": "정직한 답변, 코딩·긴 문서 강점",
+        "gemini": "구글 서비스 연동, 실시간 검색"
       },
       {
         "feature": "추천 대상",
