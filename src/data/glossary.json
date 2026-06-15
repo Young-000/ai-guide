@@ -4,7 +4,7 @@
       "term": "LLM",
       "slug": "llm",
       "definition": "Large Language Model의 약자로, '거대 언어 모델'이라고 해요. ChatGPT, Claude 같은 AI가 바로 LLM이에요. 엄청나게 많은 텍스트를 학습해서 사람처럼 글을 쓰고 대화할 수 있어요.",
-      "example": "ChatGPT는 GPT-4라는 LLM을 기반으로 만들어졌어요.",
+      "example": "ChatGPT는 GPT-5라는 LLM을 기반으로 만들어졌어요.",
       "relatedTools": ["chatgpt", "claude", "gemini"]
     },
     {

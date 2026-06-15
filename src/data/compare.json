@@ -35,7 +35,7 @@
       },
       {
         "feature": "이미지 생성",
-        "chatgpt": "DALL-E 내장",
+        "chatgpt": "GPT Image 내장",
         "claude": "불가능",
         "gemini": "Imagen 내장"
       },

@@ -27,7 +27,7 @@
       "id": "chatgpt-free",
       "category": "pricing",
       "question": "ChatGPT는 무료인가요?",
-      "answer": "네, ChatGPT 기본 버전은 무료입니다. GPT-4o mini 모델을 무제한으로 사용할 수 있고, GPT-4o도 일일 제한 내에서 무료로 사용 가능합니다. 더 많은 사용량과 고급 기능이 필요하면 월 $20의 Plus 플랜을 고려해볼 수 있습니다.",
+      "answer": "네, ChatGPT 기본 버전은 무료입니다. GPT-5 mini 모델을 무제한으로 사용할 수 있고, GPT-5도 일일 제한 내에서 무료로 사용 가능합니다. 더 많은 사용량과 고급 기능이 필요하면 월 $8의 Go 또는 월 $20의 Plus 플랜을 고려해볼 수 있습니다.",
       "relatedTips": ["chatgpt-prompt-basics"],
       "relatedSituations": []
     },

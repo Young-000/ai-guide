@@ -9,9 +9,10 @@
       "pricing": {
         "free": true,
         "plans": [
-          { "name": "Free", "price": 0, "features": ["GPT-4o mini 무제한", "GPT-4o 일일 제한"] },
-          { "name": "Plus", "price": 20, "features": ["GPT-4o 더 많이", "이미지 생성", "고급 음성"] },
-          { "name": "Pro", "price": 200, "features": ["무제한 사용", "o1 pro 모드"] }
+          { "name": "Free", "price": 0, "features": ["GPT-5 일일 제한", "GPT-5 mini 무제한"] },
+          { "name": "Go", "price": 8, "features": ["GPT-5 더 많이", "광고 없음"] },
+          { "name": "Plus", "price": 20, "features": ["GPT-5 우선 사용", "이미지 생성(GPT Image)", "고급 음성"] },
+          { "name": "Pro", "price": 200, "features": ["GPT-5.5·5.4 Pro 거의 무제한", "1M 토큰 컨텍스트", "Sora 영상 생성"] }
         ]
       },
       "features": ["자연스러운 대화", "코드 작성 및 디버깅", "이미지 분석 및 생성"],
@@ -90,7 +91,7 @@
           }
         ],
         "limitations": [
-          "2024년 초까지의 정보만 알고 있어요 (실시간 검색 시 예외)",
+          "2025년 중반까지의 정보만 알고 있어요 (실시간 검색 시 예외)",
           "가끔 틀린 정보를 자신있게 말하기도 해요 (할루시네이션)",
           "무료 버전은 바쁜 시간대에 느려질 수 있어요"
         ]
@@ -105,8 +106,8 @@
       "pricing": {
         "free": true,
         "plans": [
-          { "name": "Free", "price": 0, "features": ["Claude 3.5 Sonnet 제한적 사용"] },
-          { "name": "Pro", "price": 20, "features": ["더 많은 사용량", "Claude 3 Opus 접근"] },
+          { "name": "Free", "price": 0, "features": ["Claude Sonnet 4.6 제한적 사용"] },
+          { "name": "Pro", "price": 20, "features": ["더 많은 사용량", "Claude Opus 4.8 접근", "Claude Code 사용"] },
           { "name": "Team", "price": 30, "features": ["팀 협업 기능", "관리자 도구"] }
         ]
       },
@@ -162,7 +163,7 @@
         "gettingStarted": [
           "claude.ai에 접속해서 구글 계정으로 가입하세요",
           "한국에서도 VPN 없이 사용 가능합니다",
-          "무료 버전으로 Claude 3.5 Sonnet을 체험해보세요"
+          "무료 버전으로 Claude Sonnet 4.6을 체험해보세요"
         ],
         "basicUsage": [
           {
@@ -228,8 +229,8 @@
       "pricing": {
         "free": true,
         "plans": [
-          { "name": "Free", "price": 0, "features": ["Gemini 기본 사용"] },
-          { "name": "Advanced", "price": 20, "features": ["Gemini Ultra", "Google One 2TB 포함"] }
+          { "name": "Free", "price": 0, "features": ["Gemini 3 Flash 사용", "Google 서비스 연동"] },
+          { "name": "Google AI Pro", "price": 20, "features": ["Gemini 3 Pro 접근", "Deep Research", "Google One 2TB 포함"] }
         ]
       },
       "features": ["구글 서비스 연동", "실시간 웹 검색", "멀티모달 (텍스트+이미지)"],
@@ -630,7 +631,7 @@
       "slug": "midjourney",
       "name": "Midjourney",
       "tagline": "가장 예쁜 AI 이미지 생성",
-      "description": "텍스트 설명만으로 고퀄리티 이미지를 만들어주는 AI입니다. 디스코드에서 사용하며, 예술적이고 감각적인 이미지 생성에 특히 강합니다.",
+      "description": "텍스트 설명만으로 고퀄리티 이미지를 만들어주는 AI입니다. 최신 v7은 웹 앱과 디스코드 모두 지원하며, 예술적이고 감각적인 이미지 품질에서 여전히 최고로 꼽힙니다. 짧은 영상 생성도 가능해졌어요.",
       "category": "image",
       "pricing": {
         "free": false,
@@ -734,9 +735,9 @@
     },
     {
       "slug": "dall-e",
-      "name": "DALL-E",
+      "name": "GPT Image (DALL-E)",
       "tagline": "OpenAI의 이미지 생성 AI",
-      "description": "OpenAI에서 만든 이미지 생성 AI입니다. ChatGPT Plus에서 바로 사용할 수 있어 편리해요. 자연스럽고 사실적인 이미지 생성에 강합니다.",
+      "description": "OpenAI의 이미지 생성 AI입니다. 최신 모델 GPT Image 2는 프롬프트 이해도와 사실성에서 최상위권으로 평가받아요(LM Arena 1위). ChatGPT에서 '~한 이미지 그려줘'라고 입력하면 바로 사용할 수 있어 편리합니다.",
       "category": "image",
       "pricing": {
         "free": false,
@@ -768,8 +769,8 @@
             "action": "https://chat.openai.com"
           },
           {
-            "title": "DALL-E 사용하기",
-            "description": "ChatGPT 채팅창에 '~한 이미지 그려줘'라고 입력하면 자동으로 DALL-E가 이미지 생성"
+            "title": "이미지 생성하기",
+            "description": "ChatGPT 채팅창에 '~한 이미지 그려줘'라고 입력하면 자동으로 GPT Image가 이미지 생성"
           },
           {
             "title": "이미지 다운로드",
@@ -1879,7 +1880,7 @@
           "magicWrite": "Magic Write - 텍스트 선택 후 'AI로 작성' → 카피 문구 자동 생성",
           "magicEraser": "Magic Eraser - 이미지에서 불필요한 객체 제거 (Pro)",
           "bgRemover": "Background Remover - 원클릭 배경 제거 (Pro)",
-          "textToImage": "Text to Image - 앱 → 'DALL-E' 또는 'Magic Media' → 이미지 생성",
+          "textToImage": "Text to Image - 앱 → 'Magic Media' → 이미지 생성",
           "magicResize": "Magic Resize - 한 디자인을 여러 사이즈로 변환 (Pro)"
         }
       }

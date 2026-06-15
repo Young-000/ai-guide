@@ -1,126 +1,126 @@
 {
-  "lastUpdated": "2025-01-09",
+  "lastUpdated": "2026-06-16",
   "trends": [
     {
       "id": 1,
-      "title": "AI 에이전트의 부상",
-      "description": "2025년 AI의 핵심 키워드는 '에이전트'입니다. 단순 질의응답을 넘어 스스로 계획하고, 도구를 사용하고, 작업을 수행하는 AI가 주목받고 있어요.",
-      "keywords": ["AI Agent", "Agentic AI", "자율 에이전트"],
-      "relatedTools": ["cursor", "github-copilot"],
+      "title": "AI 에이전트가 표준이 되다",
+      "description": "2026년 AI는 '대답'을 넘어 '실행'합니다. 스스로 계획을 세우고, 도구를 호출하고, 여러 단계의 작업을 끝까지 수행하는 에이전트가 기본이 됐어요. GPT-5.5는 아예 에이전트 워크플로우에 최적화돼 출시됐습니다.",
+      "keywords": ["AI Agent", "Agentic AI", "자율 에이전트", "GPT-5.5"],
+      "relatedTools": ["chatgpt", "claude", "cursor"],
       "category": "핵심 트렌드",
       "icon": "🤖"
     },
     {
       "id": 2,
-      "title": "멀티모달 AI의 진화",
-      "description": "텍스트, 이미지, 음성, 비디오를 동시에 이해하고 생성하는 멀티모달 AI가 표준이 되고 있습니다. GPT-4o, Gemini 2.0 등이 대표적이에요.",
-      "keywords": ["멀티모달", "GPT-4o", "Gemini 2.0"],
-      "relatedTools": ["chatgpt", "gemini"],
+      "title": "추론(Reasoning) 모델의 일상화",
+      "description": "답하기 전에 '생각하는' 추론 모델이 표준이 됐습니다. GPT-5.x, Gemini 3 Pro의 Deep Think, Claude Opus 4.8 모두 복잡한 문제를 단계적으로 풀어내요. 어려운 수학·코딩·분석에서 정확도가 크게 올랐습니다.",
+      "keywords": ["추론 모델", "Reasoning", "Deep Think", "Chain of Thought"],
+      "relatedTools": ["chatgpt", "claude", "gemini"],
       "category": "핵심 트렌드",
-      "icon": "🎭"
+      "icon": "🧠"
     },
     {
       "id": 3,
-      "title": "AI 코딩 도구 경쟁 심화",
-      "description": "Cursor, GitHub Copilot, Claude Code 등 AI 코딩 도구들의 경쟁이 치열해지고 있습니다. 개발자 생산성을 혁신적으로 높여주고 있어요.",
-      "keywords": ["AI 코딩", "Cursor", "Copilot", "코드 자동완성"],
+      "title": "AI 코딩 에이전트 전쟁",
+      "description": "Cursor, Claude Code, GitHub Copilot, Gemini CLI가 치열하게 경쟁 중입니다. 자연어로 요청하면 코드를 직접 작성·수정하고 풀스택 앱까지 만들어줘요. 개발자 생산성을 근본적으로 바꾸고 있습니다.",
+      "keywords": ["AI 코딩", "Cursor", "Claude Code", "코딩 에이전트"],
       "relatedTools": ["cursor", "github-copilot", "claude"],
       "category": "개발",
       "icon": "💻"
     },
     {
       "id": 4,
-      "title": "오픈소스 AI 모델의 성장",
-      "description": "Meta의 Llama, Mistral 등 오픈소스 AI 모델들이 상용 모델에 근접한 성능을 보여주고 있습니다. 기업들의 로컬 AI 도입이 늘어나고 있어요.",
-      "keywords": ["오픈소스", "Llama", "Mistral", "로컬 AI"],
-      "relatedTools": [],
+      "title": "100만 토큰 컨텍스트의 보편화",
+      "description": "GPT-5 Pro, Gemini 3, Claude Opus 4.8가 모두 100만 토큰 컨텍스트를 지원합니다. 책 한 권, 코드베이스 전체, 수백 페이지 문서를 한 번에 넣고 질문할 수 있어요. 긴 자료 분석의 장벽이 사라졌습니다.",
+      "keywords": ["롱컨텍스트", "1M 토큰", "장문 분석", "RAG"],
+      "relatedTools": ["claude", "gemini", "chatgpt"],
       "category": "기술",
-      "icon": "🔓"
+      "icon": "📚"
     },
     {
       "id": 5,
-      "title": "AI 검색의 대중화",
-      "description": "Perplexity, Google AI Overview 등 AI 기반 검색이 전통적 검색 엔진을 위협하고 있습니다. 출처와 함께 정리된 답변을 제공해요.",
-      "keywords": ["AI 검색", "Perplexity", "RAG"],
-      "relatedTools": ["perplexity", "gemini"],
-      "category": "검색",
-      "icon": "🔍"
+      "title": "이미지·영상 생성 AI의 성숙",
+      "description": "이미지 생성은 GPT Image 2(벤치마크 1위), Midjourney v7, FLUX.2, Google Imagen 4가 실사 수준에 도달했어요. 영상도 OpenAI Sora가 일반 공개되고 Midjourney·Runway가 가세하며 'AI 영상'이 현실이 됐습니다.",
+      "keywords": ["이미지 생성", "GPT Image", "Midjourney v7", "Sora", "영상 생성"],
+      "relatedTools": ["dall-e", "midjourney", "runway"],
+      "category": "크리에이티브",
+      "icon": "🎨"
     },
     {
       "id": 6,
-      "title": "이미지 생성 AI 품질 향상",
-      "description": "Midjourney v6, DALL-E 3, Stable Diffusion 3 등 이미지 생성 AI의 품질이 크게 향상되었습니다. 실사 수준의 이미지 생성이 가능해졌어요.",
-      "keywords": ["이미지 생성", "Midjourney", "DALL-E 3"],
-      "relatedTools": ["midjourney", "dall-e"],
-      "category": "크리에이티브",
-      "icon": "🎨"
+      "title": "AI 검색이 첫 관문이 되다",
+      "description": "ChatGPT Search, Perplexity, Google AI Mode가 전통적인 검색을 빠르게 대체하고 있습니다. 링크 목록 대신 출처가 달린 정리된 답변을 바로 받는 방식이 일상화됐어요. 정보 탐색의 시작점이 바뀌었습니다.",
+      "keywords": ["AI 검색", "Perplexity", "AI Mode", "AEO"],
+      "relatedTools": ["perplexity", "gemini", "chatgpt"],
+      "category": "검색",
+      "icon": "🔍"
     }
   ],
   "news": [
     {
       "id": 1,
-      "title": "OpenAI, GPT-5 개발 중",
-      "summary": "OpenAI가 차세대 대규모 언어 모델 GPT-5를 개발 중인 것으로 알려졌습니다. 더 강력한 추론 능력과 멀티모달 기능이 예상됩니다.",
-      "date": "2025-01",
-      "source": "TechCrunch",
+      "title": "OpenAI, GPT-5.5 출시",
+      "summary": "OpenAI가 2026년 4월 GPT-5.5를 공개했습니다. 에이전트 워크플로우에 최적화된 '새로운 지능 클래스'로 소개됐으며, 도구 사용과 다단계 작업 수행 능력이 크게 향상됐습니다.",
+      "date": "2026-04",
+      "source": "OpenAI",
       "category": "모델",
       "icon": "📰"
     },
     {
       "id": 2,
-      "title": "Anthropic Claude 3.5 Sonnet 업데이트",
-      "summary": "Claude 3.5 Sonnet이 컴퓨터 사용(Computer Use) 기능을 추가하며 에이전트 능력을 강화했습니다.",
-      "date": "2024-12",
-      "source": "Anthropic",
-      "category": "모델",
-      "icon": "🆕"
-    },
-    {
-      "id": 3,
-      "title": "Google Gemini 2.0 출시",
-      "summary": "Google이 Gemini 2.0을 발표하며 에이전트 기능과 멀티모달 성능을 대폭 강화했습니다.",
-      "date": "2024-12",
+      "title": "Google, Gemini 3.5 Flash 공개",
+      "summary": "구글이 2026년 5월 Gemini 3.5 Flash를 출시했습니다. Pro급 지능을 Flash 등급의 속도·비용으로 제공하며, 에이전트·코딩 작업에서 강력한 성능을 보입니다. 컨텍스트는 100만 토큰입니다.",
+      "date": "2026-05",
       "source": "Google",
       "category": "모델",
       "icon": "✨"
     },
     {
+      "id": 3,
+      "title": "Anthropic Claude Opus 4.8, 코딩·에이전트 선두",
+      "summary": "Anthropic의 Claude Opus 4.8이 100만 토큰 컨텍스트와 강력한 코딩 능력으로 주목받고 있습니다. Claude Code를 통한 에이전틱 개발이 개발자들 사이에서 빠르게 확산되고 있어요.",
+      "date": "2026-05",
+      "source": "Anthropic",
+      "category": "모델",
+      "icon": "🧠"
+    },
+    {
       "id": 4,
-      "title": "AI 코딩 도구 시장 급성장",
-      "summary": "AI 코딩 도구 시장이 2025년 100억 달러 규모로 성장할 것으로 전망됩니다. Cursor가 빠르게 점유율을 높이고 있습니다.",
-      "date": "2025-01",
-      "source": "Bloomberg",
-      "category": "시장",
-      "icon": "📈"
+      "title": "OpenAI GPT Image 2, 이미지 생성 벤치마크 1위",
+      "summary": "OpenAI의 GPT Image 2가 LM Arena 이미지 생성 부문에서 1위에 올랐습니다. 정확한 프롬프트 이해와 사실적 표현, 편집 편의성에서 최고로 평가받고 있어요.",
+      "date": "2026-03",
+      "source": "LM Arena",
+      "category": "모델",
+      "icon": "🖼️"
     },
     {
       "id": 5,
-      "title": "EU AI Act 시행",
-      "summary": "유럽연합의 AI 규제법이 본격 시행되며 AI 서비스들의 투명성과 안전성 기준이 강화되고 있습니다.",
-      "date": "2024-12",
-      "source": "Reuters",
-      "category": "규제",
-      "icon": "⚖️"
+      "title": "AI 코딩 도구 시장 급성장",
+      "summary": "에이전틱 코딩 도구가 주류로 자리잡으며 시장이 폭발적으로 성장하고 있습니다. Cursor와 Claude Code가 빠르게 점유율을 확대하고 있습니다.",
+      "date": "2026-02",
+      "source": "업계 종합",
+      "category": "시장",
+      "icon": "📈"
     }
   ],
   "quickStats": [
     {
       "label": "ChatGPT 주간 활성 사용자",
-      "value": "2억+",
+      "value": "8억+",
       "trend": "up",
-      "source": "OpenAI 발표 (2024.11)"
+      "source": "OpenAI 발표 (2025)"
     },
     {
-      "label": "AI 스타트업 투자액 (2024)",
-      "value": "$500억+",
+      "label": "100만 토큰 컨텍스트 지원 주요 모델",
+      "value": "GPT-5·Gemini 3·Claude",
       "trend": "up",
-      "source": "CB Insights"
+      "source": "각사 공식 사양 (2026)"
     },
     {
-      "label": "AI 도구 도입 기업 비율",
-      "value": "72%",
+      "label": "업무에 AI를 도입한 기업 비율",
+      "value": "78%",
       "trend": "up",
-      "source": "McKinsey 보고서 (2024)"
+      "source": "McKinsey 보고서 (2025)"
     }
   ]
 }

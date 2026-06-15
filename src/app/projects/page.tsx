@@ -120,11 +120,11 @@ const toyProjects: ToyProject[] = [
     icon: '🎨',
     difficulty: 'intermediate',
     timeEstimate: '20분',
-    tools: ['DALL-E', 'Midjourney'],
+    tools: ['GPT Image', 'Midjourney'],
     steps: [
       {
-        title: 'DALL-E 접속',
-        description: 'ChatGPT Plus 구독자라면 ChatGPT 내에서 DALL-E를 사용할 수 있습니다. 또는 Microsoft Bing Image Creator(무료)를 사용합니다.',
+        title: 'GPT Image 접속',
+        description: 'ChatGPT 사용자라면 ChatGPT 내에서 "~한 이미지 그려줘"로 GPT Image를 사용할 수 있습니다. 무료로는 Microsoft Copilot의 이미지 생성 기능을 사용합니다.',
       },
       {
         title: '원하는 이미지 설명하기',
