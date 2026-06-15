@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { buildRssXml } from '@/app/feed.xml/route';
+import { buildRssXml } from '@/lib/rss';
 
 export const dynamic = 'force-static';
 
