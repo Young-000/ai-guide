@@ -1,16 +1,10 @@
-import {
-  HeroSection,
-  PainPointsSection,
-  HowItWorksSection,
-  PopularSituationsSection,
-  StatsSection,
-  QuickSearchSection,
-  FinalCtaSection,
-} from '@/components/landing';
-import LatestNewsSection from '@/components/home/LatestNewsSection';
+import { getAllNews, getAllTags } from '@/lib/news';
 import { BASE_URL } from '@/lib/site';
+import LeadStory from '@/components/home/LeadStory';
+import NewsGrid from '@/components/home/NewsGrid';
+import CategoryStrip from '@/components/home/CategoryStrip';
+import SubscribeBox from '@/components/SubscribeBox';
 
-// Static JSON-LD data for structured data (no user input, safe to use)
 const JSON_LD_DATA = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -21,41 +15,58 @@ const JSON_LD_DATA = {
 };
 
 export default function Home(): JSX.Element {
+  const allNews = getAllNews('ko');
+  const lead = allNews[0];
+  const gridItems = allNews.slice(1, 9);
+  const tags = getAllTags('ko');
+
   return (
-    <div>
-      {/* JSON-LD structured data for SEO - static content, safe to inline */}
+    <>
+      {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(JSON_LD_DATA),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_DATA) }}
       />
 
-      {/* Latest AI news feed — media-style above the fold */}
-      <LatestNewsSection />
+      {/* Lead story — most recent article, large */}
+      {lead && (
+        <section
+          aria-labelledby="lead-story-label"
+          className="bg-white border-b border-slate-200 py-10 md:py-14"
+        >
+          <div className="max-w-5xl mx-auto px-4">
+            <p id="lead-story-label" className="sr-only">
+              주요 기사
+            </p>
+            <LeadStory item={lead} />
+          </div>
+        </section>
+      )}
 
-      {/* Section 1: Hero - Value proposition + CTA */}
-      <HeroSection />
+      {/* Category strip — tags linking to /news/topic/[tag] */}
+      <CategoryStrip tags={tags} />
 
-      {/* Section 2: Pain Points - Persona empathy cards */}
-      <PainPointsSection />
+      {/* News grid — next 8 articles */}
+      {gridItems.length > 0 && (
+        <section className="py-10">
+          <div className="max-w-5xl mx-auto px-4">
+            <NewsGrid items={gridItems} />
+          </div>
+        </section>
+      )}
 
-      {/* Section 3: How It Works - 3-step process */}
-      <HowItWorksSection />
-
-      {/* Section 4: Popular Situations - Top 6 with category filter */}
-      <div id="popular-situations">
-        <PopularSituationsSection />
-      </div>
-
-      {/* Section 5: Stats - Dynamic numbers */}
-      <StatsSection />
-
-      {/* Section 6: Quick Search - Existing search functionality */}
-      <QuickSearchSection />
-
-      {/* Section 7: Final CTA - Bottom conversion */}
-      <FinalCtaSection />
-    </div>
+      {/* Subscribe section */}
+      <section
+        aria-labelledby="subscribe-section-heading"
+        className="py-12 bg-slate-50 border-t border-slate-200"
+      >
+        <div className="max-w-5xl mx-auto px-4">
+          <p id="subscribe-section-heading" className="sr-only">
+            뉴스레터 구독
+          </p>
+          <SubscribeBox />
+        </div>
+      </section>
+    </>
   );
 }

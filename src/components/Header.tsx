@@ -1,127 +1,234 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { loadProgress, type UserProgress } from '@/lib/levelSystem';
-import { getProgressManager } from '@/lib/progress';
-import LevelBadge from './LevelBadge';
-import StreakCounter from './StreakCounter';
 
-const DEFAULT_PROGRESS: UserProgress = {
-  completedSituations: [],
-  completedSteps: {},
-  totalXp: 0,
-  currentLevel: 1,
-  lastVisit: new Date().toISOString(),
-  isOnboarded: false,
-  achievements: [],
-  dailyActivities: [],
-  situationCompletions: [],
-  toolsUsed: [],
-  promptCopyCount: 0,
-  currentStreak: 0,
-  longestStreak: 0,
-  lastActiveDate: '',
-  promptCopyByTool: {},
-  toolFirstUsedAt: {},
-};
+const GUIDE_LINKS = [
+  { href: '/situations', label: '상황별 가이드' },
+  { href: '/tools', label: 'AI 도구 목록' },
+  { href: '/compare', label: '도구 비교' },
+  { href: '/glossary', label: '용어 사전' },
+  { href: '/learn', label: '학습센터' },
+  { href: '/quiz', label: 'AI 퀴즈' },
+] as const;
 
-export function Header() {
-  const [progress, setProgress] = useState<UserProgress>(DEFAULT_PROGRESS);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setProgress(loadProgress());
-
-    const manager = getProgressManager();
-    const unsubscribe = manager.subscribe((newProgress) => {
-      setProgress(newProgress);
-    });
-
-    return unsubscribe;
-  }, []);
+export function Header(): JSX.Element {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100" role="banner">
-      <nav className="max-w-4xl mx-auto px-4 py-3" aria-label="메인 네비게이션">
+    <header
+      className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"
+      role="banner"
+    >
+      <nav
+        className="max-w-5xl mx-auto px-4 py-3"
+        aria-label="메인 네비게이션"
+      >
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2" aria-label="AI 가이드 홈으로 이동">
-            <span className="text-xl" aria-hidden="true">🤖</span>
-            <span className="font-bold text-gray-900">AI 가이드</span>
+          {/* Brand */}
+          <Link
+            href="/"
+            className="font-bold text-xl text-slate-900 tracking-tight hover:text-blue-600 transition-colors"
+            aria-label="AIWire 홈으로 이동"
+          >
+            AIWire
           </Link>
 
-          <div className="flex items-center gap-2 sm:gap-4">
-            {/* 스트릭 카운터 */}
-            {mounted && progress.isOnboarded && (
-              <StreakCounter streak={progress.currentStreak} />
-            )}
-
-            {/* 레벨 뱃지 (클릭하면 /my-progress로 이동) */}
-            {mounted && progress.isOnboarded && (
-              <Link href="/my-progress" aria-label="내 학습 현황 보기">
-                <LevelBadge progress={progress} size="sm" />
-              </Link>
-            )}
-
-            {/* 맞춤 추천 CTA */}
-            {mounted && !progress.isOnboarded ? (
+          {/* Desktop nav */}
+          <ul className="hidden md:flex items-center gap-6" role="list">
+            <li>
               <Link
-                href="/onboarding"
-                className="px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors"
+                href="/"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
               >
-                AI 추천받기
+                홈
               </Link>
-            ) : mounted && progress.isOnboarded ? (
+            </li>
+            <li>
               <Link
-                href="/onboarding"
-                className="hidden sm:inline text-sm text-blue-500 hover:text-blue-600 transition-colors"
+                href="/news"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
               >
-                다시 추천받기
+                뉴스
               </Link>
-            ) : null}
+            </li>
 
-            <Link
-              href="/learn"
-              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
-              aria-label="AI 학습센터"
-            >
-              학습센터
-            </Link>
+            {/* AI 가이드 dropdown */}
+            <li className="relative">
+              <button
+                type="button"
+                onClick={() => setGuideOpen((o) => !o)}
+                className="flex items-center gap-1 text-sm text-slate-600 hover:text-blue-600 transition-colors"
+                aria-expanded={guideOpen}
+                aria-haspopup="menu"
+                aria-controls="guide-dropdown-menu"
+              >
+                AI 가이드
+                {/* Chevron down */}
+                <svg
+                  className={`w-4 h-4 transition-transform duration-150 ${guideOpen ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
 
-            <Link
-              href="/use-cases"
-              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
-              aria-label="AI 활용 사례 보기"
-            >
-              활용 사례
-            </Link>
+              {guideOpen && (
+                <ul
+                  id="guide-dropdown-menu"
+                  role="menu"
+                  className="absolute top-full right-0 mt-2 w-44 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50"
+                >
+                  {GUIDE_LINKS.map((link) => (
+                    <li key={link.href} role="menuitem">
+                      <Link
+                        href={link.href}
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        onClick={() => setGuideOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
 
-            <Link
-              href="/news"
-              className="text-sm text-gray-600 hover:text-gray-900"
-              aria-label="AI·LLM 뉴스 보기"
-            >
-              뉴스
-            </Link>
+            <li>
+              <Link
+                href="/about"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+              >
+                소개
+              </Link>
+            </li>
 
-            <Link
-              href="/tools"
-              className="text-sm text-gray-600 hover:text-gray-900"
-              aria-label="전체 AI 도구 목록 보기"
-            >
-              전체 도구
-            </Link>
+            {/* Lang hint */}
+            <li>
+              <Link
+                href="/en/news"
+                className="text-xs text-slate-400 hover:text-blue-600 border border-slate-200 rounded px-2 py-1 transition-colors"
+                aria-label="Switch to English news"
+              >
+                EN
+              </Link>
+            </li>
+          </ul>
 
-            <Link
-              href="/about"
-              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
-              aria-label="AIWire 소개"
-            >
-              소개
-            </Link>
-          </div>
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            className="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? '메뉴 닫기' : '메뉴 열기'}
+          >
+            {mobileOpen ? (
+              /* X icon */
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              /* Hamburger icon */
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile menu panel */}
+        {mobileOpen && (
+          <div className="md:hidden pt-4 pb-3 border-t border-slate-200 mt-3">
+            <ul className="space-y-1">
+              <li>
+                <Link
+                  href="/"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  홈
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/news"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  뉴스
+                </Link>
+              </li>
+              <li>
+                <p className="py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  AI 가이드
+                </p>
+                <ul className="pl-3 space-y-1">
+                  {GUIDE_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="block py-1.5 text-sm text-slate-600 hover:text-blue-600"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  소개
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/en/news"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  English
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </nav>
     </header>
   );
