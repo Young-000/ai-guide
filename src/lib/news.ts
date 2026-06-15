@@ -88,7 +88,7 @@ export function getAllTags(lang: NewsLang, root: string = CONTENT_ROOT): string[
       tagSet.add(tag);
     }
   }
-  return [...tagSet].sort();
+  return Array.from(tagSet).sort();
 }
 
 /**
