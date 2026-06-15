@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import TipList from './tip-list';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI 활용 팁 | 실전에서 바로 쓰는 AI 사용법 | AI 가이드',

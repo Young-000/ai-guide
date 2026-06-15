@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import FaqContent from './faq-content';
 import faqData from '@/data/faq.json';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: '자주 묻는 질문 (FAQ) | AI 가이드',

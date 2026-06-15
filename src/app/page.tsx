@@ -7,14 +7,15 @@ import {
   QuickSearchSection,
   FinalCtaSection,
 } from '@/components/landing';
+import { BASE_URL } from '@/lib/site';
 
 // Static JSON-LD data for structured data (no user input, safe to use)
 const JSON_LD_DATA = {
   '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: 'AI 가이드',
-  url: 'https://ai-guide-nu.vercel.app',
-  description: 'AI를 처음 시작하는 분을 위한 맞춤형 가이드',
+  '@type': 'WebSite',
+  name: 'AIWire',
+  url: BASE_URL,
+  description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리하는 뉴스 미디어',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'All',
   offers: {

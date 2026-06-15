@@ -6,8 +6,7 @@ import tipsData from '@/data/tips.json';
 import situationsData from '@/data/situations.json';
 import { getToolBySlug } from '@/lib/tools';
 import TipContentRenderer from './tip-content-renderer';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 const tips = tipsData.tips as Tip[];
 
 interface PageProps {

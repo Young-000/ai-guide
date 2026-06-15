@@ -5,8 +5,7 @@ import type { UseCaseStory } from '@/types';
 import useCasesData from '@/data/use-cases.json';
 import situationsData from '@/data/situations.json';
 import { getToolBySlug } from '@/lib/tools';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 const useCases = useCasesData.useCases as UseCaseStory[];
 
 interface PageProps {
