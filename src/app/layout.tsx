@@ -9,6 +9,24 @@ import './globals.css';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
+// Site-wide JSON-LD: Organization + WebSite (for AEO / answer engine discovery).
+// No SearchAction — site has no dedicated search endpoint.
+const SITE_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'AIWire',
+      url: BASE_URL,
+    },
+    {
+      '@type': 'WebSite',
+      name: 'AIWire',
+      url: BASE_URL,
+    },
+  ],
+}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+
 // Keep Geist for any legacy references (CSS vars still available)
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -71,6 +89,11 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: SITE_JSON_LD }}
         />
 
         {process.env.NODE_ENV === 'production' && (
