@@ -31,7 +31,13 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
       description: article.summary,
       type: 'article',
       url: urlKo,
+      siteName: 'AIWire',
       locale: 'ko_KR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.summary,
     },
   };
 }
