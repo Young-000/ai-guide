@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import Script from 'next/script';
 import { Header, Footer, FeedbackWidget } from '@/components';
 import AchievementToast from '@/components/AchievementToast';
+import Analytics from '@/components/Analytics';
 import { BASE_URL } from '@/lib/site';
 import './globals.css';
 
@@ -111,6 +112,7 @@ export default function RootLayout({
         <Footer />
         <FeedbackWidget />
         <AchievementToast />
+        <Analytics />
       </body>
     </html>
   );
