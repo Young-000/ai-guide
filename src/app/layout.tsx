@@ -1,22 +1,23 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import Script from "next/script";
-import { Header, Footer, FeedbackWidget } from "@/components";
-import AchievementToast from "@/components/AchievementToast";
-import { BASE_URL } from "@/lib/site";
-import "./globals.css";
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import Script from 'next/script';
+import { Header, Footer, FeedbackWidget } from '@/components';
+import AchievementToast from '@/components/AchievementToast';
+import { BASE_URL } from '@/lib/site';
+import './globals.css';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
+// Keep Geist for any legacy references (CSS vars still available)
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+  weight: '100 900',
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  weight: '100 900',
 });
 
 export const metadata: Metadata = {
@@ -24,28 +25,16 @@ export const metadata: Metadata = {
   description:
     'AI·LLM 분야의 최신 소식을 매일 한국어·영어로 정리하는 뉴스 미디어. AI 도구 가이드, 학습 자료, 비교 분석까지 제공합니다.',
   keywords: [
-    'AI 뉴스',
-    'LLM 뉴스',
-    'AI 최신 소식',
-    'AI 가이드',
-    'AI 입문',
-    'ChatGPT 사용법',
-    'Claude 사용법',
-    'AI 도구 추천',
-    'AI 활용법',
-    '인공지능 뉴스',
-    'AI 도구 비교',
-    'AI 미디어',
+    'AI 뉴스', 'LLM 뉴스', 'AI 최신 소식', 'AI 가이드', 'AI 입문',
+    'ChatGPT 사용법', 'Claude 사용법', 'AI 도구 추천', 'AI 활용법',
+    '인공지능 뉴스', 'AI 도구 비교', 'AI 미디어',
   ],
   authors: [{ name: 'AIWire 편집팀' }],
   robots: { index: true, follow: true },
-  alternates: {
-    canonical: BASE_URL,
-  },
+  alternates: { canonical: BASE_URL },
   openGraph: {
     title: 'AIWire | AI·LLM 뉴스 미디어',
-    description:
-      'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
+    description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
     type: 'website',
     url: BASE_URL,
     siteName: 'AIWire',
@@ -54,8 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AIWire | AI·LLM 뉴스 미디어',
-    description:
-      'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다.',
+    description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다.',
   },
 };
 
@@ -63,10 +51,21 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <html lang="ko">
       <head>
+        {/* Pretendard — Korean web standard font via CDN */}
+        <link
+          rel="preconnect"
+          href="https://cdn.jsdelivr.net"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+        />
+
         {process.env.NODE_ENV === 'production' && (
           <Script
             async
@@ -86,23 +85,27 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${GA_ID}'${process.env.NEXT_PUBLIC_GA_DEBUG === 'true' ? ", { debug_mode: true }" : ''});
+                gtag('config', '${GA_ID}'${
+                  process.env.NEXT_PUBLIC_GA_DEBUG === 'true'
+                    ? ", { debug_mode: true }"
+                    : ''
+                });
               `}
             </Script>
           </>
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
       >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-500 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium"
         >
           본문으로 건너뛰기
         </a>
         <Header />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1 bg-white">
           {children}
         </main>
         <Footer />
