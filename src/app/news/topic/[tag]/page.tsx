@@ -75,6 +75,51 @@ export default function TopicPage({ params }: { params: Params }): JSX.Element {
           ))}
         </div>
       )}
+
+      {/* Cross-links: 다른 주제 */}
+      {(() => {
+        const siblingTags = allTags.filter((t) => t !== tag).slice(0, 6);
+        if (siblingTags.length === 0) return null;
+        return (
+          <div className="mt-12 pt-8 border-t border-slate-200">
+            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+              다른 주제
+            </h2>
+            <ul className="flex flex-wrap gap-2">
+              {siblingTags.map((sibling) => (
+                <li key={sibling}>
+                  <Link
+                    href={`/news/topic/${encodeURIComponent(sibling)}`}
+                    className="inline-block text-sm px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600 transition-colors"
+                  >
+                    {sibling}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/news/topics"
+              className="inline-flex items-center gap-1 mt-4 text-sm text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              전체 주제 보기
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+          </div>
+        );
+      })()}
     </section>
   );
 }
