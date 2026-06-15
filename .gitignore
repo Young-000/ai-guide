@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# news pipeline runtime output (ephemeral — never commit)
+scripts/worklist.json

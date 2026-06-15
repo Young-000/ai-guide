@@ -1,0 +1,7 @@
+[
+  { "name": "OpenAI Blog", "url": "https://openai.com/news/rss/" },
+  { "name": "Google AI Blog", "url": "https://blog.google/technology/ai/rss/" },
+  { "name": "Hugging Face Blog", "url": "https://huggingface.co/blog/feed.xml" },
+  { "name": "MIT Tech Review AI", "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed" },
+  { "name": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/" }
+]
