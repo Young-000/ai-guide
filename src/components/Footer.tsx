@@ -47,6 +47,7 @@ export function Footer(): JSX.Element {
             <ul className="space-y-2">
               {[
                 { href: '/news', label: '뉴스' },
+                { href: '/news/topics', label: '주제별 뉴스' },
                 { href: '/en/news', label: 'English' },
                 { href: '/about', label: '소개' },
                 { href: '/privacy', label: '개인정보처리방침' },
