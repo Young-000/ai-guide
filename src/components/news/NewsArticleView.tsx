@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AdUnit from '@/components/AdUnit';
 import ArticleJsonLd from './ArticleJsonLd';
+import ShareRow from './ShareRow';
 import ArticleViewTracker from './ArticleViewTracker';
 import SubscribeBox from '@/components/SubscribeBox';
 import NewsCard from './NewsCard';
@@ -96,6 +97,8 @@ export default function NewsArticleView({
             </ul>
           )}
         </header>
+
+        <ShareRow title={article.title} summary={article.summary} url={url} lang={lang} />
 
         {/*
           Article body — custom typography via Tailwind arbitrary variants.

@@ -32,7 +32,13 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'AIWire 편집팀' }],
   robots: { index: true, follow: true },
-  alternates: { canonical: BASE_URL },
+  metadataBase: new URL(BASE_URL),
+  alternates: {
+    canonical: BASE_URL,
+    types: {
+      'application/rss+xml': `${BASE_URL}/feed.xml`,
+    },
+  },
   openGraph: {
     title: 'AIWire | AI·LLM 뉴스 미디어',
     description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
