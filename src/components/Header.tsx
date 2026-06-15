@@ -54,6 +54,15 @@ export function Header(): JSX.Element {
               </Link>
             </li>
 
+            <li>
+              <Link
+                href="/map"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+              >
+                지식맵
+              </Link>
+            </li>
+
             {/* AI 가이드 dropdown */}
             <li className="relative">
               <button
@@ -188,6 +197,15 @@ export function Header(): JSX.Element {
                   onClick={() => setMobileOpen(false)}
                 >
                   뉴스
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/map"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  지식맵
                 </Link>
               </li>
               <li>

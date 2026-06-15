@@ -6,7 +6,7 @@ import type { GraphLink } from '@/lib/graph';
 // mock the module to redirect it at the fixtures directory.
 jest.mock('@/lib/news', () => {
   const actual = jest.requireActual<typeof import('@/lib/news')>('@/lib/news');
-  const path = require('node:path') as typeof import('node:path');
+  const path = jest.requireActual<typeof import('node:path')>('node:path');
   const fixtures = path.join(__dirname, 'fixtures', 'news');
   return {
     ...actual,
