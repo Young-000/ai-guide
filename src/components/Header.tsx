@@ -53,6 +53,14 @@ export function Header(): JSX.Element {
                 뉴스
               </Link>
             </li>
+            <li>
+              <Link
+                href="/news/topics"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
+              >
+                주제
+              </Link>
+            </li>
 
             <li>
               <Link
@@ -197,6 +205,15 @@ export function Header(): JSX.Element {
                   onClick={() => setMobileOpen(false)}
                 >
                   뉴스
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/news/topics"
+                  className="block py-2 text-sm text-slate-700 hover:text-blue-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  주제
                 </Link>
               </li>
               <li>
