@@ -7,6 +7,7 @@ import {
   QuickSearchSection,
   FinalCtaSection,
 } from '@/components/landing';
+import LatestNewsSection from '@/components/home/LatestNewsSection';
 import { BASE_URL } from '@/lib/site';
 
 // Static JSON-LD data for structured data (no user input, safe to use)
@@ -16,13 +17,6 @@ const JSON_LD_DATA = {
   name: 'AIWire',
   url: BASE_URL,
   description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리하는 뉴스 미디어',
-  applicationCategory: 'EducationalApplication',
-  operatingSystem: 'All',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'KRW',
-  },
   inLanguage: 'ko',
 };
 
@@ -36,6 +30,9 @@ export default function Home(): JSX.Element {
           __html: JSON.stringify(JSON_LD_DATA),
         }}
       />
+
+      {/* Latest AI news feed — media-style above the fold */}
+      <LatestNewsSection />
 
       {/* Section 1: Hero - Value proposition + CTA */}
       <HeroSection />
