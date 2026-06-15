@@ -3,8 +3,7 @@ import type { Metadata } from 'next';
 import type { Situation } from '@/types';
 import situationsData from '@/data/situations.json';
 import SituationDetail from './situation-detail';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 const situations = situationsData.situations as Situation[];
 
 interface PageProps {

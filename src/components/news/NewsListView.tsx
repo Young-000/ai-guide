@@ -1,9 +1,11 @@
+import type { ReactNode } from 'react';
 import type { NewsLang, NewsMeta } from '@/types/news';
 import NewsCard from './NewsCard';
 
 type NewsListViewProps = {
   lang: NewsLang;
   items: readonly NewsMeta[];
+  topSlot?: ReactNode;
 };
 
 const COPY: Record<NewsLang, { heading: string; subtitle: string; empty: string }> = {
@@ -19,12 +21,13 @@ const COPY: Record<NewsLang, { heading: string; subtitle: string; empty: string 
   },
 };
 
-export default function NewsListView({ lang, items }: NewsListViewProps): JSX.Element {
+export default function NewsListView({ lang, items, topSlot }: NewsListViewProps): JSX.Element {
   const copy = COPY[lang];
   return (
     <section className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900">{copy.heading}</h1>
       <p className="mt-2 text-gray-600">{copy.subtitle}</p>
+      {topSlot && <div className="mt-4">{topSlot}</div>}
       {items.length === 0 ? (
         <p className="mt-8 text-gray-500">{copy.empty}</p>
       ) : (

@@ -112,6 +112,14 @@ export function Header() {
             >
               전체 도구
             </Link>
+
+            <Link
+              href="/about"
+              className="hidden sm:inline text-sm text-gray-600 hover:text-gray-900"
+              aria-label="AIWire 소개"
+            >
+              소개
+            </Link>
           </div>
         </div>
       </nav>

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { Header, Footer, FeedbackWidget } from "@/components";
 import AchievementToast from "@/components/AchievementToast";
+import { BASE_URL } from "@/lib/site";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -19,42 +20,42 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'AI 가이드 | 5분 만에 나에게 맞는 AI 찾기',
+  title: 'AIWire | AI·LLM 뉴스 미디어',
   description:
-    'AI를 처음 시작하는 분을 위한 맞춤형 가이드. 3가지 질문에 답하면 나에게 딱 맞는 AI 도구와 바로 따라할 수 있는 사용법을 알려드려요. 무료.',
+    'AI·LLM 분야의 최신 소식을 매일 한국어·영어로 정리하는 뉴스 미디어. AI 도구 가이드, 학습 자료, 비교 분석까지 제공합니다.',
   keywords: [
-    'AI 추천',
+    'AI 뉴스',
+    'LLM 뉴스',
+    'AI 최신 소식',
     'AI 가이드',
     'AI 입문',
-    'AI 초보',
     'ChatGPT 사용법',
     'Claude 사용법',
     'AI 도구 추천',
     'AI 활용법',
-    'AI 시작하기',
-    '인공지능 입문',
+    '인공지능 뉴스',
     'AI 도구 비교',
-    '맞춤 AI 추천',
+    'AI 미디어',
   ],
-  authors: [{ name: 'AI Guide Team' }],
+  authors: [{ name: 'AIWire 편집팀' }],
   robots: { index: true, follow: true },
   alternates: {
-    canonical: 'https://ai-guide-nu.vercel.app',
+    canonical: BASE_URL,
   },
   openGraph: {
-    title: 'AI 가이드 | 5분 만에 나에게 맞는 AI 찾기',
+    title: 'AIWire | AI·LLM 뉴스 미디어',
     description:
-      '3가지 질문에 답하면 나에게 딱 맞는 AI 도구를 추천해드려요. 바로 따라할 수 있는 단계별 가이드까지.',
+      'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
     type: 'website',
-    url: 'https://ai-guide-nu.vercel.app',
-    siteName: 'AI 가이드',
+    url: BASE_URL,
+    siteName: 'AIWire',
     locale: 'ko_KR',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI 가이드 | 5분 만에 나에게 맞는 AI 찾기',
+    title: 'AIWire | AI·LLM 뉴스 미디어',
     description:
-      '3가지 질문에 답하면 나에게 딱 맞는 AI 도구를 추천해드려요.',
+      'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다.',
   },
 };
 

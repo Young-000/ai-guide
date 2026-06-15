@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import LearnContent from './learn-content';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI 학습센터 | 51개 가이드와 팁으로 AI 마스터하기 | AI 가이드',

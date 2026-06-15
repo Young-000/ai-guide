@@ -7,6 +7,7 @@ import { buildToolUrl } from '@/lib/affiliateLinks';
 import OutboundToolLink from '@/components/OutboundToolLink';
 import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
+import { BASE_URL } from '@/lib/site';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -17,8 +18,6 @@ export async function generateStaticParams() {
     slug: tool.slug,
   }));
 }
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;

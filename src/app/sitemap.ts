@@ -3,12 +3,16 @@ import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
-import { getAllNews } from '@/lib/news';
+import { getAllNews, getAllTags } from '@/lib/news';
 import { BASE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${BASE_URL}/news`, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/contact`, changeFrequency: 'yearly', priority: 0.4 },
+    { url: `${BASE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/onboarding`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE_URL}/situations`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/tools`, changeFrequency: 'weekly', priority: 0.8 },
@@ -48,7 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const newsListRoutes: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/news`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${BASE_URL}/en/news`, changeFrequency: 'daily', priority: 0.8 },
   ];
 
@@ -66,6 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const topicRoutes: MetadataRoute.Sitemap = getAllTags('ko').map((tag) => ({
+    url: `${BASE_URL}/news/topic/${encodeURIComponent(tag)}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
   return [
     ...staticRoutes,
     ...situationRoutes,
@@ -75,5 +84,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...newsListRoutes,
     ...newsKo,
     ...newsEn,
+    ...topicRoutes,
   ];
 }

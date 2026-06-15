@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import UseCaseList from './use-case-list';
-
-const BASE_URL = 'https://ai-guide-nu.vercel.app';
+import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI 활용 사례 | AI Guide',

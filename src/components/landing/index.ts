@@ -1,0 +1,9 @@
+export { default as HeroSection } from './HeroSection';
+export { default as PainPointsSection } from './PainPointsSection';
+export { default as PersonaCard } from './PersonaCard';
+export { default as HowItWorksSection } from './HowItWorksSection';
+export { default as PopularSituationsSection } from './PopularSituationsSection';
+export { default as SituationCardCompact } from './SituationCardCompact';
+export { default as StatsSection } from './StatsSection';
+export { default as QuickSearchSection } from './QuickSearchSection';
+export { default as FinalCtaSection } from './FinalCtaSection';
