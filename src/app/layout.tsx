@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { Header, Footer, FeedbackWidget } from '@/components';
 import AchievementToast from '@/components/AchievementToast';
 import Analytics from '@/components/Analytics';
@@ -142,6 +143,7 @@ export default function RootLayout({
         <FeedbackWidget />
         <AchievementToast />
         <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );
