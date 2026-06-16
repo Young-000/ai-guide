@@ -35,12 +35,12 @@ function mockFetchNetworkFailure(): void {
 describe('SubscribeBox — static rendering', () => {
   it('renders the heading', () => {
     render(<SubscribeBox />);
-    expect(screen.getByText('매일 AI 뉴스를 메일로 받아보세요')).toBeInTheDocument();
+    expect(screen.getByText('매주 핵심 AI 소식, 한 번에 받기')).toBeInTheDocument();
   });
 
-  it('renders the coming-soon badge', () => {
+  it('renders the value-led badge', () => {
     render(<SubscribeBox />);
-    expect(screen.getByText('곧 오픈 예정 (Coming soon)')).toBeInTheDocument();
+    expect(screen.getByText('무료 뉴스레터')).toBeInTheDocument();
   });
 
   it('renders the email input and submit button', () => {
@@ -59,7 +59,7 @@ describe('SubscribeBox — success path', () => {
     fireEvent.click(screen.getByRole('button', { name: '구독 신청' }));
     expect(screen.getByRole('button')).toBeDisabled();
     await waitFor(() =>
-      expect(screen.getByRole('status')).toHaveTextContent('오픈하면 이 메일로 알려드릴게요')
+      expect(screen.getByRole('status')).toHaveTextContent('구독 신청이 완료됐어요')
     );
   });
 
@@ -70,7 +70,7 @@ describe('SubscribeBox — success path', () => {
     await waitFor(() =>
       expect(screen.queryByRole('form', { name: '뉴스레터 구독' })).not.toBeInTheDocument()
     );
-    expect(screen.getByRole('status')).toHaveTextContent('곧 오픈 예정입니다');
+    expect(screen.getByRole('status')).toHaveTextContent('구독 신청이 완료됐어요');
   });
 
   it('calls POST /api/subscribe with the trimmed email', async () => {

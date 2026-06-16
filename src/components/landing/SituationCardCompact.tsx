@@ -52,7 +52,7 @@ export default function SituationCardCompact({
         >
           {difficultyLabels[situation.difficulty]}
         </span>
-        <span className="inline-flex items-center gap-1 text-gray-400">
+        <span className="inline-flex items-center gap-1 text-gray-500">
           <svg
             className="w-3 h-3"
             fill="none"

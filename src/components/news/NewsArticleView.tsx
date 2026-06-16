@@ -21,10 +21,40 @@ const NEWS_AD_SLOT = process.env.NEXT_PUBLIC_ADSENSE_NEWS_SLOT;
 
 const COPY: Record<
   NewsLang,
-  { back: string; backHref: string; sources: string; related: string }
+  {
+    back: string;
+    backHref: string;
+    sources: string;
+    related: string;
+    updated: string;
+    guideTitle: string;
+    guideBody: string;
+    guideCta: string;
+    recommendCta: string;
+  }
 > = {
-  ko: { back: '뉴스 목록', backHref: '/news', sources: '출처', related: '관련 기사' },
-  en: { back: 'All news', backHref: '/en/news', sources: 'Sources', related: 'Related articles' },
+  ko: {
+    back: '뉴스 목록',
+    backHref: '/news',
+    sources: '출처',
+    related: '관련 기사',
+    updated: '최종 업데이트',
+    guideTitle: 'AI를 직접 써보고 싶다면',
+    guideBody: '상황별 AI 활용 가이드에서 바로 따라 할 수 있는 프롬프트와 도구를 찾아보세요.',
+    guideCta: 'AI 활용 가이드 보기',
+    recommendCta: '나에게 맞는 AI 찾기',
+  },
+  en: {
+    back: 'All news',
+    backHref: '/en/news',
+    sources: 'Sources',
+    related: 'Related articles',
+    updated: 'Last updated',
+    guideTitle: 'Want to try AI yourself?',
+    guideBody: 'Explore step-by-step guides with ready-to-use prompts and tools.',
+    guideCta: 'Browse AI guides',
+    recommendCta: 'Find the right AI for you',
+  },
 };
 
 export default function NewsArticleView({
@@ -69,12 +99,19 @@ export default function NewsArticleView({
       {/* Article */}
       <article className="mt-6 max-w-2xl">
         <header>
-          <time
-            dateTime={article.date}
-            className="text-xs font-semibold text-blue-600 uppercase tracking-wider"
-          >
-            {article.date}
-          </time>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <time
+              dateTime={article.date}
+              className="text-xs font-semibold text-blue-600 uppercase tracking-wider"
+            >
+              {article.date}
+            </time>
+            {article.dateModified && article.dateModified !== article.date && (
+              <span className="text-xs text-slate-500">
+                {copy.updated}: {article.dateModified}
+              </span>
+            )}
+          </div>
           <h1 className="mt-2 text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
             {article.title}
           </h1>
@@ -155,6 +192,34 @@ export default function NewsArticleView({
           </footer>
         )}
       </article>
+
+      {/* Contextual cross-link: news → usage guides (internal linking) */}
+      <aside
+        aria-labelledby="article-guide-cta-heading"
+        className="mt-12 rounded-2xl border border-slate-200 bg-slate-50 p-6"
+      >
+        <h2
+          id="article-guide-cta-heading"
+          className="text-lg font-bold text-slate-900"
+        >
+          {copy.guideTitle}
+        </h2>
+        <p className="mt-1.5 text-sm text-slate-600">{copy.guideBody}</p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/learn"
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            {copy.guideCta}
+          </Link>
+          <Link
+            href="/onboarding"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-white"
+          >
+            {copy.recommendCta}
+          </Link>
+        </div>
+      </aside>
 
       {/* Related articles */}
       {relatedItems.length > 0 && (

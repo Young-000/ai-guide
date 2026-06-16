@@ -3,12 +3,21 @@ import { join } from 'node:path';
 import { getAllNews } from '../src/lib/news';
 import { parseFeed, dedupeItems } from '../src/lib/news-feed';
 import type { FeedItem } from '../src/lib/news-feed';
+import {
+  fetchTrendingKeywords,
+  isAiRelatedKeyword,
+} from '../src/lib/trending';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type FeedConfig = { name: string; url: string };
 type PublishedState = { urls: string[] };
-type Worklist = { generatedAt: string; items: FeedItem[] };
+type TrendingSeed = { keyword: string; rank: number };
+type Worklist = {
+  generatedAt: string;
+  items: FeedItem[];
+  trendingSeeds: TrendingSeed[];
+};
 
 const MAX_ITEMS = 8;
 const ROOT = join(__dirname, '..');
@@ -60,11 +69,33 @@ async function fetchFeed(feed: FeedConfig): Promise<FeedItem[]> {
   }
 }
 
+// ─── Trending seeds (optional, fail-open) ─────────────────────────────────────
+//
+// Pulls the latest KR trending search keywords from the shared search_trends DB
+// and keeps only AI-related ones as article-topic candidates. Never blocks the
+// pipeline: any failure (missing SUPABASE_* env, DB down) yields [].
+async function fetchTrendingSeeds(): Promise<TrendingSeed[]> {
+  try {
+    const keywords = await fetchTrendingKeywords(20);
+    return keywords
+      .filter((k) => isAiRelatedKeyword(k.keyword))
+      .map((k) => ({ keyword: k.keyword, rank: k.rank }));
+  } catch (err) {
+    console.warn(`[WARN] trending seeds skipped: ${(err as Error).message}`);
+    return [];
+  }
+}
+
 async function main(): Promise<void> {
   console.log(`Fetching ${feeds.length} feeds…`);
 
   const results = await Promise.all(feeds.map(fetchFeed));
   const allItems = results.flat();
+
+  const trendingSeeds = await fetchTrendingSeeds();
+  if (trendingSeeds.length > 0) {
+    console.log(`  trending seeds (AI-related): ${trendingSeeds.length}`);
+  }
 
   // Dedup against published + existing articles
   const freshItems = dedupeItems(allItems, publishedUrls, existingTitles);
@@ -84,6 +115,7 @@ async function main(): Promise<void> {
   const worklist: Worklist = {
     generatedAt: new Date().toISOString(),
     items: sorted,
+    trendingSeeds,
   };
   const worklistPath = join(ROOT, 'scripts', 'worklist.json');
   writeFileSync(worklistPath, JSON.stringify(worklist, null, 2) + '\n');

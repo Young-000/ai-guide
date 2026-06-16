@@ -33,21 +33,22 @@ export default function SubscribeBox(): JSX.Element {
 
   return (
     <div className="max-w-lg mx-auto text-center">
-      {/* Coming soon badge */}
-      <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-700 mb-4">
-        곧 오픈 예정 (Coming soon)
+      {/* Value-led badge */}
+      <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 mb-4">
+        무료 뉴스레터
       </span>
 
       <h2 className="text-2xl font-bold text-slate-900">
-        매일 AI 뉴스를 메일로 받아보세요
+        매주 핵심 AI 소식, 한 번에 받기
       </h2>
       <p className="mt-2 text-slate-600 text-sm">
-        매일 아침 AI·LLM 핵심 소식을 받아보실 수 있어요.
+        쏟아지는 AI·LLM 뉴스 중 꼭 알아야 할 것만 골라 메일로 보내드려요.
+        뉴스레터 발송이 시작되면 구독자분들께 가장 먼저 보내드립니다.
       </p>
 
       {state === 'success' ? (
         <p className="mt-6 text-slate-700 font-medium" role="status">
-          곧 오픈 예정입니다. 오픈하면 이 메일로 알려드릴게요! 🎉
+          구독 신청이 완료됐어요. 첫 뉴스레터가 준비되면 이 메일로 가장 먼저 보내드릴게요! 🎉
         </p>
       ) : (
         <form

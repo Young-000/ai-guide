@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BASE_URL } from '@/lib/site';
+import EmbedSnippet from '@/components/EmbedSnippet';
+
+const EMBED_IFRAME = `<iframe src="${BASE_URL}/embed/ai-news" width="100%" height="360" style="border:1px solid #e2e8f0;border-radius:12px;" title="AIWire 최신 AI 뉴스" loading="lazy"></iframe>`;
 
 export const metadata: Metadata = {
   title: '소개 | AIWire',
@@ -104,6 +107,25 @@ export default function AboutPage(): JSX.Element {
             외부 링크는 새 탭에서 열리며, 당사는 외부 사이트의 내용에 책임을 지지 않습니다.
           </li>
         </ul>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold text-gray-800 mb-3">이 위젯 임베드하기</h2>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          AIWire의 최신 AI 뉴스를 여러분의 블로그나 웹사이트에 무료로 붙일 수 있어요.
+          아래 코드를 복사해 원하는 위치에 넣으면 됩니다.
+        </p>
+        <EmbedSnippet code={EMBED_IFRAME} />
+        <p className="mt-3 text-sm text-gray-500">
+          미리보기는{' '}
+          <Link
+            href="/embed/ai-news"
+            className="text-blue-600 hover:underline"
+          >
+            /embed/ai-news
+          </Link>
+          에서 확인할 수 있어요.
+        </p>
       </section>
 
       <section className="mt-10">

@@ -61,7 +61,7 @@ export default function ResultCard({
           <p className="text-sm text-gray-500 mb-2 line-clamp-1">{situation.subtitle}</p>
 
           {/* 추천 도구 & 소요시간 */}
-          <div className="flex items-center gap-3 text-xs text-gray-400">
+          <div className="flex items-center gap-3 text-xs text-gray-500">
             {primaryTool && (
               <span className="flex items-center gap-1">
                 <span className="text-blue-500">🏆</span>

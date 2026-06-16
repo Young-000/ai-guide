@@ -351,6 +351,23 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
         </section>
       )}
 
+      {/* 관련 뉴스 — 가이드 → 뉴스 내부 링크 */}
+      <section className="mb-10 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <h2 className="text-lg font-bold text-slate-900">관련 뉴스</h2>
+        <p className="mt-1.5 text-sm text-slate-600">
+          이 도구와 AI 업계의 최신 소식이 궁금하다면 AIWire 뉴스에서 확인해 보세요.
+        </p>
+        <Link
+          href="/news"
+          className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700"
+        >
+          최신 AI 뉴스 보기
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
+      </section>
+
       {/* 하단 CTA */}
       <section className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-8 text-center text-white">
         <h2 className="text-2xl font-bold mb-2">

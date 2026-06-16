@@ -25,7 +25,7 @@ export function Footer(): JSX.Element {
 
           {/* AI 가이드 column */}
           <nav aria-label="AI 가이드 링크">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
               AI 가이드
             </p>
             <ul className="space-y-2">
@@ -55,7 +55,7 @@ export function Footer(): JSX.Element {
 
           {/* Site links column */}
           <nav aria-label="사이트 링크">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
               사이트
             </p>
             <ul className="space-y-2">
@@ -80,7 +80,7 @@ export function Footer(): JSX.Element {
           </nav>
         </div>
 
-        <p className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-400">
+        <p className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-500">
           © {new Date().getFullYear()} AIWire. 본 사이트의 일부 콘텐츠는 AI 도구의 보조를 받아
           작성되며 편집자가 검수합니다.
         </p>
