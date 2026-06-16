@@ -3,16 +3,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+// Navigation simplified: /learn is the single exploration hub (it absorbs the
+// situations/use-cases/tips browse views), so it leads the menu. The remaining
+// links are distinct tools/reference, not duplicate browse surfaces.
 const GUIDE_LINKS = [
-  { href: '/situations', label: '상황별 가이드' },
+  { href: '/learn', label: '학습센터 (전체 가이드)' },
   { href: '/tools', label: 'AI 도구 목록' },
   { href: '/compare', label: '도구 비교' },
-  { href: '/use-cases', label: '활용 사례' },
-  { href: '/tips', label: '활용 팁' },
-  { href: '/glossary', label: '용어 사전' },
+  { href: '/onboarding', label: 'AI 추천받기' },
   { href: '/trends', label: '트렌드' },
-  { href: '/learn', label: '학습센터' },
-  { href: '/quiz', label: 'AI 퀴즈' },
+  { href: '/glossary', label: '용어 사전' },
   { href: '/faq', label: 'FAQ' },
 ] as const;
 

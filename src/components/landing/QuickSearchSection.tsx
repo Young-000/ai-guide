@@ -140,7 +140,7 @@ export default function QuickSearchSection(): JSX.Element {
                   <p className="text-gray-500 mb-2">
                     &quot;{query}&quot;에 맞는 상황을 찾지 못했어요
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-500">
                     다른 키워드로 검색하거나 카테고리를 선택해보세요
                   </p>
                 </div>

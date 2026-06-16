@@ -163,7 +163,7 @@ export default function LearnContent(): React.ReactElement {
               }`}
             >
               <span>{filter.label}</span>
-              <span className={`text-xs ${selectedType === filter.id ? 'text-gray-300' : 'text-gray-400'}`}>
+              <span className={`text-xs ${selectedType === filter.id ? 'text-gray-200' : 'text-gray-500'}`}>
                 {filter.count}
               </span>
             </button>
@@ -243,7 +243,7 @@ export default function LearnContent(): React.ReactElement {
         <div className="text-center py-16">
           <p className="text-gray-400 text-5xl mb-4">🔍</p>
           <p className="text-gray-500 text-lg mb-2">해당 조건의 자료가 없습니다</p>
-          <p className="text-gray-400 mb-6">다른 필터를 선택해보세요.</p>
+          <p className="text-gray-500 mb-6">다른 필터를 선택해보세요.</p>
           <button
             type="button"
             onClick={resetFilters}

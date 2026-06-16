@@ -124,7 +124,7 @@ export default function HeroSection(): JSX.Element {
         </div>
 
         {/* Trust indicators */}
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-500">
           {situations.length}개 상황 가이드 | {tools.length}개 AI 도구 | 무료
         </p>
       </div>

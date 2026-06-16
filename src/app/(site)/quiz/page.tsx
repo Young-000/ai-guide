@@ -260,6 +260,15 @@ export default function QuizPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
+      {/* 추천 엔진 일원화 안내 — 더 자세한 맞춤 추천은 /onboarding으로 */}
+      <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-slate-700">
+        더 자세한 맞춤 추천을 원하시면{' '}
+        <Link href="/onboarding" className="font-semibold text-blue-700 hover:underline">
+          AI 추천받기
+        </Link>
+        를 이용해 보세요. 이 퀴즈는 빠르게 도구만 보고 싶을 때 좋아요.
+      </div>
+
       {/* 헤더 */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">

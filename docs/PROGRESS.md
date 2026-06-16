@@ -2,6 +2,38 @@
 
 ## 현재 상태
 
+- 2026-06-16 `adc1631` feat: P0+P1 fixes — brand AIWire, real ad slots, CTA/nav, h1, /en lang, NewsArticle JSON-LD+image, OG image, font opt, AdFit unit, Vercel Analytics
+- 2026-06-16 `03ae25e` feat(news): 3개 AI 다이제스트 발행 2026-06-16
+- 2026-06-16 `bb466e9` feat(news): 3개 AI 다이제스트 발행 (2026-06-16)
+
+
+- 2026-06-16 `916f28b` content: deepen + refresh all guide pages to 2026-06
+- 2026-06-16 `c2ee9c6` content: refresh AI guide data to 2026-06 model lineup
+- 2026-06-16 `b23587e` docs: 대기 중인 사장님 액션 기록 (ESP·Amplitude·제휴·자동게시·AdFit)
+- 2026-06-16 `1080c2d` feat(pseo): add /news/topics to sitemap
+- 2026-06-16 `1271ee0` feat(pseo): add 다른 주제 cross-links on topic pages
+- 2026-06-16 `b7157a8` feat(pseo): link to topics hub from /news page
+- 2026-06-16 `eea9aeb` feat(pseo): add 주제 nav link in Header and Footer
+- 2026-06-16 `5f7201a` feat(pseo): add /news/topics hub page with tag counts
+- 2026-06-16 `be160a5` feat(news): add getTagsWithCount helper + unit tests
+- 2026-06-16 `63554b6` feat(aeo): add llms.txt, llms-full.txt, and structured data for answer engine optimization
+- 2026-06-16 `99f9187` feat(share): add ShareRow component + wire into NewsArticleView; refactor rss builder to src/lib/rss.ts
+- 2026-06-16 `9770e4c` feat(meta): add siteName + Twitter card to article page metadata
+- 2026-06-16 `7627396` feat(meta): add metadataBase and RSS discovery link to root layout
+- 2026-06-16 `50bf846` feat(rss): add RSS 2.0 feeds at /feed.xml and /en/feed.xml
+- 2026-06-16 `60e0ed1` feat(share): add buildShareText pure helper with tests
+- 2026-06-16 `c821d0c` feat(analytics): add Amplitude product analytics
+- 2026-06-16 `e11dec2` feat(affiliate): add affiliate revenue layer with config, disclosure, and sponsored rel
+- 2026-06-16 `2b2c96a` feat(subscribe): wire SubscribeBox to POST /api/subscribe with pending/success/error states
+- 2026-06-16 `7bed229` feat(api): add POST /api/subscribe endpoint with email validation and Supabase insert
+- 2026-06-16 `f2adf6f` chore: install @supabase/supabase-js and add service client factory
+- 2026-06-16 `3dd0052` feat: /map 지식맵 페이지 + 클라이언트 래퍼(ssr:false) + 네비 링크
+- 2026-06-16 `8fb5a0f` feat: KnowledgeMap force-directed graph component
+- 2026-06-16 `7012bf7` feat: graph data builder with unit tests
+- 2026-06-16 `fd5d515` chore: add react-force-graph-2d
+- 2026-06-16 `6ab1924` feat: redesign AIWire as editorial news media site
+
+
 - 완성도: 85%
 - 상태: feature 브랜치에서 상황 기반 피벗 진행 중 (18일간 방치)
 
