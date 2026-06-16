@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { Header, Footer, FeedbackWidget } from '@/components';
 import AchievementToast from '@/components/AchievementToast';
 import Analytics from '@/components/Analytics';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { BASE_URL } from '@/lib/site';
 import './globals.css';
 
@@ -142,6 +143,7 @@ export default function RootLayout({
         <FeedbackWidget />
         <AchievementToast />
         <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );
