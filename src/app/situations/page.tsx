@@ -191,7 +191,7 @@ export default function SituationsPage() {
             AI 추천 테스트 →
           </Link>
           <Link
-            href="/"
+            href="/tools"
             className="inline-block px-6 py-3 bg-white text-gray-900 font-medium rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
           >
             전체 도구 보기

@@ -87,7 +87,7 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
             </span>
           </div>
           <ShareButton
-            title={`${situation.title} - AI 가이드`}
+            title={`${situation.title} | AIWire`}
             description={situation.subtitle}
           />
         </div>
@@ -215,7 +215,7 @@ export default function SituationDetail({ situation, relatedSituations }: Situat
 
       {/* Ad: between 따라하기 and 바로 쓰는 프롬프트 */}
       <AdUnit
-        slot="1234567890"
+        slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT ?? ''}
         format="rectangle"
         className="my-8"
         dataPage="situation-detail"

@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   const urlKo = `${BASE_URL}/news/${article.slug}`;
   const urlEn = `${BASE_URL}/en/news/${article.slug}`;
   return {
-    title: `${article.title} | AI Guide`,
+    title: `${article.title} | AIWire`,
     description: article.summary,
     alternates: {
       canonical: urlEn,

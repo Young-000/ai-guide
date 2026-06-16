@@ -19,20 +19,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const situation = situations.find((s) => s.slug === slug);
 
   if (!situation) {
-    return { title: 'AI 가이드' };
+    return { title: 'AIWire' };
   }
 
   return {
-    title: `${situation.title} | AI 가이드`,
+    title: `${situation.title} | AIWire`,
     description: situation.subtitle,
     alternates: {
       canonical: `${BASE_URL}/situations/${slug}`,
     },
     openGraph: {
-      title: `${situation.title} | AI 가이드`,
+      title: `${situation.title} | AIWire`,
       description: situation.subtitle,
       url: `${BASE_URL}/situations/${slug}`,
-      siteName: 'AI 가이드',
+      siteName: 'AIWire',
       locale: 'ko_KR',
       type: 'article',
     },

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import Script from 'next/script';
 import { Header, Footer, FeedbackWidget } from '@/components';
 import AchievementToast from '@/components/AchievementToast';
 import Analytics from '@/components/Analytics';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { BASE_URL } from '@/lib/site';
 import './globals.css';
 
@@ -26,18 +26,6 @@ const SITE_JSON_LD = JSON.stringify({
     },
   ],
 }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
-
-// Keep Geist for any legacy references (CSS vars still available)
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
 
 export const metadata: Metadata = {
   title: 'AIWire | AI·LLM 뉴스 미디어',
@@ -80,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        {/* Pretendard — Korean web standard font via CDN */}
+        {/* Pretendard — Korean web standard font via CDN (dynamic subset = smaller, display: swap) */}
         <link
           rel="preconnect"
           href="https://cdn.jsdelivr.net"
@@ -88,7 +76,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
         />
 
         <script
@@ -125,9 +113,7 @@ export default function RootLayout({
           </>
         )}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
-      >
+      <body className="min-h-screen flex flex-col">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium"
@@ -142,6 +128,7 @@ export default function RootLayout({
         <FeedbackWidget />
         <AchievementToast />
         <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );

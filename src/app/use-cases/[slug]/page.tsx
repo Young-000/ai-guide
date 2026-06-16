@@ -21,22 +21,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const useCase = useCases.find((uc) => uc.slug === slug);
 
   if (!useCase) {
-    return { title: 'AI 가이드' };
+    return { title: 'AIWire' };
   }
 
   const description = `${useCase.persona}의 사례: ${useCase.challenge.slice(0, 80)}... 결과: ${useCase.resultHighlight}`;
 
   return {
-    title: `${useCase.title} | AI Guide`,
+    title: `${useCase.title} | AIWire`,
     description,
     alternates: {
       canonical: `${BASE_URL}/use-cases/${slug}`,
     },
     openGraph: {
-      title: `${useCase.title} | AI Guide`,
+      title: `${useCase.title} | AIWire`,
       description,
       url: `${BASE_URL}/use-cases/${slug}`,
-      siteName: 'AI 가이드',
+      siteName: 'AIWire',
       locale: 'ko_KR',
       type: 'article',
     },
@@ -78,7 +78,7 @@ function buildJsonLd(useCase: UseCaseStory): string {
     description: `${useCase.persona}의 AI 활용 사례: ${useCase.resultHighlight}`,
     author: {
       '@type': 'Organization',
-      name: 'AI Guide',
+      name: 'AIWire',
     },
   };
   return JSON.stringify(jsonLd);

@@ -4,18 +4,18 @@ import faqData from '@/data/faq.json';
 import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: '자주 묻는 질문 (FAQ) | AI 가이드',
+  title: '자주 묻는 질문 (FAQ) | AIWire',
   description:
     'AI에 대해 궁금한 점을 모두 정리했습니다. ChatGPT 사용법, AI 도구 비교, 요금, 보안 등 자주 묻는 질문과 답변을 확인하세요.',
   alternates: {
     canonical: `${BASE_URL}/faq`,
   },
   openGraph: {
-    title: '자주 묻는 질문 (FAQ) | AI 가이드',
+    title: '자주 묻는 질문 (FAQ) | AIWire',
     description:
       'AI에 대해 궁금한 점을 모두 정리했습니다. ChatGPT 사용법, AI 도구 비교, 요금, 보안 등 자주 묻는 질문과 답변.',
     url: `${BASE_URL}/faq`,
-    siteName: 'AI 가이드',
+    siteName: 'AIWire',
     locale: 'ko_KR',
     type: 'website',
   },

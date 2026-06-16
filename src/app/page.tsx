@@ -28,6 +28,9 @@ export default function Home(): JSX.Element {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_DATA) }}
       />
 
+      {/* Page heading — primary h1 for SEO/a11y */}
+      <h1 className="sr-only">AIWire — AI·LLM 뉴스와 활용 가이드</h1>
+
       {/* Lead story — most recent article, large */}
       {lead && (
         <section

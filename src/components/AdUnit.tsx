@@ -39,6 +39,9 @@ export default function AdUnit({
     }
   }, []);
 
+  // Don't render without a real slot id (prevents empty ad requests)
+  if (!slot) return null;
+
   // Only render ads in production
   if (process.env.NODE_ENV !== 'production') return null;
 

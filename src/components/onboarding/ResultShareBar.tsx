@@ -88,7 +88,7 @@ export default function ResultShareBar({ shareUrl }: ResultShareBarProps): JSX.E
       <div className="text-xs text-gray-400 text-center mt-6 px-4">
         <p>
           이 페이지의 일부 링크는 제휴 링크입니다.
-          링크를 통해 가입하시면 AI Guide 운영에 도움이 됩니다.
+          링크를 통해 가입하시면 AIWire 운영에 도움이 됩니다.
           추천은 제휴 여부와 무관하게 사용자 응답에 기반합니다.
         </p>
       </div>

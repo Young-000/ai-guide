@@ -22,20 +22,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tip = tips.find((t) => t.slug === slug);
 
   if (!tip) {
-    return { title: 'AI 가이드' };
+    return { title: 'AIWire' };
   }
 
   return {
-    title: `${tip.title} | AI 가이드`,
+    title: `${tip.title} | AIWire`,
     description: tip.excerpt,
     alternates: {
       canonical: `${BASE_URL}/tips/${slug}`,
     },
     openGraph: {
-      title: `${tip.title} | AI 가이드`,
+      title: `${tip.title} | AIWire`,
       description: tip.excerpt,
       url: `${BASE_URL}/tips/${slug}`,
-      siteName: 'AI 가이드',
+      siteName: 'AIWire',
       locale: 'ko_KR',
       type: 'article',
     },
@@ -57,11 +57,11 @@ function buildJsonLd(tip: Tip): string {
     description: tip.excerpt,
     author: {
       '@type': 'Organization',
-      name: 'AI 가이드',
+      name: 'AIWire',
     },
     publisher: {
       '@type': 'Organization',
-      name: 'AI 가이드',
+      name: 'AIWire',
     },
     datePublished: tip.publishedDate,
     url: `${BASE_URL}/tips/${tip.slug}`,

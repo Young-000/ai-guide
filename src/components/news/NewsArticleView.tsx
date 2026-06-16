@@ -2,6 +2,7 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AdUnit from '@/components/AdUnit';
+import AdFitUnit from '@/components/AdFitUnit';
 import ArticleJsonLd from './ArticleJsonLd';
 import ShareRow from './ShareRow';
 import ArticleViewTracker from './ArticleViewTracker';
@@ -128,6 +129,8 @@ export default function NewsArticleView({
         {NEWS_AD_SLOT && (
           <AdUnit slot={NEWS_AD_SLOT} format="auto" className="my-8" dataPage="news" />
         )}
+        {/* Kakao AdFit — self-gates on NEXT_PUBLIC_ADFIT_UNIT_PC; renders nothing until set */}
+        <AdFitUnit device="pc" width={728} height={90} className="my-8 flex justify-center" />
 
         {/* Sources */}
         {article.sources.length > 0 && (

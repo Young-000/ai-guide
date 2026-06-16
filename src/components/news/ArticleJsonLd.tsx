@@ -12,17 +12,30 @@ function safeJson(obj: unknown): string {
     .replace(/>/g, '\\u003e');
 }
 
+const DEFAULT_OG_IMAGE = `${BASE_URL}/opengraph-image`;
+
+function toAbsoluteUrl(src: string): string {
+  return src.startsWith('http') ? src : `${BASE_URL}${src.startsWith('/') ? '' : '/'}${src}`;
+}
+
 export default function ArticleJsonLd({ article, url }: ArticleJsonLdProps): JSX.Element {
+  const image = article.image ? toAbsoluteUrl(article.image) : DEFAULT_OG_IMAGE;
   const articleData = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: article.title,
     description: article.summary,
+    image: [image],
     datePublished: article.date,
+    dateModified: article.dateModified ?? article.date,
     inLanguage: article.lang === 'ko' ? 'ko-KR' : 'en-US',
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     author: { '@type': 'Organization', name: 'AIWire' },
-    publisher: { '@type': 'Organization', name: 'AIWire' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AIWire',
+      logo: { '@type': 'ImageObject', url: DEFAULT_OG_IMAGE },
+    },
   };
 
   const isKo = article.lang === 'ko';

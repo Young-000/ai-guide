@@ -34,6 +34,13 @@ function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
         return { title: asString(o.title, 'sources[].title'), url: asString(o.url, 'sources[].url') };
       })
     : [];
+  const image = typeof data.image === 'string' ? data.image : undefined;
+  const dateModified =
+    typeof data.dateModified === 'string'
+      ? data.dateModified
+      : data.dateModified instanceof Date
+        ? data.dateModified.toISOString().slice(0, 10)
+        : undefined;
   return {
     title: asString(data.title, 'title'),
     lang,
@@ -42,6 +49,8 @@ function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
     summary: asString(data.summary, 'summary'),
     tags,
     sources,
+    ...(image ? { image } : {}),
+    ...(dateModified ? { dateModified } : {}),
   };
 }
 
@@ -54,10 +63,17 @@ function listMarkdownFiles(lang: NewsLang, root: string): string[] {
 export function getAllNews(lang: NewsLang, root: string = CONTENT_ROOT): NewsMeta[] {
   const dir = path.join(root, lang);
   return listMarkdownFiles(lang, root)
-    .map((file) => {
-      const raw = fs.readFileSync(path.join(dir, file), 'utf8');
-      return toFrontmatter(matter(raw).data as Record<string, unknown>);
+    .map((file): NewsMeta | null => {
+      try {
+        const raw = fs.readFileSync(path.join(dir, file), 'utf8');
+        return toFrontmatter(matter(raw).data as Record<string, unknown>);
+      } catch (err) {
+        // 깨진 frontmatter 1개가 전체 빌드를 무너뜨리지 않도록 skip.
+        console.warn(`[news] skipping invalid article '${lang}/${file}':`, err);
+        return null;
+      }
     })
+    .filter((item): item is NewsMeta => item !== null)
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 

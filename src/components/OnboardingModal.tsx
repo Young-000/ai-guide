@@ -8,7 +8,7 @@ interface OnboardingModalProps {
 
 const steps = [
   {
-    title: 'AI Guide에 오신 것을 환영해요!',
+    title: 'AIWire에 오신 것을 환영해요!',
     description: 'AI를 처음 사용하시는 분도 쉽게 따라할 수 있도록 상황별 가이드를 준비했어요.',
     icon: '👋',
   },

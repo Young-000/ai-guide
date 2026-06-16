@@ -11,6 +11,16 @@ export function Footer(): JSX.Element {
             <p className="mt-2 text-sm text-slate-500 leading-relaxed">
               AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다.
             </p>
+            <p className="mt-3 text-sm">
+              <a
+                href="https://hottrend.news"
+                className="text-slate-500 hover:text-blue-600 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                실시간 검색어 → hottrend.news
+              </a>
+            </p>
           </div>
 
           {/* AI 가이드 column */}
@@ -23,9 +33,13 @@ export function Footer(): JSX.Element {
                 { href: '/situations', label: '상황별 가이드' },
                 { href: '/tools', label: 'AI 도구 목록' },
                 { href: '/compare', label: '도구 비교' },
+                { href: '/use-cases', label: '활용 사례' },
+                { href: '/tips', label: '활용 팁' },
                 { href: '/glossary', label: '용어 사전' },
+                { href: '/trends', label: '트렌드' },
                 { href: '/learn', label: '학습센터' },
                 { href: '/quiz', label: 'AI 퀴즈' },
+                { href: '/faq', label: 'FAQ' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

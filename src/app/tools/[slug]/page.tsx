@@ -28,16 +28,16 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `${tool.name} 사용법 & 가이드 | AI 가이드`,
+    title: `${tool.name} 사용법 & 가이드 | AIWire`,
     description: tool.description,
     alternates: {
       canonical: `${BASE_URL}/tools/${slug}`,
     },
     openGraph: {
-      title: `${tool.name} 사용법 & 가이드 | AI 가이드`,
+      title: `${tool.name} 사용법 & 가이드 | AIWire`,
       description: tool.description,
       url: `${BASE_URL}/tools/${slug}`,
-      siteName: 'AI 가이드',
+      siteName: 'AIWire',
       locale: 'ko_KR',
       type: 'article',
     },
@@ -57,10 +57,10 @@ export default async function ToolPage({ params }: PageProps) {
     <div className="max-w-2xl mx-auto px-4 py-8">
       {/* 뒤로가기 */}
       <Link
-        href="/"
+        href="/tools"
         className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-700 mb-8 text-sm"
       >
-        ← 홈으로
+        ← 도구 목록으로
       </Link>
 
       {/* 헤더: 아이콘 + 이름 + 설명 */}
@@ -132,7 +132,7 @@ export default async function ToolPage({ params }: PageProps) {
 
       {/* Ad: between 주요 기능 and 상세 가이드 */}
       <AdUnit
-        slot="1234567890"
+        slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT ?? ''}
         format="rectangle"
         className="my-8"
         dataPage="tool-detail"

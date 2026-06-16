@@ -45,15 +45,17 @@ describe('news loader', () => {
     expect(getAllNews('en', path.join(FIXTURES, '__missing__'))).toEqual([]);
   });
 
-  it('필수 필드(slug)가 없으면 throw 한다', () => {
-    expect(() => getAllNews('ko', BAD_SLUG_FIXTURES)).toThrow(
-      "news frontmatter: 'slug' must be a string",
-    );
+  it('필수 필드(slug)가 없는 깨진 파일은 throw 없이 skip 한다 (빌드 보호)', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    expect(getAllNews('ko', BAD_SLUG_FIXTURES)).toEqual([]);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 
-  it('lang이 ko/en이 아니면 throw 한다', () => {
-    expect(() => getAllNews('ko', BAD_LANG_FIXTURES)).toThrow(
-      "news frontmatter: invalid lang 'fr'",
-    );
+  it('lang이 ko/en이 아닌 깨진 파일은 throw 없이 skip 한다 (빌드 보호)', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    expect(getAllNews('ko', BAD_LANG_FIXTURES)).toEqual([]);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 });

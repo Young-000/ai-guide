@@ -8,7 +8,7 @@ import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
 
 export const metadata = {
-  title: 'ChatGPT vs Claude vs Gemini 비교 - AI 가이드',
+  title: 'ChatGPT vs Claude vs Gemini 비교 | AIWire',
   description: '가장 인기있는 AI 챗봇 ChatGPT, Claude, Gemini를 한눈에 비교해보세요.',
 };
 
@@ -90,7 +90,7 @@ export default function ComparePage() {
 
       {/* Ad: between comparison table and 결론 */}
       <AdUnit
-        slot="1234567890"
+        slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT ?? ''}
         format="horizontal"
         className="mb-12"
         dataPage="compare"

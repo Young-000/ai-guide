@@ -4,7 +4,7 @@ import NewsListView from '@/components/news/NewsListView';
 import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'AI & LLM News | AI Guide',
+  title: 'AI & LLM News | AIWire',
   description: 'Daily-updated, distilled coverage of the latest in AI and LLMs.',
   alternates: {
     canonical: `${BASE_URL}/en/news`,

@@ -7,9 +7,13 @@ const GUIDE_LINKS = [
   { href: '/situations', label: '상황별 가이드' },
   { href: '/tools', label: 'AI 도구 목록' },
   { href: '/compare', label: '도구 비교' },
+  { href: '/use-cases', label: '활용 사례' },
+  { href: '/tips', label: '활용 팁' },
   { href: '/glossary', label: '용어 사전' },
+  { href: '/trends', label: '트렌드' },
   { href: '/learn', label: '학습센터' },
   { href: '/quiz', label: 'AI 퀴즈' },
+  { href: '/faq', label: 'FAQ' },
 ] as const;
 
 export function Header(): JSX.Element {
