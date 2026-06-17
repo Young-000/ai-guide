@@ -2,6 +2,10 @@
 
 ## 현재 상태
 
+- 2026-06-17 `58ef251` feat: growth levers + UX overhaul — trend-jacking widget, IndexNow, embed widget, programmatic SEO, subscribe, internal links; home hybrid redesign, (site) route group, visual consistency
+- 2026-06-16 `4028d77` feat(news): 3개 AI 다이제스트 발행 (2026-06-16)
+
+
 - 2026-06-16 `adc1631` feat: P0+P1 fixes — brand AIWire, real ad slots, CTA/nav, h1, /en lang, NewsArticle JSON-LD+image, OG image, font opt, AdFit unit, Vercel Analytics
 - 2026-06-16 `03ae25e` feat(news): 3개 AI 다이제스트 발행 2026-06-16
 - 2026-06-16 `bb466e9` feat(news): 3개 AI 다이제스트 발행 (2026-06-16)
