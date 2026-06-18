@@ -2,6 +2,26 @@
 
 ## 현재 상태
 
+- 2026-06-18 feat(seo): Google Search Console + 네이버 서치어드바이저 verification 메타태그 env var 지원, AI 크롤러 명시 허용 (GEO), llms.txt 강화, 사이트맵 lastModified
+
+## [2026-06-18] SEO/AEO/GEO 완전 정비
+
+### Completed
+- feat: Google Search Console 검증 — `GOOGLE_SITE_VERIFICATION` env var → `<meta name="google-site-verification">` 자동 삽입
+- feat: 네이버 서치어드바이저 검증 — `NAVER_SITE_VERIFICATION` env var → `<meta name="naver-site-verification">` 자동 삽입
+- fix: robots.ts — GPTBot/ChatGPT-User/Claude-Web/Anthropic-ai/PerplexityBot/YouBot/cohere-ai 명시적 allow (GEO)
+- feat: llms.txt 강화 — About 섹션·Content Types·Entity Information·LLM Usage Notes 추가 (GEO 신호 강화)
+- feat: sitemap.ts — 자주 변경되는 페이지에 `lastModified: BUILD_DATE` 추가
+- confirm: IndexNow 키파일 `public/ddd82090bbb3126c02df2153ddd48ceb.txt` 정상 (32바이트)
+
+### Next Steps (사장님 액션 필요)
+- [ ] **Google Search Console** — search.google.com/search-console → `aiwire.news` 속성 추가 → HTML 태그 인증 → content 값을 Vercel env `GOOGLE_SITE_VERIFICATION` 에 추가
+- [ ] **네이버 서치어드바이저** — searchadvisor.naver.com → 사이트 등록 → 메타태그 인증 → content 값을 Vercel env `NAVER_SITE_VERIFICATION` 에 추가
+- [ ] **Bing Webmaster** (옵션) — bing.com/webmasters → IndexNow 이미 연동돼 있어 우선순위 낮음
+- [ ] 위 env 추가 후 Vercel redeploy → 인증 완료
+
+---
+
 - 2026-06-17 `58ef251` feat: growth levers + UX overhaul — trend-jacking widget, IndexNow, embed widget, programmatic SEO, subscribe, internal links; home hybrid redesign, (site) route group, visual consistency
 - 2026-06-16 `4028d77` feat(news): 3개 AI 다이제스트 발행 (2026-06-16)
 

@@ -6,25 +6,28 @@ import tipsData from '@/data/tips.json';
 import { getAllNews, getAllTags } from '@/lib/news';
 import { BASE_URL } from '@/lib/site';
 
+// Build date is the best lastModified signal for static pages that don't have a CMS timestamp.
+const BUILD_DATE = new Date().toISOString();
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${BASE_URL}/news`, changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE_URL}/news/topics`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: BASE_URL, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${BASE_URL}/news`, lastModified: BUILD_DATE, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${BASE_URL}/news/topics`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/contact`, changeFrequency: 'yearly', priority: 0.4 },
     { url: `${BASE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${BASE_URL}/onboarding`, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE_URL}/situations`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/tools`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/use-cases`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/tips`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/learn`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/onboarding`, lastModified: BUILD_DATE, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE_URL}/situations`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/tools`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/use-cases`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/tips`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/learn`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/faq`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/compare`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/glossary`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/quiz`, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE_URL}/trends`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${BASE_URL}/trends`, lastModified: BUILD_DATE, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${BASE_URL}/projects`, changeFrequency: 'monthly', priority: 0.4 },
   ];
 

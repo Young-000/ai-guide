@@ -43,6 +43,15 @@ export const metadata: Metadata = {
       'application/rss+xml': `${BASE_URL}/feed.xml`,
     },
   },
+  // Webmaster verification — set env vars in Vercel Dashboard to activate.
+  // GOOGLE_SITE_VERIFICATION: Google Search Console → 속성 추가 → HTML 태그 → content 값
+  // NAVER_SITE_VERIFICATION:  네이버 서치어드바이저 → 사이트 등록 → 메타태그 → content 값
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NAVER_SITE_VERIFICATION
+      ? { 'naver-site-verification': process.env.NAVER_SITE_VERIFICATION }
+      : undefined,
+  },
   openGraph: {
     title: 'AIWire | AI·LLM 뉴스 미디어',
     description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
