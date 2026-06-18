@@ -43,6 +43,12 @@ export const metadata: Metadata = {
       'application/rss+xml': `${BASE_URL}/feed.xml`,
     },
   },
+  verification: {
+    google: 'YSjbOfukGFrW3xJy85cv4yg-v6Nd7uIBE3RZF5BrIwE',
+    other: process.env.NAVER_SITE_VERIFICATION
+      ? { 'naver-site-verification': process.env.NAVER_SITE_VERIFICATION }
+      : undefined,
+  },
   openGraph: {
     title: 'AIWire | AI·LLM 뉴스 미디어',
     description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',
