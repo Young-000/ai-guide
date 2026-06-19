@@ -2,6 +2,19 @@
 
 ## 현재 상태
 
+- 2026-06-19 `d3e9106` feat(ads): activate Kakao AdFit — slot-based unit (rect 300x250 + sky 160x600), kakaocdn loader; article in-content + desktop sidebar
+- 2026-06-19 `471209f` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-18 `927178b` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-18 `fa91c0a` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-18 `765b009` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-18 `5217fe6` feat(news): 3개 AI 다이제스트 발행 (2026-06-18)
+- 2026-06-17 `bb5885f` feat(news): 3개 AI 다이제스트 발행 (2026-06-17)
+- 2026-06-17 `1cc1474` feat(news): 3개 AI 다이제스트 발행 2026-06-17
+- 2026-06-17 `fabea66` chore: update package-lock.json
+- 2026-06-17 `4dd56ea` feat(news): 3개 AI 다이제스트 발행 (2026-06-17)
+- 2026-06-17 `9afdd86` feat(news): 3개 AI 다이제스트 발행 (2026-06-17)
+
+
 - 2026-06-17 `58ef251` feat: growth levers + UX overhaul — trend-jacking widget, IndexNow, embed widget, programmatic SEO, subscribe, internal links; home hybrid redesign, (site) route group, visual consistency
 - 2026-06-16 `4028d77` feat(news): 3개 AI 다이제스트 발행 (2026-06-16)
 
