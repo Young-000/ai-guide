@@ -166,8 +166,9 @@ export default function NewsArticleView({
         {NEWS_AD_SLOT && (
           <AdUnit slot={NEWS_AD_SLOT} format="auto" className="my-8" dataPage="news" />
         )}
-        {/* Kakao AdFit — self-gates on NEXT_PUBLIC_ADFIT_UNIT_PC; renders nothing until set */}
-        <AdFitUnit device="pc" width={728} height={90} className="my-8 flex justify-center" />
+        {/* Kakao AdFit — self-gates on the slot env; renders nothing until set */}
+        <AdFitUnit slot="rect" className="my-8 flex justify-center" />
+        <AdFitUnit slot="sky" className="hidden 2xl:block fixed right-6 top-28 z-20" />
 
         {/* Sources */}
         {article.sources.length > 0 && (

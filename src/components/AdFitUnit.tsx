@@ -2,35 +2,45 @@
 
 import { useEffect, useRef } from 'react';
 
-const ADFIT_SCRIPT_SRC = '//t1.daumcdn.net/kas/static/ba.min.js';
+const ADFIT_SCRIPT_SRC = '//t1.kakaocdn.net/kas/static/ba.min.js';
 
-type AdFitDevice = 'pc' | 'mobile';
+/**
+ * Kakao AdFit slots. Each maps to a NEXT_PUBLIC_ADFIT_UNIT_* env var and its
+ * fixed creative size:
+ *  - rect: 300x250 in-content (PC/mobile)
+ *  - sky : 160x600 desktop sidebar
+ * Renders nothing when the matching env var is unset, so it is harmless to drop
+ * into pages before approval / before the env is configured.
+ */
+const SLOT_PRESETS = {
+  rect: { unit: process.env.NEXT_PUBLIC_ADFIT_UNIT_RECT, width: 300, height: 250 },
+  sky: { unit: process.env.NEXT_PUBLIC_ADFIT_UNIT_SKY, width: 160, height: 600 },
+} as const;
+
+type AdFitSlot = keyof typeof SLOT_PRESETS;
 
 interface AdFitUnitProps {
-  /** 'pc' uses NEXT_PUBLIC_ADFIT_UNIT_PC, 'mobile' uses NEXT_PUBLIC_ADFIT_UNIT_MOBILE */
-  device?: AdFitDevice;
-  width: number;
-  height: number;
+  slot?: AdFitSlot;
+  /** Override the env-provided unit id (mainly for testing). */
+  unit?: string;
+  width?: number;
+  height?: number;
   className?: string;
 }
 
-function resolveUnitId(device: AdFitDevice): string | undefined {
-  if (device === 'mobile') return process.env.NEXT_PUBLIC_ADFIT_UNIT_MOBILE;
-  return process.env.NEXT_PUBLIC_ADFIT_UNIT_PC;
-}
-
-/**
- * Kakao AdFit display unit. Env-gated: renders nothing until the relevant
- * unit id env var is set, so it is harmless to place ahead of approval.
- */
 export default function AdFitUnit({
-  device = 'pc',
+  slot = 'rect',
+  unit,
   width,
   height,
   className = '',
 }: AdFitUnitProps): JSX.Element | null {
+  const preset = SLOT_PRESETS[slot];
+  const unitId = unit ?? preset.unit;
+  const adWidth = width ?? preset.width;
+  const adHeight = height ?? preset.height;
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const unitId = resolveUnitId(device);
 
   useEffect(() => {
     if (!unitId || !containerRef.current) return;
@@ -51,8 +61,8 @@ export default function AdFitUnit({
         className="kakao_ad_area"
         style={{ display: 'none' }}
         data-ad-unit={unitId}
-        data-ad-width={String(width)}
-        data-ad-height={String(height)}
+        data-ad-width={String(adWidth)}
+        data-ad-height={String(adHeight)}
       />
     </div>
   );
