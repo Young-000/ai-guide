@@ -2,6 +2,17 @@
 
 ## 현재 상태
 
+- 2026-06-21 `d733bba` chore(seo): add mystica.world sister-site link in footer (backlink)
+- 2026-06-21 `fd06035` feat(ads): add AdFit rect to homepage (required for media review)
+- 2026-06-20 `442824b` feat(news): 3개 AI 다이제스트 발행 (2026-06-20)
+- 2026-06-20 `880c05c` feat(news): 3개 AI 다이제스트 발행 (2026-06-20)
+- 2026-06-20 `21c9dbc` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-20 `6af380a` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-19 `5a890d0` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-19 `6bfad47` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-19 `2d8136b` feat(news): 3개 AI 다이제스트 발행
+
+
 - 2026-06-19 `d3e9106` feat(ads): activate Kakao AdFit — slot-based unit (rect 300x250 + sky 160x600), kakaocdn loader; article in-content + desktop sidebar
 - 2026-06-19 `471209f` feat(news): 3개 AI 다이제스트 발행
 - 2026-06-18 `927178b` feat(news): 3개 AI 다이제스트 발행
