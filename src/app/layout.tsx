@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'AIWire 편집팀' }],
   robots: { index: true, follow: true },
+  // Google Search Console 소유권 확인 메타. env가 있을 때만 태그 출력(없으면 undefined → 미출력).
+  // metadata는 서버에서 평가되므로 non-public env 사용 가능.
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
   metadataBase: new URL(BASE_URL),
   alternates: {
     canonical: BASE_URL,
