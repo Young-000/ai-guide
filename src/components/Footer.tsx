@@ -21,6 +21,16 @@ export function Footer(): JSX.Element {
                 실시간 검색어 → hottrend.news
               </a>
             </p>
+            <p className="mt-2 text-sm">
+              <a
+                href="https://mystica.world"
+                className="text-slate-500 hover:text-blue-600 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                운세·타로·사주 → mystica.world
+              </a>
+            </p>
           </div>
 
           {/* AI 가이드 column */}
