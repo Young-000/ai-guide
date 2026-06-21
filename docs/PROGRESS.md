@@ -2,6 +2,12 @@
 
 ## 현재 상태
 
+- 2026-06-22 `ee91f8a` feat(seo): dynamic article OG images with bundled Pretendard for Korean + GSC verification meta (env-gated); hreflang already present
+- 2026-06-21 `c0bec2c` feat(news): 3개 AI 다이제스트 발행 (에이전트재킹, DXC·TCS×Anthropic, Microsoft MAI)
+- 2026-06-21 `48b258b` feat(news): 3개 AI 다이제스트 발행 (2026-06-21)
+- 2026-06-21 `f903f5b` feat(news): 3개 AI 다이제스트 발행 (2026-06-21)
+
+
 - 2026-06-21 `d733bba` chore(seo): add mystica.world sister-site link in footer (backlink)
 - 2026-06-21 `fd06035` feat(ads): add AdFit rect to homepage (required for media review)
 - 2026-06-20 `442824b` feat(news): 3개 AI 다이제스트 발행 (2026-06-20)
