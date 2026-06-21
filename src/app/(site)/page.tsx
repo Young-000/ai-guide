@@ -7,6 +7,7 @@ import NewsGrid from '@/components/home/NewsGrid';
 import CategoryStrip from '@/components/home/CategoryStrip';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
+import AdFitUnit from '@/components/AdFitUnit';
 
 // Home revalidates so the trending-keywords widget stays reasonably fresh
 // without rebuilding on every request.
@@ -72,6 +73,11 @@ export default function Home(): JSX.Element {
           </div>
         </section>
       )}
+
+      {/* In-content ad (homepage — AdFit media review checks the root URL) */}
+      <div className="mx-auto max-w-6xl px-4 pb-4">
+        <AdFitUnit slot="rect" className="flex justify-center" />
+      </div>
 
       {/* Subscribe section */}
       <section
