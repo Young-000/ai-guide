@@ -1,0 +1,50 @@
+name: Auto-publish AI News Digest
+
+on:
+  schedule:
+    - cron: '0 */5 * * *'  # every 5 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch news
+        run: npm run fetch-news
+
+      - name: Generate articles
+        id: generate
+        run: npm run generate-news
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Build check
+        run: npm run build
+
+      - name: Commit and push
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add src/content/news scripts/_published.json
+          if git diff --staged --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          COUNT=$(git diff --staged --name-only | grep -c "src/content/news/.*\.md$" || true)
+          git commit -m "feat(news): ${COUNT}개 AI 다이제스트 발행"
+          git push origin main
