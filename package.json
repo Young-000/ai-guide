@@ -14,13 +14,16 @@
     "generate-news": "tsx scripts/generate-news.ts"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.44.2",
     "@anthropic-ai/sdk": "^0.105.0",
     "@supabase/supabase-js": "^2.108.2",
+    "@vercel/analytics": "^2.0.1",
     "fast-xml-parser": "^4.5.6",
     "gray-matter": "^4.0.3",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
+    "react-force-graph-2d": "^1.29.1",
     "react-markdown": "^9.1.0",
     "remark-gfm": "^4.0.1"
   },
