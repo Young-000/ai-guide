@@ -2,6 +2,32 @@
 
 ## 현재 상태
 
+- 2026-06-28 `8543b58` feat(sections): TLDR-style news sectioning — 5 sections (models/products/business/policy/culture), home digests, section landing pages (ko/en, JSON-LD+hreflang), nav chips
+
+
+- 2026-06-27 `584e9a5` feat(legal): 사업자정보 footer + 이용약관(/terms) + 개인정보처리방침 보강 (팀와이/874-30-01936)
+- 2026-06-27 `669626c` feat(news): 3개 AI 다이제스트 발행 (2026-06-27)
+- 2026-06-26 `9cd5eaa` feat(news): 2개 AI 다이제스트 발행 (2026-06-26)
+- 2026-06-26 `bbd74f8` feat(news): 3개 AI 다이제스트 발행 (2026-06-26)
+- 2026-06-26 `ac12250` feat(news): 3개 AI 다이제스트 발행 (2026-06-26)
+- 2026-06-26 `dc45bbf` feat(news): 3개 AI 다이제스트 발행 (2026-06-26)
+- 2026-06-25 `0bc2933` feat(news): 3개 AI 다이제스트 발행 (2026-06-25)
+- 2026-06-25 `1e2fa9e` feat(news): Apple AFM 3 다이제스트 발행 (2026-06-25)
+- 2026-06-25 `5809adc` chore: add missing @supabase/supabase-js dependency
+- 2026-06-25 `9a68b03` feat(news): 3개 AI 다이제스트 발행 (2026-06-25)
+- 2026-06-24 `2f7af00` feat(news): 3개 AI 다이제스트 발행 (2026-06-24)
+- 2026-06-25 `125a582` feat(news): GitHub Actions 자동 발행 파이프라인 추가
+- 2026-06-24 `36d21a9` feat(news): 3개 AI 다이제스트 발행
+- 2026-06-24 `3f9bf09` feat(news): 3개 AI 다이제스트 발행 (2026-06-24)
+- 2026-06-23 `370278d` feat(news): 2개 AI 다이제스트 발행 (2026-06-23)
+- 2026-06-23 `eb75616` feat(news): 3개 AI 다이제스트 발행 (2026-06-23)
+- 2026-06-23 `be049b9` feat(news): 3개 AI 다이제스트 발행 (2026-06-23)
+- 2026-06-22 `525dc96` feat(news): 3개 AI 다이제스트 발행 (2026-06-22)
+- 2026-06-22 `616a6a8` feat(news): 2개 AI 다이제스트 발행 (2026-06-22)
+- 2026-06-22 `1a90df2` feat(news): 3개 AI 다이제스트 발행 (2026-06-22)
+- 2026-06-21 `be3984a` feat(news): 2개 AI 다이제스트 발행 (2026-06-21)
+
+
 - 2026-06-22 `ee91f8a` feat(seo): dynamic article OG images with bundled Pretendard for Korean + GSC verification meta (env-gated); hreflang already present
 - 2026-06-21 `c0bec2c` feat(news): 3개 AI 다이제스트 발행 (에이전트재킹, DXC·TCS×Anthropic, Microsoft MAI)
 - 2026-06-21 `48b258b` feat(news): 3개 AI 다이제스트 발행 (2026-06-21)
