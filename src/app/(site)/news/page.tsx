@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllNews, getAllTags } from '@/lib/news';
+import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
+import SectionChips from '@/components/news/SectionChips';
 import TagChips from '@/components/news/TagChips';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 export default function NewsPage(): JSX.Element {
   const items = getAllNews('ko');
   const tags = getAllTags('ko');
+  const sections = getSectionsWithCounts('ko');
   return (
     <>
       <NewsListView
@@ -34,6 +37,13 @@ export default function NewsPage(): JSX.Element {
         topSlot={
           <div className="space-y-4">
             <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                섹션
+              </p>
+              <SectionChips lang="ko" sections={sections} />
+              <p className="pt-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                세부 주제
+              </p>
               <TagChips tags={tags} />
               <Link
                 href="/news/topics"

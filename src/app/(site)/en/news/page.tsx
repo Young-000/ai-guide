@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getAllNews } from '@/lib/news';
+import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
+import SectionChips from '@/components/news/SectionChips';
 import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -21,5 +23,19 @@ export const metadata: Metadata = {
 
 export default function EnNewsPage(): JSX.Element {
   const items = getAllNews('en');
-  return <NewsListView lang="en" items={items} />;
+  const sections = getSectionsWithCounts('en');
+  return (
+    <NewsListView
+      lang="en"
+      items={items}
+      topSlot={
+        <div className="space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Sections
+          </p>
+          <SectionChips lang="en" sections={sections} />
+        </div>
+      }
+    />
+  );
 }

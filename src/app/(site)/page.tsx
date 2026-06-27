@@ -1,9 +1,11 @@
 import { getAllNews, getAllTags } from '@/lib/news';
+import { getSectionsWithCounts } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
 import HomeHero from '@/components/home/HomeHero';
 import HomeGuideStrip from '@/components/home/HomeGuideStrip';
 import LeadStory from '@/components/home/LeadStory';
-import NewsGrid from '@/components/home/NewsGrid';
+import HomeSections from '@/components/home/HomeSections';
+import SectionChips from '@/components/news/SectionChips';
 import CategoryStrip from '@/components/home/CategoryStrip';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
@@ -25,8 +27,8 @@ const JSON_LD_DATA = {
 export default function Home(): JSX.Element {
   const allNews = getAllNews('ko');
   const lead = allNews[0];
-  const gridItems = allNews.slice(1, 9);
   const tags = getAllTags('ko');
+  const sections = getSectionsWithCounts('ko');
 
   return (
     <>
@@ -60,19 +62,33 @@ export default function Home(): JSX.Element {
         </section>
       )}
 
-      {/* Category strip — tags linking to /news/topic/[tag] */}
-      <CategoryStrip tags={tags} />
+      {/* Section nav — TLDR-style topic sections */}
+      <section
+        aria-labelledby="section-nav-heading"
+        className="border-b border-slate-200 bg-slate-50 py-5"
+      >
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 id="section-nav-heading" className="sr-only">
+            뉴스 섹션
+          </h2>
+          <SectionChips lang="ko" sections={sections} />
+        </div>
+      </section>
 
-      {/* News grid + trending keywords */}
-      {gridItems.length > 0 && (
-        <section className="py-10">
-          <div className="mx-auto max-w-6xl px-4">
-            <NewsGrid items={gridItems} />
-            {/* Trendjacking widget — self-hides on empty/error */}
-            <TrendingKeywords className="mt-10" />
-          </div>
-        </section>
-      )}
+      {/* Section digests — latest per topic section + trending keywords */}
+      <section aria-labelledby="home-sections-heading" className="py-10">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 id="home-sections-heading" className="sr-only">
+            섹션별 최신 뉴스
+          </h2>
+          <HomeSections lang="ko" />
+          {/* Trendjacking widget — self-hides on empty/error */}
+          <TrendingKeywords className="mt-12" />
+        </div>
+      </section>
+
+      {/* Category strip — granular tags linking to /news/topic/[tag] */}
+      <CategoryStrip tags={tags} />
 
       {/* In-content ad (homepage — AdFit media review checks the root URL) */}
       <div className="mx-auto max-w-6xl px-4 pb-4">

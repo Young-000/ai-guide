@@ -4,6 +4,7 @@ import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
 import { getAllNews, getAllTags } from '@/lib/news';
+import { SECTION_IDS } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -76,6 +77,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const sectionRoutes: MetadataRoute.Sitemap = SECTION_IDS.flatMap((id) => [
+    {
+      url: `${BASE_URL}/news/section/${id}`,
+      changeFrequency: 'daily' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/en/news/section/${id}`,
+      changeFrequency: 'daily' as const,
+      priority: 0.6,
+    },
+  ]);
+
   return [
     ...staticRoutes,
     ...situationRoutes,
@@ -86,5 +100,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...newsKo,
     ...newsEn,
     ...topicRoutes,
+    ...sectionRoutes,
   ];
 }
