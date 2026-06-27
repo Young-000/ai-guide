@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { businessInfo } from '@/lib/business-info';
 
 export function Footer(): JSX.Element {
   return (
@@ -74,6 +75,7 @@ export function Footer(): JSX.Element {
                 { href: '/news/topics', label: '주제별 뉴스' },
                 { href: '/en/news', label: 'English' },
                 { href: '/about', label: '소개' },
+                { href: '/terms', label: '이용약관' },
                 { href: '/privacy', label: '개인정보처리방침' },
                 { href: '/contact', label: '문의' },
               ].map((link) => (
@@ -90,7 +92,50 @@ export function Footer(): JSX.Element {
           </nav>
         </div>
 
-        <p className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-500">
+        <section
+          aria-label="사업자 정보"
+          className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-500 leading-relaxed"
+        >
+          <h2 className="sr-only">사업자 정보</h2>
+          <dl className="flex flex-wrap gap-x-3 gap-y-1">
+            <div>
+              <dt className="inline">상호</dt>{' '}
+              <dd className="inline">{businessInfo.bizName}</dd>
+            </div>
+            <span aria-hidden="true">·</span>
+            <div>
+              <dt className="inline">대표</dt>{' '}
+              <dd className="inline">{businessInfo.representative}</dd>
+            </div>
+            <span aria-hidden="true">·</span>
+            <div>
+              <dt className="inline">사업자등록번호</dt>{' '}
+              <dd className="inline">{businessInfo.bizRegNo}</dd>
+            </div>
+            {businessInfo.ecommerceRegNo ? (
+              <>
+                <span aria-hidden="true">·</span>
+                <div>
+                  <dt className="inline">통신판매업신고번호</dt>{' '}
+                  <dd className="inline">{businessInfo.ecommerceRegNo}</dd>
+                </div>
+              </>
+            ) : null}
+          </dl>
+          <p className="mt-1">주소 {businessInfo.address}</p>
+          <p className="mt-1">
+            이메일{' '}
+            <a
+              href={`mailto:${businessInfo.email}`}
+              className="hover:text-blue-600 transition-colors"
+            >
+              {businessInfo.email}
+            </a>
+            {businessInfo.phone ? <span> · 전화 {businessInfo.phone}</span> : null}
+          </p>
+        </section>
+
+        <p className="mt-6 text-xs text-slate-500">
           © {new Date().getFullYear()} AIWire. 본 사이트의 일부 콘텐츠는 AI 도구의 보조를 받아
           작성되며 편집자가 검수합니다.
         </p>
