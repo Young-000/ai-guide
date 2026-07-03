@@ -22,6 +22,23 @@ type Worklist = {
 const MAX_ITEMS = 8;
 const ROOT = join(__dirname, '..');
 
+// Browser-like headers to avoid 403 blocks
+const BROWSER_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.9,ko;q=0.8',
+  'Cache-Control': 'no-cache',
+};
+
+// Sites to scrape when all RSS feeds fail
+const SCRAPE_SITES: Array<{ name: string; url: string }> = [
+  { name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/' },
+  { name: 'The Verge AI', url: 'https://www.theverge.com/ai-artificial-intelligence' },
+  { name: 'ArsTechnica AI', url: 'https://arstechnica.com/ai/' },
+  { name: 'Wired AI', url: 'https://www.wired.com/tag/artificial-intelligence/' },
+];
+
 // ─── Load static config ───────────────────────────────────────────────────────
 
 const feeds = JSON.parse(
@@ -52,7 +69,7 @@ for (const lang of ['ko', 'en'] as const) {
 async function fetchFeed(feed: FeedConfig): Promise<FeedItem[]> {
   try {
     const response = await fetch(feed.url, {
-      headers: { 'User-Agent': 'ai-guide-news-fetcher/1.0' },
+      headers: BROWSER_HEADERS,
       signal: AbortSignal.timeout(15_000),
     });
     if (!response.ok) {
@@ -65,6 +82,68 @@ async function fetchFeed(feed: FeedConfig): Promise<FeedItem[]> {
     return items;
   } catch (err) {
     console.warn(`[WARN] ${feed.name}: ${(err as Error).message} — skipped`);
+    return [];
+  }
+}
+
+/** Extracts article links from an HTML page when RSS feeds are unavailable. */
+function extractLinksFromHtml(html: string, sourceName: string, baseUrl: string): FeedItem[] {
+  const items: FeedItem[] = [];
+  const seen = new Set<string>();
+  const base = new URL(baseUrl);
+
+  // Match <a href="...">visible text</a> — title must be 15~200 chars
+  const linkRegex = /<a[^>]+href="([^"#?][^"]*)"[^>]*>\s*([^<]{15,200}?)\s*<\/a>/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = linkRegex.exec(html)) !== null) {
+    let href = match[1].trim();
+    const title = match[2].trim().replace(/\s+/g, ' ');
+
+    if (!title || title.length < 15) continue;
+
+    // Resolve relative URLs
+    if (href.startsWith('/')) href = `${base.origin}${href}`;
+    if (!href.startsWith('http')) continue;
+
+    // Only keep URLs that look like dated articles (contain /20YY/)
+    if (!/\/20\d{2}\//.test(href)) continue;
+
+    // Skip pagination, category, and asset URLs
+    if (/\.(jpg|png|gif|css|js|svg|webp)$/i.test(href)) continue;
+    if (/\/page\/\d+/.test(href)) continue;
+
+    if (seen.has(href)) continue;
+    seen.add(href);
+
+    items.push({
+      source: sourceName,
+      title,
+      url: href,
+      publishedAt: null,
+      summary: null,
+    });
+  }
+
+  return items;
+}
+
+async function scrapeSite(site: { name: string; url: string }): Promise<FeedItem[]> {
+  try {
+    const response = await fetch(site.url, {
+      headers: BROWSER_HEADERS,
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!response.ok) {
+      console.warn(`[WARN] ${site.name} (scrape): HTTP ${response.status} — skipped`);
+      return [];
+    }
+    const html = await response.text();
+    const items = extractLinksFromHtml(html, site.name, site.url);
+    console.log(`  ${site.name} (scrape): ${items.length} links`);
+    return items;
+  } catch (err) {
+    console.warn(`[WARN] ${site.name} (scrape): ${(err as Error).message} — skipped`);
     return [];
   }
 }
@@ -90,7 +169,14 @@ async function main(): Promise<void> {
   console.log(`Fetching ${feeds.length} feeds…`);
 
   const results = await Promise.all(feeds.map(fetchFeed));
-  const allItems = results.flat();
+  let allItems = results.flat();
+
+  // Fallback: scrape HTML pages if all RSS feeds returned nothing
+  if (allItems.length === 0) {
+    console.log('\nAll RSS feeds failed — falling back to HTML scraping…');
+    const scrapeResults = await Promise.all(SCRAPE_SITES.map(scrapeSite));
+    allItems = scrapeResults.flat();
+  }
 
   const trendingSeeds = await fetchTrendingSeeds();
   if (trendingSeeds.length > 0) {
