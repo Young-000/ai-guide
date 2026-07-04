@@ -2,6 +2,35 @@
 
 ## 현재 상태
 
+- 2026-07-05 `50bb903` fix(seo,review): resolve GSC indexing issues + code-review findings
+- 2026-07-04 `678bf43` fix(test): @testing-library/user-event 설치 — verify GREEN 복구
+- 2026-07-04 `86b0652` chore(venture): 자율 사이클 온보딩 — verify.sh + BACKLOG
+- 2026-06-28 `67c9c47` feat(sections): TLDR-style news sectioning — 5 sections (models/products/business/policy/culture), home digests, section landing pages (ko/en, JSON-LD+hreflang), nav chips
+- 2026-07-04 `6998afb` feat(news): 3개 AI 다이제스트 발행 (2026-07-04)
+- 2026-07-04 `1e04092` feat(news): 3개 AI 다이제스트 발행 (2026-07-04)
+- 2026-07-04 `a654f5a` feat(news): 1개 AI 다이제스트 발행 (2026-07-04)
+- 2026-07-03 `1fe91f1` feat(news): 3개 AI 다이제스트 발행 (2026-07-03)
+- 2026-07-03 `26f0af6` feat(news): 3개 AI 다이제스트 발행 2026-07-03
+- 2026-07-03 `68fa8fe` feat(news): 3개 AI 다이제스트 발행 (2026-07-03)
+- 2026-07-03 `8276e73` feat(news): 3개 AI 다이제스트 발행 (2026-07-03)
+- 2026-07-03 `e4e0f8a` feat(news): 3개 AI 다이제스트 발행 (2026-07-03)
+- 2026-07-02 `18ccb43` feat(news): 3개 AI 다이제스트 발행 (2026-07-02)
+- 2026-07-02 `e384513` feat(news): 2개 AI 다이제스트 발행 (2026-07-02)
+- 2026-07-01 `bba0841` feat(news): 3개 AI 다이제스트 발행 (2026-07-01)
+- 2026-07-01 `6d6e75b` feat(news): 3개 AI 다이제스트 발행 (2026-07-01)
+- 2026-06-30 `91def82` feat(news): 3개 AI 다이제스트 발행 (2026-06-30)
+- 2026-06-30 `c1f91de` feat(news): 3개 AI 다이제스트 발행 (2026-06-30)
+- 2026-06-29 `2cef0f2` feat(news): 2개 AI 다이제스트 발행 (2026-06-29)
+- 2026-06-29 `67748eb` feat(news): 3개 AI 다이제스트 발행 (2026-06-29)
+- 2026-06-28 `cfbc61a` feat(news): 3개 AI 다이제스트 발행 (2026-06-28)
+- 2026-06-28 `b6260c1` feat(news): 3개 AI 다이제스트 발행 (2026-06-28)
+- 2026-06-27 `738d781` feat(news): 3개 AI 다이제스트 발행 (2026-06-27)
+
+
+- 2026-07-04 `3069faa` fix(test): @testing-library/user-event 설치 — verify GREEN 복구
+- 2026-07-04 `a22d8a3` chore(venture): 자율 사이클 온보딩 — verify.sh + BACKLOG
+
+
 - 2026-06-28 `8543b58` feat(sections): TLDR-style news sectioning — 5 sections (models/products/business/policy/culture), home digests, section landing pages (ko/en, JSON-LD+hreflang), nav chips
 
 
