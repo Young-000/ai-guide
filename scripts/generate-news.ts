@@ -7,6 +7,7 @@ import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
+import { isSlugTaken } from '../src/lib/news-slug-guard';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -126,6 +127,13 @@ async function main(): Promise<void> {
     }
 
     if (!pair) continue;
+
+    if (isSlugTaken(pair.slug)) {
+      console.warn(
+        `  [WARN] slug collision '${pair.slug}' already used by an existing article — skipping (not overwriting)`,
+      );
+      continue;
+    }
 
     const koDir = join(ROOT, 'src', 'content', 'news', 'ko');
     const enDir = join(ROOT, 'src', 'content', 'news', 'en');

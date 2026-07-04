@@ -40,12 +40,13 @@ export const metadata: Metadata = {
   // metadata는 서버에서 평가되므로 non-public env 사용 가능.
   verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
   metadataBase: new URL(BASE_URL),
-  alternates: {
-    canonical: BASE_URL,
-    types: {
-      'application/rss+xml': `${BASE_URL}/feed.xml`,
-    },
-  },
+  // No site-wide `alternates.canonical` here on purpose: Next.js metadata
+  // merging replaces the whole `alternates` object per segment (it does not
+  // deep-merge canonical/types), so a layout-level canonical silently leaks
+  // to every child route that doesn't declare its own `alternates`. That
+  // caused 8+ index pages to canonical to the homepage instead of
+  // themselves. Each indexable page now sets its own `alternates.canonical`
+  // (home included, see src/app/(site)/page.tsx).
   openGraph: {
     title: 'AIWire | AI·LLM 뉴스 미디어',
     description: 'AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다. AI 도구 가이드와 학습 자료도 제공합니다.',

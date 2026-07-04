@@ -10,7 +10,11 @@ import { BASE_URL } from '@/lib/site';
 type Params = { tag: string };
 
 export function generateStaticParams(): Params[] {
-  return getAllTags('ko').map((tag) => ({ tag: encodeURIComponent(tag) }));
+  // Next.js encodes dynamic-segment params itself when building the
+  // prerendered path key. Returning an already-encoded tag here causes
+  // double-encoding (e.g. 'AI Agents' -> 'AI%2520Agents'), which never
+  // matches an incoming request for '/news/topic/AI%20Agents' -> 404.
+  return getAllTags('ko').map((tag) => ({ tag }));
 }
 
 export function generateMetadata({ params }: { params: Params }): Metadata {

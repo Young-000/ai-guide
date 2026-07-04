@@ -92,4 +92,19 @@ describe('buildLlmsFullTxt', () => {
     expect(result).toContain('Article One');
     expect(result).toContain('Article Two');
   });
+
+  it('links an English article under /en/news/<slug>, not /news/<slug>', () => {
+    const enArticle: NewsMeta = {
+      slug: 'article-en',
+      title: 'Article EN',
+      lang: 'en',
+      date: '2026-06-16',
+      summary: 'English summary.',
+      tags: [],
+      sources: [],
+    };
+    const result = buildLlmsFullTxt([enArticle], BASE);
+    expect(result).toContain(`${BASE}/en/news/article-en`);
+    expect(result).not.toContain(`${BASE}/news/article-en`);
+  });
 });

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getAllNews, getAllTags } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
@@ -14,6 +15,19 @@ import AdFitUnit from '@/components/AdFitUnit';
 // Home revalidates so the trending-keywords widget stays reasonably fresh
 // without rebuilding on every request.
 export const revalidate = 300;
+
+// Canonical now lives here (not the root layout) — see the comment in
+// src/app/layout.tsx for why a layout-level canonical is unsafe. `types` is
+// repeated here to keep the RSS <link rel="alternate"> that used to come
+// from the layout's (now-removed) alternates object.
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+    types: {
+      'application/rss+xml': `${BASE_URL}/feed.xml`,
+    },
+  },
+};
 
 const JSON_LD_DATA = {
   '@context': 'https://schema.org',

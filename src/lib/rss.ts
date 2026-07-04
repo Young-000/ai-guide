@@ -27,6 +27,10 @@ export function buildRssXml(lang: NewsLang): string {
       ? 'AI·LLM 최신 소식을 매일 한국어로 정리합니다.'
       : 'Daily AI·LLM news in English.';
   const newsBase = lang === 'ko' ? `${BASE_URL}/news` : `${BASE_URL}/en/news`;
+  // Channel <link>: ko keeps the site root (primary-language home is the
+  // canonical reference); en must not point at the ko homepage.
+  const channelLink = lang === 'ko' ? BASE_URL : newsBase;
+  const feedUrl = lang === 'ko' ? `${BASE_URL}/feed.xml` : `${BASE_URL}/en/feed.xml`;
   const lastBuildDate = articles[0] ? toRfc822(articles[0].date) : new Date().toUTCString();
 
   const items = articles
@@ -46,10 +50,11 @@ export function buildRssXml(lang: NewsLang): string {
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<rss version="2.0">',
+    '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     '  <channel>',
     `    <title>${escapeXml(channelTitle)}</title>`,
-    `    <link>${BASE_URL}</link>`,
+    `    <link>${channelLink}</link>`,
+    `    <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />`,
     `    <description>${escapeXml(channelDescription)}</description>`,
     `    <language>${lang}</language>`,
     `    <lastBuildDate>${lastBuildDate}</lastBuildDate>`,

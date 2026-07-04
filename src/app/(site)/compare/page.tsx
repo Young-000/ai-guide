@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import compareData from '@/data/compare.json';
 import toolsData from '@/data/tools.json';
@@ -6,10 +7,12 @@ import { getToolLink, hasAffiliateLinks } from '@/lib/affiliateLinks';
 import OutboundToolLink from '@/components/OutboundToolLink';
 import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
+import { BASE_URL } from '@/lib/site';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'ChatGPT vs Claude vs Gemini 비교 | AIWire',
   description: '가장 인기있는 AI 챗봇 ChatGPT, Claude, Gemini를 한눈에 비교해보세요.',
+  alternates: { canonical: `${BASE_URL}/compare` },
 };
 
 export default function ComparePage() {

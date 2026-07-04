@@ -52,7 +52,8 @@ export function buildLlmsFullTxt(
   limit: number = 30,
 ): string {
   const articleLines = articles.slice(0, limit).map((a) => {
-    const url = `${baseUrl}/news/${a.slug}`;
+    const newsPath = a.lang === 'en' ? 'en/news' : 'news';
+    const url = `${baseUrl}/${newsPath}/${a.slug}`;
     return [
       `## ${a.title}`,
       '',
