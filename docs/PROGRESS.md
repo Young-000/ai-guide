@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-05 `b27e7c7` chore(footer): remove ecommerceRegNo — ad-revenue site is not 통신판매업
+
+
 - 2026-07-05 `28cf9f0` chore(pm): weekly cycle 2026-07-05
 
 
