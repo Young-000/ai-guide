@@ -112,15 +112,6 @@ export function Footer(): JSX.Element {
               <dt className="inline">사업자등록번호</dt>{' '}
               <dd className="inline">{businessInfo.bizRegNo}</dd>
             </div>
-            {businessInfo.ecommerceRegNo ? (
-              <>
-                <span aria-hidden="true">·</span>
-                <div>
-                  <dt className="inline">통신판매업신고번호</dt>{' '}
-                  <dd className="inline">{businessInfo.ecommerceRegNo}</dd>
-                </div>
-              </>
-            ) : null}
           </dl>
           <p className="mt-1">주소 {businessInfo.address}</p>
           <p className="mt-1">
