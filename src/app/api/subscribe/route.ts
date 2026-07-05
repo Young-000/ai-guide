@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
 import { createTokenBucketRateLimiter } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/request-ip';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,12 +12,6 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_LIMIT_CAPACITY = 5;
 const RATE_LIMIT_REFILL_MS = 60_000;
 const rateLimiter = createTokenBucketRateLimiter(RATE_LIMIT_CAPACITY, RATE_LIMIT_REFILL_MS);
-
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get('x-forwarded-for');
-  if (forwardedFor) return forwardedFor.split(',')[0]?.trim() || 'unknown';
-  return request.headers.get('x-real-ip') ?? 'unknown';
-}
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!rateLimiter.check(getClientIp(request))) {

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getAllNews } from '@/lib/news';
 import { submitUrls } from '@/lib/indexnow';
 import { BASE_URL } from '@/lib/site';
+import { createTokenBucketRateLimiter } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/request-ip';
 
 // IndexNow ping endpoint. After the auto-publish routine pushes new articles,
 // call this to notify search engines, e.g.:
@@ -9,6 +11,14 @@ import { BASE_URL } from '@/lib/site';
 // (omit ?secret when CRON_SECRET is unset).
 
 export const dynamic = 'force-dynamic';
+
+// Best-effort per-IP guard. This route is unauthenticated whenever
+// CRON_SECRET is unset (see isAuthorized below), and even when it is set the
+// guard still protects the upstream IndexNow API/key from being hammered.
+// 5 requests/minute is generous for the cron-triggered use case.
+const RATE_LIMIT_CAPACITY = 5;
+const RATE_LIMIT_REFILL_MS = 60_000;
+const rateLimiter = createTokenBucketRateLimiter(RATE_LIMIT_CAPACITY, RATE_LIMIT_REFILL_MS);
 
 // Collects the URLs worth pinging IndexNow about: the home, the news index,
 // and every published Korean + English article. Kept small and deterministic.
@@ -32,6 +42,10 @@ function isAuthorized(request: Request): boolean {
 }
 
 async function handle(request: Request): Promise<NextResponse> {
+  if (!rateLimiter.check(getClientIp(request))) {
+    return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 });
+  }
+
   if (!isAuthorized(request)) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
