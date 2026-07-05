@@ -13,6 +13,13 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;');
 }
 
+// Guards against a raw "]]>" inside CDATA-wrapped content (title/summary),
+// which would otherwise prematurely close the CDATA section and let the
+// remainder of the string be parsed as raw XML/markup.
+function escapeCdataClose(str: string): string {
+  return str.replace(/]]>/g, ']]&gt;');
+}
+
 // YYYY-MM-DD → RFC 822 (date-only strings parse as UTC midnight in ECMAScript).
 function toRfc822(dateStr: string): string {
   return new Date(dateStr).toUTCString();
@@ -38,9 +45,9 @@ export function buildRssXml(lang: NewsLang): string {
       const itemUrl = escapeXml(`${newsBase}/${a.slug}`);
       return [
         '\n  <item>',
-        `    <title><![CDATA[${a.title}]]></title>`,
+        `    <title><![CDATA[${escapeCdataClose(a.title)}]]></title>`,
         `    <link>${itemUrl}</link>`,
-        `    <description><![CDATA[${a.summary}]]></description>`,
+        `    <description><![CDATA[${escapeCdataClose(a.summary)}]]></description>`,
         `    <pubDate>${toRfc822(a.date)}</pubDate>`,
         `    <guid isPermaLink="true">${itemUrl}</guid>`,
         '  </item>',
