@@ -2,6 +2,17 @@
 
 ## 현재 상태
 
+- 2026-07-05 `1f6fab0` docs(claude-md): correct stale project summary
+- 2026-07-05 `29aeca2` fix(security): allow /embed/ai-news to be iframed on third-party sites
+- 2026-07-05 `2368abd` fix(security): rate-limit /api/indexnow, extract shared getClientIp
+- 2026-07-05 `d4e36a2` fix(seo): noindex thin tag pages, add missing /terms route to sitemap
+- 2026-07-05 `95990ff` docs(env): sync .env.example with vars actually read by the app
+- 2026-07-05 `cbd92bb` fix(ci): wire Supabase secrets into auto-news fetch-news step
+- 2026-07-05 `6f4115d` refactor(scripts): extract NEWS_MODEL constant, allow env override
+- 2026-07-05 `00bc993` refactor(json-ld): extract shared safeJson helper, apply defense-in-depth escaping
+- 2026-07-05 `cb030c8` fix(rss): escape raw ]]> in CDATA-wrapped title/summary
+
+
 - 2026-07-05 `50bb903` fix(seo,review): resolve GSC indexing issues + code-review findings
 - 2026-07-04 `678bf43` fix(test): @testing-library/user-event 설치 — verify GREEN 복구
 - 2026-07-04 `86b0652` chore(venture): 자율 사이클 온보딩 — verify.sh + BACKLOG
