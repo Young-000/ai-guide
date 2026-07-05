@@ -1,16 +1,11 @@
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 import type { NewsArticle } from '@/types/news';
 
 type ArticleJsonLdProps = {
   article: NewsArticle;
   url: string;
 };
-
-function safeJson(obj: unknown): string {
-  return JSON.stringify(obj)
-    .replace(/</g, '\\u003c')
-    .replace(/>/g, '\\u003e');
-}
 
 const DEFAULT_OG_IMAGE = `${BASE_URL}/opengraph-image`;
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getAllNews, getAllTags } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 import HomeHero from '@/components/home/HomeHero';
 import HomeGuideStrip from '@/components/home/HomeGuideStrip';
 import LeadStory from '@/components/home/LeadStory';
@@ -49,7 +50,7 @@ export default function Home(): JSX.Element {
       {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_DATA) }}
+        dangerouslySetInnerHTML={{ __html: safeJson(JSON_LD_DATA) }}
       />
 
       {/* Page heading — primary h1 for SEO/a11y */}

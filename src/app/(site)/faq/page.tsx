@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import FaqContent from './faq-content';
 import faqData from '@/data/faq.json';
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 
 export const metadata: Metadata = {
   title: '자주 묻는 질문 (FAQ) | AIWire',
@@ -35,7 +36,7 @@ function buildFaqJsonLd(): string {
       },
     })),
   };
-  return JSON.stringify(jsonLd);
+  return safeJson(jsonLd);
 }
 
 export default function FaqPage(): React.ReactElement {

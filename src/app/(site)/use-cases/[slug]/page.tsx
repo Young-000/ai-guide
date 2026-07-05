@@ -6,6 +6,7 @@ import useCasesData from '@/data/use-cases.json';
 import situationsData from '@/data/situations.json';
 import { getToolBySlug } from '@/lib/tools';
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 const useCases = useCasesData.useCases as UseCaseStory[];
 
 interface PageProps {
@@ -81,7 +82,7 @@ function buildJsonLd(useCase: UseCaseStory): string {
       name: 'AIWire',
     },
   };
-  return JSON.stringify(jsonLd);
+  return safeJson(jsonLd);
 }
 
 export default async function UseCaseDetailPage({ params }: PageProps): Promise<React.ReactElement> {

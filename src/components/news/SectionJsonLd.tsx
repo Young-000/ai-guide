@@ -1,4 +1,5 @@
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 import type { NewsLang, NewsMeta } from '@/types/news';
 import type { NewsSection } from '@/lib/news-sections';
 
@@ -9,10 +10,6 @@ type SectionJsonLdProps = {
   /** 섹션 랜딩 페이지의 정규 URL */
   url: string;
 };
-
-function safeJson(obj: unknown): string {
-  return JSON.stringify(obj).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
-}
 
 function articleHref(lang: NewsLang, slug: string): string {
   return lang === 'ko' ? `${BASE_URL}/news/${slug}` : `${BASE_URL}/en/news/${slug}`;

@@ -7,6 +7,7 @@ import situationsData from '@/data/situations.json';
 import { getToolBySlug } from '@/lib/tools';
 import TipContentRenderer from './tip-content-renderer';
 import { BASE_URL } from '@/lib/site';
+import { safeJson } from '@/lib/json-ld';
 const tips = tipsData.tips as Tip[];
 
 interface PageProps {
@@ -67,7 +68,7 @@ function buildJsonLd(tip: Tip): string {
     url: `${BASE_URL}/tips/${tip.slug}`,
     inLanguage: 'ko',
   };
-  return JSON.stringify(jsonLd);
+  return safeJson(jsonLd);
 }
 
 function getPrevNextTips(currentSlug: string): { prev: Tip | null; next: Tip | null } {
