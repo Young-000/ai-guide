@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllTags, getNewsByTag } from '@/lib/news';
+import { getAllTags, getNewsByTag, isThinTag } from '@/lib/news';
 import TagChips from '@/components/news/TagChips';
 import NewsCard from '@/components/news/NewsCard';
 import CategoryViewTracker from '@/components/news/CategoryViewTracker';
@@ -19,10 +19,14 @@ export function generateStaticParams(): Params[] {
 
 export function generateMetadata({ params }: { params: Params }): Metadata {
   const tag = decodeURIComponent(params.tag);
+  // Tags with too few articles are thin content — keep them reachable via
+  // internal links, but ask search engines not to index the page itself.
+  const thin = isThinTag('ko', tag);
   return {
     title: `${tag} 뉴스 | AIWire`,
     description: `AI·LLM 관련 '${tag}' 태그 기사 목록입니다.`,
     alternates: { canonical: `${BASE_URL}/news/topic/${encodeURIComponent(tag)}` },
+    ...(thin ? { robots: { index: false, follow: true } } : {}),
   };
 }
 

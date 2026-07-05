@@ -3,7 +3,7 @@ import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
-import { getAllNews, getAllTags } from '@/lib/news';
+import { getAllNews, getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
 import { SECTION_IDS } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
 
@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/contact`, changeFrequency: 'yearly', priority: 0.4 },
     { url: `${BASE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/onboarding`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE_URL}/situations`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/tools`, changeFrequency: 'weekly', priority: 0.8 },
@@ -71,11 +72,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const topicRoutes: MetadataRoute.Sitemap = getAllTags('ko').map((tag) => ({
-    url: `${BASE_URL}/news/topic/${encodeURIComponent(tag)}`,
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
+  // Thin tags (fewer than MIN_TAG_ARTICLE_COUNT_FOR_INDEX articles) are
+  // noindex on the page itself (see topic/[tag]/page.tsx) — keep them out of
+  // the sitemap too, since a sitemap entry implicitly asks to be indexed.
+  // Computed from a single getTagsWithCount() pass rather than calling
+  // isThinTag() per tag, which would re-scan every article per tag.
+  const topicRoutes: MetadataRoute.Sitemap = getTagsWithCount('ko')
+    .filter((t) => t.count >= MIN_TAG_ARTICLE_COUNT_FOR_INDEX)
+    .map((t) => ({
+      url: `${BASE_URL}/news/topic/${encodeURIComponent(t.tag)}`,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }));
 
   const sectionRoutes: MetadataRoute.Sitemap = SECTION_IDS.flatMap((id) => [
     {

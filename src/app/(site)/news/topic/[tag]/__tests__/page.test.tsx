@@ -1,5 +1,5 @@
-import { generateStaticParams } from '../page';
-import { getAllTags } from '@/lib/news';
+import { generateStaticParams, generateMetadata } from '../page';
+import { getAllTags, getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
 
 describe('topic page generateStaticParams', () => {
   it('returns raw (un-encoded) tags, not pre-encoded ones', () => {
@@ -34,5 +34,26 @@ describe('topic page generateStaticParams', () => {
     // The bug produced a double-encoded value like 'AI%2520Agents' — assert
     // generateStaticParams itself never emits a percent-encoded tag.
     expect(multiWord!.tag).not.toContain('%25');
+  });
+});
+
+describe('topic page generateMetadata — thin-tag noindex', () => {
+  const tagCounts = getTagsWithCount('ko');
+  const thinTag = tagCounts.find((t) => t.count < MIN_TAG_ARTICLE_COUNT_FOR_INDEX);
+  const richTag = tagCounts.find((t) => t.count >= MIN_TAG_ARTICLE_COUNT_FOR_INDEX);
+
+  it('has both a thin and a well-populated tag to test against (sanity check)', () => {
+    expect(thinTag).toBeDefined();
+    expect(richTag).toBeDefined();
+  });
+
+  it('marks a thin tag (< 2 articles) noindex,follow', () => {
+    const metadata = generateMetadata({ params: { tag: thinTag!.tag } });
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+  });
+
+  it('does not set robots (defaults to indexable) for a well-populated tag', () => {
+    const metadata = generateMetadata({ params: { tag: richTag!.tag } });
+    expect(metadata.robots).toBeUndefined();
   });
 });

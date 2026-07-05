@@ -131,3 +131,18 @@ export function getTagsWithCount(
     .map(([tag, count]) => ({ tag, count }))
     .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 }
+
+// Tags backed by fewer articles than this are "thin" for SEO purposes: the
+// resulting /news/topic/[tag] page has too little unique content to be worth
+// indexing. Thin tag pages stay reachable via internal links (TagChips,
+// cross-links) but are marked noindex and dropped from the sitemap.
+export const MIN_TAG_ARTICLE_COUNT_FOR_INDEX = 2;
+
+/**
+ * Whether a tag's article count falls below MIN_TAG_ARTICLE_COUNT_FOR_INDEX
+ * (including tags with zero matching articles).
+ */
+export function isThinTag(lang: NewsLang, tag: string, root: string = CONTENT_ROOT): boolean {
+  const entry = getTagsWithCount(lang, root).find((t) => t.tag === tag);
+  return (entry?.count ?? 0) < MIN_TAG_ARTICLE_COUNT_FOR_INDEX;
+}
