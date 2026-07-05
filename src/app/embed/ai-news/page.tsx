@@ -3,9 +3,10 @@ import { getAllNews } from '@/lib/news';
 import { BASE_URL } from '@/lib/site';
 
 // Bare, iframe-embeddable widget: the latest AIWire articles with no site
-// chrome. Intentionally does NOT set X-Frame-Options / frame-ancestors so it
-// can be embedded on third-party sites. Each link points back to aiwire.news
-// with utm_source=embed for attribution.
+// chrome. Each link points back to aiwire.news with utm_source=embed for
+// attribution. Framability is controlled at the edge, not here: vercel.json
+// scopes the site-wide X-Frame-Options: DENY rule to exclude /embed/(.*),
+// and sets Content-Security-Policy: frame-ancestors * for this path instead.
 export const metadata: Metadata = {
   title: 'AIWire — 최신 AI 뉴스',
   robots: { index: false, follow: true },
