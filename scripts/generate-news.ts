@@ -19,6 +19,7 @@ type PublishedState = { urls: string[] };
 const MAX_ARTICLES = 3;
 const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-4-8';
 
 // ─── Load files ───────────────────────────────────────────────────────────────
 
@@ -81,7 +82,7 @@ Output exactly this structure — nothing before or after:
 ===EN_END===`;
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-8',
+    model: NEWS_MODEL,
     max_tokens: 2048,
     messages: [{ role: 'user', content: userPrompt }],
   });
