@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-05 `28cf9f0` chore(pm): weekly cycle 2026-07-05
+
+
 - 2026-07-05 `1f6fab0` docs(claude-md): correct stale project summary
 - 2026-07-05 `29aeca2` fix(security): allow /embed/ai-news to be iframed on third-party sites
 - 2026-07-05 `2368abd` fix(security): rate-limit /api/indexnow, extract shared getClientIp
