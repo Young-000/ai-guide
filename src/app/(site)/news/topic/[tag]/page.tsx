@@ -5,6 +5,7 @@ import { getAllTags, getNewsByTag, isThinTag } from '@/lib/news';
 import TagChips from '@/components/news/TagChips';
 import NewsCard from '@/components/news/NewsCard';
 import CategoryViewTracker from '@/components/news/CategoryViewTracker';
+import TopicJsonLd from '@/components/news/TopicJsonLd';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { tag: string };
@@ -38,8 +39,11 @@ export default function TopicPage({ params }: { params: Params }): JSX.Element {
 
   const items = getNewsByTag('ko', tag);
 
+  const canonical = `${BASE_URL}/news/topic/${encodeURIComponent(tag)}`;
+
   return (
     <section className="max-w-5xl mx-auto px-4 py-10">
+      <TopicJsonLd tag={tag} url={canonical} />
       <CategoryViewTracker tag={tag} />
       {/* Back link */}
       <Link
