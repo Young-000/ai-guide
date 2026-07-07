@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-08 `3a3eda7` feat(seo): add BreadcrumbList JSON-LD to /news/topic/[tag] + fix tsconfig e2e exclude
+
+
 - 2026-07-07 `d228329` feat(news): 3개 AI 다이제스트 발행 (2026-07-07)
 - 2026-07-06 `1a2fc3a` feat(news): 3개 AI 다이제스트 발행 (2026-07-06)
 - 2026-07-06 `df89684` feat(news): 3개 AI 다이제스트 발행 (2026-07-06)
