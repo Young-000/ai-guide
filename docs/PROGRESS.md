@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-08 `d80cd32` feat(auto): docs(lessons): note tsconfig e2e exclusion issue (auto-review MERGE: 기존 SectionJsonLd 패턴을 그대로 따른 토픽 BreadcrumbList 추가 + 실제 RED 유발하던 e2e tsconfig 제외 수정, 테스트 7/7·type-chec)
+
+
 - 2026-07-08 `3a3eda7` feat(seo): add BreadcrumbList JSON-LD to /news/topic/[tag] + fix tsconfig e2e exclude
 
 
