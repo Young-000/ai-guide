@@ -2,6 +2,14 @@
 
 ## 현재 상태
 
+- 2026-07-07 `d228329` feat(news): 3개 AI 다이제스트 발행 (2026-07-07)
+- 2026-07-06 `1a2fc3a` feat(news): 3개 AI 다이제스트 발행 (2026-07-06)
+- 2026-07-06 `df89684` feat(news): 3개 AI 다이제스트 발행 (2026-07-06)
+- 2026-07-06 `2c65b6c` feat(news): 3개 AI 다이제스트 발행 (2026-07-06)
+- 2026-07-05 `f68aa5a` feat(news): 3개 AI 다이제스트 발행 (2026-07-05)
+- 2026-07-05 `44be3b9` chore: update package-lock.json after npm install
+
+
 - 2026-07-05 `b27e7c7` chore(footer): remove ecommerceRegNo — ad-revenue site is not 통신판매업
 
 
