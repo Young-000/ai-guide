@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-10 `bc3da4d` feat(auto): test(json-ld): add SectionJsonLd BreadcrumbList + ItemList tests (11 cases) (auto-review MERGE: 기존 SectionJsonLd 컴포넌트에 대한 테스트 11케이스만 추가(프로덕션 코드 무변경)·11/11 통과·type-check GREEN·재발명/충돌 없음.)
+
+
 - 2026-07-08 `d80cd32` feat(auto): docs(lessons): note tsconfig e2e exclusion issue (auto-review MERGE: 기존 SectionJsonLd 패턴을 그대로 따른 토픽 BreadcrumbList 추가 + 실제 RED 유발하던 e2e tsconfig 제외 수정, 테스트 7/7·type-chec)
 
 
