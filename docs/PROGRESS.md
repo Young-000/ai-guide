@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-10 `b5d4607` fix(feeds): route around OpenAI RSS 403 block via Google News RSS
+
+
 - 2026-07-10 `0fcde44` content(news): local digest publish 2026-07-10 (3 pairs, keyless)
 - 2026-07-10 `6f1a118` feat(scripts): keyless local news generation via claude CLI backend
 
