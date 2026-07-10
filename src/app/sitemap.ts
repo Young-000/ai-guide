@@ -3,7 +3,7 @@ import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
-import { getAllNews, getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
+import { getAllNews, getArchiveMonths, getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
 import { SECTION_IDS } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
 
@@ -98,6 +98,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
+  const archiveRoutes: MetadataRoute.Sitemap = getArchiveMonths('ko').map(({ year, month }) => ({
+    url: `${BASE_URL}/news/archive/${year}/${month}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
   return [
     ...staticRoutes,
     ...situationRoutes,
@@ -109,5 +115,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...newsEn,
     ...topicRoutes,
     ...sectionRoutes,
+    ...archiveRoutes,
   ];
 }

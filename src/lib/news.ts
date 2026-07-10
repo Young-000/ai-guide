@@ -146,3 +146,37 @@ export function isThinTag(lang: NewsLang, tag: string, root: string = CONTENT_RO
   const entry = getTagsWithCount(lang, root).find((t) => t.tag === tag);
   return (entry?.count ?? 0) < MIN_TAG_ARTICLE_COUNT_FOR_INDEX;
 }
+
+/**
+ * Returns articles (date-desc) published in the given year/month.
+ * year: '2026', month: '01'~'12' (zero-padded)
+ */
+export function getNewsByYearMonth(
+  lang: NewsLang,
+  year: string,
+  month: string,
+  root: string = CONTENT_ROOT,
+): NewsMeta[] {
+  const prefix = `${year}-${month.padStart(2, '0')}`;
+  return getAllNews(lang, root).filter((a) => a.date.startsWith(prefix));
+}
+
+/**
+ * Returns unique year/month pairs that have at least one article, newest first.
+ */
+export function getArchiveMonths(
+  lang: NewsLang,
+  root: string = CONTENT_ROOT,
+): { year: string; month: string }[] {
+  const seen = new Set<string>();
+  const result: { year: string; month: string }[] = [];
+  for (const article of getAllNews(lang, root)) {
+    const [year, month] = article.date.split('-');
+    const key = `${year}-${month}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push({ year, month });
+    }
+  }
+  return result;
+}
