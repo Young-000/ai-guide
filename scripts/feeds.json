@@ -1,9 +1,9 @@
 [
-  { "name": "OpenAI Blog", "url": "https://openai.com/news/rss/" },
-  { "name": "Google AI Blog", "url": "https://blog.google/technology/ai/rss/" },
+  { "name": "AI News (Google)", "url": "https://news.google.com/rss/search?q=(OpenAI%20OR%20Anthropic%20OR%20%22Claude%20AI%22%20OR%20LLM%20OR%20%22generative%20AI%22)%20when:2d&hl=en-US&gl=US&ceid=US:en" },
+  { "name": "Google AI Blog", "url": "https://blog.google/innovation-and-ai/technology/ai/rss/" },
   { "name": "Hugging Face Blog", "url": "https://huggingface.co/blog/feed.xml" },
   { "name": "MIT Tech Review AI", "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed" },
-  { "name": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/" },
+  { "name": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed" },
   { "name": "TechCrunch AI", "url": "https://techcrunch.com/category/artificial-intelligence/feed/" },
   { "name": "The Verge AI", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" },
   { "name": "Wired AI", "url": "https://www.wired.com/feed/tag/ai/latest/rss" },
