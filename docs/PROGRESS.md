@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-11 `3d499a6` feat(auto): feat(news): add /news/archive/[year]/[month] route with sitemap (auto-review MERGE: tsc·테스트7/7·lint 모두 GREEN이고 LESSONS의 색인성·내부링크 최우선 방향에 정확히 부합하는 안전한 신규 라우트 — 재발명·충돌·게이트 사유 없음)
+
+
 - 2026-07-10 `b5d4607` fix(feeds): route around OpenAI RSS 403 block via Google News RSS
 
 
