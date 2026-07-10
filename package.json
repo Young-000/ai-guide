@@ -11,7 +11,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "fetch-news": "tsx scripts/fetch-llm-news.ts",
-    "generate-news": "tsx scripts/generate-news.ts"
+    "generate-news": "tsx scripts/generate-news.ts",
+    "publish:local": "bash scripts/publish-local.sh"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.44.2",

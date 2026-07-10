@@ -59,8 +59,18 @@ npm run test            # 테스트 실행 (Jest)
 npm run lint             # 린트 검사
 npm run type-check       # tsc --noEmit
 npm run fetch-news       # RSS 수집 (scripts/fetch-llm-news.ts)
-npm run generate-news    # 다이제스트 생성 (scripts/generate-news.ts, ANTHROPIC_API_KEY 필요)
+npm run generate-news    # 다이제스트 생성 (키 있으면 SDK, 없으면 로컬 claude CLI 자동 선택)
+npm run publish:local    # 로컬 전체 사이클: fetch → 생성(키리스) → 빌드체크 → 커밋·푸시
 ```
+
+### 뉴스 발행 백엔드 (API key 불필요)
+
+`generate-news`는 백엔드를 자동 선택한다:
+- `ANTHROPIC_API_KEY` 있으면 → Anthropic SDK (CI용)
+- 없으면 → 로컬 `claude` CLI(Claude Code 구독 인증) 사용 → **API key 없이 로컬 실행 가능**
+
+로컬 정기 발행은 `npm run publish:local`을 cron/launchd로 스케줄(예: 5시간 주기).
+CI(`auto-news.yml`)는 러너에 claude CLI 인증이 없어 여전히 `ANTHROPIC_API_KEY`가 있어야 동작.
 
 ## Known Issues (프로젝트 고유)
 

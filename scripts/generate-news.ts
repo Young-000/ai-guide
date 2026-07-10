@@ -1,10 +1,15 @@
 /**
- * Reads scripts/worklist.json and uses the Anthropic API to generate
- * bilingual (ko + en) news digest markdown files under src/content/news/.
- * Run after `npm run fetch-news`.
+ * Reads scripts/worklist.json and generates bilingual (ko + en) news digest
+ * markdown files under src/content/news/. Run after `npm run fetch-news`.
+ *
+ * Two generation backends, auto-selected:
+ *   1. ANTHROPIC_API_KEY set   → Anthropic SDK (used by CI when a key exists).
+ *   2. no key, `claude` CLI    → local Claude Code auth, no API key required.
+ * This lets the pipeline run locally with zero API key.
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawn } from 'node:child_process';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
 import { isSlugTaken } from '../src/lib/news-slug-guard';
@@ -13,6 +18,7 @@ import { isSlugTaken } from '../src/lib/news-slug-guard';
 
 type Worklist = { generatedAt: string; items: FeedItem[] };
 type PublishedState = { urls: string[] };
+type Generate = (prompt: string) => Promise<string>;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -20,6 +26,7 @@ const MAX_ARTICLES = 3;
 const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-4-8';
+const CLI_TIMEOUT_MS = 180_000;
 
 // ─── Load files ───────────────────────────────────────────────────────────────
 
@@ -47,11 +54,51 @@ const publishedState: PublishedState = existsSync(publishedPath)
   ? (JSON.parse(readFileSync(publishedPath, 'utf-8')) as PublishedState)
   : { urls: [] };
 
+// ─── Backends ───────────────────────────────────────────────────────────────
+
+async function runAnthropicApi(prompt: string, client: Anthropic): Promise<string> {
+  const response = await client.messages.create({
+    model: NEWS_MODEL,
+    max_tokens: 2048,
+    messages: [{ role: 'user', content: prompt }],
+  });
+  return response.content[0].type === 'text' ? response.content[0].text : '';
+}
+
+// Local backend: pipe the prompt to `claude -p` (headless) via stdin, capture
+// stdout. Uses the machine's Claude Code auth — no ANTHROPIC_API_KEY needed.
+function runClaudeCli(prompt: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const child = spawn('claude', ['-p', '--model', NEWS_MODEL], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    let out = '';
+    let err = '';
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+      reject(new Error(`claude CLI timed out after ${CLI_TIMEOUT_MS}ms`));
+    }, CLI_TIMEOUT_MS);
+    child.stdout.on('data', (chunk: Buffer) => (out += chunk.toString()));
+    child.stderr.on('data', (chunk: Buffer) => (err += chunk.toString()));
+    child.on('error', (e) => {
+      clearTimeout(timer);
+      reject(e);
+    });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      if (code === 0) resolve(out);
+      else reject(new Error(`claude CLI exit ${code}: ${err.slice(0, 300)}`));
+    });
+    child.stdin.write(prompt);
+    child.stdin.end();
+  });
+}
+
 // ─── Generation ───────────────────────────────────────────────────────────────
 
 async function generatePair(
   item: FeedItem,
-  client: Anthropic,
+  generate: Generate,
 ): Promise<{ slug: string; ko: string; en: string } | null> {
   const userPrompt = `You are an AI news digest writer. Based on the RSS item below, write a bilingual (Korean + English) digest following the rules.
 
@@ -81,14 +128,7 @@ Output exactly this structure — nothing before or after:
 <complete English markdown file including frontmatter>
 ===EN_END===`;
 
-  const response = await client.messages.create({
-    model: NEWS_MODEL,
-    max_tokens: 2048,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-
-  const text =
-    response.content[0].type === 'text' ? response.content[0].text : '';
+  const text = await generate(userPrompt);
 
   const slug = text.match(/===SLUG_START===\s*([\s\S]*?)\s*===SLUG_END===/)?.[1]?.trim();
   const ko = text.match(/===KO_START===\s*([\s\S]*?)\s*===KO_END===/)?.[1]?.trim();
@@ -104,14 +144,19 @@ Output exactly this structure — nothing before or after:
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-async function main(): Promise<void> {
+function selectGenerator(): Generate {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.error('[ERROR] ANTHROPIC_API_KEY is not set.');
-    process.exit(1);
+  if (apiKey) {
+    const client = new Anthropic({ apiKey });
+    console.log('Backend: Anthropic API (ANTHROPIC_API_KEY set).');
+    return (prompt) => runAnthropicApi(prompt, client);
   }
+  console.log('Backend: local `claude` CLI (no ANTHROPIC_API_KEY — Claude Code auth).');
+  return runClaudeCli;
+}
 
-  const client = new Anthropic({ apiKey });
+async function main(): Promise<void> {
+  const generate = selectGenerator();
   let published = 0;
 
   console.log(`Generating articles for ${items.length} item(s)…`);
@@ -121,9 +166,9 @@ async function main(): Promise<void> {
 
     let pair: { slug: string; ko: string; en: string } | null = null;
     try {
-      pair = await generatePair(item, client);
+      pair = await generatePair(item, generate);
     } catch (err) {
-      console.warn(`  [WARN] API error: ${(err as Error).message}`);
+      console.warn(`  [WARN] generation error: ${(err as Error).message}`);
       continue;
     }
 
