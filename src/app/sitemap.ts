@@ -98,6 +98,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
+  const archiveIndexRoute: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/news/archive`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+  ];
+
   const archiveRoutes: MetadataRoute.Sitemap = getArchiveMonths('ko').map(({ year, month }) => ({
     url: `${BASE_URL}/news/archive/${year}/${month}`,
     changeFrequency: 'monthly' as const,
@@ -115,6 +123,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...newsEn,
     ...topicRoutes,
     ...sectionRoutes,
+    ...archiveIndexRoute,
     ...archiveRoutes,
   ];
 }

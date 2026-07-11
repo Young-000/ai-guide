@@ -45,26 +45,26 @@ export default function NewsPage(): JSX.Element {
                 세부 주제
               </p>
               <TagChips tags={tags} />
-              <Link
-                href="/news/topics"
-                className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                전체 주제 보기
-                <svg
-                  className="w-4 h-4"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/news/topics"
+                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
+                  전체 주제 보기
+                  <svg className="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/news/archive"
+                  className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-blue-600 transition-colors"
+                >
+                  월별 아카이브
+                  <svg className="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
             </div>
             {/* Trendjacking widget — self-hides on empty/error */}
             <TrendingKeywords />
