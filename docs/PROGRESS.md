@@ -5,6 +5,9 @@
 - 2026-07-12 `a9f0de3` chore(pm): weekly cycle 2026-07-12
 
 
+- 2026-07-12 `a9f0de3` chore(pm): weekly cycle 2026-07-12
+
+
 - 2026-07-12 `5993b23` feat(auto): feat(news): add /news/archive index page with internal link and sitemap entry (auto-review MERGE: 4게이트 GREEN·컨벤션 완전 일치·테스트 동반·머지 clean, 색인성·내부링크 북극성에 정확히 부응하는 무위험 콘텐츠 라우트 추가)
 - 2026-07-11 `2a9c736` feat(auto): feat(news): add /news/archive/[year]/[month] route with sitemap (auto-review MERGE: tsc·테스트7/7·lint 모두 GREEN이고 LESSONS의 색인성·내부링크 최우선 방향에 정확히 부합하는 안전한 신규 라우트 — 재발명·충돌·게이트 사유 없음)
 - 2026-07-11 `bbe3182` feat(news): 3개 AI 다이제스트 발행 (2026-07-11 2차)
