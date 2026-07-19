@@ -27,3 +27,18 @@
 - [ ] **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR, 현재 기본 OG 추정. verify: opengraph-image 라우트 200 + image/png 응답)
 - [ ] **/news/topics 인덱스에 태그별 기사 수 노출 + noindex 태그 시각 구분** (근거: thin tag 처리(`isThinTag`)가 sitemap엔 반영되나 사용자/크롤러 탐색 UI엔 미반영 — 색인 가능 태그로 크롤 유도. verify: /news/topics에 기사수 배지 렌더 + 테스트)
 - [ ] **RSS/피드 최신성 검증 스크립트** — `src/lib/rss.ts` 출력이 최근 발행 N건을 포함하는지 확인(발행 파이프라인 회귀 방지). (근거: 콘텐츠 엔진이 유일하게 도는 성장 동력 — 피드 깨지면 조용히 유입 손실. verify: 스크립트가 feed item 수 + 최신 pubDate 리포트)
+
+## 2026-07-19 주간 PM 리필 (우선순위순)
+
+> 🔴 이번 주 최대 발견: **콘텐츠 엔진이 2026-07-11 이후 8일간 완전 정지** — 유일하게 도는 성장 동력이 조용히 죽어 있었다. 진단: `auto-news.yml` CI가 `ANTHROPIC_API_KEY` 시크릿에 의존하는데 부재/만료로 generate 단계에서 매 실행 30~40초 만에 실패(fetch-news는 로컬 정상, 8건 수집 확인). GitHub Actions run 전부 failure. → PM이 지난주 교훈대로 직접 블로커 제거: 키리스 로컬 발행(`npm run generate-news`, `claude` CLI 인증)으로 3건 발행 복구 착수. 하지만 CI 시크릿 의존은 재발 위험 → 이번 리필의 최우선은 **발행을 CI 시크릿에서 영구 분리**. 측정 카운터는 2주 연속 야간 사이클이 미착수 → 코드 크기를 더 잘게 쪼갠다.
+>
+> ⚠️ SUNSET 트립와이어(대표 인지용): 구독 aiwire = 9주+ 연속 0건, page_views 측정 0(미배선). 단 (a)엔진이 8일 전까지 정상 가동했고 (b)측정을 한 번도 켜본 적 없어 트래픽 실측 부재 → 아직 회생불가 판정 근거 없음. **엔진 복구 + 카운터 배선 후 2~3주 실측**했는데도 page_views near-zero·구독 0이면 다음 사이클에서 SUNSET_GATE 상신.
+
+- [ ] **발행 파이프라인을 CI 시크릿에서 영구 분리 — 로컬 keyless launchd 크론** (`npm run publish:local` 5시간 주기). CLAUDE.md가 이미 의도한 경로(러너엔 claude CLI 인증 없음 → CI는 구조적으로 키 의존). launchd plist 작성 + 로드 + 1회 수동 트리거 로그 확인. auto-news.yml은 백업으로 남기되 실패가 조용하지 않게 실패 시 Slack 알림 스텝 추가. (근거: 엔진이 8일 죽어도 아무도 몰랐음 — 사일런트 블리드. 성장 동력의 단일 실패점 제거가 최우선. verify: launchd 등록 확인 + 수동 실행 시 src/content/news에 신규 파일 생성 + 로그)
+- [ ] **auto-news CI 실패 가시화** — auto-news.yml에 `if: failure()` Slack/webhook 알림 스텝 추가(엔진 죽으면 즉시 채널 알림). (근거: 이번 사고의 근본 원인은 "실패가 조용했다" — 8일간 감지 0. verify: 워크플로 실패 시 알림 발송 경로 존재, 성공 시 무발송)
+- [ ] **트래픽 카운터 코드 배선(3주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴, 게이트 아님). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **범위 축소: 우선 뉴스 상세 1개 라우트만** 배선(섹션·토픽은 후속). (근거: 측정 블로커의 마지막 조각, 2주 연속 야간 미착수 — 크기를 라우트 1개로 줄임. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1)
+- [ ] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 9주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)
+- [ ] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
+- [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0)
+- [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)
+- [ ] **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답)

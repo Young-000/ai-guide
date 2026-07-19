@@ -2,6 +2,19 @@
 
 > 코드는 전부 대기(스위치 OFF). 아래 항목은 키/토큰/계정을 넣으면 즉시 켜집니다. (2026-06-16 기록)
 
+## 🔴 긴급 (2026-07-19 PM 사이클 발견) — 콘텐츠 엔진 8일간 정지
+
+> 자동 발행이 2026-07-11 이후 완전 정지(최신 기사 07-11자). 발행 백엔드가 **둘 다** 자격증명에 막혀 있어 야간 자율 사이클이 고칠 수 없음 → 오너 조치 필수.
+
+| 항목 | 상태 | 켜는 법 |
+|---|---|---|
+| **auto-news CI `ANTHROPIC_API_KEY`** | 🔴 부재/만료 | GitHub `Young-000/ai-guide` → Settings → Secrets → Actions → `ANTHROPIC_API_KEY` 등록/갱신. (CI 러너엔 claude CLI 인증 없음 → 이 키가 유일한 CI 발행 경로. 등록 후 `auto-news.yml` 재실행으로 확인) |
+| **로컬 keyless 발행용 `claude` CLI 로그인** | 🔴 "Not logged in" | 발행 호스트에서 `claude` 로그인(Claude Code 구독 인증). 이게 되면 `npm run publish:local`(키리스) launchd 크론으로 CI 시크릿 의존 없이 발행 가능(백로그 #1). |
+
+> ⚠️ 둘 중 **하나만** 켜져도 엔진 복구됨. 이번 PM 사이클이 keyless 발행을 시도했으나 CLI 미로그인으로 실패(0건 생성). 코드/파이프라인은 정상 — 순수 자격증명 블로커.
+
+---
+
 | 항목 | 상태 | 켜는 법 |
 |---|---|---|
 | Amplitude 트래킹 | 사장님 세팅 예정 | Amplitude 프로젝트 → API키 → 양 사이트 Vercel env `NEXT_PUBLIC_AMPLITUDE_API_KEY`. tenb 795910은 별개(재사용 금지) |
