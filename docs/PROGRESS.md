@@ -2,6 +2,9 @@
 
 ## 현재 상태
 
+- 2026-07-19 `1600567` chore(pm): weekly cycle 2026-07-19
+
+
 - 2026-07-12 `a9f0de3` chore(pm): weekly cycle 2026-07-12
 - 2026-07-12 `aa9d2e2` test(news): add [year]/[month] archive page unit tests
 - 2026-07-12 `5993b23` feat(auto): feat(news): add /news/archive index page with internal link and sitemap entry (auto-review MERGE: 4게이트 GREEN·컨벤션 완전 일치·테스트 동반·머지 clean, 색인성·내부링크 북극성에 정확히 부응하는 무위험 콘텐츠 라우트 추가)
