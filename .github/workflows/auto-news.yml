@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   publish:
@@ -15,6 +16,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 발행 경로가 존재하는지 먼저 확인한다. 키가 없으면 뒤 단계가 전부
+      # 헛돌다 실패하므로, 원인을 첫 줄에서 못박고 끝낸다.
+      - name: Check generation backend
+        run: |
+          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "::error::ANTHROPIC_API_KEY 시크릿이 없습니다. CI 러너에는 claude CLI가 없어 이 키가 유일한 발행 경로입니다."
+            exit 1
+          fi
 
       - uses: actions/setup-node@v4
         with:
@@ -51,3 +61,37 @@ jobs:
           COUNT=$(git diff --staged --name-only | grep -c "src/content/news/.*\.md$" || true)
           git commit -m "feat(news): ${COUNT}개 AI 다이제스트 발행"
           git push origin main
+
+      # 실패를 조용히 넘기지 않는다. 2026-07-11~19 사이 8일, 07-24 이후 다시
+      # 며칠간 발행이 죽어 있었는데 아무 신호가 없었다.
+      - name: Report failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🔴 뉴스 자동발행 실패';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'auto-news-failure',
+            });
+            const body = `자동 발행 워크플로가 실패했습니다.\n\n실행 로그: ${runUrl}\n시각: ${new Date().toISOString()}`;
+            if (existing.data.length > 0) {
+              // 이미 열린 이슈가 있으면 코멘트만 — 5시간마다 이슈가 쌓이는 걸 막는다.
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.data[0].number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['auto-news-failure'],
+              });
+            }
