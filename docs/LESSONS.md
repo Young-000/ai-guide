@@ -4,6 +4,8 @@
 
 ## 2026-07-26
 
+- **`claude` CLI 구독 인증은 비대화형(cron)에서 상속되지 않는다.** 대화형 셸에서 `claude -p`가 멀쩡히 동작하길래 "로그인 문제 해결됨"으로 판단했는데, cron에서 돌리니 기사마다 `claude CLI exit 1`, 최소 환경 재현 시 `Not logged in · Please run /login`. **되던 이유는 부모 Claude Code 프로세스의 컨텍스트를 상속받아서였고, cron엔 그 부모가 없다.** `~/.claude/.credentials.json`이 존재해도 macOS에선 Keychain을 우선 보는 듯하며 Keychain은 로그인 세션에 묶인다. → 교훈: **"내 셸에서 되니까 크론에서도 되겠지"가 이 CLI엔 통하지 않는다.** cron용으로는 `claude setup-token`의 장기 토큰(`CLAUDE_CODE_OAUTH_TOKEN`)을 env로 주입해야 한다. 07-19 LESSONS의 "CLI 미로그인"도 실은 같은 현상이었을 가능성이 크다.
+- **크론은 등록이 아니라 "실제 발화 + 완주"까지 봐야 검증이다.** 임시 프로브(2분 뒤 실행)를 넣어 확인하니 (1) 1차: PATH에 homebrew가 없어 `npm: command not found`, (2) 2차: PATH 고치니 RSS 9/9까지 가고 생성에서 인증 실패 — **등록만 보고 끝냈으면 두 실패 모두 다음 정규 실행까지 조용히 묻혔다.** → 교훈: 크론을 걸면 반드시 프로브로 끝까지 돌려보고, 로그에 성공 라인이 찍히는 것까지 확인한다.
 - **같은 머신에서도 스케줄러에 따라 ~/Desktop 접근 가부가 갈린다.** 발행을 launchd로 등록하니 `bash: scripts/publish-local.sh: Operation not permitted`(TCC)로 즉사했는데, **crontab에 등록된 작업은 같은 경로를 문제없이 실행한다** — `venture-cycle.sh:180`이 Desktop 하위 워크트리에서 `bash scripts/verify.sh`를 돌려 매일 성공하는 게 증거. → 교훈: **이 워크스페이스에서 Desktop 하위 스크립트를 스케줄링할 땐 launchd가 아니라 crontab을 쓴다.** launchd로 걸면 조용히 아무것도 안 하고, 로그조차 안 남는다.
 - **이미 main에 흡수된 auto 브랜치 하나가 야간 사이클을 3주간 차단했다.** `venture-cycle.sh:46`은 `feature/auto-*` 브랜치가 하나라도 있으면 "사람 확인 대기"로 그 프로젝트를 통째로 skip한다. 문제의 브랜치는 코드가 이미 main에 전부 반영돼 실질 diff가 0이었는데도 이름만 남아 매일 skip을 유발했다(trend-radar도 동일). → 교훈: **auto 브랜치는 main 반영 후 반드시 삭제한다.** 남겨두면 "확인 대기"가 아니라 무기한 정지다. 사이클이 skip 로그를 남겨도 그건 매일 같은 줄이라 눈에 안 띈다.
 - **로컬 main과 origin/main에 각각 다른 게 갇혀 있었다.** 로컬엔 야간 사이클 코드 12커밋(아카이브 라우트 등)이 push 안 된 채, origin엔 CI가 커밋한 기사 22건이 pull 안 된 채로 3주를 보냈다. 양쪽 다 "정상"으로 보였고 로컬 브랜치만 보면 기사가 사라진 것처럼 보였다. → 교훈: **diverge를 커밋 수로만 보지 말고 어느 쪽에 무엇이 있는지 내용으로 볼 것.** 이 경우 정답은 한쪽 버리기가 아니라 rebase(둘 다 보존)였다.

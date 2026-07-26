@@ -19,6 +19,28 @@ cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 echo "▶ ai-guide local publish — $(date '+%Y-%m-%d %H:%M:%S')"
 
+# 0) 비대화형(cron) 실행용 인증 로드.
+#    claude CLI의 구독 인증은 로그인 세션/Keychain에 묶여 있어 cron에서는
+#    "Not logged in"으로 실패한다(실측 2026-07-26). 대화형 셸에서 동작하는 이유는
+#    부모 Claude Code 프로세스의 컨텍스트를 상속하기 때문이고, cron엔 그 부모가 없다.
+#    → `claude setup-token`으로 발급한 장기 토큰을 아래 파일에 넣어두면 cron에서도 돈다.
+CLAUDE_AUTH_ENV="$HOME/.claude/secrets/teamY/claude-cli.env"
+if [ -f "$CLAUDE_AUTH_ENV" ]; then
+  # shellcheck disable=SC1090
+  set -a; . "$CLAUDE_AUTH_ENV"; set +a
+fi
+
+# 대화형 컨텍스트 밖인데 토큰도 없으면, RSS만 긁고 생성에서 전부 실패하는 헛도는
+# 실행이 된다. 원인을 첫 줄에서 못박고 끝낸다.
+if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] && [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -z "${CLAUDECODE:-}" ]; then
+  echo "✗ 생성 백엔드 인증 없음."
+  echo "  cron 등 비대화형 실행에는 장기 토큰이 필요합니다:"
+  echo "    1) claude setup-token   (대화형으로 1회 발급, 구독 인증 — API 과금 없음)"
+  echo "    2) 발급된 토큰을 $CLAUDE_AUTH_ENV 에 CLAUDE_CODE_OAUTH_TOKEN=... 로 저장"
+  echo "  (또는 ANTHROPIC_API_KEY를 같은 파일에 넣으면 API 백엔드로 동작 — 과금 발생)"
+  exit 1
+fi
+
 # 1) Fetch fresh RSS items → scripts/worklist.json
 npm run --silent fetch-news
 

@@ -8,9 +8,9 @@
 
 | 항목 | 상태 | 비고 |
 |---|---|---|
-| 로컬 `claude` CLI 로그인 | ✅ 해결됨 | 07-26 실측 응답 확인. 07-19의 "Not logged in"은 해소된 상태 |
-| 키리스 발행 실행 | ✅ 검증됨 | RSS 9/9 피드 수집 → 3/3 기사 쌍 생성 성공. 07-26자 3건 발행 완료 |
-| 정기 실행 | ✅ crontab 등록 | `10 0,5,10,15,20 * * *` — 로그 `~/.claude/logs/ai-guide-publish.log` |
+| 키리스 발행 (대화형) | ✅ 검증됨 | RSS 9/9 피드 수집 → 3/3 기사 쌍 생성 성공. 07-26자 3건 발행 완료 |
+| 정기 실행 (cron) | ✅ 등록·발화 확인 | `10 0,5,10,15,20 * * *`. 23:10:00 정각 발화 + RSS 9/9 수집까지 실측. 로그 `~/.claude/logs/ai-guide-publish.log` |
+| **🔴 cron용 장기 토큰** | **미발급 — 마지막 관문** | cron 세션에서 claude CLI가 `Not logged in`. 구독 인증이 로그인 세션/Keychain에 묶여 있고, 대화형에서 되는 건 부모 Claude Code 컨텍스트를 상속하기 때문(cron엔 부모가 없음). **`claude setup-token` 1회 실행 → 토큰을 `~/.claude/secrets/teamY/claude-cli.env`에 `CLAUDE_CODE_OAUTH_TOKEN=...`로 저장하면 즉시 동작** (구독 인증이라 API 과금 없음). `publish-local.sh`가 이 파일을 자동 로드하도록 배선 완료 |
 | **auto-news CI `ANTHROPIC_API_KEY`** | ⬜ 미등록 (선택) | CI 경로를 쓰려면 필요하지만 **API 과금 발생**. 로컬 키리스로 돌고 있으므로 필수 아님. 워크플로는 이제 키 부재를 첫 단계에서 명시적으로 차단하고 실패 시 이슈를 생성함 |
 
 > ⚠️ **launchd로는 등록하지 말 것** — `~/Desktop` TCC에 막혀 `Operation not permitted`로 즉사한다(실측). crontab은 통과한다. 상세는 `docs/LESSONS.md` 2026-07-26.

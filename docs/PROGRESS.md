@@ -2,6 +2,26 @@
 
 ## 현재 상태
 
+- 2026-07-26 `8271457` feat(news): 3개 AI 다이제스트 발행 (2026-07-26)
+- 2026-07-26 `b9396fc` fix(test): jest가 .worktrees 하위 테스트를 수집하지 않도록 제외
+- 2026-07-19 `6504572` chore(pm): weekly cycle 2026-07-19
+- 2026-07-12 `6241783` chore(pm): weekly cycle 2026-07-12
+- 2026-07-12 `bb10bb3` feat(auto): feat(news): add /news/archive index page with internal link and sitemap entry (auto-review MERGE: 4게이트 GREEN·컨벤션 완전 일치·테스트 동반·머지 clean, 색인성·내부링크 북극성에 정확히 부응하는 무위험 콘텐츠 라우트 추가)
+- 2026-07-11 `f688106` feat(auto): feat(news): add /news/archive/[year]/[month] route with sitemap (auto-review MERGE: tsc·테스트7/7·lint 모두 GREEN이고 LESSONS의 색인성·내부링크 최우선 방향에 정확히 부합하는 안전한 신규 라우트 — 재발명·충돌·게이트 사유 없음)
+- 2026-07-22 `2d1e9df` feat(news): 3개 AI 다이제스트 발행 (2026-07-22)
+- 2026-07-20 `f9e5efa` feat(news): 3개 AI 다이제스트 발행 (2026-07-20)
+- 2026-07-19 `1f03759` feat(news): 3개 AI 다이제스트 발행 (2026-07-19)
+- 2026-07-16 `cf910bf` feat(news): 3개 AI 다이제스트 발행 (2026-07-16)
+- 2026-07-16 `74c621d` feat(news): 3개 AI 다이제스트 발행 (2026-07-16)
+- 2026-07-14 `041adac` feat(news): 3개 AI 다이제스트 발행 (2026-07-14)
+- 2026-07-14 `8301f33` feat(news): 3개 AI 다이제스트 발행 (2026-07-14)
+- 2026-07-13 `895b638` feat(news): 3개 AI 다이제스트 발행 (2026-07-13)
+- 2026-07-13 `7d5cee4` feat(news): 3개 AI 다이제스트 발행 (2026-07-13)
+- 2026-07-12 `3baa648` feat(news): 3개 AI 다이제스트 발행 (2026-07-12 3차)
+- 2026-07-12 `83b5a7b` feat(news): 3개 AI 다이제스트 발행 (2026-07-12)
+- 2026-07-12 `e648218` feat(news): 3개 AI 다이제스트 발행 (2026-07-12)
+
+
 - 2026-07-19 `1600567` chore(pm): weekly cycle 2026-07-19
 
 
