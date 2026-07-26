@@ -2,6 +2,13 @@
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
+## 2026-07-26
+
+- **같은 머신에서도 스케줄러에 따라 ~/Desktop 접근 가부가 갈린다.** 발행을 launchd로 등록하니 `bash: scripts/publish-local.sh: Operation not permitted`(TCC)로 즉사했는데, **crontab에 등록된 작업은 같은 경로를 문제없이 실행한다** — `venture-cycle.sh:180`이 Desktop 하위 워크트리에서 `bash scripts/verify.sh`를 돌려 매일 성공하는 게 증거. → 교훈: **이 워크스페이스에서 Desktop 하위 스크립트를 스케줄링할 땐 launchd가 아니라 crontab을 쓴다.** launchd로 걸면 조용히 아무것도 안 하고, 로그조차 안 남는다.
+- **이미 main에 흡수된 auto 브랜치 하나가 야간 사이클을 3주간 차단했다.** `venture-cycle.sh:46`은 `feature/auto-*` 브랜치가 하나라도 있으면 "사람 확인 대기"로 그 프로젝트를 통째로 skip한다. 문제의 브랜치는 코드가 이미 main에 전부 반영돼 실질 diff가 0이었는데도 이름만 남아 매일 skip을 유발했다(trend-radar도 동일). → 교훈: **auto 브랜치는 main 반영 후 반드시 삭제한다.** 남겨두면 "확인 대기"가 아니라 무기한 정지다. 사이클이 skip 로그를 남겨도 그건 매일 같은 줄이라 눈에 안 띈다.
+- **로컬 main과 origin/main에 각각 다른 게 갇혀 있었다.** 로컬엔 야간 사이클 코드 12커밋(아카이브 라우트 등)이 push 안 된 채, origin엔 CI가 커밋한 기사 22건이 pull 안 된 채로 3주를 보냈다. 양쪽 다 "정상"으로 보였고 로컬 브랜치만 보면 기사가 사라진 것처럼 보였다. → 교훈: **diverge를 커밋 수로만 보지 말고 어느 쪽에 무엇이 있는지 내용으로 볼 것.** 이 경우 정답은 한쪽 버리기가 아니라 rebase(둘 다 보존)였다.
+- **jest가 리포 안의 `.worktrees/`까지 수집해 23건이 거짓 실패했다.** 워크트리의 `@/` 별칭이 메인 rootDir로 풀려 통과 자체가 불가능한 실패다. eslint엔 이미 같은 ignore가 있었는데 jest엔 없었다. → 교훈: **worktree를 리포 안에 두는 이상 모든 도구(eslint·jest·tsc)에 일괄 ignore가 필요하다.** 하나라도 빠지면 "테스트 깨짐"으로 오진한다.
+
 ## 2026-07-19 주간
 
 - **콘텐츠 엔진이 8일간(07-11~07-19) 조용히 죽어 있었다.** `auto-news.yml` GitHub Actions가 매 실행 30~40초 만에 전부 failure. 근본 원인 2중: (1) CI는 `ANTHROPIC_API_KEY` 시크릿 부재/만료로 generate 단계 실패(fetch-news 자체는 로컬 정상, 8건 수집 확인), (2) 로컬 keyless 폴백도 이 머신의 `claude` CLI가 "Not logged in"이라 불가. → 교훈: **"유일하게 도는 성장 동력"일수록 실패가 조용하면 안 된다 — 실패 알림(Slack `if: failure()`)이 코드 자체보다 먼저다.** 8일간 아무도 몰랐던 게 진짜 사고. 백로그 #2로 CI 실패 가시화를 넣음.
