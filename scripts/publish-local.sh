@@ -52,12 +52,17 @@ if ! env -u ANTHROPIC_API_KEY npm run --silent generate-news; then
 fi
 
 # 3) Did any article files actually change?
-if git diff --quiet --exit-code -- src/content/news; then
+#    `git diff`는 tracked 파일의 수정만 본다 — 새로 생성된 기사는 untracked라
+#    항상 "변경 없음"으로 판정돼 매 실행이 여기서 조용히 종료됐다(실측: 크론
+#    13회 전부 실행·생성 성공했는데 push 0회, 기사 36개가 로컬에 갇힘).
+#    untracked를 포함하는 `git status --porcelain`으로 판정한다.
+ARTICLE_CHANGES="$(git status --porcelain -- src/content/news)"
+if [ -z "$ARTICLE_CHANGES" ]; then
   echo "ℹ No article file changes — nothing to commit."
   exit 0
 fi
 
-NEW_COUNT="$(git status --porcelain -- src/content/news | grep -c '^??\|^ M\|^M' || true)"
+NEW_COUNT="$(printf '%s\n' "$ARTICLE_CHANGES" | grep -c '^??\|^ M\|^M' || true)"
 echo "✓ ${NEW_COUNT} article file(s) changed."
 
 # 4) Build check — never publish articles that break the site.

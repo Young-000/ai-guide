@@ -1,0 +1,24 @@
+---
+title: "Amodei's Message to Anthropic's Big Partners — Report"
+lang: en
+date: 2026-07-28
+slug: amodei-message-to-ai-partners
+summary: "Anthropic CEO Dario Amodei reportedly directed a message at partners including Microsoft, Nvidia and Palantir, according to an Indian outlet."
+tags: ["Anthropic", "Dario Amodei", "Microsoft", "Nvidia", "Palantir"]
+sources:
+  - title: "Anthropic CEO Dario Amodei makes it clear to Microsoft, Nvidia, Palantir and all other companies who sign"
+    url: "https://news.google.com/rss/articles/CBMi6AJBVV95cUxPSnpYaVVvTnRsdHExU1hXRkpSQ0xPYlBXb25tSjdFeFljM3loQmlFX1pncnVwaHpEOS00OVJrcDlJMXU3UzA2RWpQTWthRjNZalRkcWJVVHRGa1RuOHlLVlE4Sm9tU0hxbTZuZkljcGN4MFlGNmNDUmYySDlZbUk3V3EzczlWaWxWQ2RXRVYybWdTMmt2S1lBR084ekIwUVV1UzEzaEd0R3BvTmRMdF9BcFg0MlYzRkk0bnhKbWRBTlpUSkRacG5JZ2JiWnVVTzNqQWFHSHVVdnhBdkRxNnhSYzBZN3JkdUVvYXNneXVBZ2RpOXE2MmpFVFpmVmRndWZLR3dMUTdDM3JEY04zMm54MFpKWmZqZ0NJa3gweHFJYThfVnIwbmRzWHpsQ1Bac3Z6d24wOHlPdGo1UzV4N0syanpVUDktN3NZd2d2UTJ1ODBWeTREVTNFNTFqam1lZUR4QUJIVVVHY1jSAe4CQVVfeXFMT0FscGpKRHlRZ0lGbGE0U2t0QUJaQkRiNERheG5LeWw3N1lFN2owNHAycXZFdzI0MFdKeEp6dnltejRyN2RnN3RsMjBNQ2luRmxRMWE2ZnE5bEFzd19kc3lJVUxqX2ExYVJBcGR3UGd4VUVXbFJ1SnpFVVgyWC1wRVROVll3cHZTQjhWWGJ4SEdzYWF1R0JoWWlTRnpoNlNBNWVfMmtpYXRhOTNJQ210a2UwMERzam1WckZWLTJTb3lkc1Y3NXVQNTRrYUcxcGZPWmxoRVZrWVV3R0VNR3JpV1ZtUXFzaXZYYVVhQzI1M29yTFgxaElheDdpSkhfZS14T05pOTN6dElhUnhycW53OVhUTWRrVVlpSmJvYVFXT1JGMi1NeGUtM1JFUV8tRG9iQ0lDS3FmUHZZQjJCUEVZRFM1MDVGR29PeFAyQ1ZKUmZHb3VHckJBMTRVVWs3dVNhQmU4MTd4OGJZOGljb3JR?oc=5"
+---
+
+**In one line**: Anthropic CEO Dario Amodei reportedly issued a message aimed at large partners including Microsoft, Nvidia and Palantir, per an Indian outlet.
+
+### Key points
+- The Times of India reported remarks by Anthropic CEO Dario Amodei.
+- The named parties are companies that "sign" — reported to include Microsoft, Nvidia and Palantir.
+- Only the headline is available at this stage; the specific context and content of the remarks require checking the original report.
+
+### Why it matters
+Amodei is a prominent voice on AI safety and governance, so a message directed at major infrastructure and enterprise partners could tie into industry agreements or policy stances. With the details still unclear, though, firm conclusions would be premature.
+
+### Read more
+- [Anthropic CEO Dario Amodei makes it clear to Microsoft, Nvidia, Palantir and all other companies who sign](https://news.google.com/rss/articles/CBMi6AJBVV95cUxPSnpYaVVvTnRsdHExU1hXRkpSQ0xPYlBXb25tSjdFeFljM3loQmlFX1pncnVwaHpEOS00OVJrcDlJMXU3UzA2RWpQTWthRjNZalRkcWJVVHRGa1RuOHlLVlE4Sm9tU0hxbTZuZkljcGN4MFlGNmNDUmYySDlZbUk3V3EzczlWaWxWQ2RXRVYybWdTMmt2S1lBR084ekIwUVV1UzEzaEd0R3BvTmRMdF9BcFg0MlYzRkk0bnhKbWRBTlpUSkRacG5JZ2JiWnVVTzNqQWFHSHVVdnhBdkRxNnhSYzBZN3JkdUVvYXNneXVBZ2RpOXE2MmpFVFpmVmRndWZLR3dMUTdDM3JEY04zMm54MFpKWmZqZ0NJa3gweHFJYThfVnIwbmRzWHpsQ1Bac3Z6d24wOHlPdGo1UzV4N0syanpVUDktN3NZd2d2UTJ1ODBWeTREVTNFNTFqam1lZUR4QUJIVVVHY1jSAe4CQVVfeXFMT0FscGpKRHlRZ0lGbGE0U2t0QUJaQkRiNERheG5LeWw3N1lFN2owNHAycXZFdzI0MFdKeEp6dnltejRyN2RnN3RsMjBNQ2luRmxRMWE2ZnE5bEFzd19kc3lJVUxqX2ExYVJBcGR3UGd4VUVXbFJ1SnpFVVgyWC1wRVROVll3cHZTQjhWWGJ4SEdzYWF1R0JoWWlTRnpoNlNBNWVfMmtpYXRhOTNJQ210a2UwMERzam1WckZWLTJTb3lkc1Y3NXVQNTRrYUcxcGZPWmxoRVZrWVV3R0VNR3JpV1ZtUXFzaXZYYVVhQzI1M29yTFgxaElheDdpSkhfZS14T05pOTN6dElhUnhycW53OVhUTWRrVVlpSmJvYVFXT1JGMi1NeGUtM1JFUV8tRG9iQ0lDS3FmUHZZQjJCUEVZRFM1MDVGR29PeFAyQ1ZKUmZHb3VHckJBMTRVVWs3dVNhQmU4MTd4OGJZOGljb3JR?oc=5) — The Times of India

@@ -1,0 +1,24 @@
+---
+title: "아모데이, 주요 협력사에 던진 메시지 — 보도"
+lang: ko
+date: 2026-07-28
+slug: amodei-message-to-ai-partners
+summary: "앤트로픽 CEO 다리오 아모데이가 마이크로소프트·엔비디아·팔란티어 등 협력사를 겨냥한 발언을 했다고 인도 매체가 보도했다."
+tags: ["Anthropic", "Dario Amodei", "Microsoft", "Nvidia", "Palantir"]
+sources:
+  - title: "Anthropic CEO Dario Amodei makes it clear to Microsoft, Nvidia, Palantir and all other companies who sign"
+    url: "https://news.google.com/rss/articles/CBMi6AJBVV95cUxPSnpYaVVvTnRsdHExU1hXRkpSQ0xPYlBXb25tSjdFeFljM3loQmlFX1pncnVwaHpEOS00OVJrcDlJMXU3UzA2RWpQTWthRjNZalRkcWJVVHRGa1RuOHlLVlE4Sm9tU0hxbTZuZkljcGN4MFlGNmNDUmYySDlZbUk3V3EzczlWaWxWQ2RXRVYybWdTMmt2S1lBR084ekIwUVV1UzEzaEd0R3BvTmRMdF9BcFg0MlYzRkk0bnhKbWRBTlpUSkRacG5JZ2JiWnVVTzNqQWFHSHVVdnhBdkRxNnhSYzBZN3JkdUVvYXNneXVBZ2RpOXE2MmpFVFpmVmRndWZLR3dMUTdDM3JEY04zMm54MFpKWmZqZ0NJa3gweHFJYThfVnIwbmRzWHpsQ1Bac3Z6d24wOHlPdGo1UzV4N0syanpVUDktN3NZd2d2UTJ1ODBWeTREVTNFNTFqam1lZUR4QUJIVVVHY1jSAe4CQVVfeXFMT0FscGpKRHlRZ0lGbGE0U2t0QUJaQkRiNERheG5LeWw3N1lFN2owNHAycXZFdzI0MFdKeEp6dnltejRyN2RnN3RsMjBNQ2luRmxRMWE2ZnE5bEFzd19kc3lJVUxqX2ExYVJBcGR3UGd4VUVXbFJ1SnpFVVgyWC1wRVROVll3cHZTQjhWWGJ4SEdzYWF1R0JoWWlTRnpoNlNBNWVfMmtpYXRhOTNJQ210a2UwMERzam1WckZWLTJTb3lkc1Y3NXVQNTRrYUcxcGZPWmxoRVZrWVV3R0VNR3JpV1ZtUXFzaXZYYVVhQzI1M29yTFgxaElheDdpSkhfZS14T05pOTN6dElhUnhycW53OVhUTWRrVVlpSmJvYVFXT1JGMi1NeGUtM1JFUV8tRG9iQ0lDS3FmUHZZQjJCUEVZRFM1MDVGR29PeFAyQ1ZKUmZHb3VHckJBMTRVVWs3dVNhQmU4MTd4OGJZOGljb3JR?oc=5"
+---
+
+**한 줄 요약**: 앤트로픽 CEO 다리오 아모데이가 마이크로소프트·엔비디아·팔란티어 등 대형 협력사를 겨냥한 메시지를 냈다고 인도 매체가 전했다.
+
+### 핵심
+- 인도 매체 The Times of India가 다리오 아모데이의 발언을 보도했다.
+- 언급된 대상은 마이크로소프트, 엔비디아, 팔란티어 등 "서명한(sign)" 기업들로 알려졌다.
+- 현 시점 공개된 것은 헤드라인 수준이며, 발언의 구체적 맥락·내용은 원문 확인이 필요하다.
+
+### 왜 중요한가
+아모데이는 AI 안전·거버넌스 분야에서 목소리가 큰 인물로, 그가 주요 인프라·엔터프라이즈 파트너를 향해 낸 메시지는 업계 협약이나 정책 기조와 연결될 수 있다. 다만 세부 내용이 불확실한 만큼 단정은 이르다.
+
+### 더 보기
+- [Anthropic CEO Dario Amodei makes it clear to Microsoft, Nvidia, Palantir and all other companies who sign](https://news.google.com/rss/articles/CBMi6AJBVV95cUxPSnpYaVVvTnRsdHExU1hXRkpSQ0xPYlBXb25tSjdFeFljM3loQmlFX1pncnVwaHpEOS00OVJrcDlJMXU3UzA2RWpQTWthRjNZalRkcWJVVHRGa1RuOHlLVlE4Sm9tU0hxbTZuZkljcGN4MFlGNmNDUmYySDlZbUk3V3EzczlWaWxWQ2RXRVYybWdTMmt2S1lBR084ekIwUVV1UzEzaEd0R3BvTmRMdF9BcFg0MlYzRkk0bnhKbWRBTlpUSkRacG5JZ2JiWnVVTzNqQWFHSHVVdnhBdkRxNnhSYzBZN3JkdUVvYXNneXVBZ2RpOXE2MmpFVFpmVmRndWZLR3dMUTdDM3JEY04zMm54MFpKWmZqZ0NJa3gweHFJYThfVnIwbmRzWHpsQ1Bac3Z6d24wOHlPdGo1UzV4N0syanpVUDktN3NZd2d2UTJ1ODBWeTREVTNFNTFqam1lZUR4QUJIVVVHY1jSAe4CQVVfeXFMT0FscGpKRHlRZ0lGbGE0U2t0QUJaQkRiNERheG5LeWw3N1lFN2owNHAycXZFdzI0MFdKeEp6dnltejRyN2RnN3RsMjBNQ2luRmxRMWE2ZnE5bEFzd19kc3lJVUxqX2ExYVJBcGR3UGd4VUVXbFJ1SnpFVVgyWC1wRVROVll3cHZTQjhWWGJ4SEdzYWF1R0JoWWlTRnpoNlNBNWVfMmtpYXRhOTNJQ210a2UwMERzam1WckZWLTJTb3lkc1Y3NXVQNTRrYUcxcGZPWmxoRVZrWVV3R0VNR3JpV1ZtUXFzaXZYYVVhQzI1M29yTFgxaElheDdpSkhfZS14T05pOTN6dElhUnhycW53OVhUTWRrVVlpSmJvYVFXT1JGMi1NeGUtM1JFUV8tRG9iQ0lDS3FmUHZZQjJCUEVZRFM1MDVGR29PeFAyQ1ZKUmZHb3VHckJBMTRVVWs3dVNhQmU4MTd4OGJZOGljb3JR?oc=5) — The Times of India
