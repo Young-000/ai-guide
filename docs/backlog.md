@@ -42,3 +42,20 @@
 - [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0)
 - [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)
 - [ ] **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답)
+
+## 2026-08-02 주간 PM 리필 (우선순위순)
+
+> 🔴 이번 주 최대 발견: **콘텐츠 엔진은 07-29 복구돼 정상 발화(7일 13커밋 생성·커밋)인데 origin push가 07-29부터 막혀 라이브 미반영.** 근본 원인 = 이 머신의 GitHub push 자격증명 전부 만료(gh 토큰 invalid + SSH publickey 거부 + keychain에 github.com 없음). `git push`가 매 크론 조용히 실패해도 로컬 로그는 `✓ written`으로 초록. → LESSONS 07-29 "라이브가 안 바뀌면 실패"의 3번째 변종(생성 OK·커밋 OK·**push FAIL**). **push 자격증명 복구는 순수 오너 조치**(`docs/PENDING-OWNER-ACTIONS.md` 최상단 🔴🔴, 옵션 A: CI에 `ANTHROPIC_API_KEY` / 옵션 B: `gh auth login`). 이 게이트가 열려 있는 한 야간 사이클 산출물의 라이브 반영 0.
+>
+> ⚠️ SUNSET 트립와이어(대표 인지용): aiwire 구독 = 10주+ 연속 0건, `search_trends.page_views` = 여전히 0 rows(카운터 3주 연속 미배선). 단 07-19가 건 회생불가 판정 조건("엔진 복구 + 카운터 배선 후 2~3주 실측 후에도 near-zero")이 **아직 한 항목도 충족 안 됨** — 카운터 미배선 + push 막혀 실측 자체가 불가. 따라서 이번 주도 SUNSET 아님. **다음 조건 성립 시 즉시 SUNSET_GATE 상신: push 복구 → 카운터 배선 → 라이브에서 2~3주 실측했는데도 page_views near-zero·구독 0.**
+>
+> 리필 원칙: push가 막혀 라이브 반영이 0인 지금, 야간 사이클의 최우선은 (1) **다시는 push가 조용히 실패하지 않도록 fail-loud**(코드로 가능, 게이트 아님), (2) push 복구 시 즉시 값을 낼 이월 태스크들. 발행량은 병목 아님(엔진 정상) → 발행 태스크는 계속 배제.
+
+- [ ] **`publish-local.sh` push 실패 fail-loud + main-checklist 알림** — 현재 `git push origin main`이 실패해도(:88) 스크립트가 성공 종료해 로컬 로그가 초록으로 끝남. `git push`의 종료코드를 검사해 실패 시 (a) 비정상 종료코드, (b) `~/.claude/scripts/team/` 경유 `main-checklist` 채널 경보(가능하면), (c) 로그에 `PUSH FAILED` 라인. 추가로 push 후 `git rev-list --count origin/main..main`으로 잔여 미푸시 커밋을 세어 0이 아니면 경보. (근거: 이번 사고의 본질은 "push가 8일 조용히 실패했는데 로그는 초록" — 성장 동력의 라이브 반영 실패가 무성해야 한다. verify: 인증 없는 환경에서 스크립트 실행 시 비정상 종료코드 + `PUSH FAILED` 로그 라인)
+- [ ] **트래픽 카운터 코드 배선(4주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴·게이트 아님, PM이 07-12 생성). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **뉴스 상세 1개 라우트만** 배선(섹션·토픽 후속). (근거: 측정 블로커의 마지막 조각, page_views 여전히 0 rows·4주 연속 야간 미착수. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1)
+- [ ] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 10주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)
+- [ ] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
+- [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 594/2=297 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0)
+- [ ] **auto-news CI 실패 가시화** — `auto-news.yml`에 `if: failure()` Slack/webhook 알림 스텝 추가(엔진 죽으면 즉시 채널 알림). (근거: 07-11 8일 정지의 근본 원인은 "실패가 조용했다"였고 이번 push 사고도 동일 계열 — 자동화 실패는 시끄러워야 한다. verify: 워크플로 실패 시 알림 경로 존재, 성공 시 무발송)
+- [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)
+- [ ] **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답)

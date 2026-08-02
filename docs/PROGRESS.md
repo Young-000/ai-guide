@@ -1,6 +1,62 @@
 # AI Guide - 진행 기록
 
+## [2026-08-02] 주간 PM 사이클
+
+### 판단: REFILL
+- 지표 실측: aiwire 구독 0건(10주+), `search_trends.page_views` 0 rows(카운터 4주 연속 미배선), 콘텐츠 엔진 복구(7일 13커밋 생성·커밋).
+- 🔴 최대 발견: **push 자격증명 만료로 07-29 이후 13커밋이 라이브 미반영**(origin ahead 13). gh 토큰 invalid + SSH publickey 거부 + keychain에 github.com 없음. `git push` 직접 시도 → 자격증명 부재로 불가(순수 오너 조치).
+- `docs/PENDING-OWNER-ACTIONS.md` 최상단에 복구 경로(옵션 A: CI에 `ANTHROPIC_API_KEY` / 옵션 B: `gh auth login`) 기록.
+- SUNSET 아님: 07-19 트립와이어 조건(push 복구+카운터 배선 후 2~3주 실측) 미충족 — 실측 자체가 불가한 상태.
+- 백로그 8건 리필(push fail-loud 최우선 + 카운터 배선 이월). LESSONS 3건·ops-vault Learnings 3건 누적.
+
 ## 현재 상태
+
+- 2026-08-02 `1f63b21` content(news): local digest publish 2026-08-02
+
+
+- 2026-08-02 `018f0e5` content(news): local digest publish 2026-08-02
+
+
+- 2026-08-02 `16170f2` content(news): local digest publish 2026-08-02
+
+
+- 2026-08-01 `a5f467a` content(news): local digest publish 2026-08-01
+
+
+- 2026-08-01 `741ad30` content(news): local digest publish 2026-08-01
+
+
+- 2026-07-31 `b4976d3` content(news): local digest publish 2026-07-31
+
+
+- 2026-07-30 `78deea5` content(news): local digest publish 2026-07-30
+
+
+- 2026-07-30 `a5437ae` content(news): local digest publish 2026-07-30
+
+
+- 2026-07-30 `7fe453b` content(news): local digest publish 2026-07-30
+
+
+- 2026-07-30 `4cbf501` content(news): local digest publish 2026-07-30
+
+
+- 2026-07-30 `209277c` content(news): local digest publish 2026-07-30
+
+
+- 2026-07-29 `436f1d6` content(news): local digest publish 2026-07-29
+
+
+- 2026-07-29 `c4c6525` content(news): local digest publish 2026-07-29
+
+
+- 2026-07-29 `9f8d4b2` docs(lessons): 파이프라인 조각 검증의 함정 + git diff 커밋 게이트 버그 기록
+- 2026-07-29 `b09675f` fix(publish): untracked 기사를 커밋 게이트가 놓치던 버그 + 갇힌 기사 18쌍 발행
+
+
+- 2026-07-26 `928b837` fix(publish): cron 실행용 인증 로드 + 인증 부재 시 즉시 실패
+- 2026-07-26 `8f8067e` docs: 파이프라인 정지 원인·해소 기록 (LESSONS + PENDING-OWNER-ACTIONS)
+
 
 - 2026-07-26 `8271457` feat(news): 3개 AI 다이제스트 발행 (2026-07-26)
 - 2026-07-26 `b9396fc` fix(test): jest가 .worktrees 하위 테스트를 수집하지 않도록 제외

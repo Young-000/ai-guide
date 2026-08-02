@@ -2,6 +2,23 @@
 
 > 코드는 전부 대기(스위치 OFF). 아래 항목은 키/토큰/계정을 넣으면 즉시 켜집니다. (2026-06-16 기록)
 
+## 🔴🔴 최우선 (2026-08-02 주간 PM 발견) — GitHub push 자격증명 만료 → 발행이 라이브에 안 올라감
+
+> **증상**: 콘텐츠 엔진은 07-29 복구돼 정상 발화 중(최근 7일 13커밋 생성·커밋 성공)인데, **origin/main 마지막 push가 07-29(`9f8d4b2`)에 멈췄고 로컬 main이 13커밋 앞선 채 갇힘.** 라이브(aiwire.news)에는 07-29 이후 신규 다이제스트가 한 건도 안 올라갔다.
+>
+> **근본 원인**: `git push origin main`이 `could not read Username for 'https://github.com': Device not configured`로 실패. 이 머신의 GitHub 자격증명이 전부 무효 — (1) `gh auth status` = 토큰 invalid(Young-000), (2) SSH = `Permission denied (publickey)`, (3) osxkeychain에 github.com 항목 없음. `publish-local.sh:88`의 `git push`가 매 크론 실행마다 조용히 실패해도 스크립트가 성공으로 끝난다(로컬 로그는 `✓ written`까지만 초록).
+>
+> **07-26 기록의 사각지대**: 그때 "cron 발화·생성 ✅"까지만 검증했고 push 단계는 대화형 부모 컨텍스트 덕에 우연히 통과했을 뿐, 크론의 push 자격증명은 한 번도 실측 안 했다. LESSONS 07-29 "라이브가 안 바뀌면 실패"의 세 번째 변종(생성 OK·커밋 OK·**push FAIL**).
+
+| 복구 경로 | 필요 조치 | 비고 |
+|---|---|---|
+| **옵션 A (권장) — CI로 push 일원화** | GitHub repo secret에 `ANTHROPIC_API_KEY` 등록 → `auto-news.yml`이 생성+커밋+push 전부 러너에서 수행(러너는 `GITHUB_TOKEN` 자동, 로컬 자격증명 불필요) | 로컬 머신 인증에 대한 의존을 영구 제거. 단 API 과금 발생 |
+| **옵션 B — 로컬 push 자격증명 복구** | `gh auth login -h github.com`(또는 SSH 키 재등록) 1회 → osxkeychain에 유효 토큰 저장 → 로컬 keyless 크론이 생성+push 완주 | 과금 0(구독 인증 유지), 단 자격증명이 로컬 세션/Keychain에 다시 묶임(만료 재발 위험) |
+
+> ⏳ 이 블로커가 열려 있는 한 야간 사이클이 무엇을 머지해도 라이브 반영 0. **주간 PM(2026-08-02)은 push를 직접 시도했으나 자격증명 부재로 불가 — 순수 오너 조치.** 복구되면 즉시 `git push origin main`으로 갇힌 13커밋이 배포됨.
+
+---
+
 ## ✅ 해소됨 (2026-07-26) — 콘텐츠 엔진 정지
 
 > 07-11~19 8일 + 07-24 이후 재차 정지했던 자동 발행이 **로컬 키리스 경로로 복구**됨.
