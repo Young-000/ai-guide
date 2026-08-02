@@ -443,6 +443,12 @@
     "https://www.theregister.com/ai-and-ml/2026/07/29/mcp-gets-an-enterprise-makeover/",
     "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
     "https://www.cnbc.com/2026/07/28/meta-blackrock-partner-on-14-billion-el-paso-data-center.html",
-    "https://www.bnnbloomberg.ca/business/artificial-intelligence/2026/07/28/meta-blackrock-partner-on-us14-billion-el-paso-data-centre/"
+    "https://www.bnnbloomberg.ca/business/artificial-intelligence/2026/07/28/meta-blackrock-partner-on-us14-billion-el-paso-data-centre/",
+    "https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/",
+    "https://www.bleepingcomputer.com/news/security/hacker-uses-deepseek-ai-to-autonomously-attack-vulnerable-servers/",
+    "https://www.techtimes.com/articles/322513/20260731/deepseek-retrained-v4-flash-beats-its-flagship-pro-nine-agent-benchmarks.htm",
+    "https://www.cosmicjs.com/blog/deepseek-v4-flash-benchmarks-pricing",
+    "https://noma.security/blog/gitlost-how-we-tricked-githubs-ai-agent-into-leaking-private-repos/",
+    "https://www.securityweek.com/critical-vulnerability-exposes-github-agentic-workflows-to-prompt-injection/"
   ]
 }
