@@ -7,6 +7,7 @@ import ArticleJsonLd from './ArticleJsonLd';
 import ShareRow from './ShareRow';
 import ArticleViewTracker from './ArticleViewTracker';
 import SubscribeBox from '@/components/SubscribeBox';
+import CoupangBanner from '@/components/CoupangBanner';
 import NewsCard from './NewsCard';
 import { BASE_URL } from '@/lib/site';
 import type { NewsArticle, NewsLang, NewsMeta } from '@/types/news';
@@ -238,6 +239,10 @@ export default function NewsArticleView({
           </div>
         </section>
       )}
+
+      {/* Coupang Partners — Korean readers only, and after the article, never inside it.
+          Kept above the subscribe box so the last thing on the page is our own CTA. */}
+      {lang === 'ko' && <CoupangBanner subId="aiwire-article" />}
 
       {/* Subscribe */}
       <section

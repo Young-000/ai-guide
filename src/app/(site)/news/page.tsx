@@ -7,6 +7,7 @@ import SectionChips from '@/components/news/SectionChips';
 import TagChips from '@/components/news/TagChips';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
+import CoupangBanner from '@/components/CoupangBanner';
 import { BASE_URL } from '@/lib/site';
 
 export const revalidate = 300;
@@ -71,6 +72,9 @@ export default function NewsPage(): JSX.Element {
           </div>
         }
       />
+
+      {/* Coupang Partners — after the list, so the ad never sits among our articles. */}
+      <CoupangBanner subId="aiwire-news-list" />
 
       {/* Subscribe — added to this high-traffic page */}
       <section
