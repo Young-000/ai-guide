@@ -28,7 +28,7 @@ describe('buildNewsGraph', () => {
   });
 
   it('builds tag nodes with id t:<tag>, type tag, url /news/topic/<tag>', () => {
-    const { nodes } = buildNewsGraph('ko');
+    const { nodes } = buildNewsGraph('ko', { minTagCount: 1 });
     const tagNodes = nodes.filter((n) => n.type === 'tag');
     const tagIds = tagNodes.map((n) => n.id).sort();
     expect(tagIds).toEqual(['t:LLM', 't:OpenAI']);
@@ -39,7 +39,7 @@ describe('buildNewsGraph', () => {
   });
 
   it('sizes tag nodes by article count (val = count)', () => {
-    const { nodes } = buildNewsGraph('ko');
+    const { nodes } = buildNewsGraph('ko', { minTagCount: 1 });
     const llm = nodes.find((n) => n.id === 't:LLM');
     const openai = nodes.find((n) => n.id === 't:OpenAI');
     // LLM appears in alpha, beta, gamma → val 3
@@ -49,13 +49,48 @@ describe('buildNewsGraph', () => {
   });
 
   it('builds one link per article-tag pair', () => {
-    const { links } = buildNewsGraph('ko');
+    const { links } = buildNewsGraph('ko', { minTagCount: 1 });
     // alpha→LLM, beta→OpenAI, beta→LLM, gamma→LLM = 4 links
     expect(links).toHaveLength(4);
     expect(links).toContainEqual<GraphLink>({ source: 'a:alpha', target: 't:LLM' });
     expect(links).toContainEqual<GraphLink>({ source: 'a:beta', target: 't:OpenAI' });
     expect(links).toContainEqual<GraphLink>({ source: 'a:beta', target: 't:LLM' });
     expect(links).toContainEqual<GraphLink>({ source: 'a:gamma', target: 't:LLM' });
+  });
+
+  // Tags used by a single article carry no connection — they add a dot and a line
+  // to the canvas and nothing else. In production they were 473 of 696 tags (68%),
+  // which is what made the map unreadable.
+  describe('minTagCount (default 2)', () => {
+    it('drops tags that only one article uses', () => {
+      const { nodes } = buildNewsGraph('ko');
+      const tagIds = nodes.filter((n) => n.type === 'tag').map((n) => n.id);
+
+      expect(tagIds).toEqual(['t:LLM']);
+    });
+
+    it('drops the links that pointed at removed tags', () => {
+      const { links } = buildNewsGraph('ko');
+
+      expect(links).toHaveLength(3);
+      expect(links.every((l) => l.target === 't:LLM')).toBe(true);
+    });
+
+    it('keeps articles that still have a surviving tag', () => {
+      const { nodes } = buildNewsGraph('ko');
+      const articleIds = nodes.filter((n) => n.type === 'article').map((n) => n.id).sort();
+
+      expect(articleIds).toEqual(['a:alpha', 'a:beta', 'a:gamma']);
+    });
+
+    it('drops articles left with no tag at all', () => {
+      // minTagCount 4 removes every tag in the fixtures (LLM has 3), so no article
+      // has anything to connect to — an unconnected dot is noise, not information.
+      const { nodes, links } = buildNewsGraph('ko', { minTagCount: 4 });
+
+      expect(nodes).toEqual([]);
+      expect(links).toEqual([]);
+    });
   });
 
   it('always returns node and link arrays (no throw)', () => {

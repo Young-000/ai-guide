@@ -6,6 +6,7 @@ import { track } from '@/lib/analytics';
 // react-force-graph-2d is canvas-only; this component is always dynamic-imported
 // by src/app/map/page.tsx with { ssr: false }, so `window` is guaranteed to exist.
 import ForceGraph2D from 'react-force-graph-2d';
+import type { ForceGraphMethods } from 'react-force-graph-2d';
 import type { GraphData, GraphNode, GraphLink } from '@/lib/graph';
 
 // After force-simulation starts, ForceGraph2D mutates nodes to add x, y coordinates.
@@ -26,9 +27,17 @@ type Props = {
   data: GraphData;
 };
 
+type LabelBox = { left: number; right: number; top: number; bottom: number };
+
+function overlaps(a: LabelBox, b: LabelBox): boolean {
+  return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+}
+
 export default function KnowledgeMap({ data }: Props): JSX.Element {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  // Imperative handle exposed by ForceGraph2D; we only use zoomToFit.
+  const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -82,10 +91,13 @@ export default function KnowledgeMap({ data }: Props): JSX.Element {
       const isDimmed = hoveredId !== null && !isHovered && !neighborIds.has(id);
 
       const isTag = node.type === 'tag';
-      // Tags scale up with article count; articles are fixed small circles
-      const radius = Math.max(3, Math.sqrt(node.val) * (isTag ? 5 : 3));
+      // Tags scale up with article count; articles are fixed small circles.
+      // Articles are drawn smaller than tags so the topic structure reads first —
+      // there are ~400 of them and only ~220 tags.
+      const radius = isTag ? Math.max(4, Math.sqrt(node.val) * 5) : 2.5;
 
-      ctx.globalAlpha = isDimmed ? 0.12 : 1;
+      // Articles sit behind the topics they connect: visible, but not competing.
+      ctx.globalAlpha = isDimmed ? 0.1 : isTag || isHovered ? 1 : 0.45;
 
       ctx.beginPath();
       ctx.arc(node.x ?? 0, node.y ?? 0, radius, 0, 2 * Math.PI);
@@ -100,17 +112,6 @@ export default function KnowledgeMap({ data }: Props): JSX.Element {
         ctx.strokeStyle = '#1d4ed8';
         ctx.lineWidth = 1.5 / globalScale;
         ctx.stroke();
-      }
-
-      // Label: always on hover; at zoom ≥ 1.5 for tags; at zoom ≥ 2 for articles
-      const showLabel = isHovered || (isTag && globalScale >= 1.5) || (!isTag && globalScale >= 2);
-      if (showLabel) {
-        const fontSize = Math.max(8, 11 / globalScale);
-        ctx.font = `${fontSize}px system-ui, -apple-system, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillStyle = isTag ? '#475569' : '#1e293b'; // slate-600 / slate-800
-        ctx.fillText(node.label, node.x ?? 0, (node.y ?? 0) + radius + 2 / globalScale);
       }
 
       ctx.globalAlpha = 1;
@@ -132,10 +133,91 @@ export default function KnowledgeMap({ data }: Props): JSX.Element {
     setHoveredId(node?.id ?? null);
   }, []);
 
+  /**
+   * Draws every label after all nodes and links are painted.
+   *
+   * Labels used to be drawn inside the node painter, which meant any node painted later
+   * covered the label of an earlier one — big topics showed up truncated ("Anth" for
+   * Anthropic). Drawing them in one pass at the end puts all text above all circles.
+   *
+   * Visibility scales with what a node carries: major topics name themselves at any zoom,
+   * smaller ones appear as you zoom in. Colliding labels are skipped, and since nodes are
+   * ordered biggest-first (see buildNewsGraph), the more important label keeps the spot.
+   */
+  const paintLabels = useCallback(
+    (ctx: CanvasRenderingContext2D, globalScale: number): void => {
+      const drawn: LabelBox[] = [];
+
+      for (const rawNode of data.nodes as SimNode[]) {
+        const isTag = rawNode.type === 'tag';
+        const isHovered = rawNode.id === hoveredId;
+        const isDimmed = hoveredId !== null && !isHovered && !neighborIds.has(rawNode.id);
+
+        const show =
+          isHovered ||
+          (isTag &&
+            (rawNode.val >= 10 ||
+              (rawNode.val >= 4 && globalScale >= 1.2) ||
+              globalScale >= 2)) ||
+          (!isTag && globalScale >= 2.5);
+        if (!show) continue;
+
+        // Major topics get a larger, bolder label — the size difference is the hierarchy.
+        const isMajor = isTag && rawNode.val >= 10;
+        const basePx = isMajor ? 15 : isTag ? 13 : 11;
+        const fontSize = Math.max(basePx * 0.75, basePx / globalScale);
+        ctx.font = `${isMajor ? '600 ' : ''}${fontSize}px system-ui, -apple-system, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+
+        const radius = isTag ? Math.max(4, Math.sqrt(rawNode.val) * 5) : 2.5;
+        const labelX = rawNode.x ?? 0;
+        const labelY = (rawNode.y ?? 0) + radius + 3 / globalScale;
+        const halfWidth = ctx.measureText(rawNode.label).width / 2;
+        const box: LabelBox = {
+          left: labelX - halfWidth,
+          right: labelX + halfWidth,
+          top: labelY,
+          bottom: labelY + fontSize,
+        };
+
+        // Hovered node always wins — the reader asked for that one specifically.
+        if (!isHovered && drawn.some((other) => overlaps(box, other))) continue;
+        drawn.push(box);
+
+        ctx.globalAlpha = isDimmed ? 0.15 : 1;
+
+        // White halo so labels stay readable over edges and circles.
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3 / globalScale;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(rawNode.label, labelX, labelY);
+
+        ctx.fillStyle = isTag ? '#334155' : '#1e293b'; // slate-700 / slate-800
+        ctx.fillText(rawNode.label, labelX, labelY);
+        ctx.globalAlpha = 1;
+      }
+    },
+    [data.nodes, hoveredId, neighborIds],
+  );
+
+  const fitted = useRef(false);
+  const handleEngineStop = useCallback((): void => {
+    // Only on the first settle — refitting on every stop would fight the reader's zoom.
+    if (fitted.current) return;
+    fitted.current = true;
+    // Fit to the well-connected topics only. Fitting to *every* node lets a handful of
+    // far-flung outliers dictate the zoom and shrinks the real cluster to a smudge.
+    graphRef.current?.zoomToFit(400, 60, (rawNode) => {
+      const node = rawNode as unknown as SimNode;
+      return node.type === 'tag' && node.val >= 4;
+    });
+  }, []);
+
   const getLinkColor = useCallback(
     (rawLink: unknown): string => {
       const link = rawLink as SimLink;
-      if (!hoveredId) return '#cbd5e1'; // slate-300
+      if (!hoveredId) return '#e2e8f0'; // slate-200 — edges recede so labels read first
       const src = resolveId(link.source);
       const tgt = resolveId(link.target);
       if (src === hoveredId || tgt === hoveredId) return '#2563eb'; // blue-600
@@ -160,8 +242,14 @@ export default function KnowledgeMap({ data }: Props): JSX.Element {
         nodeVal="val"
         nodeCanvasObject={paintNode}
         nodeCanvasObjectMode={() => 'replace' as const}
+        ref={graphRef}
         onNodeClick={handleClick}
         onNodeHover={handleHover}
+        // Labels are painted last, above every circle and edge.
+        onRenderFramePost={paintLabels}
+        // Fit the whole graph to the viewport once physics settles, so the first view
+        // fills the canvas instead of sitting as a small cluster in the middle.
+        onEngineStop={handleEngineStop}
         linkColor={getLinkColor}
         linkWidth={1}
         enableZoomInteraction
