@@ -85,5 +85,50 @@ if [[ "${NO_PUSH:-0}" == "1" ]]; then
   exit 0
 fi
 
-git push origin main
-echo "✓ pushed — Vercel will deploy the new articles."
+# 6) Integrate whatever the GitHub Actions publisher pushed since we last looked.
+#    Both publishers append to scripts/_published.json, so the branches diverge and
+#    that one file conflicts every time. Everything else (new article files) merges
+#    cleanly. The URL list is a dedupe ledger — the union of both sides is correct.
+git fetch origin main --quiet
+if ! git merge-base --is-ancestor origin/main HEAD; then
+  echo "▶ origin/main moved ahead (CI publisher) — merging…"
+  if ! git merge origin/main --no-edit >/dev/null 2>&1; then
+    CONFLICTS="$(git diff --name-only --diff-filter=U)"
+    if [ "$CONFLICTS" != "scripts/_published.json" ]; then
+      echo "✗ merge conflict outside the published ledger — needs a human:"
+      echo "$CONFLICTS"
+      git merge --abort
+      exit 1
+    fi
+    node -e '
+      const fs = require("fs");
+      const { execFileSync } = require("child_process");
+      const side = (stage) =>
+        JSON.parse(execFileSync("git", ["show", `:${stage}:scripts/_published.json`], { encoding: "utf8" }));
+      const ours = side(2);
+      const theirs = side(3);
+      const merged = { ...theirs, ...ours, urls: [...new Set([...theirs.urls, ...ours.urls])] };
+      fs.writeFileSync("scripts/_published.json", JSON.stringify(merged, null, 2) + "\n");
+      console.error(`  ledger merged: ${ours.urls.length} + ${theirs.urls.length} → ${merged.urls.length} URLs`);
+    '
+    git add scripts/_published.json
+    git commit --no-edit >/dev/null
+  fi
+  echo "✓ merged origin/main."
+fi
+
+# `store` is spelled out here rather than left to config: the global helper is
+# osxkeychain, which returns nothing under cron (no GUI session to unlock the
+# keychain). That single gap silently trapped 41 publishes locally between 07-27
+# and 08-09. GIT_TERMINAL_PROMPT=0 makes a missing credential fail loudly instead
+# of hanging on a username prompt no one is there to answer.
+GIT_TERMINAL_PROMPT=0 git -c credential.helper=store push origin main
+
+# 7) A publish is only done when origin actually moved. "committed" and "pushed"
+#    have both lied before — the log stayed green while articles piled up locally.
+BEHIND="$(git rev-list --count origin/main..main)"
+if [ "$BEHIND" != "0" ]; then
+  echo "✗ push reported success but origin/main is still ${BEHIND} commit(s) behind."
+  exit 1
+fi
+echo "✓ pushed — origin/main advanced. Vercel will deploy the new articles."
