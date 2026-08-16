@@ -59,3 +59,18 @@
 - [ ] **auto-news CI 실패 가시화** — `auto-news.yml`에 `if: failure()` Slack/webhook 알림 스텝 추가(엔진 죽으면 즉시 채널 알림). (근거: 07-11 8일 정지의 근본 원인은 "실패가 조용했다"였고 이번 push 사고도 동일 계열 — 자동화 실패는 시끄러워야 한다. verify: 워크플로 실패 시 알림 경로 존재, 성공 시 무발송)
 - [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)
 - [ ] **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답)
+
+## 2026-08-16 주간 PM 리필 (우선순위순)
+
+> 🔴 이번 주 최대 발견: **4주 최우선 블로커였던 push가 마침내 해소됐다** — 미푸시 커밋 0, `origin/main == local`(08-09 `~/.git-credentials` store 수정이 유지됨). 라이브 반영이 다시 흐른다(7일 176 콘텐츠 파일·전부 발행 반영). 콘텐츠 북극성도 건강: 978 페이지(ko 489/en 489), 700 URL 발행. **그러나 진짜 병목은 다른 곳에 있었다: 야간 dev 사이클이 이 백로그를 한 번도 소비하지 않는다.** 최근 7일 커밋이 전부 `content(news)` 발행뿐 — feature/dev 커밋 0. 백로그 미완 30개는 5주째 리필만 되고 구현이 안 붙는다. `page_views` 테이블은 존재하나 여전히 0 rows(카운터 5주째 미배선). 즉 "리필 → 소비" 루프의 소비 단계가 이 프로젝트에서 작동하지 않는다. 발행 크론만 돌고 venture-cycle dev가 미착수인지 오너/오케스트레이션 확인 필요(→ PENDING-OWNER-ACTIONS).
+>
+> ⚠️ SUNSET 트립와이어(대표 인지용): 구독 = 4명(7일 0·30일 3, 마지막 07-31), `page_views` = 0 rows. 07-19가 건 회생불가 판정 조건("push 복구 → 카운터 배선 → 라이브 2~3주 실측 후에도 near-zero")에서 **이제 (1)push 복구만 충족**, (2)카운터 배선·(3)실측은 미충족 → 카운터가 안 켜져 실측 자체가 불가하므로 이번 주도 SUNSET 아님. **다음 조건: 카운터 배선 → 라이브 2~3주 실측 후에도 page_views near-zero·구독 정체면 즉시 SUNSET_GATE.**
+>
+> 리필 원칙: 미소비 30개 위에 크게 쌓지 않는다. 소비를 유발할 수 있게 **더 잘게·검증 명확하게** 6개만. 발행량은 병목 아님(엔진 정상) → 발행 태스크 계속 배제.
+
+- [ ] **트래픽 카운터 — 최소 조각만(5주째 이월·절대 최우선)**: `src/lib/page-views.ts`에 `recordView(path: string)` 단일 함수 신설 — service_role 클라이언트로 `search_trends.page_views`에 `(path, day=KST(Asia/Seoul))` upsert, `on conflict (path, day) do update set count = page_views.count + 1`. **이번 태스크는 함수 + 단위 로직만**(라우트 배선은 다음 태스크). 테이블 이미 존재·비파괴·게이트 아님. (근거: 5주 연속 미착수 — 원인은 "라우트 배선까지 한 덩어리라 큼". 함수 하나로 쪼갬. verify: `page-views.test.ts`가 upsert 쿼리 형태·KST 날짜 문자열 생성 검증 GREEN)
+- [ ] **카운터를 뉴스 상세 1개 라우트에 배선**: `/news/[slug]` 서버 컴포넌트 렌더 시 위 `recordView('/news/'+slug)` 호출(await, 실패는 삼키지 말고 로깅). (근거: 측정 블로커의 마지막 조각. 앞 태스크 완료를 전제로 초소형. verify: 로컬 `next dev`로 상세 GET 후 `select count(*) from search_trends.page_views` ≥1)
+- [ ] **SubscribeBox를 뉴스 상세 하단에 배치**: 홈에만 있는 구독 진입점을 실트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 4명·거의 정체, 병목은 발행량이 아니라 전환 진입점 위치. verify: `/news/[slug]` 렌더에 SubscribeBox 존재 + 컴포넌트 테스트 GREEN)
+- [ ] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`**: sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그 489·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스·커버리지가 북극성인데 결정론 검증 부재. verify: 카운트 리포트 출력 + 누락 0 시 종료코드 0)
+- [ ] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건): (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN)
+- [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시): (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)

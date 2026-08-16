@@ -2,6 +2,201 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-16 `ceec439` content(news): local digest publish 2026-08-16
+
+
+- 2026-08-16 `9c7142a` content(news): local digest publish 2026-08-16
+
+
+- 2026-08-16 `71118cf` content(news): local digest publish 2026-08-16
+
+
+- 2026-08-16 `db4027b` content(news): local digest publish 2026-08-16
+
+
+- 2026-08-15 `e40ce7c` content(news): local digest publish 2026-08-15
+
+
+- 2026-08-15 `bb32961` content(news): local digest publish 2026-08-15
+
+
+- 2026-08-15 `46aa51a` content(news): local digest publish 2026-08-15
+
+
+- 2026-08-15 `3675e35` content(news): local digest publish 2026-08-15
+
+
+- 2026-08-14 `6b27ef4` content(news): local digest publish 2026-08-14
+
+
+- 2026-08-14 `b7f38ad` content(news): local digest publish 2026-08-14
+
+
+- 2026-08-13 `02f03bc` content(news): local digest publish 2026-08-13
+
+
+- 2026-08-12 `c9c1b2b` content(news): local digest publish 2026-08-12
+
+
+- 2026-08-12 `babccda` content(news): local digest publish 2026-08-12
+- 2026-08-12 `f3bc825` feat(news): 3개 AI 다이제스트 발행 (Grok 4.6, 한국 AI팩토리 200MW, OLIX 광자칩)
+
+
+- 2026-08-12 `6848b9b` content(news): local digest publish 2026-08-12
+
+
+- 2026-08-12 `09d981d` content(news): local digest publish 2026-08-12
+
+
+- 2026-08-12 `5af022e` content(news): local digest publish 2026-08-12
+
+
+- 2026-08-11 `60758c5` content(news): local digest publish 2026-08-11
+
+
+- 2026-08-11 `2dd5e17` content(news): local digest publish 2026-08-11
+
+
+- 2026-08-11 `5402a9f` content(news): local digest publish 2026-08-11
+- 2026-08-11 `c8a9fa8` feat(news): 3개 AI 다이제스트 발행 (2026-08-11)
+
+
+- 2026-08-11 `cf0ed28` content(news): local digest publish 2026-08-11
+
+
+- 2026-08-11 `be163a0` content(news): local digest publish 2026-08-11
+
+
+- 2026-08-10 `bf738c4` content(news): local digest publish 2026-08-10
+
+
+- 2026-08-10 `81be681` content(news): local digest publish 2026-08-10
+
+
+- 2026-08-10 `87c760d` content(news): local digest publish 2026-08-10
+
+
+- 2026-08-10 `8d713f8` content(news): local digest publish 2026-08-10
+
+
+- 2026-08-10 `c43674a` content(news): local digest publish 2026-08-10
+
+
+- 2026-08-09 `36cdebd` content(news): local digest publish 2026-08-09
+
+
+- 2026-08-09 `67ec6c1` content(news): local digest publish 2026-08-09
+
+
+- 2026-08-09 `50eef38` content(news): local digest publish 2026-08-09
+
+
+- 2026-08-09 `13b628b` content(news): local digest publish 2026-08-09
+
+
+- 2026-08-09 `41b7a28` fix(publish): 크론 push 인증 + CI와의 발행 충돌 자동 병합
+
+
+- 2026-08-09 `7b40a06` fix(map): 지식맵 가독성 — 노이즈 태그 제거 + 라벨 별도 레이어
+- 2026-08-08 `1a07ca7` feat(news): 3개 AI 다이제스트 발행 (EU AI법 투명성 의무, NVIDIA NOOA, DeepSeek V4-Flash-0731)
+
+
+- 2026-08-09 `90816ad` content(news): local digest publish 2026-08-09
+- 2026-08-07 `5d06376` feat(news): 3개 AI 다이제스트 발행
+- 2026-08-06 `8ccaa25` feat(news): 3개 AI 다이제스트 발행 (Meta Muse Code, Wispr Flow Notetaker, Gemini Spark Pro)
+- 2026-08-06 `83cea54` feat(news): 3개 AI 다이제스트 발행 (2026-08-06)
+
+
+- 2026-08-08 `1d7d4e2` content(news): local digest publish 2026-08-08
+
+
+- 2026-08-08 `9079ef6` content(news): local digest publish 2026-08-08
+
+
+- 2026-08-08 `aa3f691` content(news): local digest publish 2026-08-08
+
+
+- 2026-08-07 `08e14eb` content(news): local digest publish 2026-08-07
+
+
+- 2026-08-07 `9b8b5b9` content(news): local digest publish 2026-08-07
+
+
+- 2026-08-07 `05feb5b` content(news): local digest publish 2026-08-07
+
+
+- 2026-08-07 `2f31df8` content(news): local digest publish 2026-08-07
+
+
+- 2026-08-07 `8735495` content(news): local digest publish 2026-08-07
+
+
+- 2026-08-06 `339a450` content(news): local digest publish 2026-08-06
+
+
+- 2026-08-06 `c2f38f6` content(news): local digest publish 2026-08-06
+
+
+- 2026-08-06 `7b68c51` content(news): local digest publish 2026-08-06
+
+
+- 2026-08-06 `f12ea92` content(news): local digest publish 2026-08-06
+
+
+- 2026-08-06 `d45b8d2` feat(affiliate): 쿠팡 파트너스 배너 + 공정위 대가성 문구
+- 2026-08-03 `3a523b7` feat(news): 3개 AI 다이제스트 발행 2026-08-03 (2차)
+- 2026-08-03 `cafae48` feat(news): 3개 AI 다이제스트 발행 2026-08-03
+- 2026-08-02 `8be72ae` feat(news): 3개 AI 다이제스트 발행 (2026-08-02)
+- 2026-07-29 `b0e30a3` feat(news): 3개 AI 다이제스트 발행
+- 2026-07-29 `90fbc03` feat(news): 3개 AI 다이제스트 발행 (2026-07-29)
+
+
+- 2026-08-06 `0951755` content(news): local digest publish 2026-08-06
+
+
+- 2026-08-05 `62aecf3` content(news): local digest publish 2026-08-05
+
+
+- 2026-08-05 `0910f14` content(news): local digest publish 2026-08-05
+
+
+- 2026-08-05 `5c885c5` content(news): local digest publish 2026-08-05
+
+
+- 2026-08-05 `c8fee36` content(news): local digest publish 2026-08-05
+
+
+- 2026-08-05 `6cfb658` content(news): local digest publish 2026-08-05
+
+
+- 2026-08-04 `85397be` content(news): local digest publish 2026-08-04
+
+
+- 2026-08-04 `88d04b7` content(news): local digest publish 2026-08-04
+
+
+- 2026-08-03 `c8c0e00` content(news): local digest publish 2026-08-03
+
+
+- 2026-08-03 `1ca6894` content(news): local digest publish 2026-08-03
+
+
+- 2026-08-03 `93ea672` content(news): local digest publish 2026-08-03
+
+
+- 2026-08-03 `2d1609f` content(news): local digest publish 2026-08-03
+
+
+- 2026-08-03 `48f2717` content(news): local digest publish 2026-08-03
+
+
+- 2026-08-02 `317fdbf` content(news): local digest publish 2026-08-02
+
+
+- 2026-08-02 `b4303ec` content(news): local digest publish 2026-08-02
+- 2026-08-02 `cb48ee8` chore(pm): weekly cycle 2026-08-02
+
+
 ### 판단: REFILL
 - 지표 실측: aiwire 구독 0건(10주+), `search_trends.page_views` 0 rows(카운터 4주 연속 미배선), 콘텐츠 엔진 복구(7일 13커밋 생성·커밋).
 - 🔴 최대 발견: **push 자격증명 만료로 07-29 이후 13커밋이 라이브 미반영**(origin ahead 13). gh 토큰 invalid + SSH publickey 거부 + keychain에 github.com 없음. `git push` 직접 시도 → 자격증명 부재로 불가(순수 오너 조치).
