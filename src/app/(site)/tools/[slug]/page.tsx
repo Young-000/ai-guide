@@ -7,6 +7,7 @@ import { getToolLink } from '@/lib/affiliateLinks';
 import OutboundToolLink from '@/components/OutboundToolLink';
 import AdUnit from '@/components/AdUnit';
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
+import ToolJsonLd from '@/components/ToolJsonLd';
 import { BASE_URL } from '@/lib/site';
 
 interface PageProps {
@@ -55,6 +56,8 @@ export default async function ToolPage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
+      <ToolJsonLd tool={tool} />
+
       {/* 뒤로가기 */}
       <Link
         href="/tools"
