@@ -2,6 +2,48 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-19 `802bc0c` content(news): local digest publish 2026-08-19
+
+
+- 2026-08-19 `ac55579` content(news): local digest publish 2026-08-19
+
+
+- 2026-08-18 `5fd2801` content(news): local digest publish 2026-08-18
+
+
+- 2026-08-18 `40a8d3e` content(news): local digest publish 2026-08-18
+
+
+- 2026-08-18 `23f7953` content(news): local digest publish 2026-08-18
+
+
+- 2026-08-18 `9a4f2d7` content(news): local digest publish 2026-08-18
+
+
+- 2026-08-18 `7639963` content(news): local digest publish 2026-08-18
+
+
+- 2026-08-17 `1d4867d` content(news): local digest publish 2026-08-17
+
+
+- 2026-08-17 `fc7a24e` content(news): local digest publish 2026-08-17
+
+
+- 2026-08-17 `1cd5952` content(news): local digest publish 2026-08-17
+
+
+- 2026-08-17 `0fdd248` content(news): local digest publish 2026-08-17
+
+
+- 2026-08-17 `e5a296a` content(news): local digest publish 2026-08-17
+
+
+- 2026-08-16 `2efb1f1` content(news): local digest publish 2026-08-16
+
+
+- 2026-08-16 `d8b1fbb` chore(pm): weekly cycle 2026-08-16
+
+
 - 2026-08-16 `ceec439` content(news): local digest publish 2026-08-16
 
 
