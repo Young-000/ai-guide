@@ -68,8 +68,8 @@
 >
 > 리필 원칙: 미소비 30개 위에 크게 쌓지 않는다. 소비를 유발할 수 있게 **더 잘게·검증 명확하게** 6개만. 발행량은 병목 아님(엔진 정상) → 발행 태스크 계속 배제.
 
-- [ ] **트래픽 카운터 — 최소 조각만(5주째 이월·절대 최우선)**: `src/lib/page-views.ts`에 `recordView(path: string)` 단일 함수 신설 — service_role 클라이언트로 `search_trends.page_views`에 `(path, day=KST(Asia/Seoul))` upsert, `on conflict (path, day) do update set count = page_views.count + 1`. **이번 태스크는 함수 + 단위 로직만**(라우트 배선은 다음 태스크). 테이블 이미 존재·비파괴·게이트 아님. (근거: 5주 연속 미착수 — 원인은 "라우트 배선까지 한 덩어리라 큼". 함수 하나로 쪼갬. verify: `page-views.test.ts`가 upsert 쿼리 형태·KST 날짜 문자열 생성 검증 GREEN)
-- [ ] **카운터를 뉴스 상세 1개 라우트에 배선**: `/news/[slug]` 서버 컴포넌트 렌더 시 위 `recordView('/news/'+slug)` 호출(await, 실패는 삼키지 말고 로깅). (근거: 측정 블로커의 마지막 조각. 앞 태스크 완료를 전제로 초소형. verify: 로컬 `next dev`로 상세 GET 후 `select count(*) from search_trends.page_views` ≥1)
+- [x] **트래픽 카운터 — 최소 조각만(5주째 이월·절대 최우선)**: `src/lib/page-views.ts`에 `recordView(path: string)` 단일 함수 신설 — service_role 클라이언트로 `search_trends.page_views`에 `(path, day=KST(Asia/Seoul))` upsert, `on conflict (path, day) do update set count = page_views.count + 1`. **이번 태스크는 함수 + 단위 로직만**(라우트 배선은 다음 태스크). 테이블 이미 존재·비파괴·게이트 아님. (근거: 5주 연속 미착수 — 원인은 "라우트 배선까지 한 덩어리라 큼". 함수 하나로 쪼갬. verify: `page-views.test.ts`가 upsert 쿼리 형태·KST 날짜 문자열 생성 검증 GREEN) — 2026-08-20 완료
+- [x] **카운터를 뉴스 상세 1개 라우트에 배선**: `/news/[slug]` 서버 컴포넌트 렌더 시 위 `recordView('/news/'+slug)` 호출(await, 실패는 삼키지 말고 로깅). (근거: 측정 블로커의 마지막 조각. 앞 태스크 완료를 전제로 초소형. verify: 로컬 `next dev`로 상세 GET 후 `select count(*) from search_trends.page_views` ≥1) — 2026-08-20 완료 (API route + PageViewTracker 패턴, ko/en 뉴스 상세+섹션+토픽 5개 라우트 배선)
 - [ ] **SubscribeBox를 뉴스 상세 하단에 배치**: 홈에만 있는 구독 진입점을 실트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 4명·거의 정체, 병목은 발행량이 아니라 전환 진입점 위치. verify: `/news/[slug]` 렌더에 SubscribeBox 존재 + 컴포넌트 테스트 GREEN)
 - [ ] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`**: sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그 489·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스·커버리지가 북극성인데 결정론 검증 부재. verify: 카운트 리포트 출력 + 누락 0 시 종료코드 0)
 - [ ] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건): (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN)
