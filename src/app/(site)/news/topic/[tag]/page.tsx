@@ -5,6 +5,7 @@ import { getAllTags, getNewsByTag, isThinTag } from '@/lib/news';
 import TagChips from '@/components/news/TagChips';
 import NewsCard from '@/components/news/NewsCard';
 import CategoryViewTracker from '@/components/news/CategoryViewTracker';
+import PageViewTracker from '@/components/news/PageViewTracker';
 import TopicJsonLd from '@/components/news/TopicJsonLd';
 import { BASE_URL } from '@/lib/site';
 
@@ -43,6 +44,7 @@ export default function TopicPage({ params }: { params: Params }): JSX.Element {
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-10">
+      <PageViewTracker path={`/news/topic/${encodeURIComponent(tag)}`} />
       <TopicJsonLd tag={tag} url={canonical} />
       <CategoryViewTracker tag={tag} />
       {/* Back link */}

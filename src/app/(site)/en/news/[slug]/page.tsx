@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getNewsBySlug, getNewsSlugs } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
+import PageViewTracker from '@/components/news/PageViewTracker';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { slug: string };
@@ -46,5 +47,10 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
 export default function EnNewsArticlePage({ params }: { params: Params }): JSX.Element {
   const article = getNewsBySlug('en', params.slug);
   if (!article) notFound();
-  return <NewsArticleView lang="en" article={article} />;
+  return (
+    <>
+      <PageViewTracker path={`/en/news/${params.slug}`} />
+      <NewsArticleView lang="en" article={article} />
+    </>
+  );
 }
