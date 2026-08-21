@@ -2,6 +2,15 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-22 `aaf76bb` content(news): local digest publish 2026-08-22
+
+
+- 2026-08-21 `ea3600c` content(news): local digest publish 2026-08-21
+
+
+- 2026-08-21 `f4a3320` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-08-21 `8889a7e` content(news): local digest publish 2026-08-21
 - 2026-08-21 `0790919` feat(news): 3개 AI 다이제스트 발행 (2026-08-21)
 
