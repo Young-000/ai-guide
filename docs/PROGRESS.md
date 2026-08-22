@@ -2,6 +2,13 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-22 `a0d9e50` content(news): local digest publish 2026-08-22
+- 2026-08-22 `79ccd78` feat(news): 3개 AI 다이제스트 발행 (Gemini 3.7 Flash, Claude Academy, Seed 2.1 Turbo)
+
+
+- 2026-08-22 `30592f2` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-08-22 `934ab35` content(news): local digest publish 2026-08-22
 
 
