@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getNewsBySlug, getNewsSlugs, getNewsByTag } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
+import PageViewTracker from '@/components/news/PageViewTracker';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { slug: string };
@@ -54,6 +55,9 @@ export default function NewsArticlePage({ params }: { params: Params }): JSX.Ele
       : [];
 
   return (
-    <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} />
+    <>
+      <PageViewTracker path={`/news/${params.slug}`} />
+      <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} />
+    </>
   );
 }
