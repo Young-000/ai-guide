@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import NewsCard from '@/components/news/NewsCard';
+import PageViewTracker from '@/components/news/PageViewTracker';
 import SectionChips from '@/components/news/SectionChips';
 import SectionJsonLd from '@/components/news/SectionJsonLd';
 import {
@@ -50,6 +51,7 @@ export default function SectionPage({ params }: { params: Params }): JSX.Element
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
+      <PageViewTracker path={`/news/section/${params.section}`} />
       <SectionJsonLd section={section} lang="ko" items={items} url={canonical} />
 
       {/* Back link */}
