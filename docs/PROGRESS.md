@@ -2,6 +2,14 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-23 `5737c35` content(news): local digest publish 2026-08-23
+
+
+- 2026-08-23 `b16674d` docs(lessons): add 2026-08-23 rpc schema context + atomic counter pattern
+- 2026-08-23 `a0bf89c` feat(analytics): server-side page-view counter via Supabase
+- 2026-08-23 `7309e6e` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-08-23 `dadd201` chore(cycle): 사이클 산출물 커밋 (자동 정리)
 
 
