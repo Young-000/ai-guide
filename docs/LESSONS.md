@@ -2,6 +2,11 @@
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
+## 2026-08-23
+
+- **Supabase JS client의 `.rpc()` 호출은 `createClient`에 지정한 `db.schema`를 search_path로 따른다.** `getServiceClient()`에 `db: { schema: 'search_trends' }`가 설정돼 있으면 `.rpc('upsert_page_view', ...)` 는 `search_trends.upsert_page_view`를 찾는다 — schema prefix를 `.rpc()` 인자에 명시할 필요 없다. (반대로 schema context를 빠뜨리면 public schema에서 찾다 404 에러가 난다.)
+- **원자적 count++ 는 반드시 DB 함수(INSERT … ON CONFLICT DO UPDATE)로만 구현한다.** JS에서 select → +1 → update 패턴은 동시 요청 시 race condition으로 카운트가 유실된다. PostgreSQL 함수를 SECURITY DEFINER로 만들고 `.rpc()`로 호출하는 것이 표준.
+
 ## 2026-08-16 주간
 
 - **push는 고쳤는데 5주째 측정이 안 되는 진짜 이유는 야간 dev 사이클이 이 백로그를 소비하지 않기 때문이었다.** 최근 7일 커밋이 전부 `content(news)` 발행뿐 — feature/dev 커밋 0. 발행 크론(publish-local)만 돌고, venture-cycle의 dev 단계가 이 프로젝트에서 태스크를 집어 구현·머지한 흔적이 없다. → 교훈: **매주 "리필했다"가 아니라 "지난 주 리필분 중 몇 개가 커밋으로 붙었나"를 먼저 센다.** 소비가 0이면 태스크를 더 쪼개는 것보다 소비 파이프라인(사이클이 이 repo를 실제로 도는지)을 오너에게 확인하는 게 우선이다 — 안 그러면 초소형 태스크도 5주째 이월된다.

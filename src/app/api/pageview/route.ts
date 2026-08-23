@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
+import { createTokenBucketRateLimiter } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/request-ip';
 
 export const dynamic = 'force-dynamic';
 
 const MAX_PATH_LENGTH = 500;
+
+// Best-effort per-IP guard against inflation of this unauthenticated counter.
+// Generous enough for a reader browsing many articles, but stops a single
+// warm instance from being spammed to skew the traffic metric.
+const RATE_LIMIT_CAPACITY = 30;
+const RATE_LIMIT_REFILL_MS = 60_000;
+const rateLimiter = createTokenBucketRateLimiter(RATE_LIMIT_CAPACITY, RATE_LIMIT_REFILL_MS);
 
 /** KST(UTC+9) 기준 오늘 날짜 'YYYY-MM-DD' */
 function getTodayKst(): string {
@@ -28,6 +37,10 @@ function isValidNewsPath(path: unknown): path is string {
  * 실패해도 페이지를 깨뜨리면 안 되므로 클라이언트는 fire-and-forget으로 호출한다.
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  if (!rateLimiter.check(getClientIp(request))) {
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+  }
+
   let path: unknown;
 
   try {

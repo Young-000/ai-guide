@@ -12,10 +12,10 @@ jest.mock('@/lib/supabase', () => ({
   }),
 }));
 
-function makeRequest(body: unknown): NextRequest {
+function makeRequest(body: unknown, ip = '10.0.0.1'): NextRequest {
   return new NextRequest('http://localhost/api/pageview', {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'x-forwarded-for': ip, 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
 }
@@ -93,6 +93,32 @@ describe('POST /api/pageview — path normalisation', () => {
     expect(rpcMock).toHaveBeenCalledWith('upsert_page_view', expect.objectContaining({
       p_path: '/news/some-slug',
     }));
+  });
+});
+
+describe('POST /api/pageview — rate limiting', () => {
+  it('cuts off a single IP that floods the counter, without touching the DB after the limit', async () => {
+    const ip = '10.0.0.99';
+    const results: number[] = [];
+
+    for (let i = 0; i < 40; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const res = await POST(makeRequest({ path: `/news/slug-${i}` }, ip));
+      results.push(res.status);
+    }
+
+    expect(results).toContain(429);
+  });
+
+  it('does not rate-limit a fresh IP after another IP is exhausted', async () => {
+    const exhaustedIp = '10.0.0.88';
+    for (let i = 0; i < 40; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await POST(makeRequest({ path: `/news/spam-${i}` }, exhaustedIp));
+    }
+
+    const res = await POST(makeRequest({ path: '/news/fresh' }, '10.0.0.77'));
+    expect(res.status).toBe(200);
   });
 });
 
