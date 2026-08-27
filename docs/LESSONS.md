@@ -2,6 +2,10 @@
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
+## 2026-08-27
+
+- **구현이 완료됐는데 백로그가 갱신되지 않으면 5주씩 같은 태스크가 이월된다.** 이번 사이클 착수 시 이미 PageViewTracker+/api/pageview+upsert_page_view 전부 구현·배선 완료였는데, 백로그는 [x] 표시 없이 남아 있었다. 사이클이 같은 태스크를 또 집고 "구현"을 시도했다. → 착수 전 반드시 파일·DB 함수 실재 여부를 먼저 확인한다. 이미 구현됐으면 verify만 돌리고 백로그를 즉시 갱신한다.
+
 ## 2026-08-23
 
 - **Supabase JS client의 `.rpc()` 호출은 `createClient`에 지정한 `db.schema`를 search_path로 따른다.** `getServiceClient()`에 `db: { schema: 'search_trends' }`가 설정돼 있으면 `.rpc('upsert_page_view', ...)` 는 `search_trends.upsert_page_view`를 찾는다 — schema prefix를 `.rpc()` 인자에 명시할 필요 없다.

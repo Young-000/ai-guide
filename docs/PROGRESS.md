@@ -1,5 +1,26 @@
 # AI Guide - 진행 기록
 
+## [2026-08-27] 트래픽 카운터 verify 완료 + 백로그 갱신
+
+### Completed
+- verify: search_trends.page_views 테이블 존재 확인 (id/path/day/count/updated_at)
+- verify: search_trends.upsert_page_view 함수 존재 확인
+- verify: PageViewTracker 컴포넌트 + /api/pageview 라우트 이미 구현됨
+- verify: 뉴스 상세/섹션/토픽 3개 라우트 모두 PageViewTracker 배선됨
+- verify: DB 직접 호출로 upsert count=1 확인
+- verify: 12 tests PASS, VERIFY GREEN (type-check+lint+280 tests+build)
+- chore: 5주 이월된 트래픽 카운터 관련 백로그 항목 [x] 완료 표시
+- docs: LESSONS.md에 "구현 완료 후 백로그 갱신 안 하면 5주 이월" 교훈 추가
+
+### Next Steps
+- [ ] SubscribeBox를 뉴스 상세 페이지 하단에 배치
+- [ ] 뉴스 상세 "관련 기사" 내부 링크 블록 (같은 섹션/토픽 3~5건)
+- [ ] sitemap 커버리지 감사 스크립트
+
+### Notes
+- 트래픽 카운터는 이미 2026-08-23 사이클에서 구현 완료됐으나 백로그 미갱신으로 5주 이월
+- page_views 테이블이 이제 실측 가능 상태 — 다음 PM 사이클에서 실트래픽 rows 확인 필요
+
 ## [2026-08-02] 주간 PM 사이클
 
 - 2026-08-26 `52bc05c` chore(cycle): 사이클 산출물 커밋 (자동 정리)

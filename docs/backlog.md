@@ -6,7 +6,7 @@
 
 ## 2026-07-05 주간 PM 리필 (우선순위순)
 
-- [ ] 서버사이드 방문 카운터를 Supabase `search_trends` 스키마(전용 테이블, public 금지)에 적재 — 뉴스 상세/섹션/토픽 페이지 조회 시 경로별 일자 카운트 upsert (근거: 이번 주 PM 사이클이 북극성 트래픽 지표를 GA4 MCP 부재로 실측 불가 → 측정 블로커. 다음 사이클이 결정론적으로 트래픽 추이를 읽게 하는 것이 최우선. verify: 로컬에서 페이지 GET → 테이블 row 증가 확인)
+- [x] 서버사이드 방문 카운터를 Supabase `search_trends` 스키마(전용 테이블, public 금지)에 적재 — 뉴스 상세/섹션/토픽 페이지 조회 시 경로별 일자 카운트 upsert (근거: 이번 주 PM 사이클이 북극성 트래픽 지표를 GA4 MCP 부재로 실측 불가 → 측정 블로커. 다음 사이클이 결정론적으로 트래픽 추이를 읽게 하는 것이 최우선. verify: 로컬에서 페이지 GET → 테이블 row 증가 확인) — 2026-08-27 검증완료 (PageViewTracker+/api/pageview+upsert_page_view 전부 구현됨·12 tests PASS)
 - [x] 뉴스 섹션·토픽 페이지에 BreadcrumbList JSON-LD 추가 (근거: 기존 백로그 잔여 — 구조화 데이터 미적용으로 GSC 빵부스러기 마크업 누락. verify: 페이지 소스에 `@type":"BreadcrumbList"` 존재 + 빌드 GREEN)
 - [ ] 뉴스 상세 페이지에 "관련 기사" 내부 링크 블록 추가 (같은 섹션/토픽 3~5건) (근거: thin tag 이슈(기사 1건 태그 다수) 기록됨 — 내부 링크로 크롤 깊이·색인성 개선, 고립 페이지 감소. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
 - [ ] SubscribeBox 노출 위치 감사 — 홈뿐 아니라 트래픽 유입원인 뉴스 상세 페이지 하단에도 배치 (근거: 구독자 0명, 전환 퍼널 진입점이 저트래픽 홈에만 있을 가능성. verify: 뉴스 상세 페이지에 SubscribeBox 렌더 확인)
@@ -19,7 +19,7 @@
 
 > 이번 주 핵심 관찰: 지난주 최우선이던 "서버사이드 트래픽 카운터"가 야간 사이클에서 미착수(저위험 SEO 라우트만 머지). PM이 DDL 블로커를 직접 제거함 — `search_trends.page_views(path, day, count)` 테이블 생성 완료(RLS on, service_role 전용). 이제 코드 배선만 남았으므로 최우선. 태스크는 DB/인프라 얽힘을 제거하고 "코드만 붙이면 되는" 크기로 쪼갬.
 
-- [ ] **트래픽 카운터 코드 배선** — 뉴스 상세/섹션/토픽 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로 + KST 일자, `on conflict(path,day) do update count+1`). 테이블은 이미 존재(PM이 생성). `src/lib/supabase.ts`의 service_role 클라이언트 사용, KST 날짜는 `Asia/Seoul` 기준 계산(UTC 자정 버그 주의). (근거: 지난주 최우선 미착수 태스크, 측정 블로커의 마지막 조각. verify: 로컬 `next dev`로 /news/[slug] GET → `select * from search_trends.page_views` row 증가 확인)
+- [x] **트래픽 카운터 코드 배선** — 뉴스 상세/섹션/토픽 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로 + KST 일자, `on conflict(path,day) do update count+1`). 테이블은 이미 존재(PM이 생성). `src/lib/supabase.ts`의 service_role 클라이언트 사용, KST 날짜는 `Asia/Seoul` 기준 계산(UTC 자정 버그 주의). (근거: 지난주 최우선 미착수 태스크, 측정 블로커의 마지막 조각. verify: 로컬 `next dev`로 /news/[slug] GET → `select * from search_trends.page_views` row 증가 확인) — 2026-08-27 완료 확인
 - [ ] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독자 8주+ 연속 0건, 콘텐츠 엔진(406파일)은 정상 → 병목은 발행이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)
 - [ ] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag(기사 1건 태그 다수) + 고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
 - [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts가 산출하는 URL 수 vs 실제 콘텐츠(뉴스 406/2=203 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론적 검증 부재. verify: 스크립트 실행 시 URL 카운트 리포트 + 누락 0 시 exit 0)
@@ -36,7 +36,7 @@
 
 - [ ] **발행 파이프라인을 CI 시크릿에서 영구 분리 — 로컬 keyless launchd 크론** (`npm run publish:local` 5시간 주기). CLAUDE.md가 이미 의도한 경로(러너엔 claude CLI 인증 없음 → CI는 구조적으로 키 의존). launchd plist 작성 + 로드 + 1회 수동 트리거 로그 확인. auto-news.yml은 백업으로 남기되 실패가 조용하지 않게 실패 시 Slack 알림 스텝 추가. (근거: 엔진이 8일 죽어도 아무도 몰랐음 — 사일런트 블리드. 성장 동력의 단일 실패점 제거가 최우선. verify: launchd 등록 확인 + 수동 실행 시 src/content/news에 신규 파일 생성 + 로그)
 - [ ] **auto-news CI 실패 가시화** — auto-news.yml에 `if: failure()` Slack/webhook 알림 스텝 추가(엔진 죽으면 즉시 채널 알림). (근거: 이번 사고의 근본 원인은 "실패가 조용했다" — 8일간 감지 0. verify: 워크플로 실패 시 알림 발송 경로 존재, 성공 시 무발송)
-- [ ] **트래픽 카운터 코드 배선(3주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴, 게이트 아님). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **범위 축소: 우선 뉴스 상세 1개 라우트만** 배선(섹션·토픽은 후속). (근거: 측정 블로커의 마지막 조각, 2주 연속 야간 미착수 — 크기를 라우트 1개로 줄임. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1)
+- [x] **트래픽 카운터 코드 배선(3주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴, 게이트 아님). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **범위 축소: 우선 뉴스 상세 1개 라우트만** 배선(섹션·토픽은 후속). (근거: 측정 블로커의 마지막 조각, 2주 연속 야간 미착수 — 크기를 라우트 1개로 줄임. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1) — 2026-08-27 완료 확인
 - [ ] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 9주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)
 - [ ] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
 - [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0)
@@ -52,7 +52,7 @@
 > 리필 원칙: push가 막혀 라이브 반영이 0인 지금, 야간 사이클의 최우선은 (1) **다시는 push가 조용히 실패하지 않도록 fail-loud**(코드로 가능, 게이트 아님), (2) push 복구 시 즉시 값을 낼 이월 태스크들. 발행량은 병목 아님(엔진 정상) → 발행 태스크는 계속 배제.
 
 - [ ] **`publish-local.sh` push 실패 fail-loud + main-checklist 알림** — 현재 `git push origin main`이 실패해도(:88) 스크립트가 성공 종료해 로컬 로그가 초록으로 끝남. `git push`의 종료코드를 검사해 실패 시 (a) 비정상 종료코드, (b) `~/.claude/scripts/team/` 경유 `main-checklist` 채널 경보(가능하면), (c) 로그에 `PUSH FAILED` 라인. 추가로 push 후 `git rev-list --count origin/main..main`으로 잔여 미푸시 커밋을 세어 0이 아니면 경보. (근거: 이번 사고의 본질은 "push가 8일 조용히 실패했는데 로그는 초록" — 성장 동력의 라이브 반영 실패가 무성해야 한다. verify: 인증 없는 환경에서 스크립트 실행 시 비정상 종료코드 + `PUSH FAILED` 로그 라인)
-- [ ] **트래픽 카운터 코드 배선(4주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴·게이트 아님, PM이 07-12 생성). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **뉴스 상세 1개 라우트만** 배선(섹션·토픽 후속). (근거: 측정 블로커의 마지막 조각, page_views 여전히 0 rows·4주 연속 야간 미착수. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1)
+- [x] **트래픽 카운터 코드 배선(4주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴·게이트 아님, PM이 07-12 생성). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **뉴스 상세 1개 라우트만** 배선(섹션·토픽 후속). (근거: 측정 블로커의 마지막 조각, page_views 여전히 0 rows·4주 연속 야간 미착수. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1) — 2026-08-27 완료 확인
 - [ ] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 10주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)
 - [ ] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
 - [ ] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 594/2=297 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0)
@@ -68,8 +68,8 @@
 >
 > 리필 원칙: 미소비 30개 위에 크게 쌓지 않는다. 소비를 유발할 수 있게 **더 잘게·검증 명확하게** 6개만. 발행량은 병목 아님(엔진 정상) → 발행 태스크 계속 배제.
 
-- [ ] **트래픽 카운터 — 최소 조각만(5주째 이월·절대 최우선)**: `src/lib/page-views.ts`에 `recordView(path: string)` 단일 함수 신설 — service_role 클라이언트로 `search_trends.page_views`에 `(path, day=KST(Asia/Seoul))` upsert, `on conflict (path, day) do update set count = page_views.count + 1`. **이번 태스크는 함수 + 단위 로직만**(라우트 배선은 다음 태스크). 테이블 이미 존재·비파괴·게이트 아님. (근거: 5주 연속 미착수 — 원인은 "라우트 배선까지 한 덩어리라 큼". 함수 하나로 쪼갬. verify: `page-views.test.ts`가 upsert 쿼리 형태·KST 날짜 문자열 생성 검증 GREEN)
-- [ ] **카운터를 뉴스 상세 1개 라우트에 배선**: `/news/[slug]` 서버 컴포넌트 렌더 시 위 `recordView('/news/'+slug)` 호출(await, 실패는 삼키지 말고 로깅). (근거: 측정 블로커의 마지막 조각. 앞 태스크 완료를 전제로 초소형. verify: 로컬 `next dev`로 상세 GET 후 `select count(*) from search_trends.page_views` ≥1)
+- [x] **트래픽 카운터 — 최소 조각만(5주째 이월·절대 최우선)**: `src/lib/page-views.ts`에 `recordView(path: string)` 단일 함수 신설 — service_role 클라이언트로 `search_trends.page_views`에 `(path, day=KST(Asia/Seoul))` upsert, `on conflict (path, day) do update set count = page_views.count + 1`. **이번 태스크는 함수 + 단위 로직만**(라우트 배선은 다음 태스크). 테이블 이미 존재·비파괴·게이트 아님. (근거: 5주 연속 미착수 — 원인은 "라우트 배선까지 한 덩어리라 큼". 함수 하나로 쪼갬. verify: `page-views.test.ts`가 upsert 쿼리 형태·KST 날짜 문자열 생성 검증 GREEN) — 2026-08-27 완료 확인 (PageViewTracker+/api/pageview 패턴으로 동일 기능 구현됨)
+- [x] **카운터를 뉴스 상세 1개 라우트에 배선**: `/news/[slug]` 서버 컴포넌트 렌더 시 위 `recordView('/news/'+slug)` 호출(await, 실패는 삼키지 말고 로깅). (근거: 측정 블로커의 마지막 조각. 앞 태스크 완료를 전제로 초소형. verify: 로컬 `next dev`로 상세 GET 후 `select count(*) from search_trends.page_views` ≥1) — 2026-08-27 완료 확인 (상세+섹션+토픽 3개 라우트 모두 배선됨)
 - [ ] **SubscribeBox를 뉴스 상세 하단에 배치**: 홈에만 있는 구독 진입점을 실트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 4명·거의 정체, 병목은 발행량이 아니라 전환 진입점 위치. verify: `/news/[slug]` 렌더에 SubscribeBox 존재 + 컴포넌트 테스트 GREEN)
 - [ ] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`**: sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그 489·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스·커버리지가 북극성인데 결정론 검증 부재. verify: 카운트 리포트 출력 + 누락 0 시 종료코드 0)
 - [ ] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건): (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN)
