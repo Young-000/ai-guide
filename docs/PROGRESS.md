@@ -2,6 +2,17 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-31 `e13fdeb` content(news): local digest publish 2026-08-31
+
+
+- 2026-08-30 `252a932` content(news): local digest publish 2026-08-30
+
+
+- 2026-08-30 `0a121a0` docs(lessons): 미들웨어 서버사이드 트래킹 교훈 추가
+- 2026-08-30 `79b6eae` feat(analytics): 서버사이드 방문 카운터 — 미들웨어에서 /news/* GET 시 search_trends.page_views upsert
+- 2026-08-30 `f593903` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-08-30 `f36bfba` chore(pm): weekly cycle 2026-08-30
 - 2026-08-30 `2aab763` content(news): local digest publish 2026-08-30
 
