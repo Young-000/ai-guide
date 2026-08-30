@@ -2,6 +2,12 @@
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
+## 2026-08-30 주간
+
+- **"구독 4명"은 5주+ 오귀속이었다 — 실제 aiwire 구독은 역대 0건.** `search_trends` 스키마를 `subscribers` 테이블로 aiwire·hottrend 두 프로젝트가 공유하는데, 과거 PM 사이클이 `site` 필터 없이(또는 값을 검증 안 하고) 센 수가 hottrend의 4행을 aiwire 것으로 집계했다. `site='aiwire'`로 필터하니 0, 4행은 전부 `site='hottrend'`. → 교훈: **공유 스키마의 KPI는 반드시 프로젝트 tenant 키(`site`)로 필터하고 distinct 값을 실측해 검증한다.** 안 그러면 딴 프로젝트 지표가 몇 주씩 우리 것으로 둔갑해 판정을 오염시킨다.
+- **5주 막혔던 카운터가 dev 사이클에 처음 소비됐고, 첫 실측이 SUNSET 가정을 뒤집었다.** 08-23 `feat(analytics)` 배선 후 8일치 page_views = 455히트·일 40~82로 **꾸준히 non-zero**. 07-19 이후 트립와이어가 전제하던 "트래픽 near-zero"가 실측으로 거짓 판명 — 사이트엔 실제 롱테일 SEO 트래픽이 있다. → 교훈: **측정 없이 세운 SUNSET 가정("아마 죽었을 것")을 판정 근거로 쓰지 않는다. 측정이 켜지는 순간 가정을 실측으로 교체하고, 병목을 "죽음"에서 "전환 0·재방문 9/362(얕은 참여)"로 재정의한다.** 죽어가는 사이트가 아니라 전환·참여가 안 붙는 사이트다.
+- **클라이언트 사이드 PageViewTracker(JS 마운트)는 대부분 실브라우저 방문을 잡는다 — 서버 히트/크롤러와 다르다.** 362 path 중 재방문 9건뿐(대부분 count=1)이라는 분포는 "검색으로 기사 1개 착지 → 이탈"을 의미하며, 이것이 내부링크(pages/session 리프트)를 다음 우선순위로 만든 실측 근거다. 단 JS 렌더 크롤러 혼입 가능성은 다음 2~3주 판정 전에 별도 검증 대상으로 남김.
+
 ## 2026-08-23
 
 - **Supabase JS client의 `.rpc()` 호출은 `createClient`에 지정한 `db.schema`를 search_path로 따른다.** `getServiceClient()`에 `db: { schema: 'search_trends' }`가 설정돼 있으면 `.rpc('upsert_page_view', ...)` 는 `search_trends.upsert_page_view`를 찾는다 — schema prefix를 `.rpc()` 인자에 명시할 필요 없다.
