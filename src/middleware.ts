@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, NextFetchEvent } from 'next/server';
 import { shouldRedirectToCanonicalHost } from '@/lib/canonical-host';
+import { trackServerPageView } from '@/lib/server-page-view';
 
 const CANONICAL_HOST = 'aiwire.news';
 
@@ -10,10 +11,13 @@ const CANONICAL_HOST = 'aiwire.news';
 // and any custom domain (including localhost) must pass through untouched —
 // see shouldRedirectToCanonicalHost for the decision logic (unit-tested
 // separately in src/lib/__tests__/canonical-host.test.ts).
-export function middleware(request: NextRequest): NextResponse {
+export function middleware(request: NextRequest, event: NextFetchEvent): NextResponse {
   const host = request.headers.get('host') ?? '';
 
   if (!shouldRedirectToCanonicalHost({ host, vercelEnv: process.env.VERCEL_ENV })) {
+    // 뉴스 서브페이지 GET → 서버사이드 방문 카운트를 백그라운드에서 upsert.
+    // waitUntil: 응답을 보낸 뒤에도 런타임이 Promise가 완료될 때까지 살아있도록 보장.
+    event.waitUntil(trackServerPageView(request.nextUrl.pathname));
     return NextResponse.next();
   }
 
