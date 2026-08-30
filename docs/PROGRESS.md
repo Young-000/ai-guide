@@ -2,6 +2,10 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-08-30 `f36bfba` chore(pm): weekly cycle 2026-08-30
+- 2026-08-30 `2aab763` content(news): local digest publish 2026-08-30
+
+
 - 2026-08-30 `cb153f1` chore(cycle): 사이클 산출물 커밋 (자동 정리)
 
 
