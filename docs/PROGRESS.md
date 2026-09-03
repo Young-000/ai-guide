@@ -2,6 +2,15 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-09-04 `7ca372c` content(news): local digest publish 2026-09-04
+
+
+- 2026-09-03 `d0cf520` content(news): local digest publish 2026-09-03
+
+
+- 2026-09-03 `0e67a9e` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-09-03 `ce32ebe` content(news): local digest publish 2026-09-03
 
 
