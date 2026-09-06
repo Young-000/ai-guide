@@ -32,6 +32,21 @@ export function Footer(): JSX.Element {
                 운세·타로·사주 → mystica.world
               </a>
             </p>
+            {/*
+              같은 팀이 만든 게임. 구글은 이미 색인된 페이지의 링크를 따라 새 사이트를 찾는다 —
+              이 사이트는 색인돼 있고 게임은 아니라(2026-09-06 실측), 이 한 줄이
+              Search Console 등록 없이 게임을 발견시키는 경로다.
+            */}
+            <p className="mt-2 text-sm">
+              <a
+                href="https://rps-war.vercel.app/"
+                className="text-slate-500 hover:text-blue-600 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                가위바위보 전략 게임 → rps-war
+              </a>
+            </p>
           </div>
 
           {/* AI 가이드 column */}
