@@ -2,6 +2,18 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-09-07 `00d1b08` content(news): local digest publish 2026-09-07
+
+
+- 2026-09-06 `eee7373` content(news): local digest publish 2026-09-06
+
+
+- 2026-09-06 `711ae60` feat(seo): 푸터 '우리 다른 사이트' 에 가위바위보 워 추가
+
+
+- 2026-09-06 `dde5a3b` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-09-06 `806c7bd` content(news): local digest publish 2026-09-06
 
 
