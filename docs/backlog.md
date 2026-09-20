@@ -6,7 +6,7 @@
 
 ## 2026-07-05 주간 PM 리필 (우선순위순)
 
-- [ ] 서버사이드 방문 카운터를 Supabase `search_trends` 스키마(전용 테이블, public 금지)에 적재 — 뉴스 상세/섹션/토픽 페이지 조회 시 경로별 일자 카운트 upsert (근거: 이번 주 PM 사이클이 북극성 트래픽 지표를 GA4 MCP 부재로 실측 불가 → 측정 블로커. 다음 사이클이 결정론적으로 트래픽 추이를 읽게 하는 것이 최우선. verify: 로컬에서 페이지 GET → 테이블 row 증가 확인)
+- [ ] 서버사이드 방문 카운터를 Supabase `search_trends` 스키마(전용 테이블, public 금지)에 적재 — 뉴스 상세/섹션/토픽 페이지 조회 시 경로별 일자 카운트 upsert (근거: 이번 주 PM 사이클이 북극성 트래픽 지표를 GA4 MCP 부재로 실측 불가 → 측정 블로커. 다음 사이클이 결정론적으로 트래픽 추이를 읽게 하는 것이 최우선. verify: 로컬에서 페이지 GET → 테이블 row 증가 확인) (무커밋 종료 1회)
 - [x] 뉴스 섹션·토픽 페이지에 BreadcrumbList JSON-LD 추가 (근거: 기존 백로그 잔여 — 구조화 데이터 미적용으로 GSC 빵부스러기 마크업 누락. verify: 페이지 소스에 `@type":"BreadcrumbList"` 존재 + 빌드 GREEN)
 - [ ] 뉴스 상세 페이지에 "관련 기사" 내부 링크 블록 추가 (같은 섹션/토픽 3~5건) (근거: thin tag 이슈(기사 1건 태그 다수) 기록됨 — 내부 링크로 크롤 깊이·색인성 개선, 고립 페이지 감소. verify: 상세 페이지에 관련 링크 렌더 + 테스트)
 - [ ] SubscribeBox 노출 위치 감사 — 홈뿐 아니라 트래픽 유입원인 뉴스 상세 페이지 하단에도 배치 (근거: 구독자 0명, 전환 퍼널 진입점이 저트래픽 홈에만 있을 가능성. verify: 뉴스 상세 페이지에 SubscribeBox 렌더 확인)
@@ -92,3 +92,18 @@
 - [ ] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`** — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스, 실트래픽이 롱테일 SEO에서 오는 것으로 확인된 지금 커버리지 누락은 곧 유입 손실인데 결정론 검증 부재. verify: 카운트 리포트 + 누락 0 시 종료코드 0)
 - [ ] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) — (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트)
 - [ ] **page_views 봇/사람 구분 메모 태스크** — PageViewTracker가 클라이언트 마운트 기반이라 대부분 실브라우저지만, JS 렌더 크롤러(Googlebot 등) 혼입 가능성 조사 + 필요 시 `navigator.webdriver`/UA 힌트로 명백한 봇 제외(과설계 금지, 조사 우선). (근거: SUNSET/성장 판정의 입력이 될 트래픽 수치의 신뢰도를 다음 2~3주 판정 전에 검증해야 한다. verify: 조사 결과를 docs/LESSONS에 1줄 + 봇 제외 적용 시 테스트)
+
+## 2026-09-20 주간 PM 리필 (우선순위순)
+
+> 🔴 이번 주 최대 발견: **측정이 봇으로 오염돼 실사용자 트래픽을 다시 못 잰다.** 08-30에 카운터를 클라이언트 마운트(`PageViewTracker`)에서 미들웨어(`src/middleware.ts`)로 바꾸면서, UA 봇 필터 없이 모든 GET을 세게 됐다. 결과: 08-23 클라 카운터 일 40~82 → 09월 미들웨어 일 4,000~16,749(100~200배). 상위 경로 전부 `/news/topic/*` 태그 인덱스, max 932히트/path = 크롤러. **즉 지금 page_views는 실사용자 KPI가 아니라 크롤러 카운터다.** 08-30 백로그의 "봇/사람 구분" 태스크가 정확히 이걸 경고했으나 미소비.
+>
+> 🔴 두 번째 발견: **08-30 리필 7개가 3주간 소비 0.** 08-23~30 딱 한 번 `feat(analytics)` 소비 후 다시 멈춤 — dev 커밋 마지막이 09-06(백로그 외 푸터). 08-16이 상신한 "dev 사이클 미소비"가 재발. → PENDING-OWNER-ACTIONS 최상단 갱신(재상신). 08-16 LESSONS 원칙대로 **미소비 위에 크게 쌓지 않고 6개만**, 무게중심을 측정 신뢰도 복구에 둔다.
+>
+> ⚠️ SUNSET 트립와이어: 07-19 조건("카운터 배선 → 라이브 2~3주 실측 후에도 near-zero·구독 정체")에서 (1)push 복구 ✅ (2)카운터 배선 ✅ 이나 **(3)실측이 봇 오염으로 무효화** — 실사용자 트래픽을 다시 못 재게 됐다. 08-30 유효 실측(일 40~82 실브라우저)은 near-zero 아님 → **SUNSET 근거 없음**. 단 구독은 역대 0(aiwire). 다음 판정: 봇 필터 복구 → 사람 트래픽 2~3주 실측 후에도 near-zero·구독 0이면 SUNSET_GATE 재검토. 발행량은 병목 아님(엔진·push 정상) → 발행 태스크 계속 배제.
+
+- [ ] **미들웨어 page_view에 UA 봇 필터 추가(절대 최우선·측정 신뢰도 메타 블로커)** — `src/middleware.ts:20`이 UA 검사 없이 모든 GET을 `trackServerPageView`로 센다. 봇/크롤러 UA(`bot|crawl|spider|slurp|Googlebot|bingbot|GPTBot|ClaudeBot|facebookexternalhit|headless` 등, 대소문자 무시) 또는 `navigator`-less 요청이면 카운트 스킵. UA 판별은 순수 함수로 분리(`src/lib/is-bot.ts`)해 단위 테스트. (근거: page_views가 봇 오염으로 실사용자 KPI 파괴 — 일 4k~16k·상위 전부 태그 인덱스·max 932/path. 이걸 안 고치면 SUNSET/성장 판정 자체가 불가능한 메타 블로커. verify: `is-bot.test.ts`가 Googlebot/GPTBot/ClaudeBot UA=봇, Chrome/Safari UA=사람 판정 GREEN + 봇 UA 요청 시 upsert 미호출)
+- [ ] **page_views에 사람/봇 분리 집계 가능하게 컬럼 추가** — 위 필터 적용 후에도 과거 오염 데이터와 섞이지 않게, `page_views`에 `is_bot boolean default false` 컬럼(비파괴 DDL, 전용 스키마 `search_trends`) 추가하거나 봇 행을 아예 기록 안 함 중 택1(단순한 쪽 우선 = 안 기록). 결정과 근거를 LESSONS 1줄. (근거: 앞 태스크의 후속 — 사람 트래픽만 걸러 판정 입력으로 쓰려면 저장 시점에 분리돼야 한다. verify: 봇 UA 요청 후 사람 카운트 불변 확인 쿼리)
+- [ ] **SubscribeBox를 뉴스 상세 하단에 배치(5주째 이월·최우선 유지)** — 홈에만 있는 구독 진입점을 실트래픽 유입원(뉴스 상세)로 확장. (근거: aiwire 구독 역대 0, 병목은 발행량이 아니라 전환 진입점 위치. verify: `/news/[slug]` 렌더에 SubscribeBox 존재 + 컴포넌트 테스트 GREEN)
+- [ ] **SubscribeBox 카피를 가치 제안형으로 재작성** — ux-baseline 토스 8원칙(예측 가능한 힌트·핵심 메시지·강요 금지)으로, "구독하면 무엇을 얻는지" 구체화(예: "매일 아침 AI 뉴스 3건 요약을 메일로"). (근거: 구독 역대 0 — 진입점 위치뿐 아니라 CTA가 클릭 이유를 못 준다. verify: 구체 가치 문구 + 신호어 검사 통과 + 테스트)
+- [ ] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건) — (근거: 참여 리프트·크롤 깊이. 단 봇 오염 전 근거였던 재방문 지표는 봇 필터 복구 후 재측정 필요 — 이 태스크의 효과 판정도 그 후에. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN)
+- [ ] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`** — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스, 크롤러가 활발히 도는 지금(봇 트래픽이 곧 색인 활동) 커버리지 누락은 유입 손실인데 결정론 검증 부재. verify: 카운트 리포트 + 누락 0 시 종료코드 0)
