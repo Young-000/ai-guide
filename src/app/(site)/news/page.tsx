@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllNews, getAllTags } from '@/lib/news';
+import { getAllNews } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
 import SectionChips from '@/components/news/SectionChips';
-import TagChips from '@/components/news/TagChips';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
 import CoupangBanner from '@/components/CoupangBanner';
@@ -28,7 +27,6 @@ export const metadata: Metadata = {
 
 export default function NewsPage(): JSX.Element {
   const items = getAllNews('ko');
-  const tags = getAllTags('ko');
   const sections = getSectionsWithCounts('ko');
   return (
     <>
@@ -42,10 +40,18 @@ export default function NewsPage(): JSX.Element {
                 섹션
               </p>
               <SectionChips lang="ko" sections={sections} />
-              <p className="pt-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                세부 주제
-              </p>
-              <TagChips tags={tags} />
+              {/*
+                🔴 세부 주제 태그 나열을 첫 화면에서 걷어냈다 (2026-09-26).
+
+                이 목록은 1,027개다. 뉴스 목록 페이지인데 첫 화면에 **기사가 한 건도
+                보이지 않고** 태그만 수백 개 깔렸다 — 게다가 'AI 정책'/'AI정책',
+                'AI Safety'/'AI 안전'/'AI 안전성' 처럼 같은 말이 여러 벌 들어있다.
+                meat-encyclopedia 가 백과사전식 나열로 지적받은 것과 같은 사고다
+                (ux-baseline 7원칙 ① 질문이 입구, 정보는 창고).
+
+                섹션 5개는 남긴다 — 그건 실제 네비게이션이고 선택지가 3±1개 범위다.
+                세부 주제는 `/news/topics` 가 이미 전담한다.
+              */}
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/news/topics"

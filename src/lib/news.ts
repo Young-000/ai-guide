@@ -139,6 +139,23 @@ export function getTagsWithCount(
 export const MIN_TAG_ARTICLE_COUNT_FOR_INDEX = 2;
 
 /**
+ * 주제 목록에 실을 태그만 남긴다.
+ *
+ * 🔴 왜 (2026-09-26): 기사 955건에 태그가 1,027개다 — 태그가 기사보다 많다. 그중
+ * 652개(64%)가 기사 1건짜리이고, 'AI 정책'/'AI정책', 'AI Safety'/'AI 안전'/'AI 안전성'
+ * 처럼 같은 말이 여러 벌 들어있다. 사이트맵과 토픽 상세는 이미 같은 문턱으로 이들을
+ * 색인에서 빼고 있었는데, `/news/topics` 목록만 1,027개를 전부 뿌리고 있었다.
+ *
+ * 결과: 크롤러가 이 페이지를 하루 646번 돌며 색인도 안 될 링크를 수집해 갔고
+ * (크롤 예산이 거기서 샌다), 사람에게는 고를 수 없는 목록이 됐다.
+ *
+ * 목록·사이트맵·상세가 같은 함수를 보게 해서, 한 곳만 고쳐지는 일이 없게 한다.
+ */
+export function selectListableTopics<T extends { count: number }>(tags: T[]): T[] {
+  return tags.filter((tag) => tag.count >= MIN_TAG_ARTICLE_COUNT_FOR_INDEX);
+}
+
+/**
  * Whether a tag's article count falls below MIN_TAG_ARTICLE_COUNT_FOR_INDEX
  * (including tags with zero matching articles).
  */

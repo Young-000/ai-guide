@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getTagsWithCount } from '@/lib/news';
+import { getTagsWithCount, selectListableTopics } from '@/lib/news';
 import { BASE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function TopicsPage(): JSX.Element {
-  const tags = getTagsWithCount('ko');
+  /* 색인 대상과 목록을 한 함수로 맞춘다 — 이유는 selectListableTopics 주석에 있다. */
+  const tags = selectListableTopics(getTagsWithCount('ko'));
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-10">
