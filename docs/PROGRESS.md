@@ -2,6 +2,57 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-09-26 `6acd1b0` content(news): local digest publish 2026-09-26
+
+
+- 2026-09-25 `b0808c3` content(news): local digest publish 2026-09-25
+
+
+- 2026-09-25 `bf56f03` content(news): local digest publish 2026-09-25
+
+
+- 2026-09-25 `b110149` content(news): local digest publish 2026-09-25
+
+
+- 2026-09-24 `22e43a9` content(news): local digest publish 2026-09-24
+
+
+- 2026-09-24 `1e8c424` content(news): local digest publish 2026-09-24
+
+
+- 2026-09-24 `bb93b54` content(news): local digest publish 2026-09-24
+
+
+- 2026-09-24 `65182ba` content(news): local digest publish 2026-09-24
+
+
+- 2026-09-24 `c367243` content(news): local digest publish 2026-09-24
+
+
+- 2026-09-23 `9fbfc84` content(news): local digest publish 2026-09-23
+
+
+- 2026-09-23 `9a6c76b` content(news): local digest publish 2026-09-23
+
+
+- 2026-09-23 `5e48711` content(news): local digest publish 2026-09-23
+
+
+- 2026-09-23 `5e8c7b1` content(news): local digest publish 2026-09-23
+
+
+- 2026-09-23 `3ce4aa5` content(news): local digest publish 2026-09-23
+
+
+- 2026-09-22 `9b67ee8` content(news): local digest publish 2026-09-22
+
+
+- 2026-09-22 `e34f7ce` content(news): local digest publish 2026-09-22
+
+
+- 2026-09-22 `931671e` chore(cycle): 사이클 산출물 커밋 (자동 정리)
+
+
 - 2026-09-22 `beb19d0` chore(cycle): 사이클 산출물 커밋 (자동 정리)
 
 
