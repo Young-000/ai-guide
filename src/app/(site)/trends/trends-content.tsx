@@ -57,8 +57,16 @@ export default function TrendsPage() {
 
       {/* 핵심 트렌드 */}
       <section className="mb-12">
+        {/*
+          🔴 연도를 박지 않는다 (2026-09-26).
+
+          "2025년 주목해야 할" 이라고 적혀 있었다 — 2026년 9월에 보는 사람에게는 작년
+          이야기이고, 사이트가 관리되지 않는다는 신호로 읽힌다(AdSense 심사자도 본다).
+          연도를 하드코딩하면 해가 바뀔 때마다 같은 일이 반복되므로 아예 뺀다.
+          데이터의 기준 시점은 아래 '마지막 업데이트' 가 정직하게 말해 준다.
+        */}
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          2025년 주목해야 할 AI 트렌드
+          주목해야 할 AI 트렌드
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {trendsData.trends.map((trend) => (
