@@ -4,6 +4,7 @@ import Analytics from '@/components/Analytics';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { BASE_URL } from '@/lib/site';
 import './globals.css';
+import AdSenseScript from '@/components/AdSenseScript';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
@@ -86,14 +87,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: SITE_JSON_LD }}
         />
 
-        {process.env.NODE_ENV === 'production' && (
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379707580934572"
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
+        {/*
+          🔴 광고 스크립트를 사람에게만 내려보낸다 (2026-09-26).
+          이유는 AdSenseScript 주석에 있다 — 요약하면, 하루 6,000뷰의 대부분이
+          크롤러인데 광고 요청이 그들에게도 나가고 있었다.
+        */}
+        {process.env.NODE_ENV === 'production' && <AdSenseScript />}
         {GA_ID && (
           <>
             <Script
