@@ -285,6 +285,18 @@ export default function NewsArticleView({
         )}
       </article>
 
+      {/*
+        Coupang Partners — 한국어 독자에게만, 기사가 끝난 뒤에. 본문 안에는 절대 넣지 않는다:
+        우리 기사는 편집물이고, 읽는 흐름에 끼워 넣은 광고는 우리가 그 상품을 추천하는
+        것처럼 읽힌다.
+
+        🔴 위치를 올렸다 (2026-09-26). 전에는 관련 기사보다 **아래**, 페이지 맨 끝이었다.
+        거기까지 스크롤하는 사람이 거의 없어 노출 자체가 일어나지 않았다. 쿠팡은 지금
+        승인돼 작동하는 유일한 수익 경로라(AdSense 는 unfilled, AdFit 은 하우스 광고),
+        노출이 0이면 수익도 0이다. 기사 본문 직후로 올리되 원칙은 그대로다.
+      */}
+      {lang === 'ko' && <CoupangBanner subId="aiwire-article" />}
+
       {/* Contextual cross-link: news → usage guides (internal linking) */}
       <aside
         aria-labelledby="article-guide-cta-heading"
@@ -329,10 +341,6 @@ export default function NewsArticleView({
           </div>
         </section>
       )}
-
-      {/* Coupang Partners — Korean readers only, and after the article, never inside it.
-          Kept above the subscribe box so the last thing on the page is our own CTA. */}
-      {lang === 'ko' && <CoupangBanner subId="aiwire-article" />}
 
       {/* Subscribe */}
       <section
