@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { trackToolClick, track } from '@/lib/analytics';
+import { buildOutclickPayload } from '@/lib/outclick';
 
 interface OutboundToolLinkProps {
   href: string;
@@ -24,6 +25,22 @@ export default function OutboundToolLink({
   const handleClick = useCallback((): void => {
     trackToolClick(toolName, sourcePage);
     void track('tool_outbound_click', { slug: toolName, isAffiliate });
+
+    /*
+      🔴 우리 DB 에도 남긴다 (2026-09-26).
+
+      위 두 줄은 Amplitude 로만 보낸다 — 조회 키가 없어 **기록은 되는데 우리가 읽을 수
+      없다.** 그래서 "어느 도구가 실제로 눌리는가"를 아무도 몰랐고, 제휴 프로그램
+      17개 중 어디에 가입할지 정할 근거가 없었다 (affiliateLinks.ts 는 전부 null).
+
+      읽을 수 있는 숫자가 있어야 가입 순서를 정할 수 있다.
+    */
+    try {
+      const payload = buildOutclickPayload('tool', toolName);
+      navigator.sendBeacon?.('/api/visit', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+    } catch {
+      // 계측 실패가 이동을 막으면 안 된다
+    }
   }, [toolName, sourcePage, isAffiliate]);
 
   const rel = isAffiliate ? 'sponsored noopener' : 'noopener noreferrer';
