@@ -60,9 +60,27 @@ function listMarkdownFiles(lang: NewsLang, root: string): string[] {
   return fs.readdirSync(dir).filter((f) => f.endsWith('.md'));
 }
 
+/**
+ * 파싱 결과 캐시.
+ *
+ * 🔴 왜 (2026-09-26): 기사 페이지가 흐름(`buildStoryTimeline`)을 만들려고 전체 목록을
+ * 부르면서, 빌드 한 번에 955개 페이지 × 955개 파일 = **약 91만 번의 읽기+파싱**이 됐다.
+ * 내용은 빌드 동안 바뀌지 않으므로 한 번만 읽는다.
+ *
+ * 개발 서버에서는 캐시하지 않는다 — 글을 고쳐도 화면이 그대로면 고친 줄 모른다.
+ */
+const newsCache = new Map<string, NewsMeta[]>();
+const CACHE_ENABLED = process.env.NODE_ENV === 'production';
+
 export function getAllNews(lang: NewsLang, root: string = CONTENT_ROOT): NewsMeta[] {
+  const cacheKey = `${lang}:${root}`;
+  if (CACHE_ENABLED) {
+    const hit = newsCache.get(cacheKey);
+    if (hit) return hit;
+  }
+
   const dir = path.join(root, lang);
-  return listMarkdownFiles(lang, root)
+  const parsed = listMarkdownFiles(lang, root)
     .map((file): NewsMeta | null => {
       try {
         const raw = fs.readFileSync(path.join(dir, file), 'utf8');
@@ -75,6 +93,9 @@ export function getAllNews(lang: NewsLang, root: string = CONTENT_ROOT): NewsMet
     })
     .filter((item): item is NewsMeta => item !== null)
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+  if (CACHE_ENABLED) newsCache.set(cacheKey, parsed);
+  return parsed;
 }
 
 export function getNewsBySlug(lang: NewsLang, slug: string, root: string = CONTENT_ROOT): NewsArticle | null {

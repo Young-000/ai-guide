@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getNewsBySlug, getNewsSlugs } from '@/lib/news';
+import { getNewsBySlug, getNewsSlugs, getAllNews } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
+import { buildStoryTimeline } from '@/lib/story-timeline';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { slug: string };
@@ -46,5 +47,8 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
 export default function EnNewsArticlePage({ params }: { params: Params }): JSX.Element {
   const article = getNewsBySlug('en', params.slug);
   if (!article) notFound();
-  return <NewsArticleView lang="en" article={article} />;
+  /* 같은 이유로 영어판에도 흐름을 싣는다 — 아카이브는 양쪽 다 있다. */
+  const timeline = buildStoryTimeline(getAllNews('en'), article);
+
+  return <NewsArticleView lang="en" article={article} timeline={timeline} />;
 }

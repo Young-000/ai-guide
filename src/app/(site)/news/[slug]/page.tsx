@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getNewsBySlug, getNewsSlugs, getNewsByTag } from '@/lib/news';
+import { getNewsBySlug, getNewsSlugs, getNewsByTag, getAllNews } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
+import { buildStoryTimeline } from '@/lib/story-timeline';
 import PageViewTracker from '@/components/news/PageViewTracker';
 import { BASE_URL } from '@/lib/site';
 
@@ -54,10 +55,17 @@ export default function NewsArticlePage({ params }: { params: Params }): JSX.Ele
           .slice(0, 3)
       : [];
 
+  /*
+    이 사건이 놓인 흐름. 관련 기사(최신 3건)와 역할이 다르다 — 저쪽은 "지금 또 뭐가
+    있나", 이쪽은 "이 일이 어떻게 여기까지 왔나"다. 본문이 785자(중앙값)뿐이라
+    원문에 없는 가치가 필요했고, 955건의 아카이브가 우리만 가진 재료다.
+  */
+  const timeline = buildStoryTimeline(getAllNews('ko'), article);
+
   return (
     <>
       <PageViewTracker path={`/news/${params.slug}`} />
-      <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} />
+      <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} timeline={timeline} />
     </>
   );
 }

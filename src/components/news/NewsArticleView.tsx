@@ -16,6 +16,8 @@ type NewsArticleViewProps = {
   lang: NewsLang;
   article: NewsArticle;
   relatedItems?: readonly NewsMeta[];
+  /** 이 사건이 놓인 흐름 — buildStoryTimeline() 이 만든다. */
+  timeline?: readonly NewsMeta[];
 };
 
 const NEWS_AD_SLOT = process.env.NEXT_PUBLIC_ADSENSE_NEWS_SLOT;
@@ -27,6 +29,7 @@ const COPY: Record<
     backHref: string;
     sources: string;
     related: string;
+    timeline: string;
     updated: string;
     guideTitle: string;
     guideBody: string;
@@ -39,6 +42,7 @@ const COPY: Record<
     backHref: '/news',
     sources: '출처',
     related: '관련 기사',
+    timeline: '이 이야기의 흐름',
     updated: '최종 업데이트',
     guideTitle: 'AI를 직접 써보고 싶다면',
     guideBody: '상황별 AI 활용 가이드에서 바로 따라 할 수 있는 프롬프트와 도구를 찾아보세요.',
@@ -50,6 +54,7 @@ const COPY: Record<
     backHref: '/en/news',
     sources: 'Sources',
     related: 'Related articles',
+    timeline: 'How this story unfolded',
     updated: 'Last updated',
     guideTitle: 'Want to try AI yourself?',
     guideBody: 'Explore step-by-step guides with ready-to-use prompts and tools.',
@@ -62,6 +67,7 @@ export default function NewsArticleView({
   lang,
   article,
   relatedItems = [],
+  timeline = [],
 }: NewsArticleViewProps): JSX.Element {
   const copy = COPY[lang];
   const url =
@@ -162,6 +168,37 @@ export default function NewsArticleView({
         >
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{article.body}</ReactMarkdown>
         </div>
+
+        {/*
+          🔴 이 사건이 놓인 흐름 (2026-09-26 신설).
+
+          기사 본문이 785자(중앙값)라 원문에 없는 가치가 없었다. 외신은 개별 사건만
+          전하지만 우리에겐 955건의 아카이브가 있다 — "6월 수출 금지 → 7월 해제 →
+          9월 이 발견" 처럼 흐름을 보여주는 것이 우리만 할 수 있는 일이다.
+          본문 바로 뒤에 둔다: 다 읽은 직후가 "그래서 그 다음은?"이 생기는 자리다.
+        */}
+        {timeline.length > 0 && (
+          <section aria-labelledby="timeline-heading" className="mt-10 rounded-xl bg-slate-50 p-5">
+            <h2 id="timeline-heading" className="text-sm font-semibold uppercase tracking-wider text-slate-600">
+              {copy.timeline}
+            </h2>
+            <ol className="mt-4 space-y-3">
+              {timeline.map((item) => (
+                <li key={item.slug} className="flex gap-3 text-sm">
+                  <time dateTime={item.date} className="shrink-0 tabular-nums text-slate-400">
+                    {item.date.slice(5).replace('-', '.')}
+                  </time>
+                  <Link
+                    href={`${copy.backHref}/${item.slug}`}
+                    className="text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-blue-600"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
         {/* Ad slot */}
         {NEWS_AD_SLOT && (
