@@ -49,6 +49,27 @@ scripts/
 - [x] Vercel 배포 (커스텀 도메인 aiwire.news)
 - [x] GitHub 원격 저장소 연결 (Young-000/ai-guide)
 - [x] Supabase 연동 (구독자, trending 시드)
+- [x] **계측 (2026-09-26)** — 봇을 거른 `page_views_human`, 유입원 `site_visits`(세 사이트 공통)
+- [x] **기사 맥락 '이 이야기의 흐름'** — 955건 아카이브로 사건의 전개를 잇는다
+
+## 🔴 수익이 0원인 이유 (2026-09-26 실측)
+
+하루 6,000 페이지뷰가 찍히는데 광고 수익이 없다. 원인은 하나로 수렴한다 —
+**광고주는 사람에게 입찰한다.**
+
+| 확인한 것 | 상태 |
+|---|---|
+| 트래픽 | 9/25 17,960뷰인데 상위 6개 경로가 전부 목록 페이지(`/news/topics` 646 …) = 대부분 크롤러 |
+| AdSense | `data-ad-status="unfilled"`. 콘솔은 9/12부터 "준비 중", 상태 세부정보는 **비어 있음**(지적사항 없음) |
+| AdFit | 승인·작동하지만 **카카오 하우스 광고**로 채워진다 = 외부 광고주 재고 없음 |
+| 쿠팡 | 배너 1개(728×90). 2026-09-26부터 클릭을 센다 |
+
+AdSense 승인 기준을 한 줄씩 대조했을 때 우리가 미달하는 항목은 **콘텐츠 고유성** 하나였다
+(ads.txt 200 · 법적 페이지 4종 200 · 운영주체 푸터 · 955건 모두 충족). 본문 중앙값이
+785자라 외신 1건 요약을 넘지 못한다 — `docs/LESSONS.md` 참조.
+
+**판단의 근거가 되는 숫자**: `search_trends.v_daily_human_visits` (봇 제외 방문).
+`page_views` 는 총 트래픽으로 남겨 둔다 — 크롤러 양 자체가 색인 건강도 신호다.
 
 ## 개발 명령어
 
@@ -74,7 +95,7 @@ CI(`auto-news.yml`)는 러너에 claude CLI 인증이 없어 여전히 `ANTHROPI
 
 ## Known Issues (프로젝트 고유)
 
-- `/news/topic/[tag]` 440개 중 다수가 기사 1건뿐인 thin content — 기사 수 < `MIN_TAG_ARTICLE_COUNT_FOR_INDEX`(2)인 태그는 noindex + sitemap 제외 처리(`src/lib/news.ts` `isThinTag`).
+- `/news/topic/[tag]` — 태그 1,027개 중 652개(64%)가 기사 1건뿐인 thin content. noindex + sitemap 제외에 더해 2026-09-26부터 `/news` 첫 화면과 `/news/topics` 목록에서도 뺀다(`selectListableTopics`). **한 문턱을 세 곳에서 각자 판단하니 화면 두 곳이 빠져 있었다.**
 - CI(`auto-news.yml`)의 Supabase 시크릿(`SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY`)은 GitHub repo secrets 등록 여부를 owner가 별도 확인해야 함.
 - `/api/indexnow`, `/api/subscribe` 등 cron/자동화 엔드포인트는 `CRON_SECRET` 미설정 시 인증 없이 열려 있음 — rate limit은 코드 레벨로 항상 적용되지만, 프로덕션에는 `CRON_SECRET`을 Vercel 환경변수로 설정 권장.
 

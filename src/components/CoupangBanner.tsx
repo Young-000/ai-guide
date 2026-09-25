@@ -1,4 +1,5 @@
 import { COUPANG_DISCLOSURE, bannerOfTheDay, bannerWithSubId, kstToday } from '@/lib/affiliate/coupang';
+import OutclickLink from '@/components/OutclickLink';
 
 interface CoupangBannerProps {
   /**
@@ -27,13 +28,12 @@ export default function CoupangBanner({ subId }: CoupangBannerProps): JSX.Elemen
       <p className="mb-2 text-center text-[11px] font-medium uppercase tracking-wide text-slate-400">광고</p>
 
       <div className="flex justify-center">
-        <a
-          href={tagged.href}
-          target="_blank"
-          rel="noopener sponsored"
-          // Without this the referrer never reaches Coupang and the commission is not attributed.
-          referrerPolicy="unsafe-url"
-        >
+        {/*
+          클릭을 센다 (2026-09-26). 파트너스 대시보드는 전환만 보여줘서, 그 앞단인
+          "몇 명이 눌렀나"가 없으면 배치를 고칠지 배너를 바꿀지 가릴 수 없다.
+          referrerPolicy 는 OutclickLink 안에 있다 — 빠지면 수수료가 귀속되지 않는다.
+        */}
+        <OutclickLink href={tagged.href} network="coupang" placement={subId}>
           {/* next/image would proxy a third-party ad endpoint through our optimizer — wrong tool here. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -44,7 +44,7 @@ export default function CoupangBanner({ subId }: CoupangBannerProps): JSX.Elemen
             loading="lazy"
             className="h-auto max-w-full"
           />
-        </a>
+        </OutclickLink>
       </div>
 
       {/* Coupang's exact sentence. Shortening or rewording it violates the FTC endorsement rules. */}
