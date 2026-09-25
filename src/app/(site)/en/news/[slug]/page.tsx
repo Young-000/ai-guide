@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { getNewsBySlug, getNewsSlugs, getAllNews } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
 import { buildStoryTimeline } from '@/lib/story-timeline';
+import { findMentions } from '@/lib/article-mentions';
+import toolsData from '@/data/tools.json';
+import glossaryData from '@/data/glossary.json';
 import { BASE_URL } from '@/lib/site';
 
 type Params = { slug: string };
@@ -49,6 +52,8 @@ export default function EnNewsArticlePage({ params }: { params: Params }): JSX.E
   if (!article) notFound();
   /* 같은 이유로 영어판에도 흐름을 싣는다 — 아카이브는 양쪽 다 있다. */
   const timeline = buildStoryTimeline(getAllNews('en'), article);
+  /* 기사에 나온 도구·용어를 우리 가이드와 잇는다 — 955건 전부에 즉시 적용된다. */
+  const mentions = findMentions(article, toolsData.tools, glossaryData.terms);
 
-  return <NewsArticleView lang="en" article={article} timeline={timeline} />;
+  return <NewsArticleView lang="en" article={article} timeline={timeline} mentions={mentions} />;
 }

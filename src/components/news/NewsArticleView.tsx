@@ -11,6 +11,7 @@ import CoupangBanner from '@/components/CoupangBanner';
 import NewsCard from './NewsCard';
 import { BASE_URL } from '@/lib/site';
 import type { NewsArticle, NewsLang, NewsMeta } from '@/types/news';
+import type { ToolLike, TermLike } from '@/lib/article-mentions';
 
 type NewsArticleViewProps = {
   lang: NewsLang;
@@ -18,6 +19,8 @@ type NewsArticleViewProps = {
   relatedItems?: readonly NewsMeta[];
   /** 이 사건이 놓인 흐름 — buildStoryTimeline() 이 만든다. */
   timeline?: readonly NewsMeta[];
+  /** 기사에 나온 도구·용어 — findMentions() 가 찾는다. */
+  mentions?: { tools: ToolLike[]; terms: TermLike[] };
 };
 
 const NEWS_AD_SLOT = process.env.NEXT_PUBLIC_ADSENSE_NEWS_SLOT;
@@ -30,6 +33,8 @@ const COPY: Record<
     sources: string;
     related: string;
     timeline: string;
+    mentioned: string;
+    termsLabel: string;
     updated: string;
     guideTitle: string;
     guideBody: string;
@@ -43,6 +48,8 @@ const COPY: Record<
     sources: '출처',
     related: '관련 기사',
     timeline: '이 이야기의 흐름',
+    mentioned: '기사에 나온 도구',
+    termsLabel: '모르는 말이 있다면',
     updated: '최종 업데이트',
     guideTitle: 'AI를 직접 써보고 싶다면',
     guideBody: '상황별 AI 활용 가이드에서 바로 따라 할 수 있는 프롬프트와 도구를 찾아보세요.',
@@ -55,6 +62,8 @@ const COPY: Record<
     sources: 'Sources',
     related: 'Related articles',
     timeline: 'How this story unfolded',
+    mentioned: 'Tools in this story',
+    termsLabel: 'Terms explained',
     updated: 'Last updated',
     guideTitle: 'Want to try AI yourself?',
     guideBody: 'Explore step-by-step guides with ready-to-use prompts and tools.',
@@ -68,6 +77,7 @@ export default function NewsArticleView({
   article,
   relatedItems = [],
   timeline = [],
+  mentions = { tools: [], terms: [] },
 }: NewsArticleViewProps): JSX.Element {
   const copy = COPY[lang];
   const url =
@@ -197,6 +207,49 @@ export default function NewsArticleView({
                 </li>
               ))}
             </ol>
+          </section>
+        )}
+
+        {/*
+          🔴 기사에 나온 도구·용어를 우리 가이드와 잇는다 (2026-09-26).
+
+          본문이 785자(중앙값)라 원문에 없는 가치가 없었는데, 이 사이트에는 도구 21개·
+          용어 18개의 가이드가 이미 있고 기사와 이어져 있지 않았다. 용어는 링크로
+          떠넘기지 않고 **정의를 그 자리에 한 줄** 보여준다 (ux-baseline 원칙 4).
+        */}
+        {(mentions.tools.length > 0 || mentions.terms.length > 0) && (
+          <section aria-labelledby="mentions-heading" className="mt-6 border-t border-slate-200 pt-6">
+            {mentions.tools.length > 0 && (
+              <>
+                <h2 id="mentions-heading" className="text-sm font-semibold uppercase tracking-wider text-slate-600">
+                  {copy.mentioned}
+                </h2>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {mentions.tools.map((tool) => (
+                    <li key={tool.slug}>
+                      <Link
+                        href={`/tools/${tool.slug}`}
+                        className="inline-flex items-baseline gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-blue-400 hover:text-blue-600"
+                      >
+                        <span className="font-medium">{tool.name}</span>
+                        {tool.tagline && <span className="text-xs text-slate-400">{tool.tagline}</span>}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {mentions.terms.length > 0 && (
+              <dl className="mt-4 space-y-1.5">
+                {mentions.terms.map((term) => (
+                  <div key={term.slug} className="text-sm">
+                    <dt className="inline font-medium text-slate-700">{term.term}</dt>
+                    <dd className="inline text-slate-500"> — {term.definition}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </section>
         )}
 

@@ -2,6 +2,14 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-09-26 `8f413e6` feat(revenue): 쿠팡 배너 클릭을 센다
+- 2026-09-26 `e9ff99c` docs: AdFit 하우스 광고·AdSense 기준 대조·빌드 O(n^2) 기록
+- 2026-09-26 `52959a5` feat(news): 기사에 '이 이야기의 흐름'을 붙인다
+- 2026-09-26 `e3135b4` feat(analytics): 유입원을 referrer 로 가려 공통 표에 센다
+- 2026-09-26 `616f12a` fix(news): 목록 첫 화면에서 태그 나열을 걷어내고 색인 문턱과 맞춘다
+- 2026-09-26 `dd4a9ab` fix(analytics): 봇을 거른 사람 방문을 따로 센다
+
+
 - 2026-09-26 `6acd1b0` content(news): local digest publish 2026-09-26
 
 

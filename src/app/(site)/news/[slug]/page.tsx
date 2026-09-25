@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { getNewsBySlug, getNewsSlugs, getNewsByTag, getAllNews } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
 import { buildStoryTimeline } from '@/lib/story-timeline';
+import { findMentions } from '@/lib/article-mentions';
+import toolsData from '@/data/tools.json';
+import glossaryData from '@/data/glossary.json';
 import PageViewTracker from '@/components/news/PageViewTracker';
 import { BASE_URL } from '@/lib/site';
 
@@ -61,11 +64,13 @@ export default function NewsArticlePage({ params }: { params: Params }): JSX.Ele
     원문에 없는 가치가 필요했고, 955건의 아카이브가 우리만 가진 재료다.
   */
   const timeline = buildStoryTimeline(getAllNews('ko'), article);
+  /* 기사에 나온 도구·용어를 우리 가이드와 잇는다 — 955건 전부에 즉시 적용된다. */
+  const mentions = findMentions(article, toolsData.tools, glossaryData.terms);
 
   return (
     <>
       <PageViewTracker path={`/news/${params.slug}`} />
-      <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} timeline={timeline} />
+      <NewsArticleView lang="ko" article={article} relatedItems={relatedItems} timeline={timeline} mentions={mentions} />
     </>
   );
 }
