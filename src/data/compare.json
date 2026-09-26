@@ -1,7 +1,7 @@
 {
   "comparison": {
     "title": "ChatGPT vs Claude vs Gemini",
-    "description": "가장 인기있는 AI 챗봇 3가지를 2026년 6월 현재 기준으로 비교해봤어요. 세 서비스 모두 빠르게 발전 중이라, 핵심 차이 위주로 정리했습니다.",
+    "description": "가장 많이 쓰는 AI 챗봇 세 가지를 비교했어요. 세 서비스 모두 몇 주 단위로 바뀌어서, 표 아래 기준일과 출처를 함께 적어 두었어요.",
     "items": [
       {
         "feature": "만든 회사",
@@ -11,27 +11,27 @@
       },
       {
         "feature": "대표 모델",
-        "chatgpt": "GPT-5.5 / GPT-5.4",
-        "claude": "Opus 4.8 / Sonnet 4.6",
-        "gemini": "3.5 Flash / 3.1 Pro"
+        "chatgpt": "GPT-6 Astra (9/3 출시) · 일상 대화는 GPT-5.6 Sol",
+        "claude": "Opus 5.5 (9/22 출시) · Sonnet 5",
+        "gemini": "3.8 Flash (9/2 출시) · 3.1 Pro"
       },
       {
-        "feature": "무료 사용",
-        "chatgpt": "가능 (GPT-5 일일 제한)",
-        "claude": "가능 (Sonnet 4.6 제한)",
-        "gemini": "가능 (Gemini 3 Flash)"
+        "feature": "무료로 쓰는 모델",
+        "chatgpt": "GPT-5.6 Luna",
+        "claude": "Sonnet 5",
+        "gemini": "3.6 Flash (일일 한도)"
       },
       {
         "feature": "유료 가격",
-        "chatgpt": "$20/월 (Plus), $8 Go",
-        "claude": "$20/월 (Pro)",
-        "gemini": "$20/월 (Google AI Pro)"
+        "chatgpt": "Plus $20/월 · Pro $100·$200/월",
+        "claude": "Pro $20/월 (연간 결제 시 $17/월)",
+        "gemini": "AI Pro $19.99/월 · AI Plus $4.99/월"
       },
       {
-        "feature": "긴 문서 처리",
-        "chatgpt": "좋음 (Pro는 100만 토큰)",
-        "claude": "최고 (최대 100만 토큰)",
-        "gemini": "좋음 (100만 토큰)"
+        "feature": "한 번에 읽는 분량",
+        "chatgpt": "Plus 최대 25.6만 토큰 (추론 모드)",
+        "claude": "무료도 20만 토큰",
+        "gemini": "긴 문서 요약에 강함"
       },
       {
         "feature": "최신 정보",
@@ -41,21 +41,15 @@
       },
       {
         "feature": "이미지 생성",
-        "chatgpt": "GPT Image 2 내장 (벤치 1위)",
-        "claude": "불가능 (텍스트 전용)",
-        "gemini": "Imagen 4 내장"
+        "chatgpt": "ChatGPT Images 2.5 (9/8 출시)",
+        "claude": "불가 (도표·SVG는 코드로 그림)",
+        "gemini": "Nano Banana 2"
       },
       {
-        "feature": "코딩 능력",
-        "chatgpt": "우수 (GPT-5.5)",
-        "claude": "최고 (Claude Code)",
-        "gemini": "우수 (Gemini CLI)"
-      },
-      {
-        "feature": "추론(생각하는) 능력",
-        "chatgpt": "강함 (GPT-5.x)",
-        "claude": "강함 (Opus 4.8)",
-        "gemini": "강함 (Deep Think)"
+        "feature": "코딩",
+        "chatgpt": "Codex",
+        "claude": "Claude Code",
+        "gemini": "Gemini CLI · 3.8 Flash"
       },
       {
         "feature": "한국어",
@@ -65,15 +59,50 @@
       },
       {
         "feature": "특징",
-        "chatgpt": "가장 대중적, 에이전트·Sora 영상",
-        "claude": "정직한 답변, 코딩·긴 문서 강점",
+        "chatgpt": "가장 대중적, 이미지·영상까지 한곳에서",
+        "claude": "긴 문서 분석과 코딩에 강점",
         "gemini": "구글 서비스 연동, 실시간 검색"
       },
       {
-        "feature": "추천 대상",
-        "chatgpt": "AI 입문자, 다양한 기능 원하는 분",
-        "claude": "긴 문서 분석, 코딩하는 분",
-        "gemini": "구글 생태계 사용자"
+        "feature": "이런 분께",
+        "chatgpt": "AI를 처음 써보는 분, 여러 기능이 필요한 분",
+        "claude": "긴 문서를 다루거나 코딩하는 분",
+        "gemini": "지메일·드라이브 등 구글을 많이 쓰는 분"
+      }
+    ],
+    "updatedAt": "2026-09-26",
+    "sources": [
+      {
+        "title": "Al Jazeera — OpenAI unveils GPT-6 Astra (2026-09-04)",
+        "url": "https://www.aljazeera.com/economy/2026/9/4/openai-unveils-gpt-6-astra-amid-rising-scrutiny-and-safety"
+      },
+      {
+        "title": "AI Toolbox — ChatGPT models by plan (2026-09)",
+        "url": "https://www.ai-toolbox.co/chatgpt-models/chatgpt-models-explained-complete-comparison-2026"
+      },
+      {
+        "title": "Wikipedia — GPT Image (ChatGPT Images 2.5, 2026-09-08)",
+        "url": "https://en.wikipedia.org/wiki/GPT_Image"
+      },
+      {
+        "title": "TechCrunch — Anthropic releases Opus 5.5 (2026-09-22)",
+        "url": "https://techcrunch.com/2026/09/22/anthropic-releases-opus-5-5-with-lower-prices-and-fable-level-performance/"
+      },
+      {
+        "title": "IntuitionLabs — Claude subscription plans & pricing 2026",
+        "url": "https://intuitionlabs.ai/articles/claude-pricing-plans-api-costs"
+      },
+      {
+        "title": "Gemini API release notes",
+        "url": "https://ai.google.dev/gemini-api/docs/changelog"
+      },
+      {
+        "title": "Gemini pricing 2026 — Free, AI Plus, Pro, Ultra",
+        "url": "https://geotoolbox.ai/blog/gemini-pricing"
+      },
+      {
+        "title": "Google — Nano Banana 2 in the Gemini app",
+        "url": "https://workspaceupdates.googleblog.com/2026/02/introducing-nano-banana-2-in-gemini-app.html"
       }
     ]
   }

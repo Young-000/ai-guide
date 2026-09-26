@@ -91,6 +91,23 @@ export default function ComparePage() {
         </table>
       </div>
 
+      {/*
+        기준일·출처 (2026-09-26). 이 표는 "2026년 6월 현재"로 석 달을 버텼고 그 사이 세 회사
+        모두 주력 모델이 바뀌었다. 날짜와 출처가 화면에 있으면 낡은 것도 낡았다고 보이고,
+        독자는 직접 확인할 수 있다.
+      */}
+      <p className="-mt-6 mb-10 text-xs text-gray-500">
+        {comparison.updatedAt} 기준 · 출처:{' '}
+        {comparison.sources.map((source, index) => (
+          <span key={source.url}>
+            {index > 0 && ' · '}
+            <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-700">
+              {source.title}
+            </a>
+          </span>
+        ))}
+      </p>
+
       {/* Ad: between comparison table and 결론 */}
       <AdUnit
         slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT ?? ''}
