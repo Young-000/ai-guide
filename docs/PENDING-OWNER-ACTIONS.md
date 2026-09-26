@@ -29,13 +29,22 @@
 >
 > **가입 후 하실 일**: 받은 URL을 알려주시면 `affiliateLinks.ts` 의 해당 줄에 넣습니다. 끝입니다.
 
+## ✅ 자동화됨 (2026-09-26) — 광고 채널 일일 점검
+
+> 대표 지시: "adsense / adfit 등의 채널도 다 확보해야 해. 자동으로 하게."
+
+- **매일 11:40** `deal-shorts/scripts/ad-channels.sh` (crontab) — AdSense 콘솔 승인 상태 · 실제 페이지 광고 채움(filled/unfilled, AdFit house/external/empty) · ads.txt. **바뀐 것만** main-checklist 로 알린다. 콘솔 로그인이 풀리면 경보.
+- **mystica.world AdSense 등록·검토 요청 완료** (대표 승인). 콘솔 상태 검토 필요 → 준비 중.
+- 현재: aiwire·hottrend·mystica 모두 "준비 중", 세 곳 모두 ads.txt 200, 자동광고 요청 정상(unfilled = 심사 중).
+- 손대지 않은 것: `5sec-challenge.vercel.app` · `economic-sense-test.vercel.app` ("검토 필요") — AIT 앱이라 웹 트래픽이 없고 vercel.app 서브도메인이다. 승인받지 않았다.
+
 ## 🔴 같은 날 함께 상신 (2026-09-26)
 
 | 항목 | 무엇이 필요한가 | 왜 |
 |---|---|---|
 | **`/trends`·`/compare` 내용 갱신** | 사실 확인 후 데이터 교체 | 두 페이지가 **2026-06-16 에 멈춰 있다**. `compare.json` 의 Claude 가 `Opus 4.8 / Sonnet 4.6` 으로 낡았는데, ChatGPT·Gemini 의 현재 버전은 제가 확인할 수 없어 **한쪽만 갱신하면 비교가 불공정해진다** — 지어내지 않고 남겨 둡니다. 심사자가 보는 페이지라 우선순위가 있습니다 |
 | **쿠팡 모바일 배너** | 파트너스 콘솔에서 320×100(또는 300×250) 배너 발급 | 지금 배너는 728×90 고정이다. URL 의 w/h 를 바꿔 요청해도 같은 이미지가 온다(실측). 375px 화면에서 높이 38px 이 되어 읽을 수 없어 **모바일에서는 내려 두었다** — 배너를 주시면 즉시 되살립니다 |
-| **카카오 AdFit 콘솔** | 오너 로그인 | 외부 광고가 왜 안 붙는지는 콘솔에서만 보인다. 매체 심사 상태·정책 경고 확인 |
+| **카카오 AdFit 콘솔** | 오너 로그인 1회 — `cd teamY/deal-shorts && npm run ad:login` (창이 뜨면 로그인 후 닫기) | aiwire.news 의 AdFit 은 신규 방문자에게 **광고 요청 자체를 보내지 않는다**(스크립트 200, 요청 0 — 2026-09-26 실측). 원인은 콘솔에만 있다. 로그인 세션이 남으면 매일 자동 점검에 AdFit 콘솔도 넣는다. hottrend·mystica 에는 AdFit 매체 자체가 없다 |
 | **AdSense 심사** | 오너 판단 | 9/12부터 2주째 "준비 중". 문의할지 더 기다릴지 |
 | **네이버 검색광고 API 키** | 오너 가입(무료·광고비 없음) | hottrend.news 글감을 검색량으로 고르기 위함. 도구는 완성·대기 |
 
