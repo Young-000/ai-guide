@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getAllNews } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
+import NewsIndexJsonLd from '@/components/news/NewsIndexJsonLd';
 import SectionChips from '@/components/news/SectionChips';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import SubscribeBox from '@/components/SubscribeBox';
@@ -30,6 +31,7 @@ export default function NewsPage(): JSX.Element {
   const sections = getSectionsWithCounts('ko');
   return (
     <>
+      <NewsIndexJsonLd lang="ko" items={items} />
       <NewsListView
         lang="ko"
         items={items}

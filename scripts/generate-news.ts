@@ -9,10 +9,11 @@
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
 import { isSlugTaken } from '../src/lib/news-slug-guard';
+import { withRetry } from '../src/lib/retry';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,6 +28,11 @@ const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-4-8';
 const CLI_TIMEOUT_MS = 180_000;
+
+// 기사 1건당 생성 재시도. 모델 호출은 레이트리밋·과부하로 간헐 실패하는데
+// 예전에는 한 번 실패하면 그 기사를 그대로 버렸다.
+const GENERATE_RETRIES = 2;
+const GENERATE_RETRY_BASE_MS = 5_000;
 
 // ─── Load files ───────────────────────────────────────────────────────────────
 
@@ -99,7 +105,7 @@ function runClaudeCli(prompt: string): Promise<string> {
 async function generatePair(
   item: FeedItem,
   generate: Generate,
-): Promise<{ slug: string; ko: string; en: string } | null> {
+): Promise<{ slug: string; ko: string; en: string }> {
   const userPrompt = `You are an AI news digest writer. Based on the RSS item below, write a bilingual (Korean + English) digest following the rules.
 
 ## RSS ITEM
@@ -134,15 +140,21 @@ Output exactly this structure — nothing before or after:
   const ko = text.match(/===KO_START===\s*([\s\S]*?)\s*===KO_END===/)?.[1]?.trim();
   const en = text.match(/===EN_START===\s*([\s\S]*?)\s*===EN_END===/)?.[1]?.trim();
 
+  // 형식이 깨진 출력은 던진다 — 모델이 한 번 헛나온 것뿐일 수 있으니 재시도 대상이다.
   if (!slug || !ko || !en) {
-    console.warn(`[WARN] Malformed output for "${item.title}" — skipped`);
-    return null;
+    throw new Error(`malformed output for "${item.title}"`);
   }
 
   return { slug, ko, en };
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
+
+/** PATH에 `claude` 실행파일이 있는지. 없으면 CLI 백엔드는 애초에 불가능하다. */
+function isClaudeCliAvailable(): boolean {
+  const probe = spawnSync('claude', ['--version'], { stdio: 'ignore' });
+  return !probe.error && probe.status === 0;
+}
 
 function selectGenerator(): Generate {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -151,6 +163,16 @@ function selectGenerator(): Generate {
     console.log('Backend: Anthropic API (ANTHROPIC_API_KEY set).');
     return (prompt) => runAnthropicApi(prompt, client);
   }
+
+  // 키도 없고 CLI도 없으면 어떤 기사도 생성될 수 없다. 기사마다 spawn ENOENT를
+  // 반복하며 "0 written"으로 끝나던 걸, 원인을 명시한 즉시 실패로 바꾼다.
+  if (!isClaudeCliAvailable()) {
+    throw new Error(
+      '생성 백엔드 없음: ANTHROPIC_API_KEY가 없고 `claude` CLI도 PATH에 없습니다. ' +
+        'CI에서는 ANTHROPIC_API_KEY 시크릿이 유일한 경로이고, 로컬에서는 claude 로그인이 필요합니다.',
+    );
+  }
+
   console.log('Backend: local `claude` CLI (no ANTHROPIC_API_KEY — Claude Code auth).');
   return runClaudeCli;
 }
@@ -164,15 +186,21 @@ async function main(): Promise<void> {
   for (const item of items) {
     console.log(`  • ${item.title}`);
 
-    let pair: { slug: string; ko: string; en: string } | null = null;
+    let pair: { slug: string; ko: string; en: string };
     try {
-      pair = await generatePair(item, generate);
+      pair = await withRetry(() => generatePair(item, generate), {
+        retries: GENERATE_RETRIES,
+        baseDelayMs: GENERATE_RETRY_BASE_MS,
+        onRetry: (error, attempt, delayMs) => {
+          console.warn(
+            `  [RETRY] ${(error as Error).message} — ${delayMs}ms 후 재시도 (${attempt + 1}/${GENERATE_RETRIES})`,
+          );
+        },
+      });
     } catch (err) {
       console.warn(`  [WARN] generation error: ${(err as Error).message}`);
       continue;
     }
-
-    if (!pair) continue;
 
     if (isSlugTaken(pair.slug)) {
       console.warn(
