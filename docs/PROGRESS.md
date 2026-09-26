@@ -2,6 +2,26 @@
 
 ## [2026-08-02] 주간 PM 사이클
 
+- 2026-09-26 `c8b9077` docs: AdFit 보류 해소·재심사 요청 기록
+
+
+- 2026-09-26 `c210318` docs: 광고 채널 자동 점검·mystica 등록·AdFit 로그인 절차 기록
+
+
+- 2026-09-26 `0b41727` content(news): local digest publish 2026-09-26
+
+
+- 2026-09-26 `b6692d6` content(news): local digest publish 2026-09-26
+
+
+- 2026-09-26 `19beef4` fix(ads): 광고 스크립트를 사람에게만 내려보낸다
+- 2026-09-26 `afc1bac` feat(metrics): 수익 선행지표를 한 장으로 모은다 (npm run funnel)
+- 2026-09-26 `4f33d68` fix(trends): 제목에서 연도 하드코딩을 뺀다
+- 2026-09-26 `dbdccae` fix(revenue): 쿠팡 배너를 본문 직후로 올리고 모바일에서는 내린다
+- 2026-09-26 `e4d2be2` feat(revenue): 도구 아웃클릭을 우리 DB 에도 남긴다
+- 2026-09-26 `f143a90` feat(news): 기사에 나온 도구·용어를 우리 가이드와 잇는다
+
+
 - 2026-09-26 `8f413e6` feat(revenue): 쿠팡 배너 클릭을 센다
 - 2026-09-26 `e9ff99c` docs: AdFit 하우스 광고·AdSense 기준 대조·빌드 O(n^2) 기록
 - 2026-09-26 `52959a5` feat(news): 기사에 '이 이야기의 흐름'을 붙인다
