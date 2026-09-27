@@ -122,7 +122,15 @@ fi
 # keychain). That single gap silently trapped 41 publishes locally between 07-27
 # and 08-09. GIT_TERMINAL_PROMPT=0 makes a missing credential fail loudly instead
 # of hanging on a username prompt no one is there to answer.
-GIT_TERMINAL_PROMPT=0 git -c credential.helper=store push origin main
+#
+# OPS_PREPUSH_JOB_BASE: the workspace pre-push guard lets main move by one commit
+# at a time (squash only — the 2026-09-27 incident). This publisher is the one
+# sanctioned direct-to-main flow and legitimately pushes more: the publish commit
+# plus the merge with the CI publisher, or several publishes after a failed run.
+# Passing the remote tip we just fetched tells the guard "everything above this
+# commit is this job's own output"; the guard logs each use.
+GIT_TERMINAL_PROMPT=0 OPS_PREPUSH_JOB_BASE="$(git rev-parse origin/main)" \
+  git -c credential.helper=store push origin main
 
 # 7) A publish is only done when origin actually moved. "committed" and "pushed"
 #    have both lied before — the log stayed green while articles piled up locally.
