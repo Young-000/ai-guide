@@ -37,3 +37,4 @@ next-env.d.ts
 
 # news pipeline runtime output (ephemeral — never commit)
 scripts/worklist.json
+.env*
