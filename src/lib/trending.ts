@@ -61,13 +61,6 @@ export function isAiRelatedKeyword(keyword: string): boolean {
 }
 
 /**
- * Builds an outbound link to the sister site hottrend.news for a keyword.
- */
-export function hottrendKeywordUrl(keyword: string): string {
-  return `https://hottrend.news/keyword/${encodeURIComponent(keyword)}?geo=KR`;
-}
-
-/**
  * Pure transform: from raw snapshot rows, pick the latest captured_at snapshot,
  * keep KR rows, drop blanks, dedupe by keyword (best rank wins), sort by rank asc,
  * and cap to `limit`.
@@ -105,10 +98,20 @@ export function selectLatestKrTop(
     .slice(0, limit);
 }
 
+// The snapshot feed can stop silently (it did on 2026-08-04). Older snapshots
+// are not "trending" and must not seed articles.
+const MAX_SNAPSHOT_AGE_MS = 3 * 24 * 60 * 60 * 1000;
+
+export function isFreshSnapshot(capturedAt: string, now: Date): boolean {
+  const captured = Date.parse(capturedAt);
+  if (Number.isNaN(captured)) return false;
+  return now.getTime() - captured <= MAX_SNAPSHOT_AGE_MS;
+}
+
 /**
  * Fetches the latest KR trending keywords from search_trends.trend_snapshots.
- * Fully fail-soft: returns [] on any error (missing env, DB down, empty data),
- * so callers can hide the widget without ever breaking the page.
+ * Fully fail-soft: returns [] on any error (missing env, DB down, empty data)
+ * or when the newest snapshot is stale, so the article pipeline never blocks.
  */
 export async function fetchTrendingKeywords(limit = 8): Promise<TrendingKeyword[]> {
   try {
@@ -124,8 +127,10 @@ export async function fetchTrendingKeywords(limit = 8): Promise<TrendingKeyword[
       .order('rank', { ascending: true })
       .limit(200);
 
-    if (error || !data) return [];
-    return selectLatestKrTop(data as TrendSnapshotRow[], limit);
+    if (error || !data || data.length === 0) return [];
+    const rows = data as TrendSnapshotRow[];
+    if (!isFreshSnapshot(rows[0].captured_at, new Date())) return [];
+    return selectLatestKrTop(rows, limit);
   } catch {
     return [];
   }

@@ -33,6 +33,10 @@ function buildClient(payload: QueryPayload): ReturnType<typeof getServiceClient>
 afterEach(() => jest.clearAllMocks());
 
 describe('fetchTrendingKeywords — fail-soft', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('returns [] when getServiceClient throws (missing env)', async () => {
     mockedGetServiceClient.mockImplementation(() => {
       throw new Error('Missing SUPABASE_URL');
@@ -53,6 +57,7 @@ describe('fetchTrendingKeywords — fail-soft', () => {
   });
 
   it('maps rows through the pure transform on success', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-06-18T00:00:00.000Z'));
     const rows = [
       {
         source: 'google',
@@ -77,5 +82,21 @@ describe('fetchTrendingKeywords — fail-soft', () => {
       { keyword: '날씨', rank: 1 },
       { keyword: 'ChatGPT', rank: 2 },
     ]);
+  });
+
+  it('returns [] when the newest snapshot is stale (feed stopped)', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-09-27T00:00:00.000Z'));
+    const rows = [
+      {
+        source: 'google',
+        geo: 'KR',
+        captured_at: '2026-08-04T18:16:00.165Z',
+        rank: 1,
+        keyword: 'ChatGPT',
+        traffic: null,
+      },
+    ];
+    mockedGetServiceClient.mockReturnValue(buildClient({ data: rows, error: null }));
+    await expect(fetchTrendingKeywords(8)).resolves.toEqual([]);
   });
 });

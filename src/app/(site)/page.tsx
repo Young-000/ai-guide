@@ -9,12 +9,11 @@ import LeadStory from '@/components/home/LeadStory';
 import HomeSections from '@/components/home/HomeSections';
 import SectionChips from '@/components/news/SectionChips';
 import CategoryStrip from '@/components/home/CategoryStrip';
-import TrendingKeywords from '@/components/TrendingKeywords';
+import { StaplePrices } from '@/components/StaplePrices';
 import SubscribeBox from '@/components/SubscribeBox';
 import AdFitUnit from '@/components/AdFitUnit';
 
-// Home revalidates so the trending-keywords widget stays reasonably fresh
-// without rebuilding on every request.
+// Home revalidates so the latest news digests appear without a rebuild.
 export const revalidate = 300;
 
 // Canonical now lives here (not the root layout) — see the comment in
@@ -90,15 +89,15 @@ export default function Home(): JSX.Element {
         </div>
       </section>
 
-      {/* Section digests — latest per topic section + trending keywords */}
+      {/* Section digests — latest per topic section + hottrend staples strip */}
       <section aria-labelledby="home-sections-heading" className="py-10">
         <div className="mx-auto max-w-6xl px-4">
           <h2 id="home-sections-heading" className="sr-only">
             섹션별 최신 뉴스
           </h2>
           <HomeSections lang="ko" />
-          {/* Trendjacking widget — self-hides on empty/error */}
-          <TrendingKeywords className="mt-12" />
+          {/* Sister-site strip — hottrend staple price comparisons */}
+          <StaplePrices placement="home" className="mt-12" />
         </div>
       </section>
 

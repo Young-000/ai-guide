@@ -4,7 +4,7 @@ import { getAllNews } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
 import SectionChips from '@/components/news/SectionChips';
-import TrendingKeywords from '@/components/TrendingKeywords';
+import { StaplePrices } from '@/components/StaplePrices';
 import SubscribeBox from '@/components/SubscribeBox';
 import CoupangBanner from '@/components/CoupangBanner';
 import { BASE_URL } from '@/lib/site';
@@ -73,8 +73,8 @@ export default function NewsPage(): JSX.Element {
                 </Link>
               </div>
             </div>
-            {/* Trendjacking widget — self-hides on empty/error */}
-            <TrendingKeywords />
+            {/* Sister-site strip — hottrend staple price comparisons */}
+            <StaplePrices placement="news" />
           </div>
         }
       />

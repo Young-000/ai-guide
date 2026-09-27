@@ -1,7 +1,7 @@
 import {
   selectLatestKrTop,
   isAiRelatedKeyword,
-  hottrendKeywordUrl,
+  isFreshSnapshot,
   type TrendSnapshotRow,
 } from '@/lib/trending';
 
@@ -84,10 +84,18 @@ describe('isAiRelatedKeyword', () => {
   );
 });
 
-describe('hottrendKeywordUrl', () => {
-  it('builds an encoded hottrend.news URL with geo=KR', () => {
-    expect(hottrendKeywordUrl('AI 그림')).toBe(
-      'https://hottrend.news/keyword/AI%20%EA%B7%B8%EB%A6%BC?geo=KR',
-    );
+describe('isFreshSnapshot', () => {
+  const now = new Date('2026-09-27T09:00:00.000Z');
+
+  it('accepts a snapshot from within the last 3 days', () => {
+    expect(isFreshSnapshot('2026-09-25T09:00:00.000Z', now)).toBe(true);
+  });
+
+  it('rejects a snapshot older than 3 days (feed stopped)', () => {
+    expect(isFreshSnapshot('2026-08-04T18:16:00.165Z', now)).toBe(false);
+  });
+
+  it('rejects an unparseable timestamp', () => {
+    expect(isFreshSnapshot('not-a-date', now)).toBe(false);
   });
 });
