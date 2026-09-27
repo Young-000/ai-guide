@@ -3,8 +3,9 @@
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { shouldLoadAds } from '@/lib/ad-eligibility';
+import { ADSENSE_CLIENT } from '@/lib/adsense-client';
 
-const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379707580934572';
+const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
 
 /**
  * AdSense 스크립트 — 사람에게만 내려보낸다.

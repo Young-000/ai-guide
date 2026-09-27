@@ -3,6 +3,7 @@ import Script from 'next/script';
 import Analytics from '@/components/Analytics';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { BASE_URL } from '@/lib/site';
+import { ADSENSE_CLIENT } from '@/lib/adsense-client';
 import './globals.css';
 import AdSenseScript from '@/components/AdSenseScript';
 
@@ -40,6 +41,10 @@ export const metadata: Metadata = {
   // Google Search Console 소유권 확인 메타. env가 있을 때만 태그 출력(없으면 undefined → 미출력).
   // metadata는 서버에서 평가되므로 non-public env 사용 가능.
   verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
+  // AdSense 계정 확인 메타. AdSenseScript 는 사람 UA 에게만 hydration 뒤에 붙으므로
+  // 서버 HTML 에는 AdSense 흔적이 전혀 없다 — 심사 크롤러가 사이트를 계정과 잇는 표식은
+  // 광고 코드를 싣지 않는 이 태그뿐이다 (2026-09-27, 9/12부터 심사가 멈춰 있던 원인 후보).
+  other: { 'google-adsense-account': ADSENSE_CLIENT },
   metadataBase: new URL(BASE_URL),
   // No site-wide `alternates.canonical` here on purpose: Next.js metadata
   // merging replaces the whole `alternates` object per segment (it does not
