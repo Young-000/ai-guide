@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { ADSENSE_CLIENT } from '@/lib/adsense-client';
 
 type AdFormat = 'auto' | 'rectangle' | 'horizontal' | 'vertical';
 
@@ -50,7 +51,7 @@ export default function AdUnit({
       <ins
         className="adsbygoogle"
         style={{ display: 'block', minHeight: `${MIN_HEIGHT_MAP[format]}px` }}
-        data-ad-client="ca-pub-1379707580934572"
+        data-ad-client={ADSENSE_CLIENT}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive ? 'true' : 'false'}
