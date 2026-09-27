@@ -17,9 +17,11 @@ export function Footer(): JSX.Element {
                 hottrend 는 2026-08 에 검색어 사이트에서 생필품 가격 비교로 바뀌었다. 품목 페이지 780개로
                 가는 허브(/pick)를 가리킨다 — 이 사이트를 자주 훑는 검색 크롤러가 링크를 따라 품목
                 페이지를 더 빨리 찾게 하려는 것이다 (2026-09-27).
+                utm 을 붙이는 이유: rel="noreferrer"라 출처가 지워져 hottrend 에서 'direct'로 뭉친다 —
+                이 길로 몇 명이 오는지 셀 수 있어야 계속 둘지 정할 수 있다.
               */}
               <a
-                href="https://hottrend.news/pick"
+                href="https://hottrend.news/pick?utm_source=aiwire&utm_medium=footer"
                 className="text-slate-500 hover:text-blue-600 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"

@@ -39,6 +39,6 @@ describe('Footer — sister sites', () => {
   it('points hottrend at its price-comparison hub with the current label', () => {
     render(<Footer />);
     const link = screen.getByRole('link', { name: '생필품 가격 비교 → hottrend.news' });
-    expect(link).toHaveAttribute('href', 'https://hottrend.news/pick');
+    expect(link).toHaveAttribute('href', 'https://hottrend.news/pick?utm_source=aiwire&utm_medium=footer');
   });
 });
