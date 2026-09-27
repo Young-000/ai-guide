@@ -13,13 +13,18 @@ export function Footer(): JSX.Element {
               AI·LLM 최신 소식을 매일 한국어·영어로 정리합니다.
             </p>
             <p className="mt-3 text-sm">
+              {/*
+                hottrend 는 2026-08 에 검색어 사이트에서 생필품 가격 비교로 바뀌었다. 품목 페이지 780개로
+                가는 허브(/pick)를 가리킨다 — 이 사이트를 자주 훑는 검색 크롤러가 링크를 따라 품목
+                페이지를 더 빨리 찾게 하려는 것이다 (2026-09-27).
+              */}
               <a
-                href="https://hottrend.news"
+                href="https://hottrend.news/pick"
                 className="text-slate-500 hover:text-blue-600 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                실시간 검색어 → hottrend.news
+                생필품 가격 비교 → hottrend.news
               </a>
             </p>
             <p className="mt-2 text-sm">
