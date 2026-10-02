@@ -91,6 +91,11 @@ npm run publish:local    # 로컬 전체 사이클: fetch → 생성(키리스) 
 - 없으면 → 로컬 `claude` CLI(Claude Code 구독 인증) 사용 → **API key 없이 로컬 실행 가능**
 
 로컬 정기 발행은 `npm run publish:local`을 cron/launchd로 스케줄(예: 5시간 주기).
+
+> ⚠️ 워크스페이스 main 보호 pre-push 훅(2026-09-28)은 main 을 1커밋씩만 움직이게 한다. 이 발행 스크립트만
+> 작업 기준(`OPS_PREPUSH_JOB_BASE` = fetch 한 `origin/main`)을 넘겨 여러 커밋을 올린다 — 그래서 **로컬 main 에
+> 쌓인 커밋은 검토 여부와 관계없이 다음 발행 때 함께 올라간다.** 발행 외의 작업은 로컬 main 에 커밋하지 말고
+> feature 브랜치 → PR 로 한다.
 CI(`auto-news.yml`)는 러너에 claude CLI 인증이 없어 여전히 `ANTHROPIC_API_KEY`가 있어야 동작.
 
 ## Known Issues (프로젝트 고유)
