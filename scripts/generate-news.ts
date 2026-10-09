@@ -25,7 +25,7 @@ type Generate = (prompt: string) => Promise<string>;
 const MAX_ARTICLES = 3;
 const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-4-8';
+const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-5-5';
 const CLI_TIMEOUT_MS = 180_000;
 
 // ─── Load files ───────────────────────────────────────────────────────────────
@@ -59,10 +59,15 @@ const publishedState: PublishedState = existsSync(publishedPath)
 async function runAnthropicApi(prompt: string, client: Anthropic): Promise<string> {
   const response = await client.messages.create({
     model: NEWS_MODEL,
-    max_tokens: 2048,
+    // Opus 5.5 always thinks (cannot be disabled); the budget covers thinking + the digest.
+    max_tokens: 16000,
     messages: [{ role: 'user', content: prompt }],
   });
-  return response.content[0].type === 'text' ? response.content[0].text : '';
+  // Thinking blocks may precede the answer, so take the first text block, not content[0].
+  const textBlock = response.content.find(
+    (block): block is Anthropic.TextBlock => block.type === 'text',
+  );
+  return textBlock?.text ?? '';
 }
 
 // Local backend: pipe the prompt to `claude -p` (headless) via stdin, capture
