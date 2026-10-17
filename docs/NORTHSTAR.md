@@ -14,18 +14,21 @@
 
 - **Event**: the first **network-confirmed earnings line > 0 (KRW or USD)** attributable to aiwire.news traffic, from any one of:
   - Kakao AdFit: credited earnings (적립금) > 0 from an external advertiser
-  - Google AdSense: earnings > 0 in the aiwire.news report (site-level, not account-total)
+  - Google AdSense: under the AdSense rule below (aiwire.news-only cumulative finalized earnings of KRW 10,000 or more)
   - Coupang Partners or an AI-tool affiliate program: commission in confirmed status (확정), not pending
 - **SOURCE of truth**: the ad / affiliate network consoles themselves.
   - AdFit: console report, read daily as `adfit.yesterdayEarnings` by `teamY/deal-shorts/scripts/ad-channels.sh` (cron 11:40, log `deal-shorts/logs/ad-channels-YYYY-MM-DD.log`)
-  - AdSense: console earnings report, filtered by site. The `pub-1379707580934572` account is shared with hottrend.news and mystica.world, so account-total is not enough.
+  - AdSense: console earnings report, filtered by site, then the cumulative-finalized KRW 10,000 check from the AdSense rule above. The `pub-1379707580934572` account is shared with hottrend.news and mystica.world, so account-total is not enough.
   - Coupang Partners / affiliate: partner console commission report (Coupang links carry a sub-id placement tag)
 - **Does NOT count**:
   - page views, impressions, ad requests, banner or outbound clicks (`search_trends.v_revenue_funnel.outclicks` is a leading signal, not revenue)
-  - AdSense or affiliate "estimated" / pending / unconfirmed earnings
+  - Affiliate "estimated" / pending / unconfirmed commission
+  - AdSense figures that fail the AdSense rule below (cumulative finalized earnings under KRW 10,000, estimated-only, account-level or payout totals)
   - house-ad fills (Kakao's own ads) or a fill that earns 0
   - bot traffic, self-clicks, test clicks
   - subscriber count (no monetization on `subscribers` today)
+- **AdSense rule**: AdSense is counted **per project, separately**. Only that project's own ad earnings in a site-filtered or URL-channel-filtered report count. The project's **cumulative finalized (confirmed) AdSense earnings must reach KRW 10,000 or more** to count as first revenue; anything below KRW 10,000 does not count yet. Account-wide totals and payout amounts are never recognized for any project (the account `pub-1379707580934572` is shared by hottrend.news, aiwire.news, mystica.world and hottrend.news/flights). 근거: 대표 결정 2026-10-17
+  - **ai-guide scope**: the report must be filtered to the aiwire.news site only.
 - **Counts only after**: the line is visible in the network console. Payout (bank transfer) is a later milestone, not the phase-1 trigger.
 
 ### How it is measured
@@ -43,7 +46,7 @@
 
 ### Current gap (dated, sourced)
 
-Where it is stuck: **every stage.** Human traffic is tiny, ad networks do not pay, and no click target exists.
+Where it is stuck (first blocked stage): **click -> revenue conversion.** Even if traffic grows, it earns 0 today: all 17 affiliate URLs are `null`, AdSense is in "주의 필요", and the AdFit slot renders empty. Traffic is the next stage after this one, not the first.
 
 | Stage | Fact | Source / date |
 |---|---|---|
