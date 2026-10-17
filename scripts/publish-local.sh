@@ -12,7 +12,10 @@
 #     moved to src/content/_quarantine/ and the rest publish.
 #   - If the build still fails, nothing is published, the run's files are snapshotted to
 #     $AI_GUIDE_FAILED_DIR, the tree is restored to clean and the script exits 3.
-#   - "Every generation attempt failed" exits 2; "nothing new" exits 0.
+#   - "Every generation attempt failed" exits 2; "nothing new" exits 0; a generator crash exits 4.
+#   - Refuses to run unless the checkout is on main (exit 4, result=wrong-branch).
+#   - A fetch/push failure exits 1 with result=push-failed. The commit stays local, and the next
+#     run pushes it even when there is nothing new to generate.
 #   - Every run appends one line to $AI_GUIDE_STATUS_FILE for the watchdog and the PM cycle.
 #
 # Usage:
@@ -49,6 +52,16 @@ write_status() {
   if [ -n "$BUILD_LOG" ] && [ -f "$BUILD_LOG" ]; then rm -f "$BUILD_LOG"; fi
 }
 trap write_status EXIT
+
+# Publishing commits on HEAD but pushes `main`: on any other branch the status line used to say
+# "ok / pushed" while nothing reached origin. Refuse up front.
+CURRENT_BRANCH="$(git branch --show-current)"
+if [ "$CURRENT_BRANCH" != "main" ]; then
+  RESULT="wrong-branch"
+  echo "✗ checkout is on '${CURRENT_BRANCH:-detached HEAD}', not main — refusing to publish." >&2
+  echo "  Switch to main (git switch main) or run from the main checkout." >&2
+  exit 4
+fi
 
 # 0) 비대화형(cron) 실행용 인증 로드.
 #    claude CLI의 구독 인증은 로그인 세션/Keychain에 묶여 있어 cron에서는
@@ -87,17 +100,93 @@ npm run --silent fetch-news
 #    Telling 1 and 2 apart is the point: the 10/5-10/8 break (claude CLI erroring on every
 #    item) used to look like a quiet news day.
 GENERATE_EXIT=0
-env -u ANTHROPIC_API_KEY npm run --silent generate-news || GENERATE_EXIT=$?
+GENERATE_OUT="$(env -u ANTHROPIC_API_KEY npm run --silent generate-news 2>&1)" || GENERATE_EXIT=$?
+printf '%s\n' "$GENERATE_OUT"
 if [ "$GENERATE_EXIT" = "2" ]; then
   RESULT="generation-failed"
   echo "✗ Generation failed for every item (claude CLI / output errors) — see warnings above."
   exit 2
+fi
+# Exit 1 only counts as "nothing new" when the generator reached its summary line. A crash that
+# happens to exit 1 (module error, uncaught throw) has no summary and must not look like a quiet day.
+if [ "$GENERATE_EXIT" = "1" ] && ! grep -q 'article pair(s) written' <<<"$GENERATE_OUT"; then
+  GENERATE_EXIT=4
 fi
 if [ "$GENERATE_EXIT" != "0" ] && [ "$GENERATE_EXIT" != "1" ]; then
   RESULT="generation-error"
   echo "✗ generate-news crashed (exit $GENERATE_EXIT)."
   exit "$GENERATE_EXIT"
 fi
+
+# Merge in what the CI publisher pushed, then push. Used after a fresh commit and, when there is
+# nothing new, to retry commits an earlier run could not push. Every failure leaves a non-zero
+# exit and result=push-failed (or merge-conflict); the commit stays local for the next run.
+publish_to_origin() {
+  RESULT="push-failed"
+  # Integrate whatever the GitHub Actions publisher pushed since we last looked.
+  # Both publishers append to scripts/_published.json, so the branches diverge and
+  # that one file conflicts every time. Everything else (new article files) merges
+  # cleanly. The URL list is a dedupe ledger — the union of both sides is correct.
+  if ! git fetch origin main --quiet; then
+    echo "✗ git fetch origin main failed — commit stays local, will be pushed next run."
+    exit 1
+  fi
+  if ! git merge-base --is-ancestor origin/main HEAD; then
+    echo "▶ origin/main moved ahead (CI publisher) — merging…"
+    if ! git merge origin/main --no-edit >/dev/null 2>&1; then
+      CONFLICTS="$(git diff --name-only --diff-filter=U)"
+      if [ "$CONFLICTS" != "scripts/_published.json" ]; then
+        echo "✗ merge conflict outside the published ledger — needs a human:"
+        echo "$CONFLICTS"
+        git merge --abort
+        RESULT="merge-conflict"
+        exit 1
+      fi
+      node -e '
+        const fs = require("fs");
+        const { execFileSync } = require("child_process");
+        const side = (stage) =>
+          JSON.parse(execFileSync("git", ["show", `:${stage}:scripts/_published.json`], { encoding: "utf8" }));
+        const ours = side(2);
+        const theirs = side(3);
+        const merged = { ...theirs, ...ours, urls: [...new Set([...theirs.urls, ...ours.urls])] };
+        fs.writeFileSync("scripts/_published.json", JSON.stringify(merged, null, 2) + "\n");
+        console.error(`  ledger merged: ${ours.urls.length} + ${theirs.urls.length} → ${merged.urls.length} URLs`);
+      '
+      git add scripts/_published.json
+      git commit --no-edit >/dev/null
+    fi
+    echo "✓ merged origin/main."
+  fi
+
+  # `store` is spelled out here rather than left to config: the global helper is
+  # osxkeychain, which returns nothing under cron (no GUI session to unlock the
+  # keychain). That single gap silently trapped 41 publishes locally between 07-27
+  # and 08-09. GIT_TERMINAL_PROMPT=0 makes a missing credential fail loudly instead
+  # of hanging on a username prompt no one is there to answer.
+  #
+  # OPS_PREPUSH_JOB_BASE: the workspace pre-push guard lets main move by one commit
+  # at a time (squash only — the 2026-09-27 incident). This publisher is the one
+  # sanctioned direct-to-main flow and legitimately pushes more: the publish commit
+  # plus the merge with the CI publisher, or several publishes after a failed run.
+  # Passing the remote tip we just fetched tells the guard "everything above this
+  # commit is this job's own output"; the guard logs each use.
+  if ! GIT_TERMINAL_PROMPT=0 OPS_PREPUSH_JOB_BASE="$(git rev-parse origin/main)" \
+    git -c credential.helper=store push origin main; then
+    echo "✗ git push failed — commit stays local, will be pushed next run."
+    exit 1
+  fi
+
+  # A publish is only done when origin actually moved. "committed" and "pushed"
+  # have both lied before — the log stayed green while articles piled up locally.
+  BEHIND="$(git rev-list --count origin/main..main)"
+  if [ "$BEHIND" != "0" ]; then
+    echo "✗ push reported success but origin/main is still ${BEHIND} commit(s) behind."
+    exit 1
+  fi
+  RESULT="ok"; PUSHED="yes"
+  echo "✓ pushed — origin/main advanced. Vercel will deploy the new articles."
+}
 
 # 3) Did anything change? Includes leftovers from earlier failed runs on purpose: they are
 #    validated below like new files. `git status --porcelain` sees untracked files; `git diff`
@@ -106,6 +195,12 @@ PUBLISH_PATHS=(src/content/news src/content/_quarantine scripts/_published.json)
 if [ -z "$(git status --porcelain -- "${PUBLISH_PATHS[@]}")" ]; then
   RESULT="nothing-new"
   echo "ℹ No new articles generated (0 items or all duplicates) — nothing to publish."
+  # An earlier run may have committed and then failed to push. Never report that as healthy.
+  UNPUSHED="$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)"
+  if [ "$UNPUSHED" != "0" ] && [[ "${NO_PUSH:-0}" != "1" ]] && [[ "${NO_COMMIT:-0}" != "1" ]]; then
+    echo "▶ ${UNPUSHED} earlier commit(s) never reached origin — pushing them now."
+    publish_to_origin
+  fi
   exit 0
 fi
 
@@ -158,7 +253,13 @@ if [[ "${NO_COMMIT:-0}" == "1" ]]; then
 fi
 
 # 5b) Commit (auto-push hook / Git integration deploys to Vercel).
-git add "${PUBLISH_PATHS[@]}"
+# Only pass paths that exist: `git add` aborts on an unknown pathspec, and a clean batch has no
+# src/content/_quarantine yet (or no longer, once everything was moved back).
+ADD_PATHS=()
+for publish_path in "${PUBLISH_PATHS[@]}"; do
+  if [ -e "$publish_path" ]; then ADD_PATHS+=("$publish_path"); fi
+done
+git add -A -- "${ADD_PATHS[@]}"
 git commit -m "content(news): local digest publish $(date '+%Y-%m-%d')" >/dev/null
 echo "✓ committed."
 
@@ -168,61 +269,5 @@ if [[ "${NO_PUSH:-0}" == "1" ]]; then
   exit 0
 fi
 
-# 6) Integrate whatever the GitHub Actions publisher pushed since we last looked.
-#    Both publishers append to scripts/_published.json, so the branches diverge and
-#    that one file conflicts every time. Everything else (new article files) merges
-#    cleanly. The URL list is a dedupe ledger — the union of both sides is correct.
-git fetch origin main --quiet
-if ! git merge-base --is-ancestor origin/main HEAD; then
-  echo "▶ origin/main moved ahead (CI publisher) — merging…"
-  if ! git merge origin/main --no-edit >/dev/null 2>&1; then
-    CONFLICTS="$(git diff --name-only --diff-filter=U)"
-    if [ "$CONFLICTS" != "scripts/_published.json" ]; then
-      echo "✗ merge conflict outside the published ledger — needs a human:"
-      echo "$CONFLICTS"
-      git merge --abort
-      RESULT="merge-conflict"
-      exit 1
-    fi
-    node -e '
-      const fs = require("fs");
-      const { execFileSync } = require("child_process");
-      const side = (stage) =>
-        JSON.parse(execFileSync("git", ["show", `:${stage}:scripts/_published.json`], { encoding: "utf8" }));
-      const ours = side(2);
-      const theirs = side(3);
-      const merged = { ...theirs, ...ours, urls: [...new Set([...theirs.urls, ...ours.urls])] };
-      fs.writeFileSync("scripts/_published.json", JSON.stringify(merged, null, 2) + "\n");
-      console.error(`  ledger merged: ${ours.urls.length} + ${theirs.urls.length} → ${merged.urls.length} URLs`);
-    '
-    git add scripts/_published.json
-    git commit --no-edit >/dev/null
-  fi
-  echo "✓ merged origin/main."
-fi
-
-# `store` is spelled out here rather than left to config: the global helper is
-# osxkeychain, which returns nothing under cron (no GUI session to unlock the
-# keychain). That single gap silently trapped 41 publishes locally between 07-27
-# and 08-09. GIT_TERMINAL_PROMPT=0 makes a missing credential fail loudly instead
-# of hanging on a username prompt no one is there to answer.
-#
-# OPS_PREPUSH_JOB_BASE: the workspace pre-push guard lets main move by one commit
-# at a time (squash only — the 2026-09-27 incident). This publisher is the one
-# sanctioned direct-to-main flow and legitimately pushes more: the publish commit
-# plus the merge with the CI publisher, or several publishes after a failed run.
-# Passing the remote tip we just fetched tells the guard "everything above this
-# commit is this job's own output"; the guard logs each use.
-RESULT="push-failed"
-GIT_TERMINAL_PROMPT=0 OPS_PREPUSH_JOB_BASE="$(git rev-parse origin/main)" \
-  git -c credential.helper=store push origin main
-
-# 7) A publish is only done when origin actually moved. "committed" and "pushed"
-#    have both lied before — the log stayed green while articles piled up locally.
-BEHIND="$(git rev-list --count origin/main..main)"
-if [ "$BEHIND" != "0" ]; then
-  echo "✗ push reported success but origin/main is still ${BEHIND} commit(s) behind."
-  exit 1
-fi
-RESULT="ok"; PUSHED="yes"
-echo "✓ pushed — origin/main advanced. Vercel will deploy the new articles."
+# 6) Integrate with the CI publisher and push; fails loudly (non-zero, result=push-failed).
+publish_to_origin

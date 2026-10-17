@@ -30,6 +30,7 @@ const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-5-5';
 const CLI_TIMEOUT_MS = 180_000;
+const CRASH_EXIT_CODE = 4; // distinct from 1 (nothing new) and 2 (every attempt failed)
 
 // ─── Load files ───────────────────────────────────────────────────────────────
 
@@ -213,17 +214,17 @@ async function main(): Promise<void> {
     writeFileSync(join(koDir, `${TODAY}-${pair.slug}.md`), pair.ko + '\n');
     writeFileSync(join(enDir, `${TODAY}-${pair.slug}.md`), pair.en + '\n');
 
+    // Record the URL right after its files are written. A crash later in the run must not leave
+    // written articles outside the ledger (they would be regenerated under another slug).
     publishedState.urls.push(item.url);
+    writeFileSync(publishedPath, JSON.stringify(publishedState, null, 2) + '\n');
     console.log(`  ✓ ${TODAY}-${pair.slug} (ko + en)`);
     published++;
   }
 
-  if (published > 0) {
-    writeFileSync(publishedPath, JSON.stringify(publishedState, null, 2) + '\n');
-  }
-
-  // Exit codes: 0 = pairs written, 1 = nothing new (duplicates only), 2 = every attempt failed.
-  // CI treats any non-zero as "nothing to commit"; publish-local.sh tells 1 and 2 apart.
+  // Exit codes: 0 = pairs written, 1 = nothing new (duplicates only), 2 = every attempt failed,
+  // 4 = unexpected crash. CI treats any non-zero as "nothing to commit"; publish-local.sh tells
+  // them apart (a crash must never look like a quiet news day).
   const verdict = classifyGenerationRun({ written: published, failed, skipped });
   console.log(`\n${published} article pair(s) written, ${failed} failed, ${skipped} skipped (${verdict.label}).`);
   if (verdict.exitCode !== 0) process.exit(verdict.exitCode);
@@ -231,5 +232,5 @@ async function main(): Promise<void> {
 
 main().catch((err: unknown) => {
   console.error('[ERROR]', err);
-  process.exit(1);
+  process.exit(CRASH_EXIT_CODE);
 });

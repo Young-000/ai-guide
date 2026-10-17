@@ -10,6 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
+const TSX_TMP_PREFIX = '/tmp/ag-';
 
 const GOOD = (slug: string, lang: 'ko' | 'en', extra = ''): string => `---
 title: "Title ${slug} ${lang}"
@@ -69,13 +70,16 @@ process.exit(bad ? 1 : 0);
 
 const STUB_GENERATE = `#!/usr/bin/env bash
 set -e
-if [ -z "$(find "$GEN_FIXTURE" -type f)" ]; then exit "\${STUB_GEN_EXIT:-0}"; fi
+# STUB_GEN_NO_SUMMARY=1 simulates a crash that never reaches the real generator's summary line.
+summary() { [ "\${STUB_GEN_NO_SUMMARY:-0}" = "1" ] || echo "stub: 0 article pair(s) written, 0 failed, 0 skipped"; }
+if [ -z "$(find "$GEN_FIXTURE" -type f)" ]; then summary; exit "\${STUB_GEN_EXIT:-0}"; fi
 cp -R "$GEN_FIXTURE"/. src/content/news/
 node -e '
   const fs = require("fs"); const p = "scripts/_published.json";
   const l = JSON.parse(fs.readFileSync(p, "utf8")); l.urls.push("https://example.com/" + Date.now());
   fs.writeFileSync(p, JSON.stringify(l, null, 2) + "\\n");
 '
+summary
 exit "\${STUB_GEN_EXIT:-0}"
 `;
 
@@ -83,10 +87,15 @@ type Fixture = { ko?: Record<string, string>; en?: Record<string, string> };
 
 type Harness = {
   tmp: string;
+  tsxTmp: string;
   repo: string;
   origin: string;
   statusFile: string;
-  run: (fixture: Fixture | null, genExit?: number) => ReturnType<typeof spawnSync>;
+  run: (
+    fixture: Fixture | null,
+    genExit?: number,
+    extraEnv?: Record<string, string>,
+  ) => ReturnType<typeof spawnSync>;
   git: (...args: string[]) => string;
 };
 
@@ -94,6 +103,13 @@ function sh(cwd: string, command: string, args: string[]): string {
   const result = spawnSync(command, args, { cwd, encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')}: ${result.stderr}`);
   return result.stdout.trim();
+}
+
+// Deletes a test directory only when it is a non-empty path strictly below `prefix`. A computed
+// path that came out empty or equal to the prefix must never reach rmSync.
+function removeTempDir(dir: string, prefix: string): void {
+  if (!dir || !dir.startsWith(prefix) || dir === prefix) return;
+  fs.rmSync(dir, { recursive: true, force: true });
 }
 
 function writeFiles(root: string, files: Record<string, string>): void {
@@ -134,9 +150,12 @@ function setup(): Harness {
   writeFiles(stubDir, { 'npm': STUB_NPM, 'generate.sh': STUB_GENERATE, 'build.js': STUB_BUILD });
   fs.chmodSync(path.join(stubDir, 'npm'), 0o755);
   const statusFile = path.join(tmp, 'publish.status');
-  const tsxTmp = fs.mkdtempSync('/tmp/ag-');
+  // Deliberately /tmp, not os.tmpdir(): tsx puts an IPC socket under TMPDIR and a unix socket path
+  // must stay below ~104 characters (a long scratch TMPDIR fails with `listen EINVAL`).
+  // afterEach removes it again.
+  const tsxTmp = fs.mkdtempSync(TSX_TMP_PREFIX);
 
-  const run: Harness['run'] = (fixture, genExit = 0) => {
+  const run: Harness['run'] = (fixture, genExit = 0, extraEnv = {}) => {
     const fixtureDir = path.join(tmp, 'fixture');
     fs.rmSync(fixtureDir, { recursive: true, force: true });
     fs.mkdirSync(fixtureDir, { recursive: true });
@@ -158,10 +177,10 @@ function setup(): Harness {
         AI_GUIDE_FAILED_DIR: path.join(tmp, 'failed'),
         AI_GUIDE_LOG_FILE: path.join(tmp, 'publish.log'),
         GIT_CONFIG_GLOBAL: '/dev/null',
-      }),
+      }, extraEnv),
     });
   };
-  return { tmp, repo, origin, statusFile, run, git };
+  return { tmp, tsxTmp, repo, origin, statusFile, run, git };
 }
 
 function expectExit(result: ReturnType<typeof spawnSync>, code: number): void {
@@ -176,7 +195,8 @@ describe('publish-local.sh', () => {
     h = setup();
   });
   afterEach(() => {
-    if (h.tmp.startsWith(os.tmpdir())) fs.rmSync(h.tmp, { recursive: true, force: true });
+    removeTempDir(h.tmp, path.join(os.tmpdir(), 'ai-guide-publish-'));
+    removeTempDir(h.tsxTmp, TSX_TMP_PREFIX);
   });
 
   const originFiles = (): string[] => sh(h.origin, 'git', ['ls-tree', '-r', '--name-only', 'main']).split('\n');
@@ -235,5 +255,77 @@ describe('publish-local.sh', () => {
     const result = h.run(null, 1);
     expectExit(result, 0);
     expect(lastStatus()).toMatch(/result=nothing-new/);
+  });
+
+  it('publishes a clean batch when src/content/_quarantine does not exist (nothing quarantined)', () => {
+    expect(fs.existsSync(path.join(h.repo, 'src/content/_quarantine'))).toBe(false);
+    const result = h.run({
+      ko: { 'good-a.md': GOOD('good-a', 'ko'), 'good-b.md': GOOD('good-b', 'ko') },
+      en: { 'good-a.md': GOOD('good-a', 'en'), 'good-b.md': GOOD('good-b', 'en') },
+    });
+
+    expectExit(result, 0);
+    expect(h.git('status', '--porcelain')).toBe('');
+    expect(originFiles()).toEqual(expect.arrayContaining([
+      'src/content/news/ko/good-a.md',
+      'src/content/news/en/good-b.md',
+    ]));
+    expect(h.git('rev-list', '--count', 'origin/main..main')).toBe('0');
+    expect(lastStatus()).toMatch(/result=ok .*quarantined=0 .*built=yes .*pushed=yes/);
+  });
+
+  it('reports a push failure, then pushes the stranded commit on the next quiet run', () => {
+    const goodOrigin = h.origin;
+    h.git('remote', 'set-url', 'origin', path.join(h.tmp, 'missing.git'));
+    const failed = h.run({
+      ko: { 'late.md': GOOD('late', 'ko') },
+      en: { 'late.md': GOOD('late', 'en') },
+    });
+
+    expectExit(failed, 1);
+    expect(lastStatus()).toMatch(/result=push-failed .*pushed=no exit=1/);
+    expect(h.git('rev-list', '--count', 'origin/main..main')).toBe('1');
+
+    h.git('remote', 'set-url', 'origin', goodOrigin);
+    const recovered = h.run(null, 1);
+
+    expectExit(recovered, 0);
+    expect(originFiles()).toContain('src/content/news/ko/late.md');
+    expect(h.git('rev-list', '--count', 'origin/main..main')).toBe('0');
+    expect(lastStatus()).toMatch(/result=ok .*pushed=yes/);
+  });
+
+  it('keeps reporting push-failed while an unpushed commit cannot be sent on a quiet run', () => {
+    const goodOrigin = h.origin;
+    h.git('remote', 'set-url', 'origin', path.join(h.tmp, 'missing.git'));
+    expectExit(h.run({ ko: { 'late.md': GOOD('late', 'ko') }, en: { 'late.md': GOOD('late', 'en') } }), 1);
+
+    const stillBroken = h.run(null, 1);
+
+    expectExit(stillBroken, 1);
+    expect(lastStatus()).toMatch(/result=push-failed/);
+    h.git('remote', 'set-url', 'origin', goodOrigin);
+  });
+
+  it('refuses to publish when the checkout is not on main', () => {
+    const before = h.git('rev-parse', 'origin/main');
+    h.git('checkout', '-b', 'feature/x');
+    const result = h.run({ ko: { 'a.md': GOOD('a', 'ko') }, en: { 'a.md': GOOD('a', 'en') } });
+
+    expectExit(result, 4);
+    expect(result.stderr).toContain('not main');
+    expect(lastStatus()).toMatch(/result=wrong-branch .*pushed=no exit=4/);
+    expect(sh(h.origin, 'git', ['rev-parse', 'main'])).toBe(before);
+    expect(h.git('rev-list', '--count', 'main..HEAD')).toBe('0');
+  });
+
+  it('treats a generator crash as an error, not as "nothing new"', () => {
+    const noSummary = h.run(null, 1, { STUB_GEN_NO_SUMMARY: '1' });
+    expectExit(noSummary, 4);
+    expect(lastStatus()).toMatch(/result=generation-error/);
+
+    const crashCode = h.run(null, 4);
+    expectExit(crashCode, 4);
+    expect(lastStatus()).toMatch(/result=generation-error .*exit=4/);
   });
 });
