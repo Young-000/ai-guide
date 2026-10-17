@@ -19,7 +19,7 @@ function asDateString(value: unknown, field: string): string {
   throw new Error(`news frontmatter: '${field}' must be a date`);
 }
 
-function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
+export function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
   const lang = asString(data.lang, 'lang');
   if (lang !== 'ko' && lang !== 'en') {
     throw new Error(`news frontmatter: invalid lang '${lang}'`);
@@ -54,6 +54,18 @@ function toFrontmatter(data: Record<string, unknown>): NewsFrontmatter {
   };
 }
 
+// gray-matter 는 옵션이 없으면 내용 문자열로 결과를 캐시하는데, 파싱이 던져도 캐시는 이미 채워져 있다.
+// 그래서 같은 깨진 내용을 두 번째 파싱하면 예외 없이 data={} 가 돌아와 'lang must be a string' 같은
+// 엉뚱한 오류로 보였다. 빈 옵션을 넘기면 캐시를 건너뛴다.
+function parseMarkdown(raw: string): matter.GrayMatterFile<string> {
+  return matter(raw, {});
+}
+
+function errorSummary(err: unknown): string {
+  const message = err instanceof Error ? err.message : String(err);
+  return message.split('\n')[0];
+}
+
 function listMarkdownFiles(lang: NewsLang, root: string): string[] {
   const dir = path.join(root, lang);
   if (!fs.existsSync(dir)) return [];
@@ -84,10 +96,12 @@ export function getAllNews(lang: NewsLang, root: string = CONTENT_ROOT): NewsMet
     .map((file): NewsMeta | null => {
       try {
         const raw = fs.readFileSync(path.join(dir, file), 'utf8');
-        return toFrontmatter(matter(raw).data as Record<string, unknown>);
+        return toFrontmatter(parseMarkdown(raw).data as Record<string, unknown>);
       } catch (err) {
         // 깨진 frontmatter 1개가 전체 빌드를 무너뜨리지 않도록 skip.
-        console.warn(`[news] skipping invalid article '${lang}/${file}':`, err);
+        // 메시지만 남긴다 — 예외 객체 전체를 찍으면 js-yaml Mark 덩어리가 페이지 렌더마다 로그에
+        // 쌓여 로그가 145MB까지 커졌다 (2026-10-17).
+        console.warn(`[news] skipping invalid article '${lang}/${file}': ${errorSummary(err)}`);
         return null;
       }
     })
@@ -102,10 +116,16 @@ export function getNewsBySlug(lang: NewsLang, slug: string, root: string = CONTE
   const dir = path.join(root, lang);
   for (const file of listMarkdownFiles(lang, root)) {
     const raw = fs.readFileSync(path.join(dir, file), 'utf8');
-    const parsed = matter(raw);
-    const fm = toFrontmatter(parsed.data as Record<string, unknown>);
-    if (fm.slug === slug) {
-      return { ...fm, body: parsed.content };
+    try {
+      const parsed = parseMarkdown(raw);
+      const fm = toFrontmatter(parsed.data as Record<string, unknown>);
+      if (fm.slug === slug) {
+        return { ...fm, body: parsed.content };
+      }
+    } catch (err) {
+      // 🔴 왜 (2026-10-17): 이 탐색은 모든 파일을 훑는데, 깨진 파일 1개가 던지면 slug 와 무관한
+      // 모든 기사 페이지가 빌드에서 같이 죽었다(9/28 이후 발행 중단의 직접 원인). getAllNews 와 같게 건너뛴다.
+      console.warn(`[news] skipping invalid article '${lang}/${file}': ${errorSummary(err)}`);
     }
   }
   return null;

@@ -4,7 +4,16 @@
 # Replaces the GitHub Actions auto-news cron when no ANTHROPIC_API_KEY is
 # available: generation runs through the local `claude` CLI (Claude Code auth).
 #
-#   fetch RSS → generate (ko+en, keyless) → build check → commit → push
+#   fetch RSS → generate (ko+en, keyless) → validate/quarantine per file → build check
+#   → commit → push
+#
+# Failure handling (2026-10-17, after 18 days of silent non-publishing):
+#   - Each article file is validated on its own. A bad file (and its translation partner) is
+#     moved to src/content/_quarantine/ and the rest publish.
+#   - If the build still fails, nothing is published, the run's files are snapshotted to
+#     $AI_GUIDE_FAILED_DIR, the tree is restored to clean and the script exits 3.
+#   - "Every generation attempt failed" exits 2; "nothing new" exits 0.
+#   - Every run appends one line to $AI_GUIDE_STATUS_FILE for the watchdog and the PM cycle.
 #
 # Usage:
 #   bash scripts/publish-local.sh            # full cycle, commit + push new articles
@@ -18,6 +27,28 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 echo "▶ ai-guide local publish — $(date '+%Y-%m-%d %H:%M:%S')"
+
+STATUS_FILE="${AI_GUIDE_STATUS_FILE:-$HOME/.claude/logs/ai-guide-publish.status}"
+FAILED_DIR="${AI_GUIDE_FAILED_DIR:-$HOME/.claude/state/ai-guide-failed}"
+LOG_FILE="${AI_GUIDE_LOG_FILE:-$HOME/.claude/logs/ai-guide-publish.log}"
+
+# One status line per run, written on every exit path. Fields are `key=value`, append-only,
+# so readers can split on spaces: ts result generated quarantined built pushed exit.
+RESULT="error"; GENERATED=0; QUARANTINED=0; BUILT="no"; PUSHED="no"
+BUILD_LOG=""
+write_status() {
+  local code=$?
+  mkdir -p "$(dirname "$STATUS_FILE")" 2>/dev/null || true
+  printf 'ts=%s result=%s generated=%s quarantined=%s built=%s pushed=%s exit=%s\n' \
+    "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$RESULT" "$GENERATED" "$QUARANTINED" "$BUILT" "$PUSHED" "$code" \
+    >> "$STATUS_FILE" 2>/dev/null || true
+  # Keep the status file short (last 500 runs).
+  if [ -f "$STATUS_FILE" ] && [ "$(wc -l < "$STATUS_FILE")" -gt 500 ]; then
+    tail -n 500 "$STATUS_FILE" > "$STATUS_FILE.tmp" 2>/dev/null && mv "$STATUS_FILE.tmp" "$STATUS_FILE" || true
+  fi
+  if [ -n "$BUILD_LOG" ] && [ -f "$BUILD_LOG" ]; then rm -f "$BUILD_LOG"; fi
+}
+trap write_status EXIT
 
 # 0) 비대화형(cron) 실행용 인증 로드.
 #    claude CLI의 구독 인증은 로그인 세션/Keychain에 묶여 있어 cron에서는
@@ -33,6 +64,7 @@ fi
 # 대화형 컨텍스트 밖인데 토큰도 없으면, RSS만 긁고 생성에서 전부 실패하는 헛도는
 # 실행이 된다. 원인을 첫 줄에서 못박고 끝낸다.
 if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] && [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -z "${CLAUDECODE:-}" ]; then
+  RESULT="no-auth"
   echo "✗ 생성 백엔드 인증 없음."
   echo "  cron 등 비대화형 실행에는 장기 토큰이 필요합니다:"
   echo "    1) claude setup-token   (대화형으로 1회 발급, 구독 인증 — API 과금 없음)"
@@ -41,46 +73,97 @@ if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] && [ -z "${ANTHROPIC_API_KEY:-}" ] && [
   exit 1
 fi
 
+# Keep the log from growing without bound: runs older than 7 days are gzipped to
+# ~/.claude/logs/archive/. The log is trimmed in place, so the cron `>>` redirect stays valid.
+# Best effort — a rotation problem must never block publishing.
+npm run --silent rotate-log -- --log "$LOG_FILE" --min-bytes 5242880 || true
+
 # 1) Fetch fresh RSS items → scripts/worklist.json
 npm run --silent fetch-news
 
 # 2) Generate ko+en digests via the local claude CLI (no ANTHROPIC_API_KEY).
 #    `env -u` guarantees the CLI backend even if a key is exported in the shell.
-if ! env -u ANTHROPIC_API_KEY npm run --silent generate-news; then
+#    generate-news exits 0 = pairs written, 1 = nothing new, 2 = every attempt failed.
+#    Telling 1 and 2 apart is the point: the 10/5-10/8 break (claude CLI erroring on every
+#    item) used to look like a quiet news day.
+GENERATE_EXIT=0
+env -u ANTHROPIC_API_KEY npm run --silent generate-news || GENERATE_EXIT=$?
+if [ "$GENERATE_EXIT" = "2" ]; then
+  RESULT="generation-failed"
+  echo "✗ Generation failed for every item (claude CLI / output errors) — see warnings above."
+  exit 2
+fi
+if [ "$GENERATE_EXIT" != "0" ] && [ "$GENERATE_EXIT" != "1" ]; then
+  RESULT="generation-error"
+  echo "✗ generate-news crashed (exit $GENERATE_EXIT)."
+  exit "$GENERATE_EXIT"
+fi
+
+# 3) Did anything change? Includes leftovers from earlier failed runs on purpose: they are
+#    validated below like new files. `git status --porcelain` sees untracked files; `git diff`
+#    does not (that blind spot once trapped 36 articles locally).
+PUBLISH_PATHS=(src/content/news src/content/_quarantine scripts/_published.json)
+if [ -z "$(git status --porcelain -- "${PUBLISH_PATHS[@]}")" ]; then
+  RESULT="nothing-new"
   echo "ℹ No new articles generated (0 items or all duplicates) — nothing to publish."
   exit 0
 fi
 
-# 3) Did any article files actually change?
-#    `git diff`는 tracked 파일의 수정만 본다 — 새로 생성된 기사는 untracked라
-#    항상 "변경 없음"으로 판정돼 매 실행이 여기서 조용히 종료됐다(실측: 크론
-#    13회 전부 실행·생성 성공했는데 push 0회, 기사 36개가 로컬에 갇힘).
-#    untracked를 포함하는 `git status --porcelain`으로 판정한다.
-ARTICLE_CHANGES="$(git status --porcelain -- src/content/news)"
-if [ -z "$ARTICLE_CHANGES" ]; then
-  echo "ℹ No article file changes — nothing to commit."
-  exit 0
+# 4) Validate each article file on its own. A bad file (plus its translation partner) is
+#    quarantined instead of breaking the build for everyone.
+VALIDATE_OUT="$(npm run --silent validate-news)"
+printf '%s\n' "$VALIDATE_OUT"
+QUARANTINED="$(printf '%s\n' "$VALIDATE_OUT" | sed -n 's/^validate: .*quarantined=\([0-9]*\).*/\1/p' | tail -1)"
+QUARANTINED="${QUARANTINED:-0}"
+
+ARTICLE_CHANGES="$(git status --porcelain --untracked-files=all -- src/content/news)"
+GENERATED="$(printf '%s\n' "$ARTICLE_CHANGES" | grep -c '^??\|^ M\|^M' || true)"
+echo "✓ ${GENERATED} article file(s) to publish, ${QUARANTINED} quarantined."
+
+# 5) Build check — never publish articles that break the site. Output goes to a temp file and
+#    only its tail is printed on failure (the old `>/dev/null` hid the cause; printing it all
+#    grew the log to 145 MB).
+if [ -n "$ARTICLE_CHANGES" ]; then
+  echo "▶ build check…"
+  BUILD_LOG="$(mktemp "${TMPDIR:-/tmp}/ai-guide-build.XXXXXX")"
+  if ! npm run --silent build >"$BUILD_LOG" 2>&1; then
+    RESULT="build-failed"
+    echo "✗ build failed — last 30 lines:"
+    tail -n 30 "$BUILD_LOG"
+    # Never leave the tree dirty: snapshot this run's files outside the repo for diagnosis,
+    # then restore only the publish paths.
+    SNAPSHOT="$FAILED_DIR/$(date '+%Y%m%dT%H%M%S')"
+    mkdir -p "$SNAPSHOT"
+    git ls-files -z --others --modified --exclude-standard -- "${PUBLISH_PATHS[@]}" \
+      | xargs -0 tar -cf "$SNAPSHOT/files.tar" 2>/dev/null || true
+    cp "$BUILD_LOG" "$SNAPSHOT/build.log" 2>/dev/null || true
+    git clean -fdq -- src/content/news src/content/_quarantine
+    # Restore tracked files only (the quarantine dir may not be tracked yet).
+    while IFS= read -r -d '' tracked; do
+      git checkout -q -- "$tracked"
+    done < <(git ls-files -z --modified -- "${PUBLISH_PATHS[@]}")
+    echo "✗ restored a clean tree; this run's files are in $SNAPSHOT"
+    exit 3
+  fi
+  BUILT="yes"
+  echo "✓ build passed."
+else
+  echo "ℹ Only quarantine/ledger changes — skipping build."
 fi
 
-NEW_COUNT="$(printf '%s\n' "$ARTICLE_CHANGES" | grep -c '^??\|^ M\|^M' || true)"
-echo "✓ ${NEW_COUNT} article file(s) changed."
-
-# 4) Build check — never publish articles that break the site.
-echo "▶ build check…"
-npm run --silent build >/dev/null
-echo "✓ build passed."
-
 if [[ "${NO_COMMIT:-0}" == "1" ]]; then
+  RESULT="ok"
   echo "NO_COMMIT=1 — leaving changes unstaged. Done."
   exit 0
 fi
 
-# 5) Commit (auto-push hook / Git integration deploys to Vercel).
-git add src/content/news scripts/_published.json
+# 5b) Commit (auto-push hook / Git integration deploys to Vercel).
+git add "${PUBLISH_PATHS[@]}"
 git commit -m "content(news): local digest publish $(date '+%Y-%m-%d')" >/dev/null
 echo "✓ committed."
 
 if [[ "${NO_PUSH:-0}" == "1" ]]; then
+  RESULT="ok"
   echo "NO_PUSH=1 — not pushing. Done."
   exit 0
 fi
@@ -98,6 +181,7 @@ if ! git merge-base --is-ancestor origin/main HEAD; then
       echo "✗ merge conflict outside the published ledger — needs a human:"
       echo "$CONFLICTS"
       git merge --abort
+      RESULT="merge-conflict"
       exit 1
     fi
     node -e '
@@ -129,6 +213,7 @@ fi
 # plus the merge with the CI publisher, or several publishes after a failed run.
 # Passing the remote tip we just fetched tells the guard "everything above this
 # commit is this job's own output"; the guard logs each use.
+RESULT="push-failed"
 GIT_TERMINAL_PROMPT=0 OPS_PREPUSH_JOB_BASE="$(git rev-parse origin/main)" \
   git -c credential.helper=store push origin main
 
@@ -139,4 +224,5 @@ if [ "$BEHIND" != "0" ]; then
   echo "✗ push reported success but origin/main is still ${BEHIND} commit(s) behind."
   exit 1
 fi
+RESULT="ok"; PUSHED="yes"
 echo "✓ pushed — origin/main advanced. Vercel will deploy the new articles."
