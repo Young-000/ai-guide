@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "feature/auto-20261018-ai-검색-팩-보강-1사이클-한정--llmstxt-머리",
+  "state": "done",
+  "reviewed_head": "2029453980fb272593d968aafbf7ba1fbe776376",
+  "verified_head": "2029453980fb272593d968aafbf7ba1fbe776376",
+  "merge_commit": "1a4c40a21c4e44b3f60679e1f24fb96dd85c12d9",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/28",
+  "review": "APPROVE: 'human-curated')`).\n\n[PASS] 테스트 하네스 수정\n  근거: `scripts/__tests__/publish-local.test.ts:14`는 `require.resolve('tsx/package.json')`에서 `node_modules` 위치를 찾습니다(워크트리 대응). `:52`는 `node --import tsx`로 실행해 IPC 소켓 EPERM을 피하고, `:168`은 `TMPDIR`을 넘깁니다. `/tmp` 하드코딩과 그 정리 코드도 함께 사라졌습니다.\n  검증: 이 워크트리(샌드박스)에서 `publish-local.test.ts` PASS (11.5s)\n\n[PASS] UI·Playwright 베이스라인\n  근거: diff에 `*-snapshots/*.png`가 없습니다(`grep -c png` → 0). 화면에 보이는 변경도 없고(JSON-LD `<script>`와 text 응답만 바뀜) Jest 텍스트 스냅샷 1개만 새로 생겼으므로 `docs/ux-evidence`는 필요 없습니다.\n\n[PASS] 검증 실행 결과\n  - `npx jest`: 57개 스위트, 392개 테스트 모두 통과, 스냅샷 1개 통과\n  - `npx tsc --noEmit`: 오류 0\n  - `next lint`: 경고·오류 0\n  - `npm run build`는 돌리지 않았습니다. route가 받는 인자만 늘었고 type-check가 통과했기 때문입니다.\n\n### 비차단 지적\n\n- 기사 제목에 `]`나 `)`가 들어가면 마크다운 링크가 깨질 수 있는데, 이스케이프 처리가 없습니다.\n- Organization `logo`로 1200×630 OG 이미지를 쓰고 있어, 정사각형 로고를 권장하는 Google 가이드와 맞지 않습니다.\n- `docs/LESSONS.md` 새 항목이 섹션 헤더 밖에 있고 빈 줄이 두 번 들어가 있습니다. 문서 형식만의 문제입니다.\n\nFOLLOWUP: llms.txt 기사 제목의 `]`·`)` 이스케이프 · src/lib/llms-txt.ts:20 · 제목에 괄호가 있으면 마크다운 링크가 깨짐\nFOLLOWUP: Organization logo를 정사각형 로고 자산으로 교체 · src/lib/site-json-ld.ts:27 · 1200×630 OG 이미지는 Google 로고 권장 비율과 다름\nFOLLOWUP: LESSONS 새 항목을 날짜 섹션 아래로 옮기고 중복 빈 줄 정리 · docs/LESSONS.md:5 · 문서 구조 일관성\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792277722
+}
