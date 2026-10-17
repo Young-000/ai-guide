@@ -61,7 +61,7 @@
 >
 > **오너 확인 요청**: `VENTURE_DOMAINS=teamY` 야간 사이클이 ai-guide를 **매일** 대상에 넣는지(08-23만 예외적으로 돌았는지) / `feature/auto-*` 잔여 브랜치가 skip을 유발하는지(07-26 LESSONS 사례) / `scripts/verify.sh` 존재·GREEN 여부. PM은 08-16 LESSONS 원칙("소비 0이면 대신 구현하지 말고 파이프라인을 상신")을 따라 이번 주 봇 필터를 **직접 구현하지 않고** 최우선 리필로만 올렸다.
 
-> **증상(08-16 원문)**: `docs/backlog.md` 미완 30여 개, 그중 트래픽 카운터는 5주 연속 이월. 최근 7일 커밋이 전부 `content(news)` 발행뿐 — feature/dev 커밋 0. 즉 리필은 매주 되는데 구현이 한 번도 안 붙는다.
+> **증상(08-16 원문)**: `docs/BACKLOG.md` 미완 30여 개, 그중 트래픽 카운터는 5주 연속 이월. 최근 7일 커밋이 전부 `content(news)` 발행뿐 — feature/dev 커밋 0. 즉 리필은 매주 되는데 구현이 한 번도 안 붙는다.
 
 > ✅ **해소 확인 (2026-08-16)**: 아래 08-02 push 자격증명 블로커는 이번 주 실측으로 해결 확인됨 — `git rev-list --count origin/main..main`=0, `origin/main == local`(ceec439). 08-09 `~/.git-credentials` store 수정이 유지되고 있다. 라이브 반영 정상(7일 176 콘텐츠 파일 발행). 아래 항목은 이력 보존용.
 

@@ -91,7 +91,7 @@ If there is no revenue, find the broken stage first (traffic → landing → cli
 
 - `CLAUDE.md` says AdSense console detail was empty (2026-09-26); the console now shows "주의 필요 / 가치가 별로 없는 콘텐츠" (since 2026-10-09). `CLAUDE.md` section "수익이 0원인 이유" is stale on this point.
 - AdFit: 2026-09-26 docs say house ads fill; logs from 09-27 onward say `empty`. Console `ads.txt` status for aiwire.news flips between "승인됨" and "찾을 수 없음" while the live file returns HTTP 200 with the correct line (checked 2026-10-17). Treat the console field as noisy.
-- Subscribers: `docs/backlog.md` (2026-08-16) says 4; `search_trends.subscribers` has 0 rows with `site='aiwire'` on 2026-10-17.
+- Subscribers: `docs/BACKLOG.md` (2026-08-16) says 4; `search_trends.subscribers` has 0 rows with `site='aiwire'` on 2026-10-17.
 - Median body length (785 chars) and `/trends`, `/compare` staleness come from 2026-09-26; not re-measured here.
 - Affiliate commission rates in `PENDING-OWNER-ACTIONS.md` (e.g. Canva 36%) were not verified at the source.
 - origin/main's last content publish commit is dated 2026-09-28; the local publishing checkout is dirty and not used for this document.
