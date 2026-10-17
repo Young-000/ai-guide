@@ -7,6 +7,7 @@ import {
   fetchTrendingKeywords,
   isAiRelatedKeyword,
 } from '../src/lib/trending';
+import { withRetry, isRetryableStatus } from '../src/lib/retry';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -21,6 +22,15 @@ type Worklist = {
 
 const MAX_ITEMS = 8;
 const ROOT = join(__dirname, '..');
+
+// 소스 하나당 재시도 예산. 일시적 5xx·타임아웃·연결 끊김이 그 소스를 통째로
+// 날려버리던 것이 간헐적 수집 실패의 주원인이었다.
+const FETCH_RETRIES = 2;
+const RETRY_BASE_DELAY_MS = 1_000;
+
+// RSS 수집분이 이 수에 못 미치면 스크래핑으로 보강한다. 예전에는 "전부 0"일 때만
+// 폴백해서, 피드 8개 중 1개만 살아남아도 빈약한 결과로 그냥 진행됐다.
+const MIN_ITEMS_BEFORE_SCRAPE = 5;
 
 // Browser-like headers to avoid 403 blocks
 const BROWSER_HEADERS = {
@@ -66,17 +76,46 @@ for (const lang of ['ko', 'en'] as const) {
 
 // ─── Fetch feeds (fail-open per feed) ────────────────────────────────────────
 
+/** HTTP 상태를 그대로 실어 던져, 재시도할지 여부를 호출측이 판단할 수 있게 한다. */
+class HttpStatusError extends Error {
+  constructor(readonly status: number) {
+    super(`HTTP ${status}`);
+    this.name = 'HttpStatusError';
+  }
+}
+
+/** 4xx(404·403 등)는 재시도해도 그대로다. 5xx·429·네트워크 오류만 다시 시도한다. */
+function isTransient(error: unknown): boolean {
+  if (error instanceof HttpStatusError) return isRetryableStatus(error.status);
+  return true; // 타임아웃·연결 끊김 등 fetch 자체가 던진 오류
+}
+
+async function fetchText(url: string, timeoutMs: number, label: string): Promise<string> {
+  return withRetry(
+    async () => {
+      const response = await fetch(url, {
+        headers: BROWSER_HEADERS,
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      if (!response.ok) throw new HttpStatusError(response.status);
+      return response.text();
+    },
+    {
+      retries: FETCH_RETRIES,
+      baseDelayMs: RETRY_BASE_DELAY_MS,
+      shouldRetry: isTransient,
+      onRetry: (error, attempt, delayMs) => {
+        console.warn(
+          `  [RETRY] ${label}: ${(error as Error).message} — ${delayMs}ms 후 재시도 (${attempt + 1}/${FETCH_RETRIES})`,
+        );
+      },
+    },
+  );
+}
+
 async function fetchFeed(feed: FeedConfig): Promise<FeedItem[]> {
   try {
-    const response = await fetch(feed.url, {
-      headers: BROWSER_HEADERS,
-      signal: AbortSignal.timeout(15_000),
-    });
-    if (!response.ok) {
-      console.warn(`[WARN] ${feed.name}: HTTP ${response.status} — skipped`);
-      return [];
-    }
-    const xml = await response.text();
+    const xml = await fetchText(feed.url, 15_000, feed.name);
     const items = parseFeed(xml, feed.name);
     console.log(`  ${feed.name}: ${items.length} items`);
     return items;
@@ -130,15 +169,7 @@ function extractLinksFromHtml(html: string, sourceName: string, baseUrl: string)
 
 async function scrapeSite(site: { name: string; url: string }): Promise<FeedItem[]> {
   try {
-    const response = await fetch(site.url, {
-      headers: BROWSER_HEADERS,
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (!response.ok) {
-      console.warn(`[WARN] ${site.name} (scrape): HTTP ${response.status} — skipped`);
-      return [];
-    }
-    const html = await response.text();
+    const html = await fetchText(site.url, 20_000, `${site.name} (scrape)`);
     const items = extractLinksFromHtml(html, site.name, site.url);
     console.log(`  ${site.name} (scrape): ${items.length} links`);
     return items;
@@ -171,11 +202,25 @@ async function main(): Promise<void> {
   const results = await Promise.all(feeds.map(fetchFeed));
   let allItems = results.flat();
 
-  // Fallback: scrape HTML pages if all RSS feeds returned nothing
-  if (allItems.length === 0) {
-    console.log('\nAll RSS feeds failed — falling back to HTML scraping…');
+  // 소스별 성패를 집계해 남긴다. 예전에는 개별 [WARN]만 흩어져 있어서
+  // "8개 중 7개가 죽은 채 근근이 도는 상태"가 로그상 정상처럼 보였다.
+  const deadFeeds = results.filter((items) => items.length === 0).length;
+  if (deadFeeds > 0) {
+    console.warn(`[WARN] RSS 소스 ${feeds.length}개 중 ${deadFeeds}개 실패 (수집 ${allItems.length}건)`);
+  }
+
+  // 폴백: RSS 수집분이 임계치에 못 미치면 HTML 스크래핑으로 보강한다.
+  if (allItems.length < MIN_ITEMS_BEFORE_SCRAPE) {
+    console.log(
+      `\nRSS 수집 ${allItems.length}건 < 임계치 ${MIN_ITEMS_BEFORE_SCRAPE} — HTML 스크래핑으로 보강…`,
+    );
     const scrapeResults = await Promise.all(SCRAPE_SITES.map(scrapeSite));
-    allItems = scrapeResults.flat();
+    allItems = allItems.concat(scrapeResults.flat());
+  }
+
+  // 모든 경로가 죽었으면 조용히 0건으로 끝내지 않는다 — 워크플로가 실패로 알아채야 한다.
+  if (allItems.length === 0) {
+    throw new Error('RSS·스크래핑 전 경로에서 0건 수집 — 수집 계층 전면 장애');
   }
 
   const trendingSeeds = await fetchTrendingSeeds();

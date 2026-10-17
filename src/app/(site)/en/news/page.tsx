@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getAllNews } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import NewsListView from '@/components/news/NewsListView';
+import NewsIndexJsonLd from '@/components/news/NewsIndexJsonLd';
 import SectionChips from '@/components/news/SectionChips';
 import { BASE_URL } from '@/lib/site';
 
@@ -25,17 +26,20 @@ export default function EnNewsPage(): JSX.Element {
   const items = getAllNews('en');
   const sections = getSectionsWithCounts('en');
   return (
-    <NewsListView
-      lang="en"
-      items={items}
-      topSlot={
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Sections
-          </p>
-          <SectionChips lang="en" sections={sections} />
-        </div>
-      }
-    />
+    <>
+      <NewsIndexJsonLd lang="en" items={items} />
+      <NewsListView
+        lang="en"
+        items={items}
+        topSlot={
+          <div className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Sections
+            </p>
+            <SectionChips lang="en" sections={sections} />
+          </div>
+        }
+      />
+    </>
   );
 }
