@@ -6,6 +6,8 @@
  *   1. ANTHROPIC_API_KEY set   → Anthropic SDK (used by CI when a key exists).
  *   2. no key, `claude` CLI    → local Claude Code auth, no API key required.
  * This lets the pipeline run locally with zero API key.
+ *
+ * Exit codes: 0 = at least one pair written, 1 = nothing new, 2 = every attempt failed.
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -13,6 +15,7 @@ import { spawn } from 'node:child_process';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
 import { isSlugTaken } from '../src/lib/news-slug-guard';
+import { classifyGenerationRun, validateGeneratedPair } from '../src/lib/news-validate';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,6 +30,7 @@ const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-5-5';
 const CLI_TIMEOUT_MS = 180_000;
+const CRASH_EXIT_CODE = 4; // distinct from 1 (nothing new) and 2 (every attempt failed)
 
 // ─── Load files ───────────────────────────────────────────────────────────────
 
@@ -163,6 +167,8 @@ function selectGenerator(): Generate {
 async function main(): Promise<void> {
   const generate = selectGenerator();
   let published = 0;
+  let failed = 0;
+  let skipped = 0;
 
   console.log(`Generating articles for ${items.length} item(s)…`);
 
@@ -174,15 +180,29 @@ async function main(): Promise<void> {
       pair = await generatePair(item, generate);
     } catch (err) {
       console.warn(`  [WARN] generation error: ${(err as Error).message}`);
+      failed++;
       continue;
     }
 
-    if (!pair) continue;
+    if (!pair) {
+      failed++;
+      continue;
+    }
+
+    // Validate before anything touches disk. An invalid pair is dropped and its URL stays out
+    // of the ledger, so the story is retried later instead of being marked done and lost.
+    const verdict = validateGeneratedPair(pair);
+    if (!verdict.ok) {
+      console.warn(`  [WARN] invalid article '${pair.slug}' — not written: ${verdict.reason}`);
+      failed++;
+      continue;
+    }
 
     if (isSlugTaken(pair.slug)) {
       console.warn(
         `  [WARN] slug collision '${pair.slug}' already used by an existing article — skipping (not overwriting)`,
       );
+      skipped++;
       continue;
     }
 
@@ -194,20 +214,23 @@ async function main(): Promise<void> {
     writeFileSync(join(koDir, `${TODAY}-${pair.slug}.md`), pair.ko + '\n');
     writeFileSync(join(enDir, `${TODAY}-${pair.slug}.md`), pair.en + '\n');
 
+    // Record the URL right after its files are written. A crash later in the run must not leave
+    // written articles outside the ledger (they would be regenerated under another slug).
     publishedState.urls.push(item.url);
+    writeFileSync(publishedPath, JSON.stringify(publishedState, null, 2) + '\n');
     console.log(`  ✓ ${TODAY}-${pair.slug} (ko + en)`);
     published++;
   }
 
-  if (published > 0) {
-    writeFileSync(publishedPath, JSON.stringify(publishedState, null, 2) + '\n');
-  }
-
-  console.log(`\n${published} article pair(s) written.`);
-  if (published === 0) process.exit(1); // signal to CI: nothing to commit
+  // Exit codes: 0 = pairs written, 1 = nothing new (duplicates only), 2 = every attempt failed,
+  // 4 = unexpected crash. CI treats any non-zero as "nothing to commit"; publish-local.sh tells
+  // them apart (a crash must never look like a quiet news day).
+  const verdict = classifyGenerationRun({ written: published, failed, skipped });
+  console.log(`\n${published} article pair(s) written, ${failed} failed, ${skipped} skipped (${verdict.label}).`);
+  if (verdict.exitCode !== 0) process.exit(verdict.exitCode);
 }
 
 main().catch((err: unknown) => {
   console.error('[ERROR]', err);
-  process.exit(1);
+  process.exit(CRASH_EXIT_CODE);
 });

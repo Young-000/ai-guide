@@ -58,4 +58,10 @@ describe('news loader', () => {
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
   });
+  it('getNewsBySlug는 깨진 파일을 만나도 throw 하지 않고 건너뛴다 (한 파일이 모든 기사 페이지를 무너뜨린 사고)', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    expect(() => getNewsBySlug('ko', 'whatever', BAD_LANG_FIXTURES)).not.toThrow();
+    expect(getNewsBySlug('ko', 'whatever', BAD_LANG_FIXTURES)).toBeNull();
+    warn.mockRestore();
+  });
 });
