@@ -3,7 +3,7 @@
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
 
-- 2026-10-18 `publish-local.test.ts` 9건은 샌드박스에서 `/tmp` 하드코딩(`mkdtemp EPERM`) 때문에 RED다 — 변경을 stash 한 기준선에서도 동일(코드 회귀 아님). 야간 verify 가 이것 하나로 RED 가 되니 무관한 태스크 중 고치려 들지 말고 기준선 대조로 구분하고, 별도 태스크로 `os.tmpdir()` 전환을 올려라.
+- 2026-10-18 `publish-local.test.ts` 샌드박스 RED 해결(8266bb8): 원인은 셋 — `/tmp` 하드코딩, tsx CLI의 IPC 유닉스 소켓(`listen EPERM`), 테스트 env에 `TMPDIR` 누락. 하위 프로세스에서 TS를 돌릴 땐 tsx CLI 대신 `node --import tsx`, 스크립트 env를 새로 만들면 `TMPDIR`을 넘겨라. 워크트리엔 `node_modules`가 없으니 `REPO_ROOT/node_modules` 대신 `require.resolve`로 찾는다.
 
 ## 2026-10-17 발행 복구
 
