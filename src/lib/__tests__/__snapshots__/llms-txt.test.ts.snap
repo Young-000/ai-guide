@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`buildLlmsTxt — snapshot keeps the document layout stable 1`] = `
+"# AIWire
+
+> 매일 AI·LLM 뉴스를 한국어·영어로 정리하는 미디어 | Daily AI·LLM news in Korean and English
+
+## Site Facts
+
+- Coverage: AI and LLM industry news — product releases, policy, research, funding — plus AI tool guides and comparisons.
+- Update cadence: new digests are published several times a day (automated collection, then publication).
+- Languages: Korean (ko), English (en)
+- Operator: 팀와이(TeamY) (representative: 장영재), Korea
+- Contact: wkddudwoek@gmail.com
+- Sourcing: every article is a summary that cites and links its original source(s); drafts are AI-assisted, and AIWire is not the primary source.
+
+AIWire is a bilingual media covering daily AI and LLM news.
+
+## Key Sections
+
+- [뉴스 (Korean News)](https://example.com/news) — Daily AI·LLM news in Korean
+- [English News](https://example.com/en/news) — Daily AI·LLM news in English
+- [About](https://example.com/about) — About AIWire
+- [RSS Feed](https://example.com/feed.xml) — Subscribe to content updates
+- [Full article list](https://example.com/llms-full.txt) — Recent articles with summaries (ko + en)
+
+## Recent Articles
+
+Latest Korean articles (canonical URLs). Full bilingual list: https://example.com/llms-full.txt
+
+- [Sample](https://example.com/news/sample) — 2026-10-17 — Sample summary.
+
+## Topics
+
+- [AI](https://example.com/news/topic/AI)
+
+## Notes
+
+- All articles are summaries linking to the original source(s).
+- Korean articles: /news/{slug} · English counterparts: /en/news/{slug}.
+"
+`;
