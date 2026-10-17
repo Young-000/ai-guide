@@ -5,6 +5,14 @@
   "installCommand": "npm install",
   "outputDirectory": ".next",
   "regions": ["icn1"],
+  "git": {
+    "deploymentEnabled": {
+      "feature/auto-*": false,
+      "docs/**": false,
+      "claude/**": false,
+      "codex/**": false
+    }
+  },
   "headers": [
     {
       "source": "/((?!embed/).*)",
