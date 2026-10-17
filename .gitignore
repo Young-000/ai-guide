@@ -38,3 +38,6 @@ next-env.d.ts
 # news pipeline runtime output (ephemeral — never commit)
 scripts/worklist.json
 .env*
+
+# local git worktrees (nightly cycle / task branches) — never commit as gitlinks
+.worktrees/
