@@ -12,6 +12,7 @@
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
+import { DEFAULT_NEWS_MODEL, buildClaudeCliArgs } from './claude-cli-args';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
 import { isSlugTaken } from '../src/lib/news-slug-guard';
@@ -28,7 +29,7 @@ type Generate = (prompt: string) => Promise<string>;
 const MAX_ARTICLES = 3;
 const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-const NEWS_MODEL = process.env.NEWS_MODEL ?? 'claude-opus-5-5';
+const NEWS_MODEL = process.env.NEWS_MODEL || DEFAULT_NEWS_MODEL;
 const CLI_TIMEOUT_MS = 180_000;
 const CRASH_EXIT_CODE = 4; // distinct from 1 (nothing new) and 2 (every attempt failed)
 
@@ -78,7 +79,7 @@ async function runAnthropicApi(prompt: string, client: Anthropic): Promise<strin
 // stdout. Uses the machine's Claude Code auth — no ANTHROPIC_API_KEY needed.
 function runClaudeCli(prompt: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const child = spawn('claude', ['-p', '--model', NEWS_MODEL], {
+    const child = spawn('claude', buildClaudeCliArgs(), {
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     let out = '';
