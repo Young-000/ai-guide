@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "서버사이드 방문 카운터를 Supabase `search_trends` 스키마(전용 테이블, public 금지)에 적재 — 뉴스 상세/섹션/토픽 페이지 조회 시 경로별 일자 카운트 upsert (근거: 이번 주 PM 사이클이 북극성 트래픽 지표를 GA4 MCP 부재로 실측 불가 → 측정 블로커. 다음 사이클이 결정론적으로 트래픽 추이를 읽게 하는 것이 최우선. verify: 로컬에서 페이지 GET → 테이블 row 증가 확인) (무커밋 종료 1회)",
+  "state": "done",
+  "reviewed_head": "a11161fdb13cc1a94df0979fad6d669b10e0320e",
+  "verified_head": "a11161fdb13cc1a94df0979fad6d669b10e0320e",
+  "merge_commit": "e76191dc6b7c7e6a2fd1953b26bf68832a72801f",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/30",
+  "review": "APPROVE: 어 사람 결정(D1 게이트)도 필요 없습니다.\n\n**[PASS] PRD 방향**\n- 의사결정 숫자는 계속 봇을 거른 `page_views_human`입니다. 이번 diff는 그 정의를 바꾸지 않습니다.\n\n## 이번 diff 밖이지만 확인한 문제 (머지는 막지 않음)\n\n**같은 방문을 두 번 셉니다.** 미들웨어가 `/news/*` 요청을 받을 때 한 번, 브라우저의 `PageViewTracker`가 `/api/pageview`로 보낼 때 또 한 번 `page_views`에 더합니다(`src/app/(site)/news/[slug]/page.tsx:72` 등 세 곳). 그래서 사람 방문은 두 번, 자바스크립트를 실행하지 않는 봇은 한 번 집계됩니다.\n\n여기에 미들웨어에는 봇 필터가 없고, 화면 전환 때 생기는 내부 요청까지 셉니다. 하루 합계가 3,462에서 64,638까지 크게 흔들리는 것도 이 때문으로 보입니다. 봇이 섞이는 문제는 `docs/LESSONS.md:26`에 이미 적혀 있습니다.\n\nFOLLOWUP: 같은 방문 이중 집계 · src/middleware.ts:20 + src/app/(site)/news/[slug]/page.tsx:72 · 서버와 브라우저가 둘 다 page_views에 더해 '총 트래픽'이 실제보다 부풀려짐\nFOLLOWUP: 화면 전환 내부 요청까지 방문으로 셈 · src/middleware.ts:20 · 봇 필터도 GET 확인도 없어 총 트래픽이 하루 3천~6만으로 흔들림\nFOLLOWUP: 백로그 항목 link:- 비어 있음 · docs/BACKLOG.md:13,26 · 구현 커밋 79b6eae를 연결해야 리뷰어가 원본 코드를 추적할 수 있음\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792312133
+}
