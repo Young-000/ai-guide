@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "feature/auto-20261019-뉴스-상세-페이지에-관련-기사-내부-링크-블록-추가-같",
+  "state": "done",
+  "reviewed_head": "62c7e503be132c30b445c00ff74ba06d4f5c2f96",
+  "verified_head": "62c7e503be132c30b445c00ff74ba06d4f5c2f96",
+  "merge_commit": "7d3d7f70e568991bba198e32886fc3575172f8c1",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/31",
+  "review": "APPROVE: timeline과 함께 씁니다(`page.tsx:60`).\n\n**[PASS] UI·Playwright 베이스라인**\n- diff에 `*-snapshots/*.png`나 이미지 파일이 없습니다.\n- 화면을 그리는 `NewsArticleView.tsx`(329-343행)는 바뀌지 않았습니다. 기존 '관련 기사' 그리드에 들어가는 데이터만 달라집니다.\n- 제목은 원래 '관련 기사'라는 일반적인 이름이라, 섹션 기사로 채워져도 제목과 내용이 어긋나지 않습니다.\n- 그래서 `docs/ux-evidence`가 없어도 막을 사유는 아니라고 판단했습니다(이 저장소에는 해당 폴더 자체가 없습니다).\n\n**[PASS] 보안과 D1(멈춰야 하는 결정)**\n- 외부 입력, 인증, Supabase, 비용, 비가역 작업과 관련된 변경이 없습니다. 빌드 때 쓰는 순수 함수만 추가됐습니다.\n\n**[주의] 날짜가 같을 때 정렬 순서가 일정하지 않음**\n- 근거: `related-articles.ts:35`의 `(a.item.date < b.item.date ? 1 : -1)`\n- 날짜가 같으면 두 방향 모두 -1을 돌려줍니다. 하루에 기사가 여러 건 나오기 때문에 실제로 자주 생기는 경우입니다.\n- 크래시는 아니지만 같은 날 기사끼리의 순서를 보장하지 못합니다. `story-timeline.ts`에도 같은 패턴이 이미 있습니다.\n\n**[주의] 영어 기사 상세에는 관련 기사 블록이 없음**\n- `src/app/(site)/en/news/[slug]/page.tsx:58`이 `relatedItems`를 넘기지 않습니다.\n- 이번 변경 전부터 그랬지만, 이번에 해결한 고립 문제가 영어판에는 그대로 남아 있습니다.\n\nFOLLOWUP: 날짜 동률 정렬 비교자 0 반환 · src/lib/related-articles.ts:35 · 같은 날짜에 -1만 돌려줘 비교가 비대칭이라 같은 날 기사 순서가 보장되지 않음 (story-timeline.ts 동일 패턴)\nFOLLOWUP: 영어 기사 상세에도 관련 기사 연결 · src/app/(site)/en/news/[slug]/page.tsx:58 · relatedItems 미전달이라 고립 기사 문제가 en 쪽에 그대로 남음\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792365336
+}
