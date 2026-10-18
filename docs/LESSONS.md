@@ -3,6 +3,7 @@
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
 
+- 2026-10-19 관련 기사를 "첫 태그 1개"로 고르면 thin 태그 기사(실측 37/1,182건)가 관련 링크 0건으로 고립된다 — `selectRelatedArticles`(전 태그 겹침 → 같은 섹션 폴백)로 0건. 링크 후보 선택은 단일 키가 아니라 폴백 사슬로 짠다.
 - 2026-10-18 `publish-local.test.ts` 샌드박스 RED 해결(8266bb8): 원인은 셋 — `/tmp` 하드코딩, tsx CLI의 IPC 유닉스 소켓(`listen EPERM`), 테스트 env에 `TMPDIR` 누락. 하위 프로세스에서 TS를 돌릴 땐 tsx CLI 대신 `node --import tsx`, 스크립트 env를 새로 만들면 `TMPDIR`을 넘겨라. 워크트리엔 `node_modules`가 없으니 `REPO_ROOT/node_modules` 대신 `require.resolve`로 찾는다.
 
 ## 2026-10-17 발행 복구
