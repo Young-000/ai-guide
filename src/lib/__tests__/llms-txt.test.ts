@@ -36,6 +36,86 @@ describe('buildLlmsTxt', () => {
   });
 });
 
+describe('buildLlmsTxt — site facts block', () => {
+  it('puts the facts block before the section links', () => {
+    const result = buildLlmsTxt([], BASE);
+    const factsAt = result.indexOf('## Site Facts');
+    expect(factsAt).toBeGreaterThan(-1);
+    expect(factsAt).toBeLessThan(result.indexOf('## Key Sections'));
+  });
+
+  it('states coverage, update cadence, languages and operator', () => {
+    const result = buildLlmsTxt([], BASE);
+    expect(result).toContain('- Coverage:');
+    expect(result).toContain('- Update cadence:');
+    expect(result).toContain('- Languages: Korean (ko), English (en)');
+    expect(result).toContain('- Operator: 팀와이(TeamY)');
+    expect(result).toContain('- Contact:');
+  });
+
+  it('discloses AI-assisted drafting honestly', () => {
+    expect(buildLlmsTxt([], BASE)).toContain('AI-assisted');
+    expect(buildLlmsTxt([], BASE)).not.toContain('human-curated');
+  });
+});
+
+describe('buildLlmsTxt — snapshot', () => {
+  it('keeps the document layout stable', () => {
+    const articles: NewsMeta[] = [
+      {
+        slug: 'sample',
+        title: 'Sample',
+        lang: 'ko',
+        date: '2026-10-17',
+        summary: 'Sample summary.',
+        tags: ['AI'],
+        sources: [],
+      },
+    ];
+    expect(buildLlmsTxt(['AI'], BASE, articles)).toMatchSnapshot();
+  });
+});
+
+describe('buildLlmsTxt — article list', () => {
+  const article = (slug: string, lang: 'ko' | 'en', date: string): NewsMeta => ({
+    slug,
+    title: `Title ${slug}`,
+    lang,
+    date,
+    summary: `Summary ${slug}.`,
+    tags: [],
+    sources: [],
+  });
+
+  it('lists Korean canonical URLs with date and summary', () => {
+    const result = buildLlmsTxt([], BASE, [article('a', 'ko', '2026-10-17')]);
+    expect(result).toContain('## Recent Articles');
+    expect(result).toContain(`- [Title a](${BASE}/news/a) — 2026-10-17 — Summary a.`);
+  });
+
+  it('skips English entries and caps the list at the limit', () => {
+    const articles = [
+      article('en-one', 'en', '2026-10-17'),
+      article('k1', 'ko', '2026-10-16'),
+      article('k2', 'ko', '2026-10-15'),
+    ];
+    const result = buildLlmsTxt([], BASE, articles, 1);
+    expect(result).not.toContain('/en/news/en-one');
+    expect(result).toContain(`${BASE}/news/k1`);
+    expect(result).not.toContain(`${BASE}/news/k2`);
+  });
+
+  it('points to llms-full.txt and omits the section when empty', () => {
+    expect(buildLlmsTxt([], BASE)).not.toContain('## Recent Articles');
+    expect(buildLlmsTxt([], BASE)).toContain(`${BASE}/llms-full.txt`);
+  });
+
+  it('flattens newlines in summaries so each entry stays one line', () => {
+    const a = { ...article('x', 'ko', '2026-10-17'), summary: 'line1\nline2' };
+    expect(buildLlmsTxt([], BASE, [a])).toContain('line1 line2');
+  });
+});
+
 describe('buildLlmsFullTxt', () => {
   const articles: NewsMeta[] = [
     {

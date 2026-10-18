@@ -10,7 +10,8 @@ import os from 'node:os';
 import path from 'node:path';
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
-const TSX_TMP_PREFIX = '/tmp/ag-';
+// A git worktree has no node_modules of its own; Node resolves packages from an ancestor checkout.
+const NODE_MODULES = path.resolve(path.dirname(require.resolve('tsx/package.json')), '..');
 
 const GOOD = (slug: string, lang: 'ko' | 'en', extra = ''): string => `---
 title: "Title ${slug} ${lang}"
@@ -47,7 +48,8 @@ for a in "$@"; do case "$a" in run|--silent) ;; *) name="$a"; break;; esac; done
 case "$name" in
   fetch-news|rotate-log) exit 0 ;;
   generate-news) bash "$STUB_DIR/generate.sh"; exit $? ;;
-  validate-news) TMPDIR="$TSX_TMPDIR" exec node_modules/.bin/tsx scripts/validate-news.ts ;;
+  # node --import tsx, not the tsx CLI: the CLI opens an IPC unix socket, which sandboxes forbid.
+  validate-news) exec node --import tsx scripts/validate-news.ts ;;
   build) exec env NODE_PATH="$PWD/node_modules" node "$STUB_DIR/build.js" ;;
   *) echo "unexpected npm call: $*" >&2; exit 99 ;;
 esac
@@ -87,7 +89,6 @@ type Fixture = { ko?: Record<string, string>; en?: Record<string, string> };
 
 type Harness = {
   tmp: string;
-  tsxTmp: string;
   repo: string;
   origin: string;
   statusFile: string;
@@ -141,7 +142,7 @@ function setup(): Harness {
     'src/content/news/en/2026-10-01-seed.md': GOOD('seed', 'en'),
     '.gitignore': 'node_modules\n',
   });
-  fs.symlinkSync(path.join(REPO_ROOT, 'node_modules'), path.join(repo, 'node_modules'));
+  fs.symlinkSync(NODE_MODULES, path.join(repo, 'node_modules'));
   git('add', '-A');
   git('commit', '-m', 'seed');
   git('push', '-u', 'origin', 'main');
@@ -150,10 +151,6 @@ function setup(): Harness {
   writeFiles(stubDir, { 'npm': STUB_NPM, 'generate.sh': STUB_GENERATE, 'build.js': STUB_BUILD });
   fs.chmodSync(path.join(stubDir, 'npm'), 0o755);
   const statusFile = path.join(tmp, 'publish.status');
-  // Deliberately /tmp, not os.tmpdir(): tsx puts an IPC socket under TMPDIR and a unix socket path
-  // must stay below ~104 characters (a long scratch TMPDIR fails with `listen EINVAL`).
-  // afterEach removes it again.
-  const tsxTmp = fs.mkdtempSync(TSX_TMP_PREFIX);
 
   const run: Harness['run'] = (fixture, genExit = 0, extraEnv = {}) => {
     const fixtureDir = path.join(tmp, 'fixture');
@@ -168,11 +165,11 @@ function setup(): Harness {
       env: Object.assign({} as NodeJS.ProcessEnv, {
         PATH: `${stubDir}:${process.env.PATH}`,
         HOME: tmp,
+        TMPDIR: os.tmpdir(),
         CLAUDECODE: '1',
         STUB_DIR: stubDir,
         GEN_FIXTURE: fixtureDir,
         STUB_GEN_EXIT: String(genExit),
-        TSX_TMPDIR: tsxTmp,
         AI_GUIDE_STATUS_FILE: statusFile,
         AI_GUIDE_FAILED_DIR: path.join(tmp, 'failed'),
         AI_GUIDE_LOG_FILE: path.join(tmp, 'publish.log'),
@@ -180,7 +177,7 @@ function setup(): Harness {
       }, extraEnv),
     });
   };
-  return { tmp, tsxTmp, repo, origin, statusFile, run, git };
+  return { tmp, repo, origin, statusFile, run, git };
 }
 
 function expectExit(result: ReturnType<typeof spawnSync>, code: number): void {
@@ -196,7 +193,6 @@ describe('publish-local.sh', () => {
   });
   afterEach(() => {
     removeTempDir(h.tmp, path.join(os.tmpdir(), 'ai-guide-publish-'));
-    removeTempDir(h.tsxTmp, TSX_TMP_PREFIX);
   });
 
   const originFiles = (): string[] => sh(h.origin, 'git', ['ls-tree', '-r', '--name-only', 'main']).split('\n');

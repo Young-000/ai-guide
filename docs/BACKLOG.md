@@ -6,7 +6,7 @@
 
 ## Wyverse Labs 벤치마크 이식 (2026-09-27 대표 지시 — 근거 `ops-vault/Research/monetization-2026-09/wyverse/REPORT.md`)
 
-- [todo] AI 검색 팩 보강 (1사이클 한정) — `llms.txt` 머리에 "사이트 사실" 블록(무엇을 다루는지·갱신 주기·운영 주체), 기사 정규 URL의 마크다운 요약 목록, 홈 `WebSite`·`Organization` JSON-LD 점검. verify: `llms.txt` 200 + 스냅샷 테스트. (근거: Wyverse 제품 사이트 4곳 전부 적용. 효과 데이터가 없어 1사이클로 제한) — owner:dev — since:2026-09-27 — link:-
+- [>] (구현됨·머지 대기) AI 검색 팩 보강 (1사이클 한정) — `llms.txt` 머리에 "사이트 사실" 블록(무엇을 다루는지·갱신 주기·운영 주체), 기사 정규 URL의 마크다운 요약 목록, 홈 `WebSite`·`Organization` JSON-LD 점검. verify: `llms.txt` 200 + 스냅샷 테스트. (근거: Wyverse 제품 사이트 4곳 전부 적용. 효과 데이터가 없어 1사이클로 제한) — owner:dev — since:2026-09-27 — link:-
 
 ## 2026-07-05 주간 PM 리필 (우선순위순)
 

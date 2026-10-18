@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getAllNews, getAllTags } from '@/lib/news';
 import { getSectionsWithCounts } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
-import { safeJson } from '@/lib/json-ld';
 import HomeHero from '@/components/home/HomeHero';
 import HomeGuideStrip from '@/components/home/HomeGuideStrip';
 import LeadStory from '@/components/home/LeadStory';
@@ -29,15 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-const JSON_LD_DATA = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'AIWire',
-  url: BASE_URL,
-  description: 'AI·LLM 최신 소식과 상황별 AI 활용 가이드를 제공하는 미디어',
-  inLanguage: 'ko',
-};
-
 export default function Home(): JSX.Element {
   const allNews = getAllNews('ko');
   const lead = allNews[0];
@@ -46,12 +36,6 @@ export default function Home(): JSX.Element {
 
   return (
     <>
-      {/* JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJson(JSON_LD_DATA) }}
-      />
-
       {/* Page heading — primary h1 for SEO/a11y */}
       <h1 className="sr-only">AIWire — AI·LLM 뉴스와 활용 가이드</h1>
 
