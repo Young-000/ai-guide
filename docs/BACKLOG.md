@@ -1,5 +1,12 @@
 # BACKLOG — ai-guide 야간 자율 사이클
 
+## 2026-10-19 Google Ads / team-infra handoff
+
+- [todo] Prepare focused mobile newsletter landing: /news signup currently ~263028px below top; no paid traffic before fulfillment and conversion proof (acceptance: 375x812 signup CTA evidence and truthful prelaunch-delivery wording, independent visual review; no external email sent) — owner:product:design-01 — since:2026-10-19 — link:teamY/docs/codex-handoff/2026-10-19/out/report.md
+- [todo] Prove newsletter_subscribe success/failure in isolated tests and prepare campaign-specific Ads action; do not collect real email (acceptance: safe API success event test + bot guard/attribution and Ads diagnostic evidence; reserve budget remains zero) — owner:marketing:growth-01 — since:2026-10-19 — link:teamY/docs/codex-handoff/2026-10-19/out/report.md
+- [todo] Trace confirmed revenue/person from primary source; 2308 seven-day people/0 outclicks alone does not value a signup (acceptance: source/window/formula record with unknown monetary value explicitly retained) — owner:product:data-01 — since:2026-10-19 — link:teamY/docs/codex-handoff/2026-10-19/out/report.md
+
+
 - [done] @testing-library/user-event 설치 및 SubscribeBox 테스트 복구 (근거: 패키지 미설치로 type-check·test 단계 RED — 야간 사이클 GREEN 달성 블로커) — owner:dev — since:2026-07-05 — link:-
 - [done] 뉴스 섹션·토픽 페이지에 BreadcrumbList JSON-LD 추가 (근거: /news/section/[section] · /news/topic/[tag] 페이지에 구조화 데이터 미적용, GSC 빵부스러기 마크업 누락) — owner:dev — since:2026-07-10 — link:-
 - [done] 날짜별 아카이브 라우트 /news/archive/[year]/[month] 구현 (근거: 토픽 페이지는 있으나 월별 아카이브 URL 부재로 SEO long-tail 노출 기회 미확보) — 2026-07-11 머지 — owner:dev — since:2026-07-12 — link:-
