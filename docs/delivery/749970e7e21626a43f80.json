@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "SubscribeBox 노출 위치 감사 — 홈뿐 아니라 트래픽 유입원인 뉴스 상세 페이지 하단에도 배치 (근거: 구독자 0명, 전환 퍼널 진입점이 저트래픽 홈에만 있을 가능성. verify: 뉴스 상세 페이지에 SubscribeBox 렌더 확인)",
+  "state": "done",
+  "reviewed_head": "42ae10414001024abc0f2704ddeb5f325e098237",
+  "verified_head": "42ae10414001024abc0f2704ddeb5f325e098237",
+  "merge_commit": "7ee15955267dd71207620680457819f3dbf3b4c3",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/33",
+  "review": "APPROVE: *\n  - 바뀐 `.tsx`는 `__tests__/` 아래 테스트 파일 하나뿐입니다. 화면 컴포넌트, CSS, 스냅샷 이미지는 바뀌지 않았습니다(grep 결과 0건). 사이트 화면이 그대로라서 스크린샷 증거를 요구하지 않았습니다.\n- **[통과] 금지 변경 없음**\n  - `docs/NORTHSTAR.md`는 바뀌지 않았습니다. Supabase, 자격증명, D1 사안(돈·외부 노출·방향 전환 등)도 없습니다. 이 변경은 구독 진입점을 지키는 테스트라 프로젝트 방향과도 맞습니다.\n\n### 머지를 막지 않는 지적\n- 영어 기사 쪽은 테스트가 없습니다. 기존 코드라 이번 diff 책임은 아니지만, 영어 기사에도 한국어 구독 폼이 그대로 나옵니다.\n- LESSONS의 \"구독 0명의 원인은 노출 위치가 아니다\"는 검증된 사실이 아닙니다. 폼이 있다는 것만 확인됐고, 페이지 맨 끝에 있다는 점이 영향을 주는지는 아직 모릅니다.\n\nFOLLOWUP: 영어 기사에 한국어 구독 폼이 그대로 나옴 · NewsArticleView.tsx:350-353, SubscribeBox.tsx:38-87 · 영어 독자 전환 0, 문구 다국어화 필요\nFOLLOWUP: 구독 폼 렌더 테스트를 lang=\"en\"에도 추가 · NewsArticleView.test.tsx:26 · ko/en 공용이라 적었는데 ko만 고정됨\nFOLLOWUP: \"구독 0명 원인은 노출 위치가 아니다\"는 단정 근거 없음 · docs/LESSONS.md:6 · 폼이 페이지 맨 끝(관련 기사 아래)이라 위치 영향은 미검증\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792438777
+}
