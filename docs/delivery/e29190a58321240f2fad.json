@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독자 8주+ 연속 0건, 콘텐츠 엔진(406파일)은 정상 → 병목은 발행이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)",
+  "state": "done",
+  "reviewed_head": "c8e4907d5dea813229588b21b9f852babb8a07b6",
+  "verified_head": "c8e4907d5dea813229588b21b9f852babb8a07b6",
+  "merge_commit": "1f7ff1bf47c3ca0c805c67661384f7a5280a1ca5",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/38",
+  "review": "APPROVE: 른 하나는 구독 폼이 본문보다 뒤에 놓이는지 확인합니다.\n- 이 테스트는 `7ee1595 (#33)` 커밋으로 이미 `main`에 들어가 있습니다.\n- 직접 돌린 결과:\n  ```\n  PASS src/components/news/__tests__/NewsArticleView.test.tsx\n    ✓ 기사 하단에 뉴스레터 구독 폼을 렌더한다\n    ✓ 구독 폼은 기사 본문보다 뒤에 놓인다\n  Tests: 2 passed, 2 total\n  ```\n\n**도메인 규칙 위반 없음**\n- 화면 파일(tsx·css·컴포넌트)이 diff에 없어서 UI 스크린샷 게이트는 해당하지 않습니다.\n- `docs/NORTHSTAR.md` 변경도, Playwright 기준 이미지 변경도 없습니다.\n- 돈·외부 노출·피벗·법규·되돌릴 수 없는 변경, 자격증명, Supabase 스키마 중 걸리는 것이 없습니다.\n- 표기를 `[x]`가 아닌 `[>] … 리뷰 대기`로 둬서 \"리뷰 없는 완료 표시 금지\" 규칙을 지킵니다.\n- 커밋 메시지가 `docs(backlog): …` 형식을 따릅니다.\n\n이 브랜치의 문제는 아니지만, 확인하다가 기존 문제를 하나 찾았습니다. 영어 기사 페이지(`/en/news/[slug]`)도 같은 컴포넌트를 써서, 영어 화면에 한국어 구독 박스가 나옵니다. 아래 FOLLOWUP으로 남깁니다.\n\nFOLLOWUP: 영어 기사 상세에 한국어 구독 박스 노출 · src/components/news/NewsArticleView.tsx:353 (en/news/[slug]/page.tsx:58가 lang=\"en\"으로 렌더) · SubscribeBox에 lang 분기 또는 en에서는 숨기기 필요\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792524706
+}
