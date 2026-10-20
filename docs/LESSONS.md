@@ -2,6 +2,7 @@
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
+- 2026-10-21 The shared revenue-funnel view includes aiwire and hottrend: filter the tenant and bound completed KST days before summing; historical unscoped seven-day totals cannot establish aiwire conversion.
 
 - 2026-10-20 WebSite JSON-LD 는 `layout.tsx`(site-json-ld.ts)에 이미 있었고 SearchAction 만 없었다 — 사이트에 검색 페이지가 없으니 넣으면 존재하지 않는 URL 을 구글에 알리는 셈이다. 검색 기능을 만들기 전에는 이 백로그를 다시 집지 않는다(테스트로 고정).
 - 2026-10-20 sitemap 감사를 처음 돌리자 `/map`(공개 페이지) 누락과 slug 중복 5쌍(파일 8개가 페이지 5개로 합쳐져 기사 3건이 가려짐)이 바로 나왔다 — 기대 URL 을 sitemap.ts 와 별개 출처(app 디렉터리 `page.tsx` 스캔)로 구해야 "둘 다 같이 틀리는" 순환 검증을 피한다. 새 공개 페이지를 만들면 `npm run verify:sitemap` 으로 확인한다.
