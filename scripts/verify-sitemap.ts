@@ -1,7 +1,7 @@
 /**
  * sitemap.xml 커버리지 감사: sitemap.ts 가 내놓는 URL 을 "실제 페이지"와 대조한다.
  *
- *   tsx scripts/verify-sitemap.ts      # npm run verify:sitemap
+ *   node --import tsx scripts/verify-sitemap.ts      # npm run verify:sitemap
  *
  * 기대 URL 은 sitemap.ts 와 별개로 구한다 — 정적 페이지는 app 디렉터리의 page.tsx 에서,
  * 나머지는 콘텐츠(JSON·기사 파일)에서. 누락·유령 URL·중복이 하나라도 있으면 exit 1.
