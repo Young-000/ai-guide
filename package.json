@@ -14,6 +14,7 @@
     "generate-news": "tsx scripts/generate-news.ts",
     "validate-news": "tsx scripts/validate-news.ts",
     "rotate-log": "tsx scripts/rotate-log.ts",
+    "verify:sitemap": "node --import tsx scripts/verify-sitemap.ts",
     "publish:local": "bash scripts/publish-local.sh",
     "funnel": "tsx --env-file=.env.local scripts/revenue-funnel.ts"
   },

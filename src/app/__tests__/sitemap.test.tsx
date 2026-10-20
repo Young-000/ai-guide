@@ -55,3 +55,14 @@ describe('sitemap — thin tag exclusion', () => {
     );
   });
 });
+
+describe('sitemap — coverage audit findings (2026-10-20)', () => {
+  it('includes the public /map knowledge-map page', () => {
+    expect(sitemap().map((entry) => entry.url)).toContain(`${BASE_URL}/map`);
+  });
+
+  it('never lists the same URL twice (articles sharing a slug collapse to one row)', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+});

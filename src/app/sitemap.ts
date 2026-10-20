@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/quiz`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/trends`, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${BASE_URL}/projects`, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${BASE_URL}/map`, changeFrequency: 'weekly', priority: 0.5 },
   ];
 
   const situationRoutes: MetadataRoute.Sitemap = situationsData.situations.map((s) => ({
@@ -112,7 +113,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     ...staticRoutes,
     ...situationRoutes,
     ...toolRoutes,
@@ -126,4 +127,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...archiveIndexRoute,
     ...archiveRoutes,
   ];
+
+  // 같은 slug 를 쓴 기사 파일이 여럿이면 URL 이 겹친다 — 첫 항목만 남긴다.
+  const seen = new Set<string>();
+  return entries.filter((entry) => !seen.has(entry.url) && !!seen.add(entry.url));
 }
