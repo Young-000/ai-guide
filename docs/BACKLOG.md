@@ -24,7 +24,7 @@
 - [>] sitemap 커버리지 감사 스크립트 — 뉴스(346)·섹션·토픽·정적(32) 전 페이지가 sitemap.xml에 포함되는지 카운트 대조, 누락 시 경고 (근거: SEO=비즈니스, 커버리지가 북극성. 결정론적 검증 필요. verify: 스크립트가 sitemap URL 수 vs 실제 페이지 수 리포트) — owner:dev — since:2026-07-05 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
 - [done] 날짜별 아카이브 라우트 /news/archive/[year]/[month] + 인덱스 페이지 구현 (근거: 기존 백로그 잔여 — 월별 아카이브 URL 부재로 long-tail 노출 미확보. sitemap에도 추가. verify: 라우트 200 + sitemap 포함) — 2026-07-11 머지 (/news/archive 인덱스 + [year]/[month] 라우트 + sitemap 등재) — owner:dev — since:2026-07-12 — link:-
 - [>] (구현됨·ee91f8a, 검증 GREEN 2026-10-20 — 빌드 산출물 opengraph-image 200 image/png 1200x630 + og:image 메타 확인, 리뷰 대기) 뉴스 상세 동적 OG 이미지(/opengraph-image) 생성 — 제목·섹션·날짜 렌더 (근거: 소셜/메신저 공유 시 미리보기 이미지로 CTR 개선, 현재 정적/기본 OG 추정. verify: /news/[slug]/opengraph-image 200 + 이미지 응답) — owner:dev — since:2026-07-05 — link:-
-- [todo] WebSite + SearchAction JSON-LD(sitelinks 검색창) 홈에 추가 (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화. verify: 홈 소스에 `SearchAction` 존재) — owner:dev — since:2026-07-05 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) WebSite + SearchAction JSON-LD(sitelinks 검색창) 홈에 추가 (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화. verify: 홈 소스에 `SearchAction` 존재) — owner:dev — since:2026-07-05 — link:-
 
 ## 2026-07-12 주간 PM 리필 (우선순위순)
 
@@ -34,7 +34,7 @@
 - [todo] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독자 8주+ 연속 0건, 콘텐츠 엔진(406파일)은 정상 → 병목은 발행이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트) — owner:dev — since:2026-07-12 — link:-
 - [todo] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag(기사 1건 태그 다수) + 고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트) — owner:dev — since:2026-07-12 — link:-
 - [>] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts가 산출하는 URL 수 vs 실제 콘텐츠(뉴스 406/2=203 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론적 검증 부재. verify: 스크립트 실행 시 URL 카운트 리포트 + 누락 0 시 exit 0) — owner:dev — since:2026-07-12 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
-- [todo] **WebSite + SearchAction JSON-LD를 홈에 추가** (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-07-12 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가** (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-07-12 — link:-
 - [>] (구현됨·ee91f8a, 검증 GREEN 2026-10-20 — 빌드 산출물 opengraph-image 200 image/png 1200x630 + og:image 메타 확인, 리뷰 대기) **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR, 현재 기본 OG 추정. verify: opengraph-image 라우트 200 + image/png 응답) — owner:dev — since:2026-07-12 — link:-
 - [todo] **/news/topics 인덱스에 태그별 기사 수 노출 + noindex 태그 시각 구분** (근거: thin tag 처리(`isThinTag`)가 sitemap엔 반영되나 사용자/크롤러 탐색 UI엔 미반영 — 색인 가능 태그로 크롤 유도. verify: /news/topics에 기사수 배지 렌더 + 테스트) — owner:dev — since:2026-07-12 — link:-
 - [todo] **RSS/피드 최신성 검증 스크립트** — `src/lib/rss.ts` 출력이 최근 발행 N건을 포함하는지 확인(발행 파이프라인 회귀 방지). (근거: 콘텐츠 엔진이 유일하게 도는 성장 동력 — 피드 깨지면 조용히 유입 손실. verify: 스크립트가 feed item 수 + 최신 pubDate 리포트) — owner:dev — since:2026-07-12 — link:-
@@ -51,7 +51,7 @@
 - [todo] **SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 9주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트) — owner:dev — since:2026-07-19 — link:-
 - [todo] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트) — owner:dev — since:2026-07-19 — link:-
 - [>] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0) — owner:dev — since:2026-07-19 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
-- [todo] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-07-19 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-07-19 — link:-
 - [>] (구현됨·ee91f8a, 검증 GREEN 2026-10-20 — 빌드 산출물 opengraph-image 200 image/png 1200x630 + og:image 메타 확인, 리뷰 대기) **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답) — owner:dev — since:2026-07-19 — link:-
 
 ## 2026-08-02 주간 PM 리필 (우선순위순)
@@ -68,7 +68,7 @@
 - [todo] **뉴스 상세 "관련 기사" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트) — owner:dev — since:2026-08-02 — link:-
 - [>] **sitemap 커버리지 감사 스크립트** `scripts/verify-sitemap.ts` (npm run verify:sitemap) — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 594/2=297 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 종료코드. (근거: SEO=비즈니스, 커버리지가 북극성인데 결정론 검증 부재. verify: URL 카운트 리포트 + 누락 0 시 exit 0) — owner:dev — since:2026-08-02 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
 - [todo] **auto-news CI 실패 가시화** — `auto-news.yml`에 `if: failure()` Slack/webhook 알림 스텝 추가(엔진 죽으면 즉시 채널 알림). (근거: 07-11 8일 정지의 근본 원인은 "실패가 조용했다"였고 이번 push 사고도 동일 계열 — 자동화 실패는 시끄러워야 한다. verify: 워크플로 실패 시 알림 경로 존재, 성공 시 무발송) — owner:dev — since:2026-08-02 — link:-
-- [todo] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-02 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-02 — link:-
 - [>] (구현됨·ee91f8a, 검증 GREEN 2026-10-20 — 빌드 산출물 opengraph-image 200 image/png 1200x630 + og:image 메타 확인, 리뷰 대기) **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR. verify: opengraph-image 라우트 200 + image/png 응답) — owner:dev — since:2026-08-02 — link:-
 
 ## 2026-08-16 주간 PM 리필 (우선순위순)
@@ -84,7 +84,7 @@
 - [todo] **SubscribeBox를 뉴스 상세 하단에 배치**: 홈에만 있는 구독 진입점을 실트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 4명·거의 정체, 병목은 발행량이 아니라 전환 진입점 위치. verify: `/news/[slug]` 렌더에 SubscribeBox 존재 + 컴포넌트 테스트 GREEN) — owner:dev — since:2026-08-16 — link:-
 - [>] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`**: sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그 489·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스·커버리지가 북극성인데 결정론 검증 부재. verify: 카운트 리포트 출력 + 누락 0 시 종료코드 0) — owner:dev — since:2026-08-16 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
 - [todo] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건): (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN) — owner:dev — since:2026-08-16 — link:-
-- [todo] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시): (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-16 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시): (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-16 — link:-
 
 ## 2026-08-30 주간 PM 리필 (우선순위순)
 
@@ -101,7 +101,7 @@
 - [todo] **SubscribeBox 카피를 가치 제안형으로 재작성** — 현재 문구가 "구독하면 무엇을 얻는지"를 구체적으로 말하는지 감사, ux-baseline 토스 8원칙(예측 가능한 힌트·핵심 메시지·강요 금지)으로 재작성(예: "매일 아침 AI 뉴스 3건 요약을 메일로"). (근거: 역대 구독 0 — 진입점 위치뿐 아니라 CTA 자체가 클릭 이유를 못 준다. verify: SubscribeBox에 구체 가치 문구 + 신호어 검사 통과 + 테스트) — owner:dev — since:2026-08-30 — link:-
 - [todo] **뉴스 상세 "관련 기사" 내부 링크 블록**(같은 섹션/토픽 3~5건) — (근거: 재방문 9/362·max 3으로 참여가 극히 얕음(1방문=1페이지). 내부링크가 pages/session·크롤 깊이·색인성을 동시에 올린다 — 측정으로 얕은 참여가 처음 확인됐으므로 근거가 프록시가 아닌 실측이 됨. verify: 상세 페이지에 관련 링크 렌더 + 테스트 GREEN) — owner:dev — since:2026-08-30 — link:-
 - [>] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`** — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스, 실트래픽이 롱테일 SEO에서 오는 것으로 확인된 지금 커버리지 누락은 곧 유입 손실인데 결정론 검증 부재. verify: 카운트 리포트 + 누락 0 시 종료코드 0) — owner:dev — since:2026-08-30 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
-- [todo] **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) — (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-30 — link:-
+- [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가**(미적용 시) — (근거: sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험·저비용. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-08-30 — link:-
 - [todo] **page_views 봇/사람 구분 메모 태스크** — PageViewTracker가 클라이언트 마운트 기반이라 대부분 실브라우저지만, JS 렌더 크롤러(Googlebot 등) 혼입 가능성 조사 + 필요 시 `navigator.webdriver`/UA 힌트로 명백한 봇 제외(과설계 금지, 조사 우선). (근거: SUNSET/성장 판정의 입력이 될 트래픽 수치의 신뢰도를 다음 2~3주 판정 전에 검증해야 한다. verify: 조사 결과를 docs/LESSONS에 1줄 + 봇 제외 적용 시 테스트) — owner:dev — since:2026-08-30 — link:docs/LESSONS
 
 ## 2026-09-20 주간 PM 리필 (우선순위순)

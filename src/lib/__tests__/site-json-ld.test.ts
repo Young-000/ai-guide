@@ -27,4 +27,8 @@ describe('buildSiteJsonLd', () => {
     expect(webSite?.inLanguage).toEqual(['ko', 'en']);
     expect(webSite?.description).toEqual(expect.any(String));
   });
+
+  it('does not advertise a SearchAction while the site has no search endpoint', () => {
+    expect(JSON.stringify(buildSiteJsonLd(BASE))).not.toContain('SearchAction');
+  });
 });
