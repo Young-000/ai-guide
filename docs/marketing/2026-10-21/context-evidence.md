@@ -42,3 +42,22 @@ Engineering disposition: suitable for an explicitly UNREVIEWED draft PR and manu
 
 
 Remote proposal: [Draft PR39](https://github.com/Young-000/ai-guide/pull/39), branch `codex/marketing-context-aiwire-20261021`. Actual remote state was OPEN/DRAFT with the seven intended evidence paths. Engineering handoff only; independent marketing review, production authorization and merge remain pending. eng-01 does not approve or merge this authored integration.
+
+
+## Marketing fit review and authored revision — growth-01 / Codex
+
+> 기준: METRICS.md v2026-10-21
+
+Reviewed exact original PR39 head: `395b48e12f874c9a17aadafc70c87a16b84c550c`. Verdict: **CHANGES REQUIRED** for marketing fit. The broad offer/subline promised both tool-use guidance and news while the destination is `/news`; the old headline variation mostly restated a language/feature, without a clear reader job. Engineering fact checks above remain historical checks of the previous payload, not approval of this revised payload.
+
+Program-01 explicitly authorized the bounded draft revision in the same mission: keep the existing news-consumption objective, destination and first pending editorial direction; change audience hypothesis, news-only offer/sub and the single headline comparison. Author of the revised payload: growth-01. Execution engine: Codex. No strategic pivot, paid/channel decision or deployment is made.
+
+The revised customer hypothesis is a Korean-reading person following AI changes and choosing which article to read further. It is an inferred audience, not a verified customer segment. A leads with the category/language; B asks what changed. Sub, CTA, destination, image and claim IDs stay equal across A/B. Common draft revisions from the old proposal are not observed experimental effects. This tests message framing only; it cannot decide which AI topic, offer or audience wins, and does not by itself fulfill the portfolio's deeper material-improvement loop.
+
+Actual source inspection: `src/app/(site)/news/page.tsx` composes a Korean news list and metadata; `src/components/news/NewsListView.tsx` shows article titles, summaries and links. Article `NewsArticleView.tsx` has a sources block only when sources exist and a timeline block only when timeline items exist. Therefore the draft makes no universal source-verification, background/timeline, tool outcome or time-saving claim. The viewed home screenshot is still only a desktop product reference; it is not the `/news` screen or mobile evidence.
+
+Minimum first-direction package and comparison limits: `first-direction-package.md`. Consumer copy is isolated in `copy-proposal.txt`; machine Korean checks and a manual naturalness/read-aloud pass are required. The manual pass finds natural 해요체, one reading CTA, no unanchored numeric, price, popularity, urgency or guaranteed result claim. Internal metrics/receipt terminology elsewhere is deliberate documentation, not customer copy.
+
+**The revised head is authored work awaiting factual and independent review.** growth-01 cannot self-approve it. All production review fields, scope reference and Young direction remain blank/absent. First three actual direction checks and a separate autonomy release remain required. No new or duplicate loop, media API/ad creation, refresh, model invocation, paid generation, partner self-click, analytics write or publication occurred in this review. Root owns the factual/QA handoff, actual Slack message and remote merge decision. Reviewed/applied production contexts remain0/7.
+
+Author verification of revised payload: context digest `ab7fab4b2ff7763fa377e0b17bff59138e2824149e4c79dda2ba34782efc5987`; existing actual engine `4d23e2d5fa3bce292a2dffbd263b47dca034f597` rebuilt and invoked in a fresh temporary archive with isolated HOME and macOS deny-network: exit2/PAUSED, new/changed images0, external attempts0, stderr empty. Actual readFunnel selects the pinned10/21 snapshot and judgeContextFunnel returns a descriptive events/events measurement gap, without source mismatch. Only actual absent receipt/digest admission issues remain. All3 source hashes/quotes, desktop-image hash and A/B single-headline invariant were checked; Korean copy machine check found no violations. These are author checks, not independent approval or full app verification.

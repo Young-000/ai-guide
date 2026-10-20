@@ -1,5 +1,7 @@
 # LESSONS — 자율 사이클이 시작 전 반드시 읽는 함정 목록
 
+- 2026-10-21 A homepage screenshot and a news-list destination support different promises; match draft copy to the destination action, and treat conditional article source/timeline blocks as conditional evidence.
+
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
 
 - 2026-10-21 The shared revenue-funnel view includes aiwire and hottrend: filter the tenant and bound completed KST days before summing; historical unscoped seven-day totals cannot establish aiwire conversion.
