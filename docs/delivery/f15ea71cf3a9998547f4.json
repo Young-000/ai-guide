@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "sitemap 커버리지 감사 스크립트 — 뉴스(346)·섹션·토픽·정적(32) 전 페이지가 sitemap.xml에 포함되는지 카운트 대조, 누락 시 경고 (근거: SEO=비즈니스, 커버리지가 북극성. 결정론적 검증 필요. verify: 스크립트가 sitemap URL 수 vs 실제 페이지 수 리포트)",
+  "state": "done",
+  "reviewed_head": "a3e77e196eb52b1c1c3578e9ba2a623afef83a91",
+  "verified_head": "a3e77e196eb52b1c1c3578e9ba2a623afef83a91",
+  "merge_commit": "78d13accba4b513c7f9030d19d8375c029feeb9e",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/34",
+  "review": "APPROVE: /sitemap-audit.ts:377-390`:** 동적 경로(`[slug]` 등)는 건너뛰고 `page.tsx`만 페이지로 셉니다. 실제 폴더를 확인해 보니 `page.ts`·`.mdx`, `_` 비공개 폴더, `@` 병렬 라우트, `(site)` 안쪽 라우트 그룹이 하나도 없어서 지금 구조에서는 빠지는 페이지가 없습니다.\n- **`src/lib/__tests__/sitemap-audit.test.ts:291`:** 임시 폴더를 지우기 전에 경로가 `os.tmpdir()` 아래인지 확인합니다. 9/27 삭제 사고 이후 생긴 정리 코드 규칙을 지킵니다.\n- **`package.json`:** 스크립트를 `node --import tsx`로 실행하도록 바꿔서, 샌드박스 안에서 tsx CLI가 실패하던 문제를 피했습니다. 이 방식이 유지되는지는 `verify-sitemap-script.test.ts`가 잡아 줍니다.\n\nFOLLOWUP: sitemap 중복 제거가 날짜순 첫 기사를 남기지만 실제 페이지는 파일명순 첫 기사를 띄워 lastModified가 어긋날 수 있음 · src/app/sitemap.ts:133 · 중복 slug 정리 때 같이 맞출 것\nFOLLOWUP: 기사·토픽·아카이브의 기대 URL을 sitemap.ts와 같은 getAllNews·getTagsWithCount로 구해 독립 검증은 정적 페이지 그룹뿐 · scripts/verify-sitemap.ts:161-170 · LESSONS의 '별개 출처' 주장과 어긋남\nFOLLOWUP: 중복 slug로 가려진 기사가 있어도 NOTE만 찍고 exit 0이라 새 중복이 생겨도 감사가 통과함 · scripts/verify-sitemap.ts:184-190 · 정리가 끝나면 실패 조건으로 올릴 것\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792458214
+}
