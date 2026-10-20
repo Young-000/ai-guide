@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "WebSite + SearchAction JSON-LD(sitelinks 검색창) 홈에 추가 (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화. verify: 홈 소스에 `SearchAction` 존재)",
+  "state": "done",
+  "reviewed_head": "f62e56995ccee623fe4a7697cf7749ad21394756",
+  "verified_head": "f62e56995ccee623fe4a7697cf7749ad21394756",
+  "merge_commit": "52ebaa73eb668528655cc7ccae33659fc3842422",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/36",
+  "review": "APPROVE:  판단이 맞습니다.\n  - 덧붙이면, 구글은 2024년 11월에 사이트링크 검색창을 없앴기 때문에 이 백로그는 기대 효과 자체가 없습니다.\n- **[PASS] 새 테스트가 통과합니다.**\n  - `src/lib/__tests__/site-json-ld.test.ts:31-33`의 `not.toContain('SearchAction')` 포함, `npx jest`로 4개 테스트가 모두 통과했습니다.\n  - 타입 체크(`npm run type-check`)와 eslint도 출력 없이 통과했습니다.\n- **[PASS] 도메인 규칙:** Supabase, 자격증명, 돈·외부 노출에 걸리는 변경이 없습니다. D1 게이트에 해당하지 않습니다.\n- **[PASS] 기존 기록과 겹치지 않습니다.** LESSONS 항목은 비자명한 교훈 한 줄이고, 앞의 기록과 중복되지 않습니다.\n- **[주의] 백로그 상태 `[skip]`이 허용되지 않는 값입니다.**\n  - `backlog-read.sh`의 `STATUSES`는 `todo|in-progress|review|done|dropped`만 받습니다.\n  - 그래서 바뀐 6줄(27·37·54·71·87·104행) 모두 `malformed: invalid status` 경고가 납니다.\n  - 야간 사이클이 이 항목을 다시 집지 않는다는 목적은 달성됩니다. 직접 돌려 보니 다음 작업으로는 SubscribeBox 항목이 선택됐습니다.\n  - 다만 경고 6개가 새로 쌓이므로, 형식에 맞는 `[dropped]`로 바꾸는 게 맞습니다.\n\nFOLLOWUP: BACKLOG.md:27,37,54,71,87,104 의 [skip] 을 허용 상태 [dropped] 로 교체 · backlog-read 가 invalid status 경고 6건을 낸다\n\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792481323
+}
