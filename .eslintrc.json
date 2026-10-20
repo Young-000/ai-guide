@@ -1,4 +1,5 @@
 {
   "root": true,
+  "ignorePatterns": [".worktrees/**"],
   "extends": ["next/core-web-vitals", "next/typescript"]
 }
