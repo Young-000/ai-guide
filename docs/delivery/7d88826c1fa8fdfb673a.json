@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "뉴스 상세 동적 OG 이미지(/opengraph-image) 생성 — 제목·섹션·날짜 렌더 (근거: 소셜/메신저 공유 시 미리보기 이미지로 CTR 개선, 현재 정적/기본 OG 추정. verify: /news/[slug]/opengraph-image 200 + 이미지 응답)",
+  "state": "done",
+  "reviewed_head": "8db940252b83ba94071e53fbead98029be478003",
+  "verified_head": "8db940252b83ba94071e53fbead98029be478003",
+  "merge_commit": "1d3d702d92af18675d23f1ffd5326288c1f64d17",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/35",
+  "review": "APPROVE: ng, 1200×630 PNG가 옵니다. 영어 기사 og:image도 200 image/png입니다.\n- 받은 PNG를 직접 열어 봤습니다. 제목(한글 정상 렌더)·섹션 배지 \"Anthropic\"·날짜 2026.10.19가 위계에 맞게 배치돼 있고 여백도 무난합니다.\n\n**[PASS] 도메인 규칙**\n- 화면 파일(tsx/css/컴포넌트)이 diff에 없어서 UI 스크린샷 게이트는 적용되지 않습니다.\n- `docs/NORTHSTAR.md`와 Playwright 기준선 이미지도 바뀌지 않았습니다.\n- D1 사안, 자격증명, Supabase 관련 변경은 없습니다.\n\n**[참고] 백로그 표기가 실제와 조금 다름**\n- verify 문구는 `/news/[slug]/opengraph-image 200`인데, 해시가 붙지 않은 그 주소는 운영에서 404입니다. Next.js가 실제 주소에 해시를 붙이기 때문이고, 기능 결함은 아닙니다.\n- 6월부터 운영 중인 기능이라 \"리뷰 대기\"보다 `[done]`이 사실에 맞습니다. 다만 `[>]`로 보수적으로 표기한 것은 리뷰 없이 완료 표시를 하지 말라는 규칙과 맞아서 막지 않습니다.\n\nFOLLOWUP: 동적 OG 이미지 항목의 verify 문구를 해시가 붙는 실제 og:image 주소 기준으로 고칠 것 · docs/BACKLOG.md:26 · 문구 그대로 확인하면 404가 나와 오판할 수 있음\nFOLLOWUP: 동적 OG 이미지 항목 4곳을 [done]으로 닫고 중복 항목을 하나로 합칠 것 · docs/BACKLOG.md:26,38,55,72 · 6월 22일부터 운영 중이라 \"리뷰 대기\"가 아님\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792468576
+}
