@@ -71,3 +71,12 @@ Next measurement: on the next manual PM collection, run `npm run funnel -- --day
 - Remote artifact: [PR #37](https://github.com/Young-000/ai-guide/pull/37), branch `codex/ai-guide-funnel-feedback-20261021`. Verified implementation commit: `5ae4d4e707d65bb56af3e2e919ac5b12b4af76e2`. This follow-up receipt changes this document only.
 - Independent review artifact (HQ repository, delivered separately by program-01): `docs/team-work/2026-10-21-operating-improvements/ai-guide-independent-review.md`.
 - Integrator owns review of the final SHA, merge decision and remote merge evidence; eng-01 will not merge its own output. Publication and the next editorial round remain pending Young's direction check. No merge claim.
+
+
+## CI follow-up: Node 20 read-only initialization
+
+Remote CI blocked merge of the initially reviewed head: Node 20.20.2 has no enabled native WebSocket, and the full Supabase client initializes Realtime even for this HTTP-only report. The original local verification used Node 25.2.1 and did not expose that initialization failure. The two real CLI cases were reproduced failing under the actual Node 20.20.2 binary; no test was skipped and the workflow version is unchanged.
+
+The CLI now initializes Supabase's standalone `PostgrestClient` for the same REST endpoint, service-key headers, and `search_trends` schema. Its already locked version 2.108.2 is declared as a direct runtime dependency; no new package version or WebSocket transport is introduced. The query chain and report definitions are unchanged. The CLI fixture always disables native WebSocket and asserts the GET path, apikey/Bearer headers, schema header, and zero WebSocket upgrades, so a newer local Node cannot mask a recurrence.
+
+Actual Node 20.20.2 and Node 25.2.1 each pass the 12 focused assertions, including the no-native-WebSocket CLI cases. Full `bash scripts/verify.sh` under the actual Node 20.20.2 PATH: exit 0, **VERIFY: GREEN**, type-check and lint clean, 64 suites / 425 tests / 1 snapshot passed, 6025-page production build passed. Evidence: `/tmp/ai-guide-postgrest-node20-full.log`. qa-01 independently repeated Node 20 focused tests and the 1001-row, second-page-error, schema/auth/GET and no-WebSocket checks with no blocker. Final frozen-head review and refreshed remote CI remain the integrator's promotion prerequisites; earlier code PASS alone does not authorize merging this changed head.

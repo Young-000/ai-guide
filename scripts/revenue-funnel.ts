@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /** aiwire-only leading indicators. Usage: npm run funnel -- --days 7 */
-import { createClient } from '@supabase/supabase-js';
+import { PostgrestClient } from '@supabase/postgrest-js';
 import { completedKstWindow, FUNNEL_SITE, readFunnelRows, summarizeFunnel, type FunnelRow, type FunnelWindow } from './revenue-funnel-report';
 
 function requestedDays(): number {
@@ -37,7 +37,9 @@ async function main(): Promise<void> {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error('SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are required');
-  const supabase = createClient(url, key, { db: { schema: 'search_trends' } });
+  const supabase = new PostgrestClient(`${url.replace(/\/$/, '')}/rest/v1`, {
+    schema: 'search_trends', headers: { apikey: key, Authorization: `Bearer ${key}` },
+  });
   const rows = await readFunnelRows(async (from, to) => {
     const { data, error } = await supabase.from('v_revenue_funnel').select('*')
       .eq('site', FUNNEL_SITE).gte('day', window.since).lt('day', window.until)
