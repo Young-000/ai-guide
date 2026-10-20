@@ -1,0 +1,145 @@
+{
+  "name": "AIWire",
+  "benefits": [
+    "AI·LLM 뉴스와 AI 도구 활용법을 한국어로 읽을 수 있어요"
+  ],
+  "tone": "해요체",
+  "target": "가설: AI 뉴스를 한국어로 읽고 근거를 살펴보려는 독자",
+  "landingUrl": "https://aiwire.news/news",
+  "landingLive": true,
+  "preferredMedia": [
+    "meta"
+  ],
+  "freeChannels": [],
+  "visualBrief": "실제 제품의 데스크톱 화면을 참고하는 검토용 초안",
+  "marketingContext": {
+    "version": 1,
+    "product": "ai-guide",
+    "author": "program-01",
+    "review": {
+      "by": "",
+      "at": "",
+      "reference": "",
+      "contextSha256": ""
+    },
+    "audience": "가설: AI 뉴스를 한국어로 읽고 근거를 살펴보려는 독자",
+    "jtbd": "가설: AI 도구를 써 보기 전에 관련 소식과 활용법을 확인해요",
+    "claims": [
+      {
+        "id": "korean-ai-news",
+        "text": "AI·LLM 뉴스와 AI 도구 활용법을 한국어로 읽을 수 있어요",
+        "source": "product"
+      }
+    ],
+    "offer": {
+      "text": "AI·LLM 뉴스와 도구 활용 가이드 읽기",
+      "source": "product"
+    },
+    "landing": {
+      "url": "https://aiwire.news/news",
+      "source": "landing"
+    },
+    "sources": [
+      {
+        "id": "product",
+        "path": "CLAUDE.md",
+        "sha256": "9e0215a3e1390ab44c2a716668b0036cf74fc4d17b72d769b41027e069f66e33",
+        "quote": "AI 도구 활용 가이드 + AI·LLM 뉴스 미디어 (aiwire.news)"
+      },
+      {
+        "id": "measurement",
+        "path": "docs/metrics/2026-10-21.md",
+        "sha256": "379323bd7fdbe2d5c6530f69af437a5c9d2ad4370e6c739a139011a266f8ae82",
+        "quote": "UA-filtered visit records (events), not unique visitors. Stored outclick events are leading activity, not confirmed earnings."
+      },
+      {
+        "id": "landing",
+        "path": "docs/marketing/2026-10-21/landing-observation.json",
+        "sha256": "41ab371217257eb4bf1ff6c18bcf3fa0b108f88d6108247d08834674c3a97b96",
+        "quote": "\"effectiveUrl\": \"https://aiwire.news/news\""
+      }
+    ],
+    "funnel": {
+      "source": "measurement",
+      "window": {
+        "start": "2026-10-14",
+        "end": "2026-10-21",
+        "timezone": "Asia/Seoul"
+      },
+      "visits": {
+        "key": "방문 기록 7일",
+        "unit": "events"
+      },
+      "conversions": {
+        "key": "아웃클릭 7일",
+        "unit": "events"
+      }
+    },
+    "channels": [
+      {
+        "id": "meta",
+        "constraints": [
+          "검토용 초안만 준비해요. 계정 준비·집행 예산·광고 승인은 확인되지 않았어요.",
+          "데스크톱 화면은 제품 참고 자료예요. 모바일 랜딩과 이미지 사용 권한을 따로 확인해요.",
+          "실제 방향 확인과 독립 검토 전에는 소재를 만들거나 게시하지 않아요."
+        ]
+      }
+    ],
+    "approval": {
+      "scope": "draft_material",
+      "reference": ""
+    },
+    "material": {
+      "image": {
+        "file": "docs/marketing/2026-10-21/aiwire-home-desktop.png"
+      },
+      "imageSha256": "ff0431e67a3cd5180b0b2dcc139579d246d5be264c0147f8d98cd8057ae56d0c",
+      "brand": {
+        "name": "AIWire",
+        "primary": "#2563EB",
+        "ink": "#111827",
+        "background": "#FFFFFF"
+      },
+      "disclosure": "검토용 초안 · 집행 전 확인이 필요해요"
+    },
+    "experiment": {
+      "id": "aiwire-korean-news-headline-01",
+      "round": 1,
+      "hypothesis": "가설: 한국어 요약을 먼저 안내하면 뉴스 목록에서 내용을 확인하려는 독자에게 더 분명하게 전달돼요",
+      "metric": "방향 확인 후 노출·클릭 계측과 고유 사용자 단위의 비교 가능성을 먼저 검증해요. 측정 전 성과를 판정하지 않아요.",
+      "baseline": {
+        "status": "unavailable",
+        "reason": "기존 기록은 광고 소재별 노출·클릭·고유 사용자·확정 수익을 연결하지 못해요. 2632/0은 이 실험의 기준값이 아니에요."
+      },
+      "change": {
+        "id": "headline-framing-01",
+        "dimension": "material",
+        "field": "headline",
+        "before": "AI·LLM 뉴스, 한국어로 읽어요",
+        "after": "AI 소식, 한국어 요약부터 볼까요?"
+      }
+    },
+    "variants": [
+      {
+        "id": "A",
+        "headline": "AI·LLM 뉴스, 한국어로 읽어요",
+        "sub": "AI 도구 활용법과 AI·LLM 뉴스 다이제스트를 확인해요",
+        "cta": "뉴스 보기",
+        "landingUrl": "https://aiwire.news/news",
+        "claimIds": [
+          "korean-ai-news"
+        ]
+      },
+      {
+        "id": "B",
+        "headline": "AI 소식, 한국어 요약부터 볼까요?",
+        "sub": "AI 도구 활용법과 AI·LLM 뉴스 다이제스트를 확인해요",
+        "cta": "뉴스 보기",
+        "landingUrl": "https://aiwire.news/news",
+        "claimIds": [
+          "korean-ai-news"
+        ]
+      }
+    ]
+  }
+}

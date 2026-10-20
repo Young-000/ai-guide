@@ -1,0 +1,175 @@
+{
+  "status": "UNREVIEWED_PROPOSAL_PAUSED",
+  "currentContextSha256": "91b694d0e3cfba5a62909dbbbd1d5a17cdf2a1ce24910164cd1dc51e2ee76b08",
+  "initialProposalCheck": {
+    "observedAt": "2026-10-20T19:30:55.678Z",
+    "sourceProductHead": "cac66e888e15704e3b3d0776e6be23c8dfa60a03",
+    "contextSha256": "91f6f0b0787f41f827b19da27e420c5c84816d6417a5f7de559eb500d12603d2",
+    "independentReview": "pending",
+    "draftScopeReceipt": "absent",
+    "directionReceipt": "absent",
+    "actualExistingProducer": true,
+    "networkDenied": true,
+    "isolatedHome": true,
+    "exitCode": 2,
+    "producedImages": 0,
+    "paidCalls": 0,
+    "validationIssues": [
+      "review.by: provide reviewed product evidence",
+      "review.reference: provide reviewed product evidence",
+      "review: independent reviewer and dated receipt required",
+      "review.reference: bind a verified source id",
+      "approval.reference: bind a verified source id",
+      "experiment.directionApproval: bind a verified source id",
+      "approval: explicit draft_material scope and receipt required; this does not authorize live ads",
+      "experiment.directionApproval: CEO direction receipt required for rounds 1–3",
+      "review payload digest changed: independently review 91f6f0b0787f41f827b19da27e420c5c84816d6417a5f7de559eb500d12603d2 before production",
+      "review.reference: source quote must bind this payload, product and exact review/scope/direction",
+      "approval.reference: source quote must bind this payload, product and exact review/scope/direction",
+      "experiment.directionApproval: source quote must bind this payload, product and exact review/scope/direction"
+    ],
+    "stdout": "Production status: PAUSED (manual handoff)\n판정: 제품 먼저 고침\n이유: Product context review required; no conversion inference is available\n초안: /var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/aiwire-real-context-5Bp368/engine/docs/campaigns/2026-10-21-ai-guide.md\n소재: 0장 -> /var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/aiwire-real-context-5Bp368/engine/docs/campaigns/creatives/2026-10-21-ai-guide\nblocked on: review.by: provide reviewed product evidence, review.reference: provide reviewed product evidence, review: independent reviewer and dated receipt required, review.reference: bind a verified source id, approval.reference: bind a verified source id, experiment.directionApproval: bind a verified source id, approval: explicit draft_material scope and receipt required; this does not authorize live ads, experiment.directionApproval: CEO direction receipt required for rounds 1–3, review payload digest changed: independently review 91f6f0b0787f41f827b19da27e420c5c84816d6417a5f7de559eb500d12603d2 before production, review.reference: source quote must bind this payload, product and exact review/scope/direction, approval.reference: source quote must bind this payload, product and exact review/scope/direction, experiment.directionApproval: source quote must bind this payload, product and exact review/scope/direction\n",
+    "stderr": "",
+    "campaignDraftSha256": "f20e7e0111ae4d38d893dfc6e63b056655dce9563e0783c0f3263739f8556c91",
+    "limit": "Expected PAUSED proof; no claim of reviewed context, material delivery, live campaign or measured improvement."
+  },
+  "engineeringReproductions": [
+    {
+      "engineHead": "4d23e2d5fa3bce292a2dffbd263b47dca034f597",
+      "productHead": "cac66e888e15704e3b3d0776e6be23c8dfa60a03",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "npm",
+        "run",
+        "start",
+        "--",
+        "--product",
+        "ai-guide",
+        "--date",
+        "2026-10-21",
+        "--root",
+        "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-a3_gdhfx/engine",
+        "--teamy-root",
+        "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-a3_gdhfx/teamY",
+        "--offline"
+      ],
+      "root": "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-a3_gdhfx",
+      "exitCode": 2,
+      "networkDenied": true,
+      "externalAttempts": 0,
+      "images": 0,
+      "contextSha256": "91f6f0b0787f41f827b19da27e420c5c84816d6417a5f7de559eb500d12603d2",
+      "validationIssues": [
+        "review.by: provide reviewed product evidence",
+        "review.reference: provide reviewed product evidence",
+        "review: independent reviewer and dated receipt required",
+        "review.reference: bind a verified source id",
+        "approval.reference: bind a verified source id",
+        "experiment.directionApproval: bind a verified source id",
+        "approval: explicit draft_material scope and receipt required; this does not authorize live ads",
+        "experiment.directionApproval: CEO direction receipt required for rounds 1–3",
+        "review payload digest changed: independently review 91f6f0b0787f41f827b19da27e420c5c84816d6417a5f7de559eb500d12603d2 before production",
+        "review.reference: source quote must bind this payload, product and exact review/scope/direction",
+        "approval.reference: source quote must bind this payload, product and exact review/scope/direction",
+        "experiment.directionApproval: source quote must bind this payload, product and exact review/scope/direction"
+      ],
+      "stdoutLog": "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-a3_gdhfx/stdout.log",
+      "stdoutSha256": "1d66214ce500ba7a06b0096c7e2ac1f1d7bac51b6a7db81b8bb5f01fbebf236c",
+      "stderr": "",
+      "limit": "Technical proposal check only; no review/scope/direction receipt populated, no paid call/publication/marketing-fit approval.",
+      "reviewer": "eng-01",
+      "kind": "engineering_evidence_only_not_marketing_approval",
+      "scriptSha256": "0ce2987df054c195b88de35b5ab5f0a044fac031473bbb49e35e40186dab1182",
+      "phase": "before_reader_source_binding"
+    },
+    {
+      "engineHead": "4d23e2d5fa3bce292a2dffbd263b47dca034f597",
+      "productHead": "cac66e888e15704e3b3d0776e6be23c8dfa60a03",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "npm",
+        "run",
+        "start",
+        "--",
+        "--product",
+        "ai-guide",
+        "--date",
+        "2026-10-21",
+        "--root",
+        "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-6kl8h7l7/engine",
+        "--teamy-root",
+        "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-6kl8h7l7/teamY",
+        "--offline"
+      ],
+      "root": "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-6kl8h7l7",
+      "exitCode": 2,
+      "networkDenied": true,
+      "externalAttempts": 0,
+      "images": 0,
+      "contextSha256": "91b694d0e3cfba5a62909dbbbd1d5a17cdf2a1ce24910164cd1dc51e2ee76b08",
+      "validationIssues": [
+        "review.by: provide reviewed product evidence",
+        "review.reference: provide reviewed product evidence",
+        "review: independent reviewer and dated receipt required",
+        "review.reference: bind a verified source id",
+        "approval.reference: bind a verified source id",
+        "experiment.directionApproval: bind a verified source id",
+        "approval: explicit draft_material scope and receipt required; this does not authorize live ads",
+        "experiment.directionApproval: CEO direction receipt required for rounds 1–3",
+        "review payload digest changed: independently review 91b694d0e3cfba5a62909dbbbd1d5a17cdf2a1ce24910164cd1dc51e2ee76b08 before production",
+        "review.reference: source quote must bind this payload, product and exact review/scope/direction",
+        "approval.reference: source quote must bind this payload, product and exact review/scope/direction",
+        "experiment.directionApproval: source quote must bind this payload, product and exact review/scope/direction"
+      ],
+      "pureReaderAndJudge": {
+        "funnel": {
+          "source": "docs/metrics/2026-10-21.md",
+          "date": "2026-10-21",
+          "values": {
+            "방문 기록 7일": 2632,
+            "아웃클릭 7일": 0,
+            "일평균 방문 기록": 376
+          }
+        },
+        "verdict": {
+          "kind": "fix_product_first",
+          "stage": "measurement",
+          "reason": "Descriptive events/events counts only; unique-user CVR is unavailable. Verify matched funnel units and attribution before a conversion judgment.",
+          "evidence": [
+            "방문 기록 7일: 2632 (events)",
+            "아웃클릭 7일: 0 (events)"
+          ],
+          "changeRequests": [
+            {
+              "title": "Descriptive events/events counts only; unique-user CVR is unavailable. Verify matched funnel units and attribution before a conversion judgment.",
+              "owner": "da"
+            }
+          ]
+        }
+      },
+      "stdoutLog": "/var/folders/qk/16dc9j5x7s57s24d2q4qp6w00000gq/T/eng01-aiwire-context-6kl8h7l7/stdout.log",
+      "stdoutSha256": "80350233e4b6e43955fcea328f6c5b0467e58554998aa4efce288f40e28f684c",
+      "stderr": "",
+      "limit": "Technical proposal check only; no review/scope/direction receipt populated, no paid call/publication/marketing-fit approval.",
+      "phase": "after_actual_snapshot_binding",
+      "reviewer": "eng-01",
+      "kind": "engineering_evidence_only_not_marketing_approval",
+      "scriptSha256": "c3d693ca0575c7d057cbee6a9da220d9eab2c94f338f65049cf0364a27742fc5"
+    }
+  ],
+  "currentAggregateCollection": {
+    "startedAt": "2026-10-20T19:41:26.480544+00:00",
+    "completedAt": "2026-10-20T19:41:27.082671+00:00",
+    "exitCode": 0,
+    "sourceHead": "c6bde0f466942142bcd02c82ce1d17a9c4a7cd5f",
+    "approvedSourceBase": "cac66e888e15704e3b3d0776e6be23c8dfa60a03",
+    "nodeVersion": "20.20.2",
+    "command": "npm run funnel -- --days 7",
+    "nativeWebSocketDisabled": true
+  },
+  "limit": "No production review/scope/direction receipt was generated. Marketing-fit review and real Young direction remain pending; reviewed/applied contexts remain0/7."
+}
