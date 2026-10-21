@@ -1,0 +1,146 @@
+{
+  "name": "AIWire",
+  "benefits": [
+    "AI·LLM 뉴스를 한국어로 읽을 수 있어요"
+  ],
+  "tone": "해요체",
+  "target": "가설: AI 관련 변화를 따라가며 더 읽을 기사를 고르려는 한국어 독자",
+  "landingUrl": "https://aiwire.news/news",
+  "landingLive": true,
+  "preferredMedia": [
+    "meta"
+  ],
+  "freeChannels": [],
+  "visualBrief": "실제 제품의 데스크톱 화면을 참고하는 검토용 초안",
+  "marketingContext": {
+    "version": 1,
+    "product": "ai-guide",
+    "author": "growth-01",
+    "review": {
+      "by": "",
+      "at": "",
+      "reference": "",
+      "contextSha256": ""
+    },
+    "audience": "가설: AI 관련 변화를 따라가며 더 읽을 기사를 고르려는 한국어 독자",
+    "jtbd": "가설: AI에 어떤 변화가 생겼는지 살펴보고, 관심 있는 기사를 골라 내용을 이해해요",
+    "claims": [
+      {
+        "id": "korean-ai-news",
+        "text": "AI·LLM 뉴스를 한국어로 읽을 수 있어요",
+        "source": "product"
+      }
+    ],
+    "offer": {
+      "text": "AI·LLM 뉴스 목록에서 관심 있는 기사 골라 읽기",
+      "source": "product"
+    },
+    "landing": {
+      "url": "https://aiwire.news/news",
+      "source": "landing"
+    },
+    "sources": [
+      {
+        "id": "product",
+        "path": "CLAUDE.md",
+        "sha256": "9e0215a3e1390ab44c2a716668b0036cf74fc4d17b72d769b41027e069f66e33",
+        "quote": "AI 도구 활용 가이드 + AI·LLM 뉴스 미디어 (aiwire.news)"
+      },
+      {
+        "id": "measurement",
+        "path": "docs/metrics/2026-10-21.md",
+        "sha256": "348e046cf3cd6195dadb00c01fd2078673f36d6011c38c06ab3761463fefb7a4",
+        "quote": "UA-filtered visit records (events), not unique visitors. Stored outclick events are leading activity, not confirmed earnings."
+      },
+      {
+        "id": "landing",
+        "path": "docs/marketing/2026-10-21/landing-observation.json",
+        "sha256": "41ab371217257eb4bf1ff6c18bcf3fa0b108f88d6108247d08834674c3a97b96",
+        "quote": "\"effectiveUrl\": \"https://aiwire.news/news\""
+      }
+    ],
+    "funnel": {
+      "source": "measurement",
+      "window": {
+        "start": "2026-10-14",
+        "end": "2026-10-21",
+        "timezone": "Asia/Seoul"
+      },
+      "visits": {
+        "key": "방문 기록 7일",
+        "unit": "events"
+      },
+      "conversions": {
+        "key": "아웃클릭 7일",
+        "unit": "events"
+      }
+    },
+    "channels": [
+      {
+        "id": "meta",
+        "constraints": [
+          "검토용 초안만 준비해요. 계정 준비·집행 예산·광고 승인은 확인되지 않았어요.",
+          "데스크톱 화면은 제품 참고 자료예요. 모바일 랜딩과 이미지 사용 권한을 따로 확인해요.",
+          "실제 방향 확인과 독립 검토 전에는 소재를 만들거나 게시하지 않아요.",
+          "Meta는 검토할 소재 형식의 후보예요. 채널 우위·고객 도달·수익성은 검증하지 않았어요. 뉴스 소비 맥락에서 검토하고 도구 구매나 수익을 약속하지 않아요."
+        ]
+      }
+    ],
+    "approval": {
+      "scope": "draft_material",
+      "reference": ""
+    },
+    "material": {
+      "image": {
+        "file": "docs/marketing/2026-10-21/aiwire-home-desktop.png"
+      },
+      "imageSha256": "ff0431e67a3cd5180b0b2dcc139579d246d5be264c0147f8d98cd8057ae56d0c",
+      "brand": {
+        "name": "AIWire",
+        "primary": "#2563EB",
+        "ink": "#111827",
+        "background": "#FFFFFF"
+      },
+      "disclosure": "검토용 초안 · 집행 전 확인이 필요해요"
+    },
+    "experiment": {
+      "id": "aiwire-korean-news-headline-01",
+      "round": 1,
+      "hypothesis": "가설: AI 소식을 한국어로 제공한다는 안내보다 무엇이 달라졌는지 묻는 제목이, 변화를 따라가려는 독자에게 기사를 읽을 이유를 더 분명하게 전달해요",
+      "metric": "방향 확인 뒤 동일 조건에서 A/B 소재 노출→클릭→/news 도착→기사 선택의 계측 가능성을 먼저 확인해요. 비교 단위·배정·제외 기준·관측 기간을 고정한 뒤 기사 선택을 비교해요. 현재 기록으로 우승안·수익·고유 사용자 전환율을 판정하지 않아요.",
+      "baseline": {
+        "status": "unavailable",
+        "reason": "기존 기록은 광고 소재별 노출·클릭·고유 사용자·확정 수익을 연결하지 못해요. 2632/0은 이 실험의 기준값이 아니에요."
+      },
+      "change": {
+        "id": "headline-framing-01",
+        "dimension": "material",
+        "field": "headline",
+        "before": "AI·LLM 뉴스, 한국어로 읽어요",
+        "after": "AI 소식, 무엇이 달라졌을까요?"
+      }
+    },
+    "variants": [
+      {
+        "id": "A",
+        "headline": "AI·LLM 뉴스, 한국어로 읽어요",
+        "sub": "관심 있는 AI 소식을 골라 한국어로 읽어봐요",
+        "cta": "뉴스 보기",
+        "landingUrl": "https://aiwire.news/news",
+        "claimIds": [
+          "korean-ai-news"
+        ]
+      },
+      {
+        "id": "B",
+        "headline": "AI 소식, 무엇이 달라졌을까요?",
+        "sub": "관심 있는 AI 소식을 골라 한국어로 읽어봐요",
+        "cta": "뉴스 보기",
+        "landingUrl": "https://aiwire.news/news",
+        "claimIds": [
+          "korean-ai-news"
+        ]
+      }
+    ]
+  }
+}

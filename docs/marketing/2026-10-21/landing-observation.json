@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-10-20T19:30:38.044273+00:00",
+  "method": "GET",
+  "requestedUrl": "https://aiwire.news/news",
+  "effectiveUrl": "https://aiwire.news/news",
+  "httpStatus": 200,
+  "title": "AI · LLM 뉴스 | AIWire",
+  "responseBodySha256": "880312df40c386177108d6c1cbd1431577ef4d075baac5fa412d845f695a3285",
+  "tlsVerification": true,
+  "javascriptExecuted": false,
+  "productionWrites": 0,
+  "limit": "HTTP document observation only; no browser action, outbound tracking, subscription, ad performance or earnings verification."
+}
