@@ -49,7 +49,7 @@
       {
         "id": "measurement",
         "path": "docs/metrics/2026-10-21.md",
-        "sha256": "379323bd7fdbe2d5c6530f69af437a5c9d2ad4370e6c739a139011a266f8ae82",
+        "sha256": "348e046cf3cd6195dadb00c01fd2078673f36d6011c38c06ab3761463fefb7a4",
         "quote": "UA-filtered visit records (events), not unique visitors. Stored outclick events are leading activity, not confirmed earnings."
       },
       {
