@@ -100,7 +100,7 @@ npm run publish:local    # 로컬 전체 사이클: fetch → 생성(키리스) 
 - `ANTHROPIC_API_KEY` 있으면 → Anthropic SDK (CI용)
 - 없으면 → 로컬 `claude` CLI(Claude Code 구독 인증) 사용 → **API key 없이 로컬 실행 가능**
 
-로컬 정기 발행은 `npm run publish:local`을 cron/launchd로 스케줄(예: 5시간 주기).
+로컬 정기 발행은 `npm run publish:local`을 **crontab**으로 스케줄한다(`10 0,5,10,15,20 * * *`). launchd 는 `~/Desktop` TCC 로 즉사하니 쓰지 않는다(`docs/LESSONS.md` 2026-07-26).
 
 > ⚠️ 워크스페이스 main 보호 pre-push 훅(2026-09-28)은 main 을 1커밋씩만 움직이게 한다. 이 발행 스크립트만
 > 작업 기준(`OPS_PREPUSH_JOB_BASE` = fetch 한 `origin/main`)을 넘겨 여러 커밋을 올린다 — 그래서 **로컬 main 에
