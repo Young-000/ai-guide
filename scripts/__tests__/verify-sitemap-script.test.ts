@@ -8,3 +8,10 @@ describe('verify:sitemap npm script', () => {
     expect(command).toMatch(/node\s+--import\s+tsx\s+scripts\/verify-sitemap\.ts/);
   });
 });
+
+describe('verify:feed npm script', () => {
+  it('uses node --import tsx like verify:sitemap', () => {
+    const command = (pkg.scripts as Record<string, string>)['verify:feed'];
+    expect(command).toMatch(/node\s+--import\s+tsx\s+scripts\/verify-feed\.ts/);
+  });
+});
