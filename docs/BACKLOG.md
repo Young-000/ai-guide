@@ -37,7 +37,7 @@
 - [skip] (WebSite JSON-LD는 layout.tsx 에 이미 적용, SearchAction 은 사이트 검색 엔드포인트가 없어 보류 — 2026-10-20) **WebSite + SearchAction JSON-LD를 홈에 추가** (미적용 시) (근거: 구글 sitelinks 검색창 노출로 브랜드 SERP 강화, 저위험. verify: 홈 소스에 `"@type":"WebSite"` + `SearchAction` 존재 + 테스트) — owner:dev — since:2026-07-12 — link:-
 - [>] (구현됨·ee91f8a, 검증 GREEN 2026-10-20 — 빌드 산출물 opengraph-image 200 image/png 1200x630 + og:image 메타 확인, 리뷰 대기) **뉴스 상세 동적 OG 이미지** (/news/[slug]/opengraph-image) — 제목·섹션·날짜 렌더 (근거: 메신저/소셜 공유 CTR, 현재 기본 OG 추정. verify: opengraph-image 라우트 200 + image/png 응답) — owner:dev — since:2026-07-12 — link:-
 - [review] **/news/topics 인덱스에 태그별 기사 수 노출 + noindex 태그 시각 구분** (근거: thin tag 처리(`isThinTag`)가 sitemap엔 반영되나 사용자/크롤러 탐색 UI엔 미반영 — 색인 가능 태그로 크롤 유도. verify: /news/topics에 기사수 배지 렌더 + 테스트) (무커밋 종료 3회 — 이미 완료됐거나 태스크 재작성 필요, 큐에서 내림) — owner:ceo — since:2026-10-23 — link:-
-- [todo] **RSS/피드 최신성 검증 스크립트** — `src/lib/rss.ts` 출력이 최근 발행 N건을 포함하는지 확인(발행 파이프라인 회귀 방지). (근거: 콘텐츠 엔진이 유일하게 도는 성장 동력 — 피드 깨지면 조용히 유입 손실. verify: 스크립트가 feed item 수 + 최신 pubDate 리포트) — owner:dev — since:2026-07-12 — link:-
+- [todo] **RSS/피드 최신성 검증 스크립트** — `src/lib/rss.ts` 출력이 최근 발행 N건을 포함하는지 확인(발행 파이프라인 회귀 방지). (근거: 콘텐츠 엔진이 유일하게 도는 성장 동력 — 피드 깨지면 조용히 유입 손실. verify: 스크립트가 feed item 수 + 최신 pubDate 리포트) (무커밋 종료 1회) — owner:dev — since:2026-07-12 — link:-
 
 ## 2026-07-19 주간 PM 리필 (우선순위순)
 
