@@ -51,3 +51,21 @@ jobs:
           COUNT=$(git diff --staged --name-only | grep -c "src/content/news/.*\.md$" || true)
           git commit -m "feat(news): ${COUNT}개 AI 다이제스트 발행"
           git push origin main
+
+      # 실패가 조용하면 엔진이 며칠 죽어도 아무도 모른다 (07-11 8일, 09-28 18일 사고).
+      # 정식 발행 경로는 로컬 crontab(scripts/publish-local.sh)이고 이 워크플로는 백업이다.
+      # 웹훅 시크릿이 없어도 실행 로그에는 ::error:: 로 남겨 GitHub 실패 메일과 함께 보이게 한다.
+      - name: Notify on failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "::error::aiwire 백업 발행(auto-news)이 실패했습니다. ${RUN_URL}"
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL 시크릿이 없어 Slack 알림은 건너뜁니다."
+            exit 0
+          fi
+          curl -fsS -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"aiwire 백업 발행(GitHub 자동 실행)이 실패했어요. 실행 기록: ${RUN_URL}\"}" \
+            "$SLACK_WEBHOOK_URL"

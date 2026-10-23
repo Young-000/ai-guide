@@ -23,7 +23,7 @@
 #   NO_PUSH=1 bash scripts/publish-local.sh  # commit but do not push
 #   NO_COMMIT=1 bash scripts/publish-local.sh # generate only, leave changes unstaged
 #
-# Schedule locally with cron/launchd, e.g. every 5h:
+# Schedule with crontab (not launchd: ~/Desktop TCC blocks it), e.g.:
 #   0 */5 * * * cd <repo> && bash scripts/publish-local.sh >> /tmp/ai-guide-publish.log 2>&1
 set -euo pipefail
 
