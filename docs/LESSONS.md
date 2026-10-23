@@ -1,5 +1,7 @@
 # LESSONS — 자율 사이클이 시작 전 반드시 읽는 함정 목록
 
+- 2026-10-23 피드 pubDate 는 날짜만 있어 UTC 자정으로 찍힌다 — 최신 항목 나이는 항상 최대 하루 부풀려지므로 신선도 기준(`verify:feed` 3일)은 그만큼 여유를 둔다. 첫 실행에서 10/20 이후 발행 중단(`generation-failed` 연속)이 바로 잡혔다: 발행 점검은 `~/.claude/logs/ai-guide-publish.status` 와 함께 본다.
+
 - 2026-10-21 A homepage screenshot and a news-list destination support different promises; match draft copy to the destination action, and treat conditional article source/timeline blocks as conditional evidence.
 
 > 이 프로젝트에서 과거 사이클이 배운 비자명한 교훈만 1줄씩. 범용 교훈은 `ops-vault/Learnings/` 참조.
