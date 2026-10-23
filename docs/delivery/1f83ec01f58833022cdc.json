@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**RSS/피드 최신성 검증 스크립트** — `src/lib/rss.ts` 출력이 최근 발행 N건을 포함하는지 확인(발행 파이프라인 회귀 방지). (근거: 콘텐츠 엔진이 유일하게 도는 성장 동력 — 피드 깨지면 조용히 유입 손실. verify: 스크립트가 feed item 수 + 최신 pubDate 리포트) (무커밋 종료 1회)",
+  "state": "done",
+  "reviewed_head": "5f08f1dde75a4a740a290b0c6654c903daa9056e",
+  "verified_head": "5f08f1dde75a4a740a290b0c6654c903daa9056e",
+  "merge_commit": "3e3ab3f28437d3ed29cfdd9e8d43358dd77d228b",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/40",
+  "review": "APPROVE: 다.\n- **[PASS] 실제 실행:** `npm run verify:feed` → `[feed ko] items: 20 · newest pubDate: 2026-10-20 (3.3d old) · FAIL`, 종료 코드 1.\n  - 10/20 이후 발행이 멈춘 상태를 그대로 잡아낸 것으로, 스크립트가 의도대로 동작합니다.\n  - 이 스크립트는 verify.sh나 CI에 연결되어 있지 않아 FAIL이 나도 머지는 막히지 않습니다.\n- **[주의] 빠진 기사 검사가 아무것도 걸러내지 못함(4번)**\n  - 기대 목록은 `getAllNews(lang).slice(0, 10)`(`scripts/verify-feed.ts:17-19`)로 만듭니다.\n  - 그런데 피드 자체도 `getAllNews(lang).slice(0, 20)`(`rss.ts:29`)로 만듭니다.\n  - 같은 목록에서 나온 값이라 `missingSlugs`는 구조적으로 항상 비어 있습니다. 실제로 의미 있는 것은 날짜 기준 3일 검사뿐입니다.\n\nFOLLOWUP: 빠진 기사 검사가 피드와 같은 getAllNews 목록에서 기대값을 뽑아 항상 통과함 · scripts/verify-feed.ts:17 · 디스크 파일 목록이나 배포된 /feed.xml과 대조해야 의미가 생긴다\nFOLLOWUP: verify:feed가 어떤 정기 점검에도 연결되지 않아 발행이 멈춰도 사람이 직접 돌려야 알 수 있음 · package.json:18 · fleet-health나 publish 상태 점검에 붙일지 결정 필요\nFOLLOWUP: FeedItem 타입 이름이 RSS 수집용 news-feed.ts의 FeedItem과 겹쳐 import 시 혼동될 수 있음 · src/lib/feed-audit.ts:6 · FeedAuditItem 등으로 바꾸는 편이 안전\n\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792742213
+}
