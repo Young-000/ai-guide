@@ -37,7 +37,10 @@ export function auditFeed(
   { now, maxAgeDays }: FeedAuditOptions,
 ): FeedAuditReport {
   const items = parseFeedItems(xml);
-  const validDates = items.map((i) => i.pubDate).filter((d) => !Number.isNaN(d.getTime()));
+  // 미래 날짜는 잘못된 날짜로 센다: 그렇지 않으면 미래로 찍힌 기사 하나가 감사를 영원히 통과시킨다.
+  const validDates = items
+    .map((i) => i.pubDate)
+    .filter((d) => !Number.isNaN(d.getTime()) && d.getTime() <= now.getTime());
   const invalidDateCount = items.length - validDates.length;
   const newestPubDate = validDates.length
     ? new Date(Math.max(...validDates.map((d) => d.getTime())))

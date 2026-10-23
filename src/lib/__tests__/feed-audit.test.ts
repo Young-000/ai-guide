@@ -69,6 +69,21 @@ describe('auditFeed', () => {
     expect(report.ok).toBe(false);
     expect(report.invalidDateCount).toBe(1);
   });
+
+  it('fails when the newest item is dated in the future instead of passing as fresh', () => {
+    const FUTURE = 'Sat, 22 Oct 2033 00:00:00 GMT';
+    const report = auditFeed(feed([item('a', FUTURE)]), ['a'], options);
+    expect(report.ok).toBe(false);
+    expect(report.invalidDateCount).toBe(1);
+    expect(report.newestPubDate).toBeNull();
+  });
+
+  it('fails when a future-dated item sits next to a fresh one', () => {
+    const FUTURE = 'Sat, 22 Oct 2033 00:00:00 GMT';
+    const report = auditFeed(feed([item('a', FRESH), item('b', FUTURE)]), ['a', 'b'], options);
+    expect(report.ok).toBe(false);
+    expect(report.invalidDateCount).toBe(1);
+  });
 });
 
 describe('formatFeedReport', () => {
