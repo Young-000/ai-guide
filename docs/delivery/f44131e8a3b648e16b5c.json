@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**발행 파이프라인을 CI 시크릿에서 영구 분리 — 로컬 keyless launchd 크론** (`npm run publish:local` 5시간 주기). CLAUDE.md가 이미 의도한 경로(러너엔 claude CLI 인증 없음 → CI는 구조적으로 키 의존). launchd plist 작성 + 로드 + 1회 수동 트리거 로그 확인. auto-news.yml은 백업으로 남기되 실패가 조용하지 않게 실패 시 Slack 알림 스텝 추가. (근거: 엔진이 8일 죽어도 아무도 몰랐음 — 사일런트 블리드. 성장 동력의 단일 실패점 제거가 최우선. verify: launchd 등록 확인 + 수동 실행 시 src/content/news에 신규 파일 생성 + 로그)",
+  "state": "done",
+  "reviewed_head": "33856402a1108e788fbef223a6c46acc2ce29f15",
+  "verified_head": "33856402a1108e788fbef223a6c46acc2ce29f15",
+  "merge_commit": "9b59686163b98399cb52be6415889b12db6387a8",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/41",
+  "review": "APPROVE: s), Playwright 스냅샷은 바뀌지 않아 UI 게이트는 해당이 없습니다.\n  - Supabase와 자격증명은 건드리지 않았고, D1 게이트에 해당하는 항목도 없습니다.\n  - 웹훅 시크릿 등록은 오너 몫으로 남겼는데, 맞는 처리입니다.\n- **[PASS] 검증 명령:**\n  - `npx jest scripts/__tests__/auto-news-workflow.test.ts`: 4개 모두 통과\n  - `npm run type-check`: rc=0\n  - 새 테스트 파일에 대한 eslint: rc=0\n\n### 직접 확인하지 못한 것\n- GitHub 실행 로그(403)와 시크릿 목록(401)을 읽을 권한이 없었습니다. 그래서 키 누락이 실패 원인인지, 웹훅 시크릿이 이미 등록돼 있는지는 모릅니다. 이미 등록돼 있다면 머지 직후부터 알림이 갑니다.\n- 전체 빌드와 전체 테스트는 돌리지 않았습니다. 이 diff에는 앱 코드가 없어서 새 테스트, type-check, lint만 확인했습니다.\n\nFOLLOWUP: 백업 워크플로가 최근 8회 모두 Generate 단계에서 실패 · .github/workflows/auto-news.yml:4 · 웹훅 등록 전에 schedule을 끄거나 키 없으면 건너뛰게 해 알림 소음을 막을 것\nFOLLOWUP: 예시 크론이 여전히 `0 */5` · scripts/publish-local.sh:27 · 실제 crontab(`10 0,5,10,15,20`)·CLAUDE.md와 맞출 것\nFOLLOWUP: launchd 항목을 [>]로 바꿨지만 원래 verify(launchd 등록)는 충족 불가 · docs/BACKLOG.md:48 · 항목 문구를 crontab 기준으로 고치거나 [skip] 처리할 것\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792782960
+}
