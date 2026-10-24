@@ -64,7 +64,8 @@ export default function PrivacyPage(): JSX.Element {
           <li>자동 수집 서버 로그: 수집일로부터 최대 6개월간 보관 후 삭제합니다.</li>
           <li>
             유입 경로 정보(aiwire_ft): 이용자의 브라우저에만 저장되며 30일 후 만료됩니다. 우리
-            서버에는 보관하지 않습니다.
+            서버에는 보관하지 않고, 아웃링크 클릭 같은 이벤트에 함께 실려 분석 도구(Amplitude)로
+            전송됩니다.
           </li>
         </ul>
         <p className="mt-3 text-sm text-gray-700 leading-relaxed">
@@ -88,6 +89,20 @@ export default function PrivacyPage(): JSX.Element {
           <li>
             <p className="font-semibold text-gray-900">Supabase, Inc.</p>
             <p className="mt-1">위탁 업무: 뉴스레터 구독 이메일의 저장 및 관리</p>
+          </li>
+          <li>
+            <p className="font-semibold text-gray-900">Amplitude, Inc.</p>
+            <p className="mt-1">
+              위탁 업무: 서비스 이용 행태 분석 — 페이지 조회·클릭 등 이용 기록, 브라우저·기기 정보,
+              광고 유입 정보(UTM 값, 광고 클릭 식별자, 유입 사이트 주소의 도메인)를 수집·분석합니다.
+              이용자의 이름·이메일 등 직접 식별 정보와 결합하지 않습니다.
+            </p>
+            <p className="mt-1">
+              국외 이전: 이전받는 자 Amplitude, Inc. / 이전 국가 미국(미국에 있는 Amplitude 서버) /
+              이전 항목 위 이용 기록·기기 정보·광고 유입 정보 / 이전 시기 및 방법 이용자가 서비스를
+              이용하는 시점에 인터넷을 통해 전송 / 보유 기간 분석 도구의 보관 정책에 따라 기간이
+              지나면 삭제되며, 이용자가 처리정지·삭제를 요청하면 지체 없이 처리합니다.
+            </p>
           </li>
         </ul>
       </section>
@@ -228,6 +243,7 @@ export default function PrivacyPage(): JSX.Element {
         <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
           <li>이 방침은 2026년 10월 24일부터 시행합니다. (종전 시행일: 2026년 6월 27일)</li>
           <li>2026-10-24: 유입 경로 기록 쿠키(aiwire_ft, 30일) 추가</li>
+          <li>2026-10-24: Amplitude 고지 추가</li>
         </ul>
       </section>
     </div>
