@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { initAmplitude, track } from '@/lib/analytics';
+import { captureFirstTouch } from '@/lib/first-touch';
 import { classifyReferrer } from '@/lib/referrer';
 
 /**
@@ -19,6 +20,14 @@ export default function Analytics(): null {
   // Init once on mount
   useEffect(() => {
     void initAmplitude();
+  }, []);
+
+  /*
+    첫 접점(utm 5종 · 클릭 ID · referrer)을 랜딩 즉시 저장한다 — Amplitude 키와 무관하게 저장소만 쓴다.
+    아웃클릭 이벤트(affiliate_outclick · tool_outbound_click)가 이 값을 싣는다 (lib/first-touch.ts).
+  */
+  useEffect(() => {
+    captureFirstTouch();
   }, []);
 
   /*
