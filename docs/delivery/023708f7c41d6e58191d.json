@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**트래픽 카운터 코드 배선(3주째 이월·최우선 유지)** — 뉴스 상세 서버 컴포넌트 렌더 시 `search_trends.page_views`에 upsert(경로+KST일자, `on conflict(path,day) do update count+1`). 테이블 이미 존재(비파괴, 게이트 아님). `src/lib/supabase.ts` service_role 클라이언트, KST는 `Asia/Seoul`. **범위 축소: 우선 뉴스 상세 1개 라우트만** 배선(섹션·토픽은 후속). (근거: 측정 블로커의 마지막 조각, 2주 연속 야간 미착수 — 크기를 라우트 1개로 줄임. verify: 로컬 `next dev`로 /news/[slug] GET → `select count(*) from search_trends.page_views` ≥1)",
+  "state": "done",
+  "reviewed_head": "96da2779d0004956b5af426f93f2aac4178f73f6",
+  "verified_head": "96da2779d0004956b5af426f93f2aac4178f73f6",
+  "merge_commit": "3d47989959a7d469e87aab7f85ea65af5c83b9bf",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/42",
+  "review": "APPROVE: 운터|recordView|카운터를 뉴스 상세/`입니다.\n- 남아 있는 [todo] 가운데 99행(`트래픽 위너`), 105행, 115행, 116행은 이 패턴에 걸리지 않습니다.\n\n**[PASS] 검증 명령 결과**\n- 관련 테스트 3묶음: `PASS` 3개, 27개 중 27개 통과.\n- `npm run type-check`: 오류 없음.\n- 새 파일 `eslint`: 오류 없음.\n- 전체 jest: 67묶음 중 66개 통과, 테스트 442개 중 2개 실패. 실패한 2개는 `scripts/__tests__/revenue-funnel-cli.test.ts`에서 `listen EPERM: operation not permitted 127.0.0.1`로 떨어졌습니다. 이 샌드박스가 로컬 포트를 열지 못하게 막아서 생긴 실패이고, 이번 diff는 `scripts/`를 건드리지 않습니다. LESSONS에 새로 적힌 내용과도 같습니다.\n\n**[PASS] LESSONS 추가 문장**\n- 같은 일이 다시 생기지 않게 막는, 쉽게 알기 어려운 교훈 1줄입니다. 규칙에 맞습니다.\n\nFOLLOWUP: BACKLOG 문서를 검사하는 테스트가 src/lib/__tests__/backlog-counter-duplicates.test.ts:8 에 있음 · 주간 PM이 '트래픽 카운터' 이름으로 새 할 일을 정당하게 넣어도 CI가 깨짐 → 정규식 범위를 좁히거나 scripts 쪽 문서 점검으로 옮길 것\nFOLLOWUP: 구현됨 표기 문구가 docs/BACKLOG.md:50,66,82,83 에서 'middleware'까지 포함한다고 적음 · 그런데 미들웨어는 봇까지 셈(115행 todo) → 측정이 끝났다는 오해가 없게 봇 필터 할 일을 이어서 진행할 것\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792803659
+}
