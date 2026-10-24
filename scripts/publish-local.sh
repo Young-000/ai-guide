@@ -14,8 +14,9 @@
 #     $AI_GUIDE_FAILED_DIR, the tree is restored to clean and the script exits 3.
 #   - "Every generation attempt failed" exits 2; "nothing new" exits 0; a generator crash exits 4.
 #   - Refuses to run unless the checkout is on main (exit 4, result=wrong-branch).
-#   - A fetch/push failure exits 1 with result=push-failed. The commit stays local, and the next
-#     run pushes it even when there is nothing new to generate.
+#   - A fetch/push failure exits 1 with result=push-failed, logs a `PUSH FAILED: …` line and posts
+#     to main-checklist (throttled to once per 6h, best effort). The commit stays local, and the
+#     next run pushes it even when there is nothing new to generate.
 #   - Every run appends one line to $AI_GUIDE_STATUS_FILE for the watchdog and the PM cycle.
 #
 # Usage:
@@ -118,6 +119,41 @@ if [ "$GENERATE_EXIT" != "0" ] && [ "$GENERATE_EXIT" != "1" ]; then
   exit "$GENERATE_EXIT"
 fi
 
+# Any publish-to-origin failure ends here: a `PUSH FAILED` log line, a main-checklist alert and
+# exit 1. The push used to fail for 8 days with a green-looking log (2026-10), so the failure
+# must be loud in the log AND reach the CEO channel. The alert is best effort and throttled
+# (one per ALERT_THROTTLE_SECONDS) so five runs a day do not repeat the same message; it can
+# never change the exit code.
+ALERT_CMD="${AI_GUIDE_ALERT_CMD:-$HOME/.claude/scripts/slack-bot-send.sh}"
+ALERT_STATE="${AI_GUIDE_ALERT_STATE:-$HOME/.claude/state/ai-guide-push-alert.ts}"
+ALERT_CHANNEL="C0BK57317B2" # main-checklist (.claude/slack-channels.json)
+ALERT_THROTTLE_SECONDS="${AI_GUIDE_ALERT_THROTTLE_SECONDS:-21600}"
+alert_push_failure() {
+  local unpushed="$1" now last
+  now="$(date +%s)"
+  last="$(cat "$ALERT_STATE" 2>/dev/null || echo 0)"
+  if [ $((now - last)) -lt "$ALERT_THROTTLE_SECONDS" ]; then return 0; fi
+  if [ ! -x "$ALERT_CMD" ]; then
+    echo "  (alert skipped: $ALERT_CMD not executable)"
+    return 0
+  fi
+  if "$ALERT_CMD" ceo "$ALERT_CHANNEL" \
+    "aiwire 새 글이 사이트에 올라가지 못했어요. 푸시 실패로 ${unpushed}건이 로컬에 남아 있고, 다음 실행에서 다시 시도해요." >/dev/null 2>&1; then
+    mkdir -p "$(dirname "$ALERT_STATE")" 2>/dev/null || true
+    printf '%s\n' "$now" > "$ALERT_STATE" 2>/dev/null || true
+  else
+    echo "  (alert send failed — see ~/.claude/logs/slack-send-failures.log)"
+  fi
+}
+
+push_failed() {
+  local reason="$1" unpushed
+  unpushed="$(git rev-list --count origin/main..main 2>/dev/null || echo '?')"
+  echo "PUSH FAILED: ${reason} — ${unpushed} commit(s) not on origin/main."
+  alert_push_failure "$unpushed"
+  exit 1
+}
+
 # Merge in what the CI publisher pushed, then push. Used after a fresh commit and, when there is
 # nothing new, to retry commits an earlier run could not push. Every failure leaves a non-zero
 # exit and result=push-failed (or merge-conflict); the commit stays local for the next run.
@@ -128,8 +164,7 @@ publish_to_origin() {
   # that one file conflicts every time. Everything else (new article files) merges
   # cleanly. The URL list is a dedupe ledger — the union of both sides is correct.
   if ! git fetch origin main --quiet; then
-    echo "✗ git fetch origin main failed — commit stays local, will be pushed next run."
-    exit 1
+    push_failed "git fetch origin main failed"
   fi
   if ! git merge-base --is-ancestor origin/main HEAD; then
     echo "▶ origin/main moved ahead (CI publisher) — merging…"
@@ -140,7 +175,7 @@ publish_to_origin() {
         echo "$CONFLICTS"
         git merge --abort
         RESULT="merge-conflict"
-        exit 1
+        push_failed "merge conflict outside the published ledger"
       fi
       node -e '
         const fs = require("fs");
@@ -173,16 +208,14 @@ publish_to_origin() {
   # commit is this job's own output"; the guard logs each use.
   if ! GIT_TERMINAL_PROMPT=0 OPS_PREPUSH_JOB_BASE="$(git rev-parse origin/main)" \
     git -c credential.helper=store push origin main; then
-    echo "✗ git push failed — commit stays local, will be pushed next run."
-    exit 1
+    push_failed "git push origin main failed"
   fi
 
   # A publish is only done when origin actually moved. "committed" and "pushed"
   # have both lied before — the log stayed green while articles piled up locally.
   BEHIND="$(git rev-list --count origin/main..main)"
   if [ "$BEHIND" != "0" ]; then
-    echo "✗ push reported success but origin/main is still ${BEHIND} commit(s) behind."
-    exit 1
+    push_failed "push reported success but origin/main is still ${BEHIND} commit(s) behind"
   fi
   RESULT="ok"; PUSHED="yes"
   echo "✓ pushed — origin/main advanced. Vercel will deploy the new articles."

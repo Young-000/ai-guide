@@ -303,6 +303,62 @@ describe('publish-local.sh', () => {
     h.git('remote', 'set-url', 'origin', goodOrigin);
   });
 
+  describe('push failure alert', () => {
+    // Stub for slack-bot-send.sh: records "<bot> <channel> <message>" one line per call.
+    const alertEnv = (): Record<string, string> => {
+      const log = path.join(h.tmp, 'alerts.log');
+      const stub = path.join(h.tmp, 'alert-stub.sh');
+      fs.writeFileSync(stub, '#!/usr/bin/env bash\nprintf "%s|%s|%s\\n" "$1" "$2" "$3" >> "$ALERT_LOG"\n');
+      fs.chmodSync(stub, 0o755);
+      return { AI_GUIDE_ALERT_CMD: stub, AI_GUIDE_ALERT_STATE: path.join(h.tmp, 'alert.state'), ALERT_LOG: log };
+    };
+    const alerts = (): string[] => {
+      const log = path.join(h.tmp, 'alerts.log');
+      return fs.existsSync(log) ? fs.readFileSync(log, 'utf8').trim().split('\n') : [];
+    };
+    const breakOrigin = (): void => {
+      h.git('remote', 'set-url', 'origin', path.join(h.tmp, 'missing.git'));
+    };
+    const late = { ko: { 'late.md': GOOD('late', 'ko') }, en: { 'late.md': GOOD('late', 'en') } };
+
+    it('logs a PUSH FAILED line with the stranded commit count and alerts main-checklist', () => {
+      breakOrigin();
+      const failed = h.run(late, 0, alertEnv());
+
+      expectExit(failed, 1);
+      expect(failed.stdout).toMatch(/^PUSH FAILED: .*1 commit/m);
+      expect(alerts()).toHaveLength(1);
+      expect(alerts()[0]).toMatch(/^ceo\|C0BK57317B2\|.*푸시/);
+    });
+
+    it('does not repeat the alert on every run while the failure persists', () => {
+      breakOrigin();
+      const env = alertEnv();
+      expectExit(h.run(late, 0, env), 1);
+      const again = h.run(null, 1, env);
+
+      expectExit(again, 1);
+      expect(again.stdout).toMatch(/^PUSH FAILED:/m);
+      expect(alerts()).toHaveLength(1);
+    });
+
+    it('still fails loudly when the alert command itself is missing', () => {
+      breakOrigin();
+      const failed = h.run(late, 0, { AI_GUIDE_ALERT_CMD: path.join(h.tmp, 'nope.sh') });
+
+      expectExit(failed, 1);
+      expect(failed.stdout).toMatch(/^PUSH FAILED:/m);
+    });
+
+    it('stays silent on a healthy publish', () => {
+      const ok = h.run(late, 0, alertEnv());
+
+      expectExit(ok, 0);
+      expect(ok.stdout).not.toMatch(/PUSH FAILED/);
+      expect(alerts()).toHaveLength(0);
+    });
+  });
+
   it('refuses to publish when the checkout is not on main', () => {
     const before = h.git('rev-parse', 'origin/main');
     h.git('checkout', '-b', 'feature/x');
