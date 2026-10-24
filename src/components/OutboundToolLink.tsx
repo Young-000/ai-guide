@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { trackToolClick, track } from '@/lib/analytics';
+import { firstTouchProperties } from '@/lib/first-touch';
 import { buildOutclickPayload } from '@/lib/outclick';
 
 interface OutboundToolLinkProps {
@@ -24,7 +25,12 @@ export default function OutboundToolLink({
 }: OutboundToolLinkProps): JSX.Element {
   const handleClick = useCallback((): void => {
     trackToolClick(toolName, sourcePage);
-    void track('tool_outbound_click', { slug: toolName, isAffiliate });
+    try {
+      // 첫 접점(ft_*)을 함께 싣는다 — 이 클릭이 어느 캠페인의 것인지 읽으려면 필요하다.
+      void track('tool_outbound_click', { slug: toolName, isAffiliate, ...firstTouchProperties() });
+    } catch {
+      // 계측 실패가 이동을 막으면 안 된다
+    }
 
     /*
       🔴 우리 DB 에도 남긴다 (2026-09-26).

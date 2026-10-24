@@ -1,6 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { track } from '@/lib/analytics';
+import { firstTouchProperties } from '@/lib/first-touch';
 import { buildOutclickPayload } from '@/lib/outclick';
 
 interface OutclickLinkProps {
@@ -34,6 +36,8 @@ export default function OutclickLink({
     try {
       const payload = buildOutclickPayload(network, placement);
       navigator.sendBeacon?.('/api/visit', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+      // 어느 캠페인이 낸 클릭인지는 첫 접점이 알려준다. DB 집계(/api/visit)는 source/medium 만 받으므로 Amplitude 로 보낸다.
+      void track('affiliate_outclick', { network, placement, ...firstTouchProperties() });
     } catch {
       // 계측 실패가 이동을 막으면 안 된다
     }
