@@ -1,6 +1,6 @@
 # LESSONS — 자율 사이클이 시작 전 반드시 읽는 함정 목록
 
-- 2026-10-24 SubscribeBox 기사 상세 배치 백로그가 같은 문구로 5곳에 중복돼 사이클마다 다시 집혔다(구현은 `NewsArticleView.tsx:353`, 테스트 통과) — 백로그 항목을 [>] 로 바꿀 때는 같은 문구의 중복 줄을 `grep -n` 으로 전부 함께 닫는다.
+- 2026-10-24 SubscribeBox 기사 상세 배치 백로그가 같은 문구로 7곳에 중복돼 사이클마다 다시 집혔다(구현은 `NewsArticleView.tsx:353`, 테스트 통과) — 백로그 항목을 [>] 로 바꿀 때는 같은 문구의 중복 줄을 `grep -n` 으로 전부 함께 닫는다.
 - 2026-10-24 "트래픽 카운터 배선" 백로그가 [todo]로 4주 이월됐지만 `server-page-view.ts`·`PageViewTracker`·`/api/pageview`가 이미 있었다 — 착수 전 `grep page_views src` 로 실재부터 확인하고, 이 샌드박스에선 `revenue-funnel-cli.test.ts` 2건이 `listen EPERM`(로컬 포트 바인딩 차단)으로 verify RED 가 되니 코드 회귀로 오인하지 않는다.
 - 2026-10-24 "발행을 launchd 로 분리" 백로그는 이미 반증된 경로(TCC)였고 발행은 crontab 으로 돌고 있었다 — 백로그 문구가 LESSONS 와 충돌하면 만들기 전에 `~/.claude/logs/ai-guide-publish.status` 와 LESSONS 부터 대조한다. CI 알림은 `SLACK_WEBHOOK_URL` 시크릿(오너 등록)이 있어야 Slack 으로 가고, 없으면 `::error::` 로그만 남는다.
 - 2026-10-23 피드 pubDate 는 날짜만 있어 UTC 자정으로 찍힌다 — 최신 항목 나이는 항상 최대 하루 부풀려지므로 신선도 기준(`verify:feed` 3일)은 그만큼 여유를 둔다. 첫 실행에서 10/20 이후 발행 중단(`generation-failed` 연속)이 바로 잡혔다: 발행 점검은 `~/.claude/logs/ai-guide-publish.status` 와 함께 본다.
