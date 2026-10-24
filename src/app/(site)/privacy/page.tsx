@@ -12,7 +12,7 @@ export default function PrivacyPage(): JSX.Element {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-gray-900">개인정보처리방침</h1>
-      <p className="mt-2 text-sm text-gray-500">시행일: 2026년 6월 27일</p>
+      <p className="mt-2 text-sm text-gray-500">시행일: 2026년 10월 24일</p>
 
       <p className="mt-6 text-gray-700 leading-relaxed">
         {businessInfo.bizName}(이하 &quot;운영자&quot;)는 {businessInfo.serviceName}(이하
@@ -221,6 +221,14 @@ export default function PrivacyPage(): JSX.Element {
           본 방침의 내용이 변경될 경우, 변경 사항과 시행일을 명시하여 사이트 내 공지사항 또는 이
           페이지를 통해 안내합니다.
         </p>
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">부칙</h2>
+        <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
+          <li>이 방침은 2026년 10월 24일부터 시행합니다. (종전 시행일: 2026년 6월 27일)</li>
+          <li>2026-10-24: 유입 경로 기록 쿠키(aiwire_ft, 30일) 추가</li>
+        </ul>
       </section>
     </div>
   );

@@ -39,4 +39,13 @@ describe('PrivacyPage', () => {
     expect(screen.getByText(/UTM 값, 광고 클릭 식별자/)).toBeInTheDocument();
     expect(screen.getAllByText(/30일/).length).toBeGreaterThanOrEqual(2);
   });
+
+  it('pins the effective date to 2026년 10월 24일 and records the previous date and the revision in 부칙', () => {
+    const { container } = render(<PrivacyPage />);
+    const text = container.textContent ?? '';
+
+    expect(text).toContain('시행일: 2026년 10월 24일');
+    expect(text).toContain('종전 시행일: 2026년 6월 27일');
+    expect(text).toContain('2026-10-24: 유입 경로 기록 쿠키(aiwire_ft, 30일) 추가');
+  });
 });
