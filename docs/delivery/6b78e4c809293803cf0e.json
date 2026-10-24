@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**뉴스 상세 \"관련 기사\" 내부 링크 블록** (같은 섹션/토픽 3~5건) (근거: thin tag·고립 페이지 이슈, 내부링크로 크롤 깊이·색인성 개선. verify: 상세 페이지에 관련 링크 렌더 + 테스트)",
+  "state": "done",
+  "reviewed_head": "2931d304b1a3bd6c4f0bd921a25cbdafa5719d1e",
+  "verified_head": "2931d304b1a3bd6c4f0bd921a25cbdafa5719d1e",
+  "merge_commit": "6a50905d95ad7206e3e7cd71fdc77848353cd67a",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/44",
+  "review": "APPROVE:  `[>] 리뷰 대기`로 함께 닫혔습니다. 전날 남긴 교훈(\"중복 줄은 전부 함께 닫는다\")을 따랐습니다.\n\n**실행한 검증**\n- `npx jest NewsArticleView.test.tsx`: 4/4 통과\n- `npx tsc --noEmit`: 오류 0개 (exit 0)\n- `npx eslint` (테스트 파일): 지적 0건\n- 전체 `npx jest`: 444건 중 442건 통과. 실패 2건은 `scripts/__tests__/revenue-funnel-cli.test.ts`이며, 원인은 `listen EPERM: operation not permitted 127.0.0.1`입니다. 샌드박스가 로컬 포트 사용을 막아서 생긴 실패이고, 이 파일은 diff에 없습니다. LESSONS에 이미 기록된 증상과 같습니다.\n\n**머지를 막지 않는 약점 2가지**\n- 링크 테스트가 관련 기사 블록 안이 아니라 페이지 전체 링크를 모아서 확인합니다. 그래서 같은 주소가 다른 곳에 생기면 블록이 사라져도 테스트가 통과할 수 있습니다.\n- 테스트 이름은 \"제목을 렌더한다\"인데, 제목 텍스트는 실제로 확인하지 않습니다.\n\nFOLLOWUP: 관련 기사 링크 검사를 블록 안으로 좁히기 · src/components/news/__tests__/NewsArticleView.test.tsx:50 · 페이지 전체 링크를 모아 확인해서 같은 주소가 다른 곳에 생기면 블록이 사라져도 통과함\nFOLLOWUP: 테스트 이름은 '제목 렌더'인데 제목 텍스트를 확인하지 않음 · src/components/news/__tests__/NewsArticleView.test.tsx:46 · 테스트 이름과 실제 확인 내용이 다름\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792827261
+}
