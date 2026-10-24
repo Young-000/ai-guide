@@ -35,3 +35,24 @@ describe('NewsArticleView — 구독 진입점', () => {
     expect(body.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
+
+describe('NewsArticleView — 관련 기사 블록', () => {
+  const related = [
+    { ...article, slug: 'related-a', title: '관련 기사 A' },
+    { ...article, slug: 'related-b', title: '관련 기사 B' },
+    { ...article, slug: 'related-c', title: '관련 기사 C' },
+  ];
+
+  it('관련 기사가 있으면 제목과 상세 링크를 렌더한다', () => {
+    render(<NewsArticleView lang="ko" article={article} relatedItems={related} />);
+    const section = screen.getByRole('region', { name: '관련 기사' });
+    expect(section).toBeInTheDocument();
+    const hrefs = screen.getAllByRole('link').map((link) => link.getAttribute('href'));
+    expect(hrefs).toEqual(expect.arrayContaining(related.map((item) => `/news/${item.slug}`)));
+  });
+
+  it('관련 기사가 없으면 블록을 그리지 않는다', () => {
+    render(<NewsArticleView lang="ko" article={article} relatedItems={[]} />);
+    expect(screen.queryByRole('region', { name: '관련 기사' })).not.toBeInTheDocument();
+  });
+});
