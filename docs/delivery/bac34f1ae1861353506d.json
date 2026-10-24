@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**SubscribeBox를 뉴스 상세 페이지 하단에 배치** — 홈에만 있는 구독 진입점을 실제 트래픽 유입원(뉴스 상세)로 확장. (근거: 구독 9주+ 연속 0건, 병목은 발행량이 아니라 전환 진입점 위치. verify: /news/[slug] 렌더에 SubscribeBox 존재 + 테스트)",
+  "state": "done",
+  "reviewed_head": "819b1edd3232b26036af4776947608f1d8a55ab0",
+  "verified_head": "819b1edd3232b26036af4776947608f1d8a55ab0",
+  "merge_commit": "c871937a3054f8b4e4fc24ceb13e3b1e0be57f3c",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/43",
+  "review": "APPROVE: `docs/NORTHSTAR.md` 변경 없음, Playwright 스냅샷 변경 없음.\n- 자격증명·Supabase·운영 반영과 관련된 내용 없음. 돈·외부 노출·방향 전환 같은 D1 사항도 없습니다.\n- 상태 표기 규칙: 리뷰 증거 없이 `[x]`·완료로 표시하지 않고 `[>]`를 썼으므로 대표 규정(2026-07-20)에 맞습니다.\n\n**[PASS] PRD 방향**\n- 구독 진입점을 넓히는 방향은 그대로이고, 백로그를 정리했을 뿐입니다. 이탈은 없습니다.\n\n**비차단 지적**\n- 중복 줄 5개를 `[>]`로 두면 \"리뷰 대기\"로 계속 쌓입니다. 이미 main에 머지된 구현이므로 `[skip]`이나 `[done]`으로 바꾸고 원본 23행을 가리키는 편이 정확합니다.\n- 리필 단계가 똑같은 할 일을 매주 새로 붙여 넣는 것이 이 중복의 근본 원인입니다. 리필이 중복을 걸러내지 않는 한 같은 문제가 다시 생깁니다.\n\nFOLLOWUP: 중복 [>] 5줄을 [skip]으로 바꾸고 원본 23행을 가리키기 · docs/BACKLOG.md:51,67,84,100,117 · 이미 main에 머지된 구현이라 \"리뷰 대기\"가 영구히 남는다\nFOLLOWUP: 구독 문구 재작성 [todo]가 두 줄로 중복됨, 한 줄로 합치기 · docs/BACKLOG.md:101,118 · 같은 할 일이 사이클마다 다시 집히는 문제가 반복된다\nFOLLOWUP: PM 리필이 기존 백로그와 같은 제목은 다시 붙이지 않게 막기 · pm-cycle 리필 단계 · 같은 할 일이 7번 복제된 근본 원인\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792814898
+}
