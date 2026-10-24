@@ -1,5 +1,6 @@
 # LESSONS — 자율 사이클이 시작 전 반드시 읽는 함정 목록
 
+- 2026-10-25 `publish-local.sh` 는 push 실패 시 이미 exit 1·`rev-list` 검사가 있었고 빠진 건 로그 `PUSH FAILED` 라인과 Slack 경보뿐이었다(백로그의 ":88 성공 종료" 서술은 낡음) — 착수 전 스크립트를 읽어 실재부터 확인한다. 경보는 하루 5회 실행이 같은 말을 반복하지 않게 6시간 억제(`AI_GUIDE_ALERT_THROTTLE_SECONDS`)하고 전송 실패가 종료코드를 바꾸지 못하게 한다.
 - 2026-10-24 "관련 기사" 블록은 `selectRelatedArticles`→`page.tsx`→`NewsArticleView` 로 이미 배선돼 있었는데(#31) 백로그가 [todo] 6곳에 이월됐다 — 빠진 건 렌더 테스트뿐이었다. 착수 전 `grep selectRelatedArticles src` 로 확인하고, 관련 개수 상한은 `MAX_RELATED_ITEMS=3` 이다.
 - 2026-10-24 SubscribeBox 기사 상세 배치 백로그가 같은 문구로 7곳에 중복돼 사이클마다 다시 집혔다(구현은 `NewsArticleView.tsx:353`, 테스트 통과) — 백로그 항목을 [>] 로 바꿀 때는 같은 문구의 중복 줄을 `grep -n` 으로 전부 함께 닫는다.
 - 2026-10-24 "트래픽 카운터 배선" 백로그가 [todo]로 4주 이월됐지만 `server-page-view.ts`·`PageViewTracker`·`/api/pageview`가 이미 있었다 — 착수 전 `grep page_views src` 로 실재부터 확인하고, 이 샌드박스에선 `revenue-funnel-cli.test.ts` 2건이 `listen EPERM`(로컬 포트 바인딩 차단)으로 verify RED 가 되니 코드 회귀로 오인하지 않는다.
