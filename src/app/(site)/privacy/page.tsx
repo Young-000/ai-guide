@@ -62,6 +62,10 @@ export default function PrivacyPage(): JSX.Element {
             파기합니다.
           </li>
           <li>자동 수집 서버 로그: 수집일로부터 최대 6개월간 보관 후 삭제합니다.</li>
+          <li>
+            유입 경로 정보(aiwire_ft): 이용자의 브라우저에만 저장되며 30일 후 만료됩니다. 우리
+            서버에는 보관하지 않습니다.
+          </li>
         </ul>
         <p className="mt-3 text-sm text-gray-700 leading-relaxed">
           법령에 특별한 규정이 있는 경우 해당 기간 동안 보관합니다.
@@ -94,6 +98,11 @@ export default function PrivacyPage(): JSX.Element {
           본 사이트는 이용 편의 향상과 광고 제공을 위해 쿠키를 사용합니다. 쿠키는 브라우저에
           저장되는 소량의 데이터로, 브라우저 설정에서 거부하거나 삭제할 수 있습니다. 단, 쿠키를
           거부하면 일부 서비스 이용이 제한될 수 있습니다.
+        </p>
+        <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+          유입 경로 쿠키(aiwire_ft): 처음 방문했을 때의 유입 정보(UTM 값, 광고 클릭 식별자, 유입
+          사이트 주소의 도메인)를 30일 동안 저장합니다. 같은 내용이 브라우저 로컬 저장소에도
+          저장되며, 브라우저 설정에서 삭제할 수 있습니다.
         </p>
       </section>
 

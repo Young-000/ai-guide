@@ -31,4 +31,12 @@ describe('PrivacyPage', () => {
       screen.getByRole('link', { name: businessInfo.email })
     ).toHaveAttribute('href', `mailto:${businessInfo.email}`);
   });
+
+  it('discloses the first-touch cookie (aiwire_ft): name, contents and 30-day retention', () => {
+    render(<PrivacyPage />);
+    // retention (section 3) + cookie (section 5)
+    expect(screen.getAllByText(/aiwire_ft/).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText(/UTM 값, 광고 클릭 식별자/)).toBeInTheDocument();
+    expect(screen.getAllByText(/30일/).length).toBeGreaterThanOrEqual(2);
+  });
 });
