@@ -103,6 +103,16 @@ export default function PrivacyPage(): JSX.Element {
               이용하는 시점에 인터넷을 통해 전송 / 보유 기간 분석 도구의 보관 정책에 따라 기간이
               지나면 삭제되며, 이용자가 처리정지·삭제를 요청하면 지체 없이 처리합니다.
             </p>
+            <p className="mt-1">
+              이전받는 자의 연락처: privacy@amplitude.com / Amplitude, Inc. Attn: Privacy, 201 Third
+              Street, Suite 200, San Francisco, CA 94103 (출처: https://amplitude.com/privacy)
+            </p>
+            <p className="mt-1">
+              이전 거부 방법 및 거부 시 영향: 브라우저의 추적 방지·콘텐츠 차단 설정을 켜거나, 쿠키와
+              사이트 데이터(Amplitude가 기기 식별자를 저장하는 로컬 저장소 localStorage 포함)를
+              삭제하거나, 개인정보 보호책임자에게 처리 정지를 요청하여 Amplitude로의 이전을 거부할 수
+              있습니다. 거부해도 서비스 이용에는 제한이 없습니다.
+            </p>
           </li>
         </ul>
       </section>

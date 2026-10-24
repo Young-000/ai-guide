@@ -75,4 +75,24 @@ describe('PrivacyPage', () => {
 
     expect(container.textContent).toContain('2026-10-24: Amplitude 고지 추가');
   });
+
+  it('gives the Amplitude recipient contact taken from amplitude.com/privacy', () => {
+    render(<PrivacyPage />);
+    const text = screen.getByText('Amplitude, Inc.').closest('li')?.textContent ?? '';
+
+    expect(text).toContain('privacy@amplitude.com');
+    expect(text).toContain('Amplitude, Inc. Attn: Privacy, 201 Third Street, Suite 200, San Francisco, CA 94103');
+    expect(text).toContain('https://amplitude.com/privacy');
+  });
+
+  it('says how to refuse the Amplitude transfer and that refusing does not limit the service', () => {
+    render(<PrivacyPage />);
+    const text = screen.getByText('Amplitude, Inc.').closest('li')?.textContent ?? '';
+
+    expect(text).toContain('추적 방지·콘텐츠 차단 설정');
+    expect(text).toContain('쿠키와 사이트 데이터');
+    expect(text).toContain('localStorage');
+    expect(text).toContain('개인정보 보호책임자에게 처리 정지를 요청');
+    expect(text).toContain('거부해도 서비스 이용에는 제한이 없습니다');
+  });
 });
