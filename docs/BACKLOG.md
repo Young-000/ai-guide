@@ -14,6 +14,7 @@
 - [todo] **(편집) 사람이 쓰는 해설 기사 주 2~3편** — 요약이 아니라 해설: 같은 주제의 여러 보도를 묶어 "한국 사용자에게 무엇이 바뀌나"를 쓴다(예: 요금제 한도·국내 출시 여부·실사용 비교). acceptance: 편당 한국어 2,500자 이상 고유 본문, 원문 2개 이상 인용·링크, 작성자 이름과 검수일 표시, 같은 주제 자동 기사와 문장 겹침 없음 — owner:editor — since:2026-10-25 — link:-
 - [todo] **(편집) 가이드 20편 두껍게** — `/situations`·`/tips` 중 사람 방문 상위 20편에 직접 써 본 결과(입력 프롬프트·실제 출력 캡처·실패 사례)를 넣는다. acceptance: 편당 추가 고유 본문 1,500자 이상 + 캡처 1장 이상, 실화면 캡처 리뷰 — owner:editor — since:2026-10-25 — link:-
 - [todo] **같은 사건 중복 기사 묶기** — worklist 에 같은 제목이 매체만 바꿔 3번 들어온다(10/25 Ethereum 건). acceptance: fetch 단계 제목 정규화 중복 제거 + 테스트 — owner:dev — since:2026-10-25 — link:-
+- [todo] **AdFit 광고4(160×600, DAN-byVJJjQEZV0vhqDw)는 화면 폭 1536px 미만에서 요청 자체가 없다** — `NewsArticleView.tsx` 의 `hidden 2xl:block` 래퍼라 숨겨진 칸에는 로더가 광고를 부르지 않는다(2026-10-25 실제 크롬 1394px: `serv.ds.kakao.com/sdk/banner` 요청 1건, 광고2 단위만). 모바일·노트북 방문자에게는 광고2(300×250) 하나만 뜬다. 광고2는 같은 날 외부 광고주 배너로 채워진 것을 확인(`docs/ux-evidence/20261025-adfit-article-real-chrome.jpg`). acceptance: 광고4를 기사 하단 두 번째 300×250 자리로 옮길지, 데스크톱 전용으로 둘지 결정 → 375·1280·1536 실화면 캡처로 각 폭의 요청 단위 수 기록 — owner:dev — since:2026-10-25 — link:-
 - [todo] **재심사 요청 시점** — 위 noindex 1단계·/about 정정·해설 기사 4편 이상이 배포된 뒤, 봇 제외 방문 추세를 보고 대표와 정한다 (사람 방문 일 17~148, 10/17 NORTHSTAR) — owner:pm — since:2026-10-25 — link:-
 
 ## 2026-10-19 Google Ads / team-infra handoff
