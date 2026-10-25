@@ -99,7 +99,7 @@
 
 | 항목 | 상태 | 켜는 법 |
 |---|---|---|
-| Amplitude 트래킹 | 사장님 세팅 예정 | Amplitude 프로젝트 → API키 → 양 사이트 Vercel env `NEXT_PUBLIC_AMPLITUDE_API_KEY`. tenb 795910은 별개(재사용 금지) |
+| Amplitude 트래킹 | **aiwire 완료 (2026-10-25)** — Vercel `ai-guide` Production·Preview 에 `NEXT_PUBLIC_AMPLITUDE_API_KEY` 설정(전용 프로젝트). hottrend(trend-radar)는 별도 기존 키. | 키는 배포(머지 후 재배포)부터 적용된다. 이 날 Amplitude 지표가 0에서 뛴다 — 전후 비교 금지. tenb 795910은 별개(재사용 금지) |
 | 제휴 수익 | 사장님 세팅 예정 | 프로그램 가입 → ID를 `ai-guide/src/lib/affiliateLinks.ts` config에 (`ai-guide/docs/AFFILIATE.md` 참고). null→실제URL로 바꾸면 자동 활성 |
 | 자동게시 (X/Threads) | 사장님 세팅 예정 | X API(OAuth1.0a, tweet.write) / Meta Threads 토큰 → cron에서 RSS(`/feed.xml`) 기반 게시. 공유버튼·피드는 이미 완성 |
 | **ESP 뉴스레터 발송** ⭐ | **기록(미연결)** | 아래 상세 |

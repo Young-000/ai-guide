@@ -36,6 +36,10 @@ export default function PrivacyPage(): JSX.Element {
           <li>
             자동 수집되는 서버 접속 로그: IP 주소, 접속 일시, 브라우저 정보, 방문 페이지
           </li>
+          <li>
+            이용 기록(분석 도구 Amplitude): 페이지 조회·클릭 등 이용 기록, 브라우저·기기 정보, 임의로
+            생성한 기기 식별자. 이 분석 도구로는 IP 주소를 전송하지 않습니다.
+          </li>
           <li>쿠키 및 유사 기술: 광고 및 서비스 개선 목적</li>
         </ul>
       </section>
@@ -94,12 +98,13 @@ export default function PrivacyPage(): JSX.Element {
             <p className="font-semibold text-gray-900">Amplitude, Inc.</p>
             <p className="mt-1">
               위탁 업무: 서비스 이용 행태 분석 — 페이지 조회·클릭 등 이용 기록, 브라우저·기기 정보,
-              광고 유입 정보(UTM 값, 광고 클릭 식별자, 유입 사이트 주소의 도메인)를 수집·분석합니다.
+              광고 유입 정보(UTM 값, 광고 클릭 식별자, 유입 사이트 주소의 도메인과 경로 — 검색어 등
+              쿼리와 해시는 제외)를 수집·분석합니다. IP 주소는 전송하지 않도록 설정했습니다.
               이용자의 이름·이메일 등 직접 식별 정보와 결합하지 않습니다.
             </p>
             <p className="mt-1">
               국외 이전: 이전받는 자 Amplitude, Inc. / 이전 국가 미국(미국에 있는 Amplitude 서버) /
-              이전 항목 위 이용 기록·기기 정보·광고 유입 정보 / 이전 시기 및 방법 이용자가 서비스를
+              이전 항목 위 이용 기록·기기 정보·임의 기기 식별자·광고 유입 정보(IP 주소 제외) / 이전 시기 및 방법 이용자가 서비스를
               이용하는 시점에 인터넷을 통해 전송 / 보유 기간 분석 도구의 보관 정책에 따라 기간이
               지나면 삭제되며, 이용자가 처리정지·삭제를 요청하면 지체 없이 처리합니다.
             </p>
@@ -109,7 +114,7 @@ export default function PrivacyPage(): JSX.Element {
             </p>
             <p className="mt-1">
               이전 거부 방법 및 거부 시 영향: 브라우저의 추적 방지·콘텐츠 차단 설정을 켜거나, 쿠키와
-              사이트 데이터(Amplitude가 기기 식별자를 저장하는 로컬 저장소 localStorage 포함)를
+              사이트 데이터(Amplitude가 기기 식별자를 저장하는 쿠키·로컬 저장소 localStorage 포함)를
               삭제하거나, 개인정보 보호책임자에게 처리 정지를 요청하여 Amplitude로의 이전을 거부할 수
               있습니다. 거부해도 서비스 이용에는 제한이 없습니다.
             </p>
@@ -254,6 +259,7 @@ export default function PrivacyPage(): JSX.Element {
           <li>이 방침은 2026년 10월 24일부터 시행합니다. (종전 시행일: 2026년 6월 27일)</li>
           <li>2026-10-24: 유입 경로 기록 쿠키(aiwire_ft, 30일) 추가</li>
           <li>2026-10-24: Amplitude 고지 추가</li>
+          <li>2026-10-25: Amplitude 수집 범위 정정 (IP 주소 미전송, 유입 사이트 주소는 도메인·경로까지)</li>
         </ul>
       </section>
     </div>

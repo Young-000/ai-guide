@@ -95,4 +95,16 @@ describe('PrivacyPage', () => {
     expect(text).toContain('개인정보 보호책임자에게 처리 정지를 요청');
     expect(text).toContain('거부해도 서비스 이용에는 제한이 없습니다');
   });
+
+  it('states what Amplitude really receives: no IP address, referrer only as domain and path', () => {
+    const { container } = render(<PrivacyPage />);
+    const item = (screen.getByText('Amplitude, Inc.').closest('li')?.textContent ?? '').replace(/\s+/g, ' ');
+    const text = (container.textContent ?? '').replace(/\s+/g, ' ');
+
+    expect(item).toContain('IP 주소는 전송하지 않도록 설정했습니다');
+    expect(item).toContain('유입 사이트 주소의 도메인과 경로');
+    expect(item).toContain('쿼리와 해시는 제외');
+    expect(text).toContain('이 분석 도구로는 IP 주소를 전송하지 않습니다');
+    expect(text).toContain('2026-10-25: Amplitude 수집 범위 정정');
+  });
 });
