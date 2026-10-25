@@ -31,6 +31,11 @@
 - [todo] 모바일 기사 상세에 쿠팡 파트너스 텍스트 링크 대체 노출 — `src/components/CoupangBanner.tsx:41` 배너가 `hidden sm:block` 이라 640px 미만에선 아무것도 안 보인다. 같은 자리에 모바일 전용 텍스트 링크 1개(기존 승인 링크 재사용, subId `aiwire-article-m`, OutclickLink 로 아웃클릭 기록)를 둔다. 본문 안에는 넣지 않는 기존 원칙 유지, 새 배너 발급·새 제휴 가입 없음. verify: 375px 렌더 테스트에 링크·rel=sponsored·subId 존재 + 클릭 시 outclick 기록 테스트 + 375px 캡처 docs/ux-evidence. (근거: 아웃클릭 4주+ 0, 유일하게 승인된 수익 경로가 모바일 독자에게 노출 0) — owner:dev — since:2026-10-25 — link:-
 - [todo] **미들웨어 page_view에 UA 봇 필터 추가(절대 최우선·측정 신뢰도 메타 블로커)** — `src/middleware.ts:20`이 UA 검사 없이 모든 GET을 `trackServerPageView`로 센다. 봇/크롤러 UA(`bot|crawl|spider|slurp|Googlebot|bingbot|GPTBot|ClaudeBot|facebookexternalhit|headless` 등, 대소문자 무시) 또는 `navigator`-less 요청이면 카운트 스킵. UA 판별은 순수 함수로 분리(`src/lib/is-bot.ts`)해 단위 테스트. (근거: page_views가 봇 오염으로 실사용자 KPI 파괴 — 일 4k~16k·상위 전부 태그 인덱스·max 932/path. 이걸 안 고치면 SUNSET/성장 판정 자체가 불가능한 메타 블로커. verify: `is-bot.test.ts`가 Googlebot/GPTBot/ClaudeBot UA=봇, Chrome/Safari UA=사람 판정 GREEN + 봇 UA 요청 시 upsert 미호출) (추가 확인: prefetch·화면 전환용 내부 요청과 GET 이 아닌 요청도 세지 않는지 함께 점검하고 테스트에 넣는다 - PR #30 리뷰 후속) — owner:dev — since:2026-09-20 — link:-
 
+## 2026-10-25 외부 플레이북 흡수 (쇼츠·블로그 홈판·X)
+
+- [todo] X 정기 게시 설계안: 하루 1~2편 본문 완결형 AI 뉴스 카드 형식, utm 규칙, 게시 계정 후보, 대표 게이트 질문 초안을 docs/marketing/에 작성 (게시와 계정 개설 없음). verify: docs/marketing/x-post-design.md에 형식·utm 규칙·계정 후보·게이트 질문 4개 절 존재, 게시·계정 개설 diff 0 — owner:marketing — since:2026-10-25 — link:-
+- [todo] 네이버 블로그 홈판형 AI 뉴스 글 형식 초안 3편: 사건형 제목, 썸네일 문구, aiwire.news로 가는 utm 링크 규칙 (게시 없음, 네이버 계정 개설은 대표 몫). verify: docs/marketing/naver-home/ 아래 초안 3개, 각 파일에 제목·썸네일 문구·utm 링크 — owner:marketing — since:2026-10-25 — link:-
+
 ## 2026-10-19 Google Ads / team-infra handoff
 
 - [todo] Prepare focused mobile newsletter landing: /news signup currently ~263028px below top; no paid traffic before fulfillment and conversion proof (acceptance: 375x812 signup CTA evidence and truthful prelaunch-delivery wording, independent visual review; no external email sent) — owner:designer — since:2026-10-19 — link:teamY/docs/codex-handoff/2026-10-19/out/report.md
