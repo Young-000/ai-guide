@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "weekly PM ai-guide 2026-10-25",
+  "state": "recorded",
+  "reviewed_head": null,
+  "verified_head": "09703217ca568f00fd1aef0eea745e29ca4544bd",
+  "merge_commit": null,
+  "pull_request": null,
+  "review": "PM decision: REFILL (planning record, not engineering approval)",
+  "recorded_at": 1792910102
+}
