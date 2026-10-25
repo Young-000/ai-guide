@@ -1,5 +1,21 @@
 # BACKLOG — ai-guide 야간 자율 사이클
 
+## 🔴 2026-10-25 AdSense 재심사 (대표 지시: "더 좋은 컨텐츠로 다시 심사받을 수 있었으면")
+
+> 판정(콘솔 2026-10-09~): **주의 필요 — 가치가 별로 없는 콘텐츠.** 콘솔 문구: 신뢰할 수 있는 고품질 정보, 지속적인 큐레이션, **실제 사용자 관심**.
+> 원인(2026-10-25 실측): 기사 1,194쌍 전부 자동 생성. 한국어 본문(출처 줄 제외) 중앙값 313자, 1,037건이 400자 미만. 810건의 출처가 Google News RSS 인데
+> 그 피드는 제목 + 매체명뿐이라 **제목 한 줄로 기사를 썼다** (본문이 스스로 "보도 제목과 요약 수준"이라 적은 쌍 44건). 같은 사건이 여러 기사로 겹친다
+> (효소 발견 3건). 가이드 페이지(/situations·/tools·/tips·/use-cases 약 80개)도 본문 1,500~2,000자 수준. 근거: support.google.com/adsense/answer/81904 ·
+> publisherpolicies/answer/11190248(복제·재작성) · 11112688(자동 생성은 사람 검토 없이 광고 금지).
+
+- [>] (구현됨·리뷰 대기) **제목만 있는 RSS 항목은 기사로 쓰지 않는다** (`src/lib/news-source.ts`, 원문 120자 미만이면 건너뜀) + 본문이 "제목만 봤다"고 말하는 쌍은 쓰지 않는다 (`news-validate.ts`). ⚠️ 발행량이 크게 준다(10/25 worklist 8건 중 1건 통과) — 의도한 결과. verify: verify.sh GREEN — owner:dev — since:2026-10-25 — link:-
+- [todo] 🚦 **(D1·법률/신뢰) /about 의 "편집자가 사실 확인 및 최종 검수를 거쳐 게재" 문구가 사실과 다르다** — 발행은 크론 자동이고 사람 검수 단계가 없다. 둘 중 하나를 대표가 정한다: (a) 실제 검수 단계를 만든다(발행 전 사람 승인 큐) (b) 문구를 "AI가 작성하고 자동 검증을 거쳐 게재"로 고친다. (b)는 AdSense 에 자동 생성 사이트로 읽힌다 — 그래서 (a)를 권한다. acceptance: 결정 기록 → 문구와 실제 절차 일치 → 실화면 캡처 — owner:ceo — since:2026-10-25 — link:-
+- [todo] 🚦 **(제안·D1 인접) 얇은 기사 noindex** — 대상과 수: 본문이 제목만 봤다고 말하는 44쌍(ko 37·en 11 파일) / 한국어 본문 400자 미만 1,037쌍. 권장 1단계는 44쌍만, 2단계(얇은 기사 전체)는 아래 편집 항목이 자리를 채운 뒤. 기사는 지우지 않는다. acceptance: 조정자 승인 → `isThinArticle` 판정 + 기사 메타 robots·사이트맵 제외(tag thin 규칙과 같은 방식) → 배포 후 curl 로 robots 확인 — owner:ceo — since:2026-10-25 — link:-
+- [todo] **(편집) 사람이 쓰는 해설 기사 주 2~3편** — 요약이 아니라 해설: 같은 주제의 여러 보도를 묶어 "한국 사용자에게 무엇이 바뀌나"를 쓴다(예: 요금제 한도·국내 출시 여부·실사용 비교). acceptance: 편당 한국어 2,500자 이상 고유 본문, 원문 2개 이상 인용·링크, 작성자 이름과 검수일 표시, 같은 주제 자동 기사와 문장 겹침 없음 — owner:editor — since:2026-10-25 — link:-
+- [todo] **(편집) 가이드 20편 두껍게** — `/situations`·`/tips` 중 사람 방문 상위 20편에 직접 써 본 결과(입력 프롬프트·실제 출력 캡처·실패 사례)를 넣는다. acceptance: 편당 추가 고유 본문 1,500자 이상 + 캡처 1장 이상, 실화면 캡처 리뷰 — owner:editor — since:2026-10-25 — link:-
+- [todo] **같은 사건 중복 기사 묶기** — worklist 에 같은 제목이 매체만 바꿔 3번 들어온다(10/25 Ethereum 건). acceptance: fetch 단계 제목 정규화 중복 제거 + 테스트 — owner:dev — since:2026-10-25 — link:-
+- [todo] **재심사 요청 시점** — 위 noindex 1단계·/about 정정·해설 기사 4편 이상이 배포된 뒤, 봇 제외 방문 추세를 보고 대표와 정한다 (사람 방문 일 17~148, 10/17 NORTHSTAR) — owner:pm — since:2026-10-25 — link:-
+
 ## 2026-10-19 Google Ads / team-infra handoff
 
 - [todo] Prepare focused mobile newsletter landing: /news signup currently ~263028px below top; no paid traffic before fulfillment and conversion proof (acceptance: 375x812 signup CTA evidence and truthful prelaunch-delivery wording, independent visual review; no external email sent) — owner:product:design-01 — since:2026-10-19 — link:teamY/docs/codex-handoff/2026-10-19/out/report.md

@@ -199,4 +199,32 @@ describe('validateGeneratedPair', () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.reason).toMatch(/frontmatter slug 'valid-article' does not match 'other-slug'/);
   });
+
+  /*
+    2026-10-25 AdSense "가치가 별로 없는 콘텐츠": 제목만 보고 쓴 기사는 본문이 스스로 그렇게 말한다
+    ("현재 확인 가능한 정보는 보도 제목과 요약 수준이며", 2026-10-25 claude-duet-plan-limits).
+    그런 쌍은 쓰지 않는다 — 원문을 읽지 않고 다시 쓴 페이지다.
+  */
+  it.each([
+    '현재 확인 가능한 정보는 보도 제목과 요약 수준이며, 세부 기능은 원문에서 확인이 필요하다.',
+    '세부 내용은 원문에서 확인이 필요하다.',
+  ])('rejects a ko body that admits it only saw the headline: %s', (sentence) => {
+    const result = validateGeneratedPair({ ...pair, ko: `${VALID_KO}${sentence}\n` });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.reason).toMatch(/^ko: .*headline only/);
+  });
+
+  it.each([
+    'Details beyond the headline are not yet available.',
+    'Only the headline and a brief summary are available so far.',
+  ])('rejects an en body that admits it only saw the headline: %s', (sentence) => {
+    const result = validateGeneratedPair({ ...pair, en: `${VALID_EN}${sentence}\n` });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.reason).toMatch(/^en: .*headline only/);
+  });
+
+  it('keeps an ordinary cautious sentence (reported, not confirmed)', () => {
+    const cautious = `${VALID_KO}회사는 아직 공식 확인을 하지 않았다고 전해졌다.\n`;
+    expect(validateGeneratedPair({ ...pair, ko: cautious })).toEqual({ ok: true });
+  });
 });

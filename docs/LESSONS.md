@@ -1,4 +1,5 @@
 # LESSONS — 자율 사이클이 시작 전 반드시 읽는 함정 목록
+- 2026-10-25 **Google News RSS 의 description 은 제목 + 매체명뿐이다** — 생성기는 그 한 줄로 ko/en 기사를 써 왔고(810/1,194쌍), 모델이 본문에 "보도 제목과 요약 수준"이라고 적기까지 했다. AdSense "가치가 별로 없는 콘텐츠"의 직접 원인. 입력 텍스트의 양을 먼저 재고(`sourceSubstance`), 원문 없이 쓰지 않는다. 같은 날: AdFit 이 "빈 칸"이라는 일일 점검 값은 자동화 브라우저 판정이고, 실제 크롬에서는 외부 광고주 배너가 떴다(기사 페이지 300×250).
 - 2026-10-25 SubscribeBox 카피에 "매일 아침 3건" 같은 주기·건수를 쓰면 안 된다 — ESP 가 미연결(`PENDING-OWNER-ACTIONS.md` ESP 항목)이라 지금은 메일이 한 통도 안 나가고, 지키지 못할 약속이 된다. 발송이 켜질 때 문구에 주기를 넣고, 그 전엔 "첫 메일은 발송을 시작할 때"로 쓴다. 샌드박스에선 dev 서버 포트 바인딩이 막히므로 UI 캡처는 `renderToStaticMarkup`(jest `@jest-environment node`)로 HTML 을 만들고 `.next/static/css` 를 링크해 `file://` 로 찍는다(chromium 은 샌드박스 밖 실행 필요).
 
 - 2026-10-25 verify.sh 를 백그라운드로 돌리는 중에 같은 worktree 에서 또 돌리면 `.next` 를 둘이 써서 빌드가 엉뚱하게 RED 가 된다 — 한 번에 하나만 돌린다. `top-pages` 는 사람 방문(`page_views_human`)이 기준이고 `page_views` 는 크롤러 포함 총량이라 옆에 참고로만 둔다.

@@ -15,6 +15,7 @@ import { spawn } from 'node:child_process';
 import { DEFAULT_NEWS_MODEL, buildClaudeCliArgs } from './claude-cli-args';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
+import { hasSourceSubstance } from '../src/lib/news-source';
 import { isSlugTaken } from '../src/lib/news-slug-guard';
 import { classifyGenerationRun, validateGeneratedPair } from '../src/lib/news-validate';
 
@@ -42,10 +43,18 @@ if (!existsSync(worklistPath)) {
 }
 
 const worklist = JSON.parse(readFileSync(worklistPath, 'utf-8')) as Worklist;
-const items = worklist.items.slice(0, MAX_ARTICLES);
+// Headline-only items (Google News RSS gives title + outlet, nothing else) are not written:
+// rewriting a headline is the "low value content" AdSense flagged (src/lib/news-source.ts).
+// Filter before the cap so a later item with real source text still gets its slot.
+const writable = worklist.items.filter(hasSourceSubstance);
+const items = writable.slice(0, MAX_ARTICLES);
+const headlineOnly = worklist.items.length - writable.length;
+if (headlineOnly > 0) {
+  console.log(`${headlineOnly} headline-only item(s) skipped (no source text beyond the title).`);
+}
 
 if (items.length === 0) {
-  console.log('0 items in worklist — nothing to generate.');
+  console.log('0 items with source text in worklist — nothing to generate.');
   process.exit(0);
 }
 
