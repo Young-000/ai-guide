@@ -17,7 +17,8 @@
     "verify:sitemap": "node --import tsx scripts/verify-sitemap.ts",
     "verify:feed": "node --import tsx scripts/verify-feed.ts",
     "publish:local": "bash scripts/publish-local.sh",
-    "funnel": "tsx --env-file=.env.local scripts/revenue-funnel.ts"
+    "funnel": "tsx --env-file=.env.local scripts/revenue-funnel.ts",
+    "top-pages": "tsx --env-file=.env.local scripts/top-pages.ts"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.44.2",
