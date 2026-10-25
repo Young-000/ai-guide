@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { getAllNews } from '../src/lib/news';
 import { parseFeed, dedupeItems } from '../src/lib/news-feed';
 import type { FeedItem } from '../src/lib/news-feed';
+import { hasSourceSubstance } from '../src/lib/news-source';
 import {
   fetchTrendingKeywords,
   isAiRelatedKeyword,
@@ -186,8 +187,13 @@ async function main(): Promise<void> {
   // Dedup against published + existing articles
   const freshItems = dedupeItems(allItems, publishedUrls, existingTitles);
 
+  // Headline-only items (Google News: title + outlet) are dropped BEFORE the cap. Cutting the
+  // newest 8 first left no item with source text in the worklist (2026-10-25: the first one was #12).
+  const writable = freshItems.filter(hasSourceSubstance);
+  console.log(`  with source text: ${writable.length} of ${freshItems.length} fresh item(s)`);
+
   // Sort newest-first (nulls last), cap to MAX_ITEMS
-  const sorted = freshItems
+  const sorted = writable
     .slice()
     .sort((a, b) => {
       if (!a.publishedAt && !b.publishedAt) return 0;
