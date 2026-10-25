@@ -39,16 +39,16 @@ export default function SubscribeBox(): JSX.Element {
       </span>
 
       <h2 className="text-2xl font-bold text-slate-900">
-        매주 핵심 AI 소식, 한 번에 받기
+        중요한 AI 소식을 한국어 요약 메일로
       </h2>
       <p className="mt-2 text-slate-600 text-sm">
-        쏟아지는 AI·LLM 뉴스 중 꼭 알아야 할 것만 골라 메일로 보내드려요.
-        뉴스레터 발송이 시작되면 구독자분들께 가장 먼저 보내드립니다.
+        영어 기사를 찾아 읽지 않아도 돼요. 꼭 알아야 할 AI·LLM 소식만 골라 한국어로 요약해 드려요.
+        첫 메일은 발송을 시작할 때 이 주소로 보내요.
       </p>
 
       {state === 'success' ? (
         <p className="mt-6 text-slate-700 font-medium" role="status">
-          구독 신청이 완료됐어요. 첫 뉴스레터가 준비되면 이 메일로 가장 먼저 보내드릴게요! 🎉
+          신청됐어요. 첫 요약 메일은 발송을 시작할 때 보내드려요.
         </p>
       ) : (
         <form
@@ -65,7 +65,7 @@ export default function SubscribeBox(): JSX.Element {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="이메일 주소를 입력하세요"
+            placeholder="받을 이메일 주소"
             required
             disabled={state === 'pending'}
             className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
@@ -75,7 +75,7 @@ export default function SubscribeBox(): JSX.Element {
             disabled={state === 'pending'}
             className="px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {state === 'pending' ? '등록 중…' : '구독 신청'}
+            {state === 'pending' ? '등록 중…' : '요약 메일 받기'}
           </button>
 
           {state === 'error' && (
@@ -84,7 +84,7 @@ export default function SubscribeBox(): JSX.Element {
               aria-live="assertive"
               className="mt-2 text-sm text-red-600 w-full text-left"
             >
-              오류가 발생했습니다. 다시 시도해주세요.
+              신청이 안 됐어요. 한 번 더 눌러 주세요.
             </p>
           )}
         </form>
