@@ -73,7 +73,9 @@ export type GeneratedPair = { slug: string; ko: string; en: string };
  */
 const HEADLINE_ONLY_ADMISSION: Record<NewsLang, RegExp> = {
   ko: /보도 제목(과|만)|제목과 요약 수준|원문에서 (세부 내용을 |추가로? )?확인이 필요/,
-  en: /(beyond|than) the headline|only the headline|headline and (a )?(brief )?summary/i,
+  // Only admissions: "details beyond the headline are not available", "only the headline … is available".
+  // A comparison such as "more than the headline number" is analysis, not an admission (review #50).
+  en: /(details|information) beyond the headline|only the headline|headline and (a )?(brief )?summary (is|are) available/i,
 };
 
 export type PairVerdict = { ok: true } | { ok: false; reason: string };

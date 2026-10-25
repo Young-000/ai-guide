@@ -223,6 +223,16 @@ describe('validateGeneratedPair', () => {
     if (!result.ok) expect(result.reason).toMatch(/^en: .*headline only/);
   });
 
+  /* 리뷰 #50: 분석 문장에서 흔한 "than the headline …" 비교 표현은 제목만 봤다는 고백이 아니다. */
+  it.each([
+    'Real-world throughput was more than the headline speed number suggests.',
+    'The context window change is more decisive than the headline number.',
+    'For heavy users the saving is more than the headline per-token cut.',
+    'Look beyond the headline number to the per-seat price.',
+  ])('keeps an en analysis sentence that mentions the headline: %s', (sentence) => {
+    expect(validateGeneratedPair({ ...pair, en: `${VALID_EN}${sentence}\n` })).toEqual({ ok: true });
+  });
+
   it('keeps an ordinary cautious sentence (reported, not confirmed)', () => {
     const cautious = `${VALID_KO}회사는 아직 공식 확인을 하지 않았다고 전해졌다.\n`;
     expect(validateGeneratedPair({ ...pair, ko: cautious })).toEqual({ ok: true });

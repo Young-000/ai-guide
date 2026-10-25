@@ -54,8 +54,13 @@ if (headlineOnly > 0) {
 }
 
 if (items.length === 0) {
-  console.log('0 items with source text in worklist — nothing to generate.');
-  process.exit(0);
+  // A worklist emptied by the headline-only filter is a stop worth seeing: exit 1 with the summary
+  // line publish-local.sh reads as "nothing new" (it treats exit 1 without that line as a crash).
+  // A worklist that was empty to begin with stays exit 0, as before.
+  console.log(
+    `0 article pair(s) written, 0 failed, 0 skipped (${headlineOnly} headline-only, none with source text).`,
+  );
+  process.exit(headlineOnly > 0 ? 1 : 0);
 }
 
 const generationGuide = readFileSync(
