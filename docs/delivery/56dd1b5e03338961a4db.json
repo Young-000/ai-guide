@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**트래픽 위너 식별 스크립트** `scripts/top-pages.ts` (`npm run top-pages`) — `search_trends.page_views`를 읽어 최근 7·30일 상위 20개 path를 히트순으로 리포트(service_role 클라이언트, 읽기 전용). (근거: 이제 실트래픽이 측정되나 어떤 기사가 유입을 받는지 아무도 모른다 — 위너를 알아야 내부링크·전환을 그쪽에 집중한다. 현재 재방문 9/362로 참여가 얕아 \"무엇이 그나마 도는가\"가 다음 의사결정의 입력. verify: 스크립트 실행 시 상위 path+히트 테이블 출력, exit 0)",
+  "state": "done",
+  "reviewed_head": "c70b54925a5b6a0f4cf2dd76781a1f347f07ee7e",
+  "verified_head": "c70b54925a5b6a0f4cf2dd76781a1f347f07ee7e",
+  "merge_commit": "7ed75503688d53b88afccd9694d81142165f8024",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/47",
+  "review": "APPROVE: 이고 `page_views`는 참고로만 옆에 둡니다. \"의사결정은 사람 숫자로\"라는 원칙(`src/app/api/pageview/route.ts:40`)과 맞습니다. 출력에 SOURCE 줄도 있습니다.\n- **[PASS] Supabase 규칙:** 전용 스키마 `search_trends`만 씁니다(`scripts/top-pages.ts:11`). public 스키마는 쓰지 않습니다.\n- **[PASS] 완료 표기:** 백로그 항목을 `[>] (구현됨·머지 대기)`로 바꿨습니다. 리뷰 없이 완료로 적지 않는다는 규정을 지켰습니다.\n\n## 비차단 지적\n- **조회 횟수:** 지난 30일 `page_views`는 64,677행이라 1000행씩 약 65번 차례로 불러옵니다. 지금은 쓸 만하지만 트래픽이 늘면 느려집니다.\n- **조회 결과 상한:** PostgREST의 max-rows가 1000보다 작게 바뀌면 루프가 첫 페이지에서 끝나 버립니다. 경고 없이 데이터가 잘립니다.\n\nFOLLOWUP: 페이지 읽기 중복 · scripts/top-pages-report.ts:31 · readFunnelRows와 같은 루프라 제네릭 함수 하나로 합치기(중복 금지 규칙)\nFOLLOWUP: 30일 total 6.5만 행을 1000행씩 65번 순차 조회 · scripts/top-pages.ts:22 · path별 합계를 내는 읽기 전용 뷰나 RPC로 DB에서 집계\nFOLLOWUP: 한 줄 120자 초과 · scripts/top-pages.ts:46, scripts/top-pages-report.ts:27 · 출력 포맷과 이스케이프 식을 헬퍼로 분리\nFOLLOWUP: 백로그 link:- 비어 있음 · docs/BACKLOG.md:99 · 머지 후 PR 링크를 연결해야 추적 가능\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792889658
+}
