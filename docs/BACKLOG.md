@@ -1,5 +1,10 @@
 # BACKLOG — ai-guide 야간 자율 사이클
 
+## 2026-10-25 외부 플레이북 흡수 (쇼츠·블로그 홈판·X)
+
+- [todo] X 정기 게시 설계안: 하루 1~2편 본문 완결형 AI 뉴스 카드 형식, utm 규칙, 게시 계정 후보, 대표 게이트 질문 초안을 docs/marketing/에 작성 (게시와 계정 개설 없음) — owner:marketing — since:2026-10-25 — link:teamY/docs/research/2026-10-25-cheongchun-x/playbook.md
+- [todo] 네이버 블로그 홈판형 AI 뉴스 글 형식 초안 3편: 사건형 제목, 썸네일 문구, aiwire.news로 가는 utm 링크 규칙 (게시 없음) — owner:marketing — since:2026-10-25 — link:teamY/docs/research/2026-10-25-cheongchun-x/playbook.md
+
 ## 2026-10-25 주간 PM — 다음 주 처리 순서 (우선순위순)
 
 > 이번 주 핵심 관찰: 사람 방문이 7일 2,521(직전 주 1,929, 10-14 급증 1,238 빼면 691)로 늘었지만 99%(2,496)가 리퍼러 없는 direct 이고, 시간대별로 0~23시 내내 78~137로 평평하다(새벽 2~5시도 같음). page_views_human 은 1,914뷰가 1,519개 경로에 흩어져 경로당 1.3뷰 — 사람이 아니라 아카이브를 훑는 크롤러 모양이다. 검색 유입(google·bing·duckduckgo 등)은 21뿐. 아웃클릭 0, AdFit 적립 0, AdSense "주의 필요 / 가치가 별로 없는 콘텐츠" 그대로, 제휴 URL 19개 전부 null.
