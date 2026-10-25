@@ -1,3 +1,6 @@
+import type { Types } from '@amplitude/analytics-browser';
+import { createSanitizingPlugin, isAuthCallbackPath, scrubAuthCallbackAddress } from '@/lib/amplitude-sanitize';
+
 // ─── Google Analytics (GA4) ───────────────────────────────────────────────────
 
 type GtagEvent = {
@@ -87,6 +90,46 @@ export function trackPromptCopy(
 // import happens only at runtime inside initAmplitude().
 let amplitudeInitialized = false;
 
+type AmplitudeSdk = typeof import('@amplitude/analytics-browser');
+
+/**
+ * Capture switches. Everything that `autocapture: true` turned on stays on, except the SDK's own page-URL enrichment:
+ * that built-in plugin is installed late during init, runs AFTER our sanitizer and re-adds 'Previous Page Location'.
+ * (Defining `autocapture` replaces `defaultTracking`, and an unset key means ON — default-tracking.js `isTrackingEnabled`.)
+ */
+export const AMPLITUDE_OPTIONS = {
+  autocapture: {
+    // The address of an auth callback route carries tokens — no page view from there.
+    pageViews: { trackOn: () => !isAuthCallbackPath(location.pathname) },
+    sessions: true,
+    attribution: true,
+    fileDownloads: true,
+    formInteractions: true,
+    elementInteractions: true,
+    frustrationInteractions: true,
+    networkTracking: true,
+    webVitals: true,
+    performanceTracking: true,
+    pageUrlEnrichment: false,
+  },
+} satisfies Types.BrowserOptions;
+
+/**
+ * Order is the security: clean the address bar -> init -> sanitizer for events fired during init -> wait for init to
+ * finish -> sanitizer again, now registered AFTER every built-in plugin (enrichment plugins run in registration order).
+ */
+export async function startAmplitude(
+  amplitude: AmplitudeSdk,
+  apiKey: string,
+  overrides: Types.BrowserOptions = {},
+): Promise<void> {
+  scrubAuthCallbackAddress();
+  const started = amplitude.init(apiKey, { ...AMPLITUDE_OPTIONS, ...overrides });
+  void amplitude.add(createSanitizingPlugin('sanitize-urls-early'));
+  await started.promise;
+  await amplitude.add(createSanitizingPlugin('sanitize-urls')).promise;
+}
+
 /**
  * Initialise Amplitude. Safe to call multiple times — subsequent calls are
  * no-ops. Completely inert when NEXT_PUBLIC_AMPLITUDE_API_KEY is unset.
@@ -98,12 +141,10 @@ export async function initAmplitude(): Promise<void> {
   const apiKey = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
   if (!apiKey) return;
 
+  amplitudeInitialized = true;
   // Dynamic import keeps Amplitude out of the SSR bundle.
   const amplitude = await import('@amplitude/analytics-browser');
-  amplitude.init(apiKey, {
-    autocapture: true, // automatic pageviews, clicks, sessions, form interactions
-  });
-  amplitudeInitialized = true;
+  await startAmplitude(amplitude, apiKey);
 }
 
 /**
