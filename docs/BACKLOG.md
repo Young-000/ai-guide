@@ -32,8 +32,8 @@
 
 ## 2026-10-25 외부 플레이북 흡수 (쇼츠·블로그 홈판·X)
 
-- [todo] X 정기 게시 설계안: 하루 1~2편 본문 완결형 AI 뉴스 카드 형식, utm 규칙, 게시 계정 후보, 대표 게이트 질문 초안을 docs/marketing/에 작성 (게시와 계정 개설 없음) — owner:marketing — since:2026-10-25 — link:-
-- [todo] 네이버 블로그 홈판형 AI 뉴스 글 형식 초안 3편: 사건형 제목, 썸네일 문구, aiwire.news로 가는 utm 링크 규칙 (게시 없음, 네이버 계정 개설은 대표 몫) — owner:marketing — since:2026-10-25 — link:-
+- [todo] X 정기 게시 설계안: 하루 1~2편 본문 완결형 AI 뉴스 카드 형식, utm 규칙, 게시 계정 후보, 대표 게이트 질문 초안을 docs/marketing/에 작성 (게시와 계정 개설 없음). verify: docs/marketing/x-post-design.md에 형식·utm 규칙·계정 후보·게이트 질문 4개 절 존재, 게시·계정 개설 diff 0 — owner:marketing — since:2026-10-25 — link:-
+- [todo] 네이버 블로그 홈판형 AI 뉴스 글 형식 초안 3편: 사건형 제목, 썸네일 문구, aiwire.news로 가는 utm 링크 규칙 (게시 없음, 네이버 계정 개설은 대표 몫). verify: docs/marketing/naver-home/ 아래 초안 3개, 각 파일에 제목·썸네일 문구·utm 링크 — owner:marketing — since:2026-10-25 — link:-
 
 ## 2026-10-19 Google Ads / team-infra handoff
 
