@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**SubscribeBox 카피를 가치 제안형으로 재작성** — 현재 문구가 \"구독하면 무엇을 얻는지\"를 구체적으로 말하는지 감사, ux-baseline 토스 8원칙(예측 가능한 힌트·핵심 메시지·강요 금지)으로 재작성(예: \"매일 아침 AI 뉴스 3건 요약을 메일로\"). (근거: 역대 구독 0 — 진입점 위치뿐 아니라 CTA 자체가 클릭 이유를 못 준다. verify: SubscribeBox에 구체 가치 문구 + 신호어 검사 통과 + 테스트)",
+  "state": "done",
+  "reviewed_head": "e9816af42a6f938e2f3365bbdb39feefb8244d0a",
+  "verified_head": "e9816af42a6f938e2f3365bbdb39feefb8244d0a",
+  "merge_commit": "eff15b5a7f5a8857184b81862b7c1293ec92d1ef",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/49",
+  "review": "APPROVE: 에도 남아 있지 않습니다.\n\n**[PASS] 검증 명령.**\n- `npx jest SubscribeBox.test.tsx` → 10/10 통과\n- `npx tsc --noEmit` → 에러 0\n- `next lint`(변경한 두 파일) → \"No ESLint warnings or errors\"\n\n**[PASS] 도메인 규칙.**\n- `docs/NORTHSTAR.md`와 Playwright 기준 이미지는 diff에 없습니다.\n- Supabase, 자격증명, 돈·외부 노출(D1)에 닿는 부분도 없습니다.\n\n**검사하지 않은 것:** 전체 `verify.sh`, 빌드, 전체 테스트는 돌리지 않았습니다. 이 diff의 코드 변경이 이 컴포넌트와 그 테스트에만 있어서, 해당 테스트·tsc·lint만 실행했습니다.\n\n**비차단 지적.** 이메일 형식 오류 때 안내가 틀립니다.\n- 폼이 `noValidate`라 잘못된 주소도 서버로 가고, 서버는 400을 돌려줍니다.\n- 그런데 화면은 \"한 번 더 눌러 주세요\"라고 해서, 사용자가 같은 실패를 반복하게 됩니다.\n- 원래부터 있던 동작이지만, 새 문구가 구체적인 행동을 지시하면서 더 눈에 띄게 됐습니다.\n\nFOLLOWUP: 이메일 형식이 틀려 400이 와도 '한 번 더 눌러 주세요'라고 안내함 · src/components/SubscribeBox.tsx:87 · 상태코드로 나눠 400이면 '이메일 주소를 확인해 주세요'로 안내할 것\nFOLLOWUP: 화면 증거가 입력 전 상태 1장뿐임 · docs/ux-evidence/ · 성공·에러 상태와 실제 페이지 안에 놓인 화면도 다음 UI 작업 때 함께 캡처할 것\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792900747
+}
