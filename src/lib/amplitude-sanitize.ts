@@ -5,6 +5,7 @@ import type { Types } from '@amplitude/analytics-browser';
  * 인증 콜백은 `#access_token=…`·`?code=…` 를 주소에 싣는데, 페이지뷰·referrer 속성이 그 주소를 그대로 보낸다.
  * - `#fragment` 는 통째로 버린다.
  * - 아래 이름의 쿼리 파라미터는 지운다. `utm_*` · `fbclid` · `gclid` 는 남는다.
+ * - 이름이 `Query`·`Fragment` 로 끝나는 속성은 통째로 버리고, `referrer` 류 속성은 origin + 경로까지만 남긴다.
  */
 const SECRET_PARAMS: ReadonlySet<string> = new Set([
   'access_token', 'refresh_token', 'id_token', 'token', 'code', 'state', 'token_hash', 'type',
@@ -34,9 +35,20 @@ export function isAuthCallbackPath(pathname: string): boolean {
   return AUTH_PATH.test(pathname);
 }
 
-function sanitizeValue(value: unknown): unknown {
-  if (typeof value === 'string') return sanitizeUrl(value);
-  if (Array.isArray(value)) return value.map(sanitizeValue);
+/** 원시 쿼리·해시를 그대로 싣는 속성 이름 (네트워크 캡처의 'URL Query'·'URL Fragment' 등) — 값을 거르지 않고 속성째 버린다 */
+const RAW_URL_PART_KEY = /(?:query|fragment)$/i;
+/** referrer 류 속성은 origin + 경로까지만 남긴다 (검색어는 쿼리에 실린다). `referring_domain` 은 이미 도메인뿐이다 */
+const REFERRER_KEY = /referrer$/i;
+
+function toOriginAndPath(value: string): string {
+  const url = sanitizeUrl(value);
+  const cut = url.search(/[?#]/);
+  return cut === -1 ? url : url.slice(0, cut);
+}
+
+function sanitizeValue(value: unknown, key = ''): unknown {
+  if (typeof value === 'string') return REFERRER_KEY.test(key) ? toOriginAndPath(value) : sanitizeUrl(value);
+  if (Array.isArray(value)) return value.map((item) => sanitizeValue(item, key));
   if (value && typeof value === 'object') return sanitizeRecord(value);
   return value;
 }
@@ -44,7 +56,8 @@ function sanitizeValue(value: unknown): unknown {
 function sanitizeRecord(record: object): Record<string, unknown> {
   const cleaned: Record<string, unknown> = {};
   Object.keys(record).forEach((key) => {
-    cleaned[key] = sanitizeValue((record as Record<string, unknown>)[key]);
+    if (RAW_URL_PART_KEY.test(key)) return;
+    cleaned[key] = sanitizeValue((record as Record<string, unknown>)[key], key);
   });
   return cleaned;
 }

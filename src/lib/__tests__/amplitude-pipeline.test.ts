@@ -1,6 +1,6 @@
 /** @jest-environment jsdom */
 import * as sdk from '@amplitude/analytics-browser';
-import { AMPLITUDE_OPTIONS, startAmplitude } from '../analytics';
+import { startAmplitude } from '../analytics';
 
 /** The REAL SDK plugin pipeline with `fetch` replaced by a recorder: what is asserted is what would leave the browser. */
 describe('real Amplitude pipeline never sends auth-callback secrets', () => {
@@ -19,16 +19,8 @@ describe('real Amplitude pipeline never sends auth-callback secrets', () => {
       value: 'http://localhost/login?token=t&code=x',
     });
 
-    // jsdom has no performance / web-vitals APIs: switch those capture plugins off for the test, keep everything else as shipped.
-    const autocapture = {
-      ...AMPLITUDE_OPTIONS.autocapture,
-      webVitals: false,
-      performanceTracking: false,
-      networkTracking: false,
-      frustrationInteractions: false,
-      elementInteractions: false,
-    };
-    await startAmplitude(sdk, 'test-key', { autocapture, flushIntervalMillis: 20, flushQueueSize: 1, fetchRemoteConfig: false });
+    // The shipped options as they are: network, web-vitals and performance capture are off, remote config is pinned off.
+    await startAmplitude(sdk, 'test-key', { flushIntervalMillis: 20, flushQueueSize: 1 });
     window.history.pushState({}, '', '/next');
     window.history.pushState({}, '', '/next2?code=again#access_token=again');
     await sdk.flush().promise;
@@ -38,5 +30,9 @@ describe('real Amplitude pipeline never sends auth-callback secrets', () => {
     const text = bodies.join('\n');
     expect(text).toContain('/next');
     expect(text).not.toMatch(/code=|access_token|refresh_token|token=t|#/);
+    // The IP address is switched off: no event carries an `ip` field (the SDK default would be "$remote").
+    const events = bodies.flatMap((body) => (JSON.parse(body) as { events: Record<string, unknown>[] }).events);
+    expect(events.length).toBeGreaterThan(0);
+    expect(events.some((event) => 'ip' in event)).toBe(false);
   });
 });

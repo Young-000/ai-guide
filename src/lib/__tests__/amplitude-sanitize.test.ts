@@ -76,6 +76,37 @@ describe('sanitizingPlugin', () => {
     );
   });
 
+  it('drops any property whose key ends in Query or Fragment (raw network-capture URL parts)', async () => {
+    const out = await sanitizingPlugin.execute!({
+      event_type: '[Amplitude] Network Request',
+      event_properties: {
+        '[Amplitude] URL Query': 'email=a@b.c&q=secret',
+        '[Amplitude] URL Fragment': 'access_token=y',
+        searchquery: 'x',
+        nested: { 'URL Fragment': 'f', keep: 1 },
+        '[Amplitude] URL': `${ORIGIN}/api/x`,
+      },
+      user_properties: { $set: { 'URL Query': 'q=1', plan: 'free' } },
+    });
+    const props = out!.event_properties as Record<string, unknown>;
+    expect(Object.keys(props).sort()).toEqual(['[Amplitude] URL', 'nested']);
+    expect(props.nested).toEqual({ keep: 1 });
+    expect(out!.user_properties).toEqual({ $set: { plan: 'free' } });
+  });
+
+  it('cuts referrer properties to origin + path (no query, no fragment)', async () => {
+    const out = await sanitizingPlugin.execute!({
+      event_type: '[Amplitude] Page Viewed',
+      event_properties: { referrer: 'https://www.google.com/search?q=private+health+query&utm_source=a#x' },
+      user_properties: { $setOnce: { initial_referrer: 'https://news.example.com/a/b?id=7' }, $set: { referring_domain: 'news.example.com' } },
+    });
+    expect((out!.event_properties as Record<string, unknown>).referrer).toBe('https://www.google.com/search');
+    expect(out!.user_properties).toEqual({
+      $setOnce: { initial_referrer: 'https://news.example.com/a/b' },
+      $set: { referring_domain: 'news.example.com' },
+    });
+  });
+
   it('passes events without properties through', async () => {
     const out = await sanitizingPlugin.execute!({ event_type: 'game_start' });
     expect(out).toEqual({ event_type: 'game_start' });
