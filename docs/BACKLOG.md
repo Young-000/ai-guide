@@ -120,3 +120,11 @@
 - [>] **`scripts/verify-sitemap.ts` + `npm run verify:sitemap`** — sitemap.ts 산출 URL 수 vs 실제 콘텐츠(뉴스 슬러그·섹션·토픽·정적) 대조, 누락 경고 + 누락 0 시 exit 0. (근거: SEO=비즈니스, 크롤러가 활발히 도는 지금(봇 트래픽이 곧 색인 활동) 커버리지 누락은 유입 손실인데 결정론 검증 부재. verify: 카운트 리포트 + 누락 0 시 종료코드 0) — owner:dev — since:2026-09-20 — link:- — 구현됨·머지 대기 2026-10-20 (`npm run verify:sitemap`, 누락 0 시 exit 0)
 
 - [todo] **중복 slug 기사 5쌍(ko/en 각 8파일→5페이지) 정리** — `node --import tsx scripts/verify-sitemap.ts` 의 NOTE 참조. 같은 slug 파일은 첫 파일만 노출돼 나머지 기사가 가려진다. 어느 쪽을 남길지는 콘텐츠 판단 필요 (verify: 감사 NOTE 0건) — owner:dev — since:2026-10-20 — link:-
+
+## 2026-10-25 리뷰 후속 기록 (PR #28 Independent review, 우선순위순)
+
+> 출처: Young-000/ai-guide#28 (feat: Slack handoff ai-guide) 머지 시 독립 리뷰의 비차단 지적 3건. main 코드를 2026-10-25 에 다시 확인했고 3건 모두 아직 남아 있다(닫을 근거 없음). 구현하지 않고 기록만 한다.
+
+- [todo] 리뷰 후속: (P2) llms.txt 기사 제목의 ] 와 ) 이스케이프 - src/lib/llms-txt.ts 의 buildArticleSection 이 toSingleLine(a.title) 을 그대로 마크다운 링크 텍스트에 넣어 제목에 괄호가 있으면 링크가 깨짐. 제목 이스케이프 헬퍼 추가 + 괄호 포함 제목 테스트. verify: 제목에 ] 또는 ) 가 든 기사를 넣은 buildLlmsTxt 테스트 PASS — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
+- [todo] 리뷰 후속: (P3) Organization logo 를 정사각형 로고 자산으로 교체 - src/lib/site-json-ld.ts 의 logo 가 1200x630 OG 이미지(/opengraph-image)라 Google 로고 권장 비율과 다름. 정사각형 로고 파일을 public 에 추가하고 logo 가 그것을 가리키게 한다. verify: site-json-ld 스냅샷 테스트의 logo 주소가 정사각형 자산이고 그 주소가 200 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
+- [todo] 리뷰 후속: (P3) docs/LESSONS.md 정리 - 맨 위 날짜 없는 교훈 줄들이 날짜 섹션 밖에 있고 안내 인용문 위아래 빈 줄이 중복됨. 새 항목을 날짜 섹션 아래로 옮기고 중복 빈 줄을 정리한다(내용 변경 없음, 문서 구조만). verify: LESSONS.md 에 섹션 밖 교훈 줄과 연속 빈 줄이 없음 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
