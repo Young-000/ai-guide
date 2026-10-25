@@ -18,6 +18,17 @@ export function rankTopPages(human: ViewRow[], total: ViewRow[], limit: number):
     .slice(0, limit);
 }
 
+const UNSAFE_DISPLAY_CHARS = /[\u0000-\u001f\u007f-\u009f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g;
+const NAMED_ESCAPES: Record<string, string> = { '\n': '\\n', '\r': '\\r', '\t': '\\t' };
+
+/** Paths come from public traffic: escape control/bidi characters so they cannot drive the terminal. */
+export function sanitizePathForDisplay(path: string): string {
+  return path.replace(UNSAFE_DISPLAY_CHARS, (char) => {
+    const code = char.charCodeAt(0);
+    return NAMED_ESCAPES[char] ?? (code <= 0xff ? `\\x${code.toString(16).padStart(2, '0')}` : `\\u${code.toString(16).padStart(4, '0')}`);
+  });
+}
+
 export async function readViewRows(
   fetchPage: (from: number, to: number) => Promise<ViewRow[]>,
   pageSize = 1000,

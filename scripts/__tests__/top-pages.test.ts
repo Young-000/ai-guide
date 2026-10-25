@@ -1,5 +1,5 @@
 import { completedKstWindow } from '../revenue-funnel-report';
-import { rankTopPages, readViewRows } from '../top-pages-report';
+import { rankTopPages, readViewRows, sanitizePathForDisplay } from '../top-pages-report';
 
 describe('top pages report', () => {
   it('ranks by human hits and keeps total traffic alongside', () => {
@@ -35,5 +35,14 @@ describe('top pages report', () => {
 
   it('reuses completed KST windows', () => {
     expect(completedKstWindow(30, new Date('2026-10-25T00:00:00Z')).until).toBe('2026-10-25');
+  });
+
+  it('escapes terminal control sequences in attacker-controlled paths', () => {
+    const hostile = '/a\u001b[2J\u001b]0;pwned\u0007\r\nFAKE  999  999  /admin\u009b\u202e\u2028';
+    const shown = sanitizePathForDisplay(hostile);
+    expect(shown).not.toMatch(/[\u0000-\u001f\u007f-\u009f\u2028\u2029\u202a-\u202e\u2066-\u2069]/);
+    expect(shown).toContain('\\x1b');
+    expect(shown).toContain('\\n');
+    expect(sanitizePathForDisplay('/news/한글-기사?a=1')).toBe('/news/한글-기사?a=1');
   });
 });

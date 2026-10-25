@@ -2,7 +2,7 @@
 /** Read-only traffic winners. Usage: npm run top-pages -- --limit 20 */
 import { PostgrestClient } from '@supabase/postgrest-js';
 import { completedKstWindow, type FunnelWindow } from './revenue-funnel-report';
-import { rankTopPages, readViewRows, type ViewRow } from './top-pages-report';
+import { rankTopPages, readViewRows, sanitizePathForDisplay, type ViewRow } from './top-pages-report';
 
 const WINDOW_DAYS = [7, 30];
 
@@ -44,7 +44,7 @@ async function main(): Promise<void> {
     console.log('SOURCE: search_trends.page_views_human (bot UA filtered); total = page_views (includes crawlers).');
     console.log('rank  human  total  path');
     rankTopPages(human, total, limit).forEach((row, i) => {
-      console.log(`${String(i + 1).padStart(4)}  ${String(row.human).padStart(5)}  ${String(row.total).padStart(5)}  ${row.path}`);
+      console.log(`${String(i + 1).padStart(4)}  ${String(row.human).padStart(5)}  ${String(row.total).padStart(5)}  ${sanitizePathForDisplay(row.path)}`);
     });
   }
 }
