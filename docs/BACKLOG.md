@@ -166,3 +166,38 @@
 - [dropped] 리뷰 후속: 화면 전환 내부 요청까지 방문으로 셈 - 기존 todo 와 중복이라 닫음. 같은 내용(src/middleware.ts:20 에 봇·내부 요청 필터 없음)이 BACKLOG 의 미들웨어 page_view UA 봇 필터 추가 todo(2026-09-20 등록)로 추적 중이며 미들웨어는 아직 UA 를 검사하지 않는다. 내부 요청(prefetch)·GET 확인은 그 todo 구현 때 함께 본다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#30
 - [dropped] 리뷰 후속: 영어 기사 상세에 한국어 구독 박스 노출 - 동일 지적이라 닫음. 같은 내용을 PR #33 의 영어 구독 폼 todo(SubscribeBox lang 분기)가 추적한다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#38
 - [dropped] 리뷰 후속: 구현됨 표기 문구가 middleware 까지 포함한다고 적어 측정이 끝난 것처럼 읽힘 - 기존 todo 와 중복이라 닫음. 봇 필터 할 일(미들웨어 page_view UA 봇 필터 추가 todo)이 계속 열려 있고 미들웨어는 아직 봇까지 센다(src/middleware.ts:20) — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#42
+- [todo] 리뷰 후속: llms.txt 기사 제목의 ]·) 이스케이프 · src/lib/llms-txt.ts:20 · 제목에 괄호가 있으면 마크다운 링크가 깨짐 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
+- [todo] 리뷰 후속: Organization logo를 정사각형 로고 자산으로 교체 · src/lib/site-json-ld.ts:27 · 1200×630 OG 이미지는 Google 로고 권장 비율과 다름 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
+- [todo] 리뷰 후속: LESSONS 새 항목을 날짜 섹션 아래로 옮기고 중복 빈 줄 정리 · docs/LESSONS.md:5 · 문서 구조 일관성 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#28
+- [todo] 리뷰 후속: 같은 방문 이중 집계 · src/middleware.ts:20 + src/app/(site)/news/[slug]/page.tsx:72 · 서버와 브라우저가 둘 다 page_views에 더해 '총 트래픽'이 실제보다 부풀려짐 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#30
+- [todo] 리뷰 후속: 화면 전환 내부 요청까지 방문으로 셈 · src/middleware.ts:20 · 봇 필터도 GET 확인도 없어 총 트래픽이 하루 3천6만으로 흔들림 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#30
+- [todo] 리뷰 후속: 백로그 항목 link :- 비어 있음 · docs/BACKLOG.md:13,26 · 구현 커밋 79b6eae를 연결해야 리뷰어가 원본 코드를 추적할 수 있음 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#30
+- [todo] 리뷰 후속: 날짜 동률 정렬 비교자 0 반환 · src/lib/related-articles.ts:35 · 같은 날짜에 -1만 돌려줘 비교가 비대칭이라 같은 날 기사 순서가 보장되지 않음 (story-timeline.ts 동일 패턴) — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#31
+- [todo] 리뷰 후속: 영어 기사 상세에도 관련 기사 연결 · src/app/(site)/en/news/[slug]/page.tsx:58 · relatedItems 미전달이라 고립 기사 문제가 en 쪽에 그대로 남음 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#31
+- [todo] 리뷰 후속: 영어 기사에 한국어 구독 폼이 그대로 나옴 · NewsArticleView.tsx:350-353, SubscribeBox.tsx:38-87 · 영어 독자 전환 0, 문구 다국어화 필요 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#33
+- [todo] 리뷰 후속: 구독 폼 렌더 테스트를 lang="en"에도 추가 · NewsArticleView.test.tsx:26 · ko/en 공용이라 적었는데 ko만 고정됨 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#33
+- [todo] 리뷰 후속: "구독 0명 원인은 노출 위치가 아니다"는 단정 근거 없음 · docs/LESSONS.md:6 · 폼이 페이지 맨 끝(관련 기사 아래)이라 위치 영향은 미검증 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#33
+- [todo] 리뷰 후속: sitemap 중복 제거가 날짜순 첫 기사를 남기지만 실제 페이지는 파일명순 첫 기사를 띄워 lastModified가 어긋날 수 있음 · src/app/sitemap.ts:133 · 중복 slug 정리 때 같이 맞출 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#34
+- [todo] 리뷰 후속: 기사·토픽·아카이브의 기대 URL을 sitemap.ts와 같은 getAllNews·getTagsWithCount로 구해 독립 검증은 정적 페이지 그룹뿐 · scripts/verify-sitemap.ts:161-170 · LESSONS의 '별개 출처' 주장과 어긋남 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#34
+- [todo] 리뷰 후속: 중복 slug로 가려진 기사가 있어도 NOTE만 찍고 exit 0이라 새 중복이 생겨도 감사가 통과함 · scripts/verify-sitemap.ts:184-190 · 정리가 끝나면 실패 조건으로 올릴 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#34
+- [todo] 리뷰 후속: 동적 OG 이미지 항목의 verify 문구를 해시가 붙는 실제 og:image 주소 기준으로 고칠 것 · docs/BACKLOG.md:26 · 문구 그대로 확인하면 404가 나와 오판할 수 있음 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#35
+- [todo] 리뷰 후속: 동적 OG 이미지 항목 4곳을 [done]으로 닫고 중복 항목을 하나로 합칠 것 · docs/BACKLOG.md:26,38,55,72 · 6월 22일부터 운영 중이라 "리뷰 대기"가 아님 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#35
+- [todo] 리뷰 후속: BACKLOG.md:27,37,54,71,87,104 의 [skip] 을 허용 상태 [dropped] 로 교체 · backlog-read 가 invalid status 경고 6건을 낸다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#36
+- [todo] 리뷰 후속: 영어 기사 상세에 한국어 구독 박스 노출 · src/components/news/NewsArticleView.tsx:353 (en/news/[slug]/page.tsx:58가 lang="en"으로 렌더) · SubscribeBox에 lang 분기 또는 en에서는 숨기기 필요 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#38
+- [todo] 리뷰 후속: 빠진 기사 검사가 피드와 같은 getAllNews 목록에서 기대값을 뽑아 항상 통과함 · scripts/verify-feed.ts:17 · 디스크 파일 목록이나 배포된 /feed.xml과 대조해야 의미가 생긴다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#40
+- [todo] 리뷰 후속: verify:feed가 어떤 정기 점검에도 연결되지 않아 발행이 멈춰도 사람이 직접 돌려야 알 수 있음 · package.json:18 · fleet-health나 publish 상태 점검에 붙일지 결정 필요 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#40
+- [todo] 리뷰 후속: FeedItem 타입 이름이 RSS 수집용 news-feed.ts의 FeedItem과 겹쳐 import 시 혼동될 수 있음 · src/lib/feed-audit.ts:6 · FeedAuditItem 등으로 바꾸는 편이 안전 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#40
+- [todo] 리뷰 후속: 백업 워크플로가 최근 8회 모두 Generate 단계에서 실패 · .github/workflows/auto-news.yml:4 · 웹훅 등록 전에 schedule을 끄거나 키 없으면 건너뛰게 해 알림 소음을 막을 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#41
+- [todo] 리뷰 후속: 예시 크론이 여전히 0 /5 · scripts/publish-local.sh:27 · 실제 crontab(10 0,5,10,15,20)·CLAUDE.md와 맞출 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#41
+- [todo] 리뷰 후속: launchd 항목을 []로 바꿨지만 원래 verify(launchd 등록)는 충족 불가 · docs/BACKLOG.md:48 · 항목 문구를 crontab 기준으로 고치거나 [skip] 처리할 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#41
+- [todo] 리뷰 후속: BACKLOG 문서를 검사하는 테스트가 src/lib/__tests__/backlog-counter-duplicates.test.ts:8 에 있음 · 주간 PM이 '트래픽 카운터' 이름으로 새 할 일을 정당하게 넣어도 CI가 깨짐 → 정규식 범위를 좁히거나 scripts 쪽 문서 점검으로 옮길 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#42
+- [todo] 리뷰 후속: 구현됨 표기 문구가 docs/BACKLOG.md:50,66,82,83 에서 'middleware'까지 포함한다고 적음 · 그런데 미들웨어는 봇까지 셈(115행 todo) → 측정이 끝났다는 오해가 없게 봇 필터 할 일을 이어서 진행할 것 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#42
+- [todo] 리뷰 후속: 중복 [] 5줄을 [skip]으로 바꾸고 원본 23행을 가리키기 · docs/BACKLOG.md:51,67,84,100,117 · 이미 main에 머지된 구현이라 "리뷰 대기"가 영구히 남는다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#43
+- [todo] 리뷰 후속: 구독 문구 재작성 [todo]가 두 줄로 중복됨, 한 줄로 합치기 · docs/BACKLOG.md:101,118 · 같은 할 일이 사이클마다 다시 집히는 문제가 반복된다 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#43
+- [todo] 리뷰 후속: PM 리필이 기존 백로그와 같은 제목은 다시 붙이지 않게 막기 · pm-cycle 리필 단계 · 같은 할 일이 7번 복제된 근본 원인 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#43
+- [todo] 리뷰 후속: 관련 기사 링크 검사를 블록 안으로 좁히기 · src/components/news/__tests__/NewsArticleView.test.tsx:50 · 페이지 전체 링크를 모아 확인해서 같은 주소가 다른 곳에 생기면 블록이 사라져도 통과함 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#44
+- [todo] 리뷰 후속: 테스트 이름은 '제목 렌더'인데 제목 텍스트를 확인하지 않음 · src/components/news/__tests__/NewsArticleView.test.tsx:46 · 테스트 이름과 실제 확인 내용이 다름 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#44
+- [todo] 리뷰 후속: 억제 상태 파일에 숫자가 아닌 값이 있으면 set -u로 죽어 PUSH FAILED 줄과 경보가 빠짐 · scripts/publish-local.sh:134 · 숫자 검증 후 아니면 0으로 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
+- [todo] 리뷰 후속: 병합 충돌은 사람이 풀어야 하는데 경보 문구는 "다음 실행에서 다시 시도해요"라 대표가 할 일을 놓침 · scripts/publish-local.sh:141 · 사유별 문구로 분리 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
+- [todo] 리뷰 후속: 경보의 "N건"은 기사 수가 아니라 커밋 수라 오해 소지 · scripts/publish-local.sh:141 · "커밋 N개"로 표기 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
+- [todo] 리뷰 후속: 발행이 성공해도 억제 상태를 지우지 않아, 복구 후 6시간 안에 새로 실패하면 경보가 안 감 · scripts/publish-local.sh:220 · 성공 시 ALERT_STATE 삭제 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
