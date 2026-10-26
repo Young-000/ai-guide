@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { toFrontmatter } from './news';
+import { admitsHeadlineOnly } from './news-thin';
 import type { NewsFrontmatter, NewsLang } from '../types/news';
 
 const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -66,18 +67,6 @@ export function validateNewsMarkdown(raw: string, expectedLang?: NewsLang): Vali
 
 export type GeneratedPair = { slug: string; ko: string; en: string };
 
-/**
- * 제목만 보고 쓴 기사는 본문이 스스로 그렇게 말한다 (2026-10-25 실측: "현재 확인 가능한 정보는 보도 제목과
- * 요약 수준이며", "원문에서 확인이 필요하다"). 원문을 읽지 않고 다시 쓴 페이지라 AdSense 가 "가치가 별로 없는
- * 콘텐츠"로 보는 바로 그 형태다. 생성 단계에서만 막는다 — 이미 발행된 기사의 처리는 조정자 결정(docs/BACKLOG.md).
- */
-const HEADLINE_ONLY_ADMISSION: Record<NewsLang, RegExp> = {
-  ko: /보도 제목(과|만)|제목과 요약 수준|원문에서 (세부 내용을 |추가로? )?확인이 필요/,
-  // Only admissions: "details beyond the headline are not available", "only the headline … is available".
-  // A comparison such as "more than the headline number" is analysis, not an admission (review #50).
-  en: /(details|information) beyond the headline|only the headline|headline and (a )?(brief )?summary (is|are) available/i,
-};
-
 export type PairVerdict = { ok: true } | { ok: false; reason: string };
 
 /**
@@ -89,7 +78,7 @@ export function validateGeneratedPair(pair: GeneratedPair): PairVerdict {
   for (const lang of LANGS) {
     const result = validateNewsMarkdown(pair[lang], lang);
     if (!result.ok) return { ok: false, reason: `${lang}: ${result.reason}` };
-    if (HEADLINE_ONLY_ADMISSION[lang].test(pair[lang])) {
+    if (admitsHeadlineOnly(lang, pair[lang])) {
       return { ok: false, reason: `${lang}: body says it was written from the headline only` };
     }
     if (result.frontmatter.slug !== pair.slug) {
