@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "대표가 \"ㅇㅇ\" 로 승인한 ai-guide 항목을 진행",
+  "state": "done",
+  "reviewed_head": "a011e3dad329b1e3ef274bcbab9f0365a1156fca",
+  "verified_head": "a011e3dad329b1e3ef274bcbab9f0365a1156fca",
+  "merge_commit": "170a505e2b537f2f31e57e5000e0887785bb17a3",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/55",
+  "review": "APPROVE: 습니다. 2단계(400자 미만 기사 전체)는 착수하지 않았습니다. 기사를 지우지 않으니 되돌릴 수 있는 변경입니다.\n- 화면 증거 규칙: 수정된 tsx 파일은 `generateMetadata` 안의 robots 설정 한 줄뿐이라 화면에 보이는 변화가 없습니다. 그래서 스크린샷 대신 빌드된 HTML의 meta 태그로 확인했습니다.\n- `docs/NORTHSTAR.md`와 Playwright 기준 스크린샷(`*-snapshots/*.png`)은 바뀌지 않았습니다.\n- Supabase, 자격증명, public 스키마는 손대지 않았습니다.\n- 백로그에 `[>]`(구현됨·머지 대기)로 적어 둔 것은 규칙대로입니다. 실측이 39 slug로 제안서의 44쌍과 다른 이유도 LESSONS에 남겼습니다.\n\nFOLLOWUP: IndexNow 제출 목록이 색인에서 뺀 기사 주소도 그대로 보낸다 · src/app/api/indexnow/route.ts:27-28 · 사이트맵과 같은 제외 기준을 맞춰야 한다\nFOLLOWUP: 영어 판이 없으면 테스트가 검사 없이 통과한다 · src/app/(site)/news/[slug]/__tests__/robots.test.ts:28 · 영어 판이 있는 얇은 기사를 골라 반드시 검사하게\nFOLLOWUP: 개발 모드에서는 캐시 없이 페이지 요청마다 기사 2천여 개를 다시 읽는다 · src/lib/news.ts:216 · 기존 기사 목록 캐시를 같이 쓰도록\nFOLLOWUP: llms-full.txt 에 색인에서 뺀 기사가 그대로 들어간다 · src/app/llms-full.txt/route.ts:10 · 의도한 것인지 정하고 기준을 맞춘다\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1792980309
+}
