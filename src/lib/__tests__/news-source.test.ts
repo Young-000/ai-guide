@@ -4,7 +4,12 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { FeedItem } from '@/lib/news-feed';
-import { MIN_SOURCE_CHARS, hasSourceSubstance, sourceSubstance } from '@/lib/news-source';
+import {
+  MIN_SOURCE_CHARS,
+  countSourceSubstanceBySource,
+  hasSourceSubstance,
+  sourceSubstance,
+} from '@/lib/news-source';
 
 /**
  * AdSense "가치가 별로 없는 콘텐츠" (aiwire.news, 2026-10-09~) 대응 — 2026-10-25.
@@ -128,5 +133,20 @@ describe('hasSourceSubstance', () => {
     });
 
     expect(hasSourceSubstance(googleNews)).toBe(false);
+  });
+});
+
+describe('countSourceSubstanceBySource', () => {
+  it('피드 이름별로 전체 수와 원문 통과 수를 센다', () => {
+    const long = 'x'.repeat(MIN_SOURCE_CHARS + 10);
+    const items = [
+      item({ source: 'A', url: 'https://a/1', title: 'a1', summary: long }),
+      item({ source: 'A', url: 'https://a/2', title: 'a2', summary: null }),
+      item({ source: 'B', url: 'https://b/1', title: 'b1', summary: null }),
+    ];
+    expect(countSourceSubstanceBySource(items)).toEqual([
+      { source: 'A', passing: 1, total: 2 },
+      { source: 'B', passing: 0, total: 1 },
+    ]);
   });
 });
