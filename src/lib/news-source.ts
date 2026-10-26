@@ -58,3 +58,17 @@ export function sourceSubstance(item: FeedItem): string {
 export function hasSourceSubstance(item: FeedItem): boolean {
   return sourceSubstance(item).length >= MIN_SOURCE_CHARS;
 }
+
+export type SourceSubstanceCount = { source: string; passing: number; total: number };
+
+/** 피드별로 원문 통과 수/전체 수를 센다 (피드 정리 근거 — `npm run audit:feeds`). 처음 나온 순서를 지킨다. */
+export function countSourceSubstanceBySource(items: FeedItem[]): SourceSubstanceCount[] {
+  const counts = new Map<string, SourceSubstanceCount>();
+  for (const feedItem of items) {
+    const entry = counts.get(feedItem.source) ?? { source: feedItem.source, passing: 0, total: 0 };
+    entry.total += 1;
+    if (hasSourceSubstance(feedItem)) entry.passing += 1;
+    counts.set(feedItem.source, entry);
+  }
+  return Array.from(counts.values());
+}

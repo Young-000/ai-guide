@@ -11,6 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "fetch-news": "tsx scripts/fetch-llm-news.ts",
+    "audit:feeds": "node --import tsx scripts/audit-feeds.ts",
     "generate-news": "tsx scripts/generate-news.ts",
     "validate-news": "tsx scripts/validate-news.ts",
     "rotate-log": "tsx scripts/rotate-log.ts",
