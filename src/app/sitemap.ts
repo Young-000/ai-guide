@@ -3,7 +3,7 @@ import situationsData from '@/data/situations.json';
 import toolsData from '@/data/tools.json';
 import useCasesData from '@/data/use-cases.json';
 import tipsData from '@/data/tips.json';
-import { getAllNews, getArchiveMonths, getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
+import { getAllNews, getArchiveMonths, getTagsWithCount, getThinArticleSlugs, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
 import { SECTION_IDS } from '@/lib/news-sections';
 import { BASE_URL } from '@/lib/site';
 
@@ -59,14 +59,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/en/news`, changeFrequency: 'daily', priority: 0.8 },
   ];
 
-  const newsKo: MetadataRoute.Sitemap = getAllNews('ko').map((n) => ({
+  // 본문이 제목만 봤다고 말하는 기사는 페이지에서 noindex 이므로 사이트맵에서도 뺀다.
+  const thinSlugs = getThinArticleSlugs();
+  const newsKo: MetadataRoute.Sitemap = getAllNews('ko')
+    .filter((n) => !thinSlugs.has(n.slug))
+    .map((n) => ({
     url: `${BASE_URL}/news/${n.slug}`,
     lastModified: n.date,
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
 
-  const newsEn: MetadataRoute.Sitemap = getAllNews('en').map((n) => ({
+  const newsEn: MetadataRoute.Sitemap = getAllNews('en')
+    .filter((n) => !thinSlugs.has(n.slug))
+    .map((n) => ({
     url: `${BASE_URL}/en/news/${n.slug}`,
     lastModified: n.date,
     changeFrequency: 'monthly' as const,

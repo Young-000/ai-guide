@@ -132,7 +132,7 @@ function setup(): Harness {
   git('config', 'user.name', 'test');
   git('checkout', '-b', 'main');
 
-  for (const rel of ['scripts/publish-local.sh', 'scripts/validate-news.ts', 'src/lib/news.ts', 'src/lib/news-validate.ts', 'src/types/news.ts']) {
+  for (const rel of ['scripts/publish-local.sh', 'scripts/validate-news.ts', 'src/lib/news.ts', 'src/lib/news-validate.ts', 'src/lib/news-thin.ts', 'src/types/news.ts']) {
     fs.mkdirSync(path.dirname(path.join(repo, rel)), { recursive: true });
     fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(repo, rel));
   }

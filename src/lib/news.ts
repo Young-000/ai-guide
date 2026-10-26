@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { admitsHeadlineOnly } from './news-thin';
 import type { NewsArticle, NewsFrontmatter, NewsLang, NewsMeta } from '@/types/news';
 
 const CONTENT_ROOT = path.join(process.cwd(), 'src', 'content', 'news');
@@ -203,6 +204,39 @@ export function selectListableTopics<T extends { count: number }>(tags: T[]): T[
 export function isThinTag(lang: NewsLang, tag: string, root: string = CONTENT_ROOT): boolean {
   const entry = getTagsWithCount(lang, root).find((t) => t.tag === tag);
   return (entry?.count ?? 0) < MIN_TAG_ARTICLE_COUNT_FOR_INDEX;
+}
+
+const thinSlugCache = new Map<string, Set<string>>();
+
+/**
+ * 본문이 "제목만 봤다"고 스스로 말하는 기사의 slug 모음 (2026-10-26 대표 승인, noindex 1단계 — 44쌍).
+ * ko/en 은 같은 slug 로 짝을 이루므로 한쪽만 걸려도 양쪽을 얇은 기사로 본다(hreflang 짝이 갈라지지 않게).
+ * 기사는 지우지 않는다 — 색인(robots)과 사이트맵에서만 뺀다. 2단계(400자 미만 전체)는 이 함수를 넓히지 않고 따로 정한다.
+ */
+export function getThinArticleSlugs(root: string = CONTENT_ROOT): Set<string> {
+  if (CACHE_ENABLED) {
+    const hit = thinSlugCache.get(root);
+    if (hit) return hit;
+  }
+  const slugs = new Set<string>();
+  for (const lang of ['ko', 'en'] as const) {
+    const dir = path.join(root, lang);
+    for (const file of listMarkdownFiles(lang, root)) {
+      try {
+        const parsed = parseMarkdown(fs.readFileSync(path.join(dir, file), 'utf8'));
+        if (!admitsHeadlineOnly(lang, parsed.content)) continue;
+        slugs.add(toFrontmatter(parsed.data as Record<string, unknown>).slug);
+      } catch (err) {
+        console.warn(`[news] skipping invalid article '${lang}/${file}': ${errorSummary(err)}`);
+      }
+    }
+  }
+  if (CACHE_ENABLED) thinSlugCache.set(root, slugs);
+  return slugs;
+}
+
+export function isThinArticle(slug: string, root: string = CONTENT_ROOT): boolean {
+  return getThinArticleSlugs(root).has(slug);
 }
 
 /**

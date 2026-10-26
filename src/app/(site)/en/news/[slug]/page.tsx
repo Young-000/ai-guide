@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getNewsBySlug, getNewsSlugs, getAllNews } from '@/lib/news';
+import { getNewsBySlug, getNewsSlugs, getAllNews, isThinArticle } from '@/lib/news';
 import NewsArticleView from '@/components/news/NewsArticleView';
 import { buildStoryTimeline } from '@/lib/story-timeline';
 import { findMentions } from '@/lib/article-mentions';
@@ -22,6 +22,8 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   return {
     title: `${article.title} | AIWire`,
     description: article.summary,
+    // 본문이 제목만 봤다고 말하는 기사는 색인에서 뺀다(사이트맵도 동일). 페이지는 그대로 열린다.
+    ...(isThinArticle(article.slug) ? { robots: { index: false, follow: true } } : {}),
     alternates: {
       canonical: urlEn,
       languages: (() => {

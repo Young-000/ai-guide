@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Footer } from '@/components/Footer';
 import { BASE_URL } from '@/lib/site';
-import { getTagsWithCount, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
+import { getTagsWithCount, getThinArticleSlugs, MIN_TAG_ARTICLE_COUNT_FOR_INDEX } from '@/lib/news';
 import sitemap from '../sitemap';
 
 // Regression guard: every internal (same-site) link rendered in the Footer
@@ -64,5 +64,18 @@ describe('sitemap — coverage audit findings (2026-10-20)', () => {
   it('never lists the same URL twice (articles sharing a slug collapse to one row)', () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(new Set(urls).size).toBe(urls.length);
+  });
+});
+
+describe('sitemap — headline-only article exclusion', () => {
+  it('drops both ko and en URLs of every article whose body admits it was written from the headline', () => {
+    const thinSlugs = Array.from(getThinArticleSlugs());
+    expect(thinSlugs.length).toBeGreaterThan(0);
+
+    const sitemapUrls = new Set(sitemap().map((entry) => entry.url));
+    for (const slug of thinSlugs) {
+      expect(sitemapUrls.has(`${BASE_URL}/news/${slug}`)).toBe(false);
+      expect(sitemapUrls.has(`${BASE_URL}/en/news/${slug}`)).toBe(false);
+    }
   });
 });
