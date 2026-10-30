@@ -105,6 +105,7 @@
 | **ESP 뉴스레터 발송** ⭐ | **기록(미연결)** | 아래 상세 |
 | **AdSense 광고 슬롯** ⭐ | **🔴 슬롯ID 미발급 — 광고 0개 노출** | 스크립트·`ads.txt`(`pub-1379707580934572`)·컴포넌트 전부 배선 완료. `NEXT_PUBLIC_ADSENSE_NEWS_SLOT`/`_CONTENT_SLOT`이 비어 있어 `AdUnit`이 `null`을 반환 중 → **콘솔에서 사이트 승인 확인 + 광고 단위 생성 후 슬롯ID를 Vercel env에 넣으면 즉시 켜짐**. 세 사이트(aiwire·hottrend·flight-trends) 모두 동일 상태 |
 | AdFit | 유닛 발급됨, 심사 상태 미확인 | aiwire `DAN-uLUtMizIrJR9mLGg` / hottrend `DAN-XMge0uwr5NZWrSmC` — Vercel prod env에 등록돼 `kakao_ad_area`가 실제 렌더 중. 실제 광고 노출(심사 통과) 여부는 코드로 판별 불가 → 애드핏 관리자에서 매체 상태 확인 필요 |
+| AdFit 두 번째 300×250 단위 | 🟡 선택 (2026-10-30) | 광고4(160×600)는 1536px+ 데스크톱에서만 요청된다. 노트북·모바일에도 두 번째 광고를 띄우려면 애드핏 콘솔에서 300×250 단위를 하나 더 만들어 ID를 알려주면 `NEXT_PUBLIC_ADFIT_UNIT_RECT2` 로 기사 하단에 배선한다 |
 | **GA4 측정 ID** | 🔴 미설정 (3개 사이트 전부) | `NEXT_PUBLIC_GA_MEASUREMENT_ID`가 어디에도 없어 gtag 미주입. GSC에 클릭이 잡히는데 어느 페이지·쿼리인지 모르는 상태 |
 
 ---
