@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "task": "**AdFit 광고4(160×600, DAN-byVJJjQEZV0vhqDw)는 화면 폭 1536px 미만에서 요청 자체가 없다** — `NewsArticleView.tsx` 의 `hidden 2xl:block` 래퍼라 숨겨진 칸에는 로더가 광고를 부르지 않는다(2026-10-25 실제 크롬 1394px: `serv.ds.kakao.com/sdk/banner` 요청 1건, 광고2 단위만). 모바일·노트북 방문자에게는 광고2(300×250) 하나만 뜬다. 광고2는 같은 날 외부 광고주 배너로 채워진 것을 확인(`docs/ux-evidence/20261025-adfit-article-real-chrome.jpg`). acceptance: 광고4를 기사 하단 두 번째 300×250 자리로 옮길지, 데스크톱 전용으로 둘지 결정 → 375·1280·1536 실화면 캡처로 각 폭의 요청 단위 수 기록",
+  "state": "done",
+  "reviewed_head": "623e68c75de01783c3e539495bcd098bdbbe8fc1",
+  "verified_head": "623e68c75de01783c3e539495bcd098bdbbe8fc1",
+  "merge_commit": "dbae02185f56946ff22846374adca2fbf431440f",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/56",
+  "review": "APPROVE: 품 방향(PRD)과 맞는지**\n- 광고 배치를 지금대로 두기로 정한 것이라 방향 전환이 아닙니다. 수익 목표(사람 방문자당 수익 행동)와도 부딪히지 않습니다.\n\n**[PASS] 보안과 자격증명**\n- 문서에 적힌 광고 칸 ID(`DAN-…`)는 페이지 HTML에 그대로 공개되는 값이라 비밀이 아닙니다. 자격증명이나 Supabase 스키마는 건드리지 않았습니다.\n\n**[주의] 백로그 완료 표시**\n- 원래 완료 조건은 \"375·1280·1536px 실제 화면 캡처로 폭별 요청 수 기록\"이었습니다. 이번에 이 캡처는 찍지 못했고, 브랜치도 그렇다고 솔직하게 적었습니다(`docs/BACKLOG.md:21`). 남은 실측은 10-25에 1394px 한 폭에서 잰 값뿐입니다.\n- 이번 일의 본체는 \"광고4를 데스크톱 전용으로 둔다\"는 결정이고, 화면 코드는 바뀌지 않았습니다. 그래서 머지는 막지 않지만, 캡처를 다시 찍는 일은 따로 기록해 둡니다(아래 FOLLOWUP).\n\nFOLLOWUP: AdFit 폭별 광고 요청 수를 375·1280·1536px 실제 크롬에서 재고 docs/ux-evidence 에 캡처 남기기 · docs/BACKLOG.md:21 · 완료 조건의 캡처가 이번에 빠지고 코드 기준 추정만 남음\nFOLLOWUP: 오너가 300×250 단위 ID를 주면 NEXT_PUBLIC_ADFIT_UNIT_RECT2 를 .env.example·AdFitUnit 설정·기사 하단에 배선하고 테스트 추가 · src/components/AdFitUnit.tsx:15 · 지금은 문서에만 있는 이름\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "recorded_at": 1793350130
+}
