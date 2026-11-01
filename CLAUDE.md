@@ -51,7 +51,7 @@ scripts/
 - `validate-news` 가 남은 미커밋 기사를 다시 검사해 불량 파일(과 번역 짝)을 `src/content/_quarantine/` 로 옮긴다 (삭제 아님, 사유는 `QUARANTINE.log`). 격리 폴더는 git 에 커밋된다.
 - 빌드가 그래도 실패하면 아무것도 발행하지 않고 산출물을 `~/.claude/state/ai-guide-failed/` 에 스냅샷한 뒤 트리를 되돌리고 exit 3.
 - 생성 실패는 모델·CLI 원문을 `~/.claude/state/ai-guide-failed/raw-output/` 에 남긴다 (최근 50개, 경로는 경고 줄에 찍힌다). 확인 순서는 `docs/TROUBLESHOOTING.md`.
-- `claude -p` 는 설정·훅·MCP·도구 없이 저장소 밖에서 돈다 (`scripts/claude-cli-args.ts`). 전역 Stop 훅이 답을 다시 쓰게 해 완성된 기사가 버려졌다 (2026-11-01).
+- `claude -p` 는 설정·훅·MCP·도구·자동 메모리 없이 저장소 밖에서 돈다 (`scripts/claude-cli-args.ts`, `claude-cli-run.ts`). 전역 Stop 훅이 답을 다시 쓰게 해 완성된 기사가 버려졌다 (2026-11-01).
 - 종료코드: 0 정상·새 글 없음, 2 생성 전부 실패, 3 빌드 실패. 매 실행 한 줄이 `~/.claude/logs/ai-guide-publish.status` 에 쌓인다.
 - 로그는 실행 시작 때 7일 초과분을 gzip(`~/.claude/logs/archive/`)한다 (`npm run rotate-log`).
 

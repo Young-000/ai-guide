@@ -44,6 +44,7 @@ ${article('en')}
 const STUB_CLAUDE = `#!/usr/bin/env bash
 cat > /dev/null
 printf '%s\\n' "$PWD" > "$STUB_RECORD"
+printf 'memory=%s\\n' "$CLAUDE_CODE_DISABLE_AUTO_MEMORY" >> "$STUB_RECORD"
 printf '%s\\n' "$@" >> "$STUB_RECORD"
 cat "$STUB_STDOUT"
 [ -f "$STUB_STDERR" ] && cat "$STUB_STDERR" >&2
@@ -162,10 +163,11 @@ describe('generate-news.ts', () => {
     expect(h.rawFiles()).toEqual([]);
   });
 
-  it('calls the CLI outside the repo, so project CLAUDE.md stays out of the prompt', () => {
+  it('calls the CLI outside the repo with auto memory off, so nothing but the prompt reaches the model', () => {
     h.run(GOOD_OUTPUT);
 
-    const [cwd, ...argv] = h.record();
+    const [cwd, memory, ...argv] = h.record();
+    expect(memory).toBe('memory=1');
     expect(fs.realpathSync(cwd).startsWith(fs.realpathSync(h.repo))).toBe(false);
     expect(argv).toEqual(expect.arrayContaining(['--strict-mcp-config', '--disable-slash-commands']));
   });
@@ -192,7 +194,7 @@ describe('generate-news.ts', () => {
     expect(result.status).toBe(2);
     expect(result.stderr).toContain(`claude CLI exit 1: ${quota}`);
     expect(savedRaw()).toContain('reason: cli-error');
-    expect(savedRaw()).toContain(quota);
+    expect(savedRaw()).toContain(`error: claude CLI exit 1: ${quota}`);
   });
 
   it('keeps stderr in the saved file when the CLI exits non-zero', () => {

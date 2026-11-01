@@ -25,12 +25,14 @@ function exitMessage(code: number | null, stdout: string, stderr: string): strin
 }
 
 // Local backend: pipe the prompt to `claude -p` (headless) via stdin, capture stdout. Uses the
-// machine's Claude Code auth, no ANTHROPIC_API_KEY needed. Runs outside the repo so the project's
-// CLAUDE.md does not join the prompt.
+// machine's Claude Code auth, no ANTHROPIC_API_KEY needed. --setting-sources does not cover auto
+// memory, which is keyed by working directory: without this variable, notes saved by any session
+// opened in that directory would join every article prompt.
 export function runClaudeCli(prompt: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn('claude', buildClaudeCliArgs(), {
       cwd: tmpdir(),
+      env: { ...process.env, CLAUDE_CODE_DISABLE_AUTO_MEMORY: '1' },
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     let out = '';

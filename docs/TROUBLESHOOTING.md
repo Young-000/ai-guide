@@ -49,7 +49,7 @@ git diff main...feature/situation-based-pivot --stat
 
 **확인 순서**:
 1. 경고 줄 끝에 찍힌 파일을 연다 (`~/.claude/state/ai-guide-failed/raw-output/`). 머리에 사유·제목·URL, 그 아래 모델·CLI 원문이 있다.
-2. `reason: cli-error` — 원문의 CLI 메시지를 본다. `You've hit your weekly limit` 는 다음 리셋까지 대기, `Not logged in` 은 `~/.claude/secrets/teamY/claude-cli.env` 토큰 점검.
+2. `reason: cli-error` 또는 `api-error` — 파일 맨 위 `error:` 줄을 본다. `You've hit your weekly limit` 는 다음 리셋까지 대기, `Not logged in` 은 `~/.claude/secrets/teamY/claude-cli.env` 토큰 점검.
 3. `reason: malformed` — 마커가 없는 출력이다. 설명문이면 무언가가 답을 다시 쓰게 한 것이니 `scripts/claude-cli-args.ts` 의 격리 플래그가 유지되는지 본다.
 4. `reason: invalid-article: …` — 품질 검증이 거부한 것이다. 검증을 낮추지 말고 생성 지침을 고친다.
 

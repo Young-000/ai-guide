@@ -13,7 +13,6 @@ const ISOLATION_ARGS = [
   '--strict-mcp-config',
   '--tools', '',
   '--disable-slash-commands',
-  '--no-session-persistence',
 ];
 
 export function buildClaudeCliArgs(env: Record<string, string | undefined> = process.env): string[] {

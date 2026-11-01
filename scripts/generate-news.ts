@@ -171,9 +171,10 @@ async function main(): Promise<void> {
     try {
       pair = await generatePair(item, generate);
     } catch (err) {
-      const raw = err instanceof ClaudeCliError ? err.rawOutput : '';
       const message = (err as Error).message;
-      console.warn(`  [WARN] generation error: ${message} (${saveFailure(item, 'cli-error', raw)})`);
+      const [reason, raw] = err instanceof ClaudeCliError ? ['cli-error', err.rawOutput] : ['api-error', ''];
+      const saved = saveFailure(item, reason, `error: ${message}\n\n${raw}`);
+      console.warn(`  [WARN] generation error: ${message} (${saved})`);
       failed++;
       continue;
     }

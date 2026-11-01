@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { MAX_RAW_OUTPUT_FILES, saveRawOutput } from '../raw-output-store';
+import { MAX_RAW_OUTPUT_FILES, defaultRawOutputDir, saveRawOutput } from '../raw-output-store';
 
 const TEMP_PREFIX = path.join(os.tmpdir(), 'ai-guide-raw-');
 
@@ -41,6 +41,22 @@ describe('saveRawOutput', () => {
     const files = fs.readdirSync(dir).sort();
     expect(files).toHaveLength(MAX_RAW_OUTPUT_FILES);
     expect(files[0]).toContain('T00-00-03');
+  });
+
+  it('keeps both files when two failures with unreadable titles land in the same millisecond', () => {
+    const now = new Date('2026-11-01T05:12:38.000Z');
+    saveRawOutput({ ...entry, title: '한글 제목 하나', url: 'https://example.com/a' }, { dir, now });
+    saveRawOutput({ ...entry, title: '한글 제목 둘', url: 'https://example.com/b' }, { dir, now });
+
+    expect(fs.readdirSync(dir)).toHaveLength(2);
+  });
+
+  it('defaults to a folder outside the repo, and honours AI_GUIDE_FAILED_DIR', () => {
+    const repo = path.resolve(__dirname, '..', '..');
+
+    expect(defaultRawOutputDir({}).startsWith(os.homedir())).toBe(true);
+    expect(defaultRawOutputDir({}).startsWith(repo)).toBe(false);
+    expect(defaultRawOutputDir({ AI_GUIDE_FAILED_DIR: '/x/failed' })).toBe('/x/failed/raw-output');
   });
 
   it('returns null instead of throwing when the directory cannot be written', () => {

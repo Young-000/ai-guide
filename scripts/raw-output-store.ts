@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -5,6 +6,7 @@ import { join } from 'node:path';
 export const MAX_RAW_OUTPUT_FILES = 50;
 
 const TITLE_CHARS = 40;
+const URL_HASH_CHARS = 8;
 
 export type RawOutputEntry = { reason: string; title: string; url: string; text: string };
 export type SaveRawOutputOptions = { dir?: string; now?: Date };
@@ -35,15 +37,21 @@ export function saveRawOutput(entry: RawOutputEntry, options: SaveRawOutputOptio
   const dir = options.dir ?? defaultRawOutputDir();
   const now = options.now ?? new Date();
   const stamp = now.toISOString().replace(/[:.]/g, '-');
-  const file = join(dir, `${stamp}-${fileLabel(entry.reason)}-${fileLabel(entry.title)}.txt`);
+  // A title with no Latin letters has an empty label, so the URL keeps same-millisecond files apart.
+  const urlHash = createHash('sha256').update(entry.url).digest('hex').slice(0, URL_HASH_CHARS);
+  const file = join(dir, `${stamp}-${fileLabel(entry.reason)}-${fileLabel(entry.title)}-${urlHash}.txt`);
   const header = `reason: ${entry.reason}\ntitle: ${entry.title}\nurl: ${entry.url}\nat: ${now.toISOString()}\n\n`;
   try {
     mkdirSync(dir, { recursive: true });
     writeFileSync(file, header + entry.text);
-    pruneOldest(dir);
-    return file;
   } catch {
     return null;
   }
+  try {
+    pruneOldest(dir);
+  } catch {
+    // The file is saved; an old one staying behind is harmless.
+  }
+  return file;
 }
 
