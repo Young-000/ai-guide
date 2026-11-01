@@ -11,8 +11,9 @@
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { spawn } from 'node:child_process';
-import { DEFAULT_NEWS_MODEL, buildClaudeCliArgs } from './claude-cli-args';
+import { DEFAULT_NEWS_MODEL } from './claude-cli-args';
+import { ClaudeCliError, runClaudeCli } from './claude-cli-run';
+import { saveRawOutput } from './raw-output-store';
 import Anthropic from '@anthropic-ai/sdk';
 import type { FeedItem } from '../src/lib/news-feed';
 import { hasSourceSubstance } from '../src/lib/news-source';
@@ -24,6 +25,7 @@ import { classifyGenerationRun, validateGeneratedPair } from '../src/lib/news-va
 type Worklist = { generatedAt: string; items: FeedItem[] };
 type PublishedState = { urls: string[] };
 type Generate = (prompt: string) => Promise<string>;
+type GeneratedOutput = { slug: string; ko: string; en: string; raw: string };
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -31,7 +33,6 @@ const MAX_ARTICLES = 3;
 const ROOT = join(__dirname, '..');
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 const NEWS_MODEL = process.env.NEWS_MODEL || DEFAULT_NEWS_MODEL;
-const CLI_TIMEOUT_MS = 180_000;
 const CRASH_EXIT_CODE = 4; // distinct from 1 (nothing new) and 2 (every attempt failed)
 
 // ─── Load files ───────────────────────────────────────────────────────────────
@@ -89,41 +90,17 @@ async function runAnthropicApi(prompt: string, client: Anthropic): Promise<strin
   return textBlock?.text ?? '';
 }
 
-// Local backend: pipe the prompt to `claude -p` (headless) via stdin, capture
-// stdout. Uses the machine's Claude Code auth — no ANTHROPIC_API_KEY needed.
-function runClaudeCli(prompt: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const child = spawn('claude', buildClaudeCliArgs(), {
-      stdio: ['pipe', 'pipe', 'pipe'],
-    });
-    let out = '';
-    let err = '';
-    const timer = setTimeout(() => {
-      child.kill('SIGKILL');
-      reject(new Error(`claude CLI timed out after ${CLI_TIMEOUT_MS}ms`));
-    }, CLI_TIMEOUT_MS);
-    child.stdout.on('data', (chunk: Buffer) => (out += chunk.toString()));
-    child.stderr.on('data', (chunk: Buffer) => (err += chunk.toString()));
-    child.on('error', (e) => {
-      clearTimeout(timer);
-      reject(e);
-    });
-    child.on('close', (code) => {
-      clearTimeout(timer);
-      if (code === 0) resolve(out);
-      else reject(new Error(`claude CLI exit ${code}: ${err.slice(0, 300)}`));
-    });
-    child.stdin.write(prompt);
-    child.stdin.end();
-  });
-}
-
 // ─── Generation ───────────────────────────────────────────────────────────────
+
+function saveFailure(item: FeedItem, reason: string, text: string): string {
+  const file = saveRawOutput({ reason, title: item.title, url: item.url, text });
+  return file ? `raw output: ${file}` : 'raw output could not be saved';
+}
 
 async function generatePair(
   item: FeedItem,
   generate: Generate,
-): Promise<{ slug: string; ko: string; en: string } | null> {
+): Promise<GeneratedOutput | null> {
   const userPrompt = `You are an AI news digest writer. Based on the RSS item below, write a bilingual (Korean + English) digest following the rules.
 
 ## RSS ITEM
@@ -159,11 +136,11 @@ Output exactly this structure — nothing before or after:
   const en = text.match(/===EN_START===\s*([\s\S]*?)\s*===EN_END===/)?.[1]?.trim();
 
   if (!slug || !ko || !en) {
-    console.warn(`[WARN] Malformed output for "${item.title}" — skipped`);
+    console.warn(`[WARN] Malformed output for "${item.title}" — skipped (${saveFailure(item, 'malformed', text)})`);
     return null;
   }
 
-  return { slug, ko, en };
+  return { slug, ko, en, raw: text };
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
@@ -190,11 +167,13 @@ async function main(): Promise<void> {
   for (const item of items) {
     console.log(`  • ${item.title}`);
 
-    let pair: { slug: string; ko: string; en: string } | null = null;
+    let pair: GeneratedOutput | null = null;
     try {
       pair = await generatePair(item, generate);
     } catch (err) {
-      console.warn(`  [WARN] generation error: ${(err as Error).message}`);
+      const raw = err instanceof ClaudeCliError ? err.rawOutput : '';
+      const message = (err as Error).message;
+      console.warn(`  [WARN] generation error: ${message} (${saveFailure(item, 'cli-error', raw)})`);
       failed++;
       continue;
     }
@@ -208,7 +187,8 @@ async function main(): Promise<void> {
     // of the ledger, so the story is retried later instead of being marked done and lost.
     const verdict = validateGeneratedPair(pair);
     if (!verdict.ok) {
-      console.warn(`  [WARN] invalid article '${pair.slug}' — not written: ${verdict.reason}`);
+      const saved = saveFailure(item, `invalid-article: ${verdict.reason}`, pair.raw);
+      console.warn(`  [WARN] invalid article '${pair.slug}' — not written: ${verdict.reason} (${saved})`);
       failed++;
       continue;
     }

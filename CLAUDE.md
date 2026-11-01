@@ -36,6 +36,9 @@ src/
 scripts/
 ├── fetch-llm-news.ts   # RSS 수집 -> worklist.json
 ├── generate-news.ts    # Anthropic API로 ko/en 다이제스트 생성 -> src/content/news/
+├── claude-cli-args.ts  # 로컬 claude CLI 인자 (격리 플래그 포함)
+├── claude-cli-run.ts   # 로컬 claude CLI 실행, 실패 시 출력 보존
+├── raw-output-store.ts # 생성 실패 원문을 저장소 밖에 저장
 ├── validate-news.ts    # 미커밋 기사 파일별 검증, 불량은 src/content/_quarantine/ 로 격리
 ├── rotate-log.ts       # 발행 로그 7일 보관 + gzip
 └── publish-local.sh    # 로컬 발행 사이클 (위 설명)
@@ -47,6 +50,8 @@ scripts/
 - `generate-news` 는 쓰기 전에 ko/en 쌍을 빌드와 같은 규칙으로 검증한다 (`src/lib/news-validate.ts`). 실패한 쌍은 쓰지 않고 `_published.json` 에도 넣지 않는다.
 - `validate-news` 가 남은 미커밋 기사를 다시 검사해 불량 파일(과 번역 짝)을 `src/content/_quarantine/` 로 옮긴다 (삭제 아님, 사유는 `QUARANTINE.log`). 격리 폴더는 git 에 커밋된다.
 - 빌드가 그래도 실패하면 아무것도 발행하지 않고 산출물을 `~/.claude/state/ai-guide-failed/` 에 스냅샷한 뒤 트리를 되돌리고 exit 3.
+- 생성 실패는 모델·CLI 원문을 `~/.claude/state/ai-guide-failed/raw-output/` 에 남긴다 (최근 50개, 경로는 경고 줄에 찍힌다). 확인 순서는 `docs/TROUBLESHOOTING.md`.
+- `claude -p` 는 설정·훅·MCP·도구 없이 저장소 밖에서 돈다 (`scripts/claude-cli-args.ts`). 전역 Stop 훅이 답을 다시 쓰게 해 완성된 기사가 버려졌다 (2026-11-01).
 - 종료코드: 0 정상·새 글 없음, 2 생성 전부 실패, 3 빌드 실패. 매 실행 한 줄이 `~/.claude/logs/ai-guide-publish.status` 에 쌓인다.
 - 로그는 실행 시작 때 7일 초과분을 gzip(`~/.claude/logs/archive/`)한다 (`npm run rotate-log`).
 
