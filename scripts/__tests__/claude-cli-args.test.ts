@@ -25,6 +25,11 @@ describe('buildClaudeCliArgs', () => {
     expect(args).toEqual(expect.arrayContaining(['--strict-mcp-config', '--disable-slash-commands']));
   });
 
+  // Transcripts are the only record of stop_reason and usage for a failed run.
+  it('keeps session transcripts', () => {
+    expect(buildClaudeCliArgs({})).not.toContain('--no-session-persistence');
+  });
+
   it('treats empty env values as unset', () => {
     const args = buildClaudeCliArgs({ NEWS_MODEL: '', NEWS_EFFORT: '' });
     expect(args.slice(0, 5)).toEqual(['-p', '--model', 'claude-sonnet-5-5', '--effort', 'medium']);
