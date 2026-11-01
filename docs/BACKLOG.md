@@ -239,3 +239,15 @@
 - [dropped] (중복 — 같은 지적을 위쪽 리뷰 후속 기록 섹션 줄이 추적, 2026-10-25) 리뷰 후속: 병합 충돌은 사람이 풀어야 하는데 경보 문구는 "다음 실행에서 다시 시도해요"라 대표가 할 일을 놓침 · scripts/publish-local.sh:141 · 사유별 문구로 분리 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
 - [dropped] (중복 — 같은 지적을 위쪽 리뷰 후속 기록 섹션 줄이 추적, 2026-10-25) 리뷰 후속: 경보의 "N건"은 기사 수가 아니라 커밋 수라 오해 소지 · scripts/publish-local.sh:141 · "커밋 N개"로 표기 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
 - [dropped] (중복 — 같은 지적을 위쪽 리뷰 후속 기록 섹션 줄이 추적, 2026-10-25) 리뷰 후속: 발행이 성공해도 억제 상태를 지우지 않아, 복구 후 6시간 안에 새로 실패하면 경보가 안 감 · scripts/publish-local.sh:220 · 성공 시 ALERT_STATE 삭제 — owner:dev — since:2026-10-25 — link:Young-000/ai-guide#46
+- [todo] 리뷰 후속: 페이지 읽기 중복 · scripts/top-pages-report.ts:31 · readFunnelRows와 같은 루프라 제네릭 함수 하나로 합치기(중복 금지 규칙) — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#47
+- [todo] 리뷰 후속: 30일 total 6.5만 행을 1000행씩 65번 순차 조회 · scripts/top-pages.ts:22 · path별 합계를 내는 읽기 전용 뷰나 RPC로 DB에서 집계 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#47
+- [todo] 리뷰 후속: 한 줄 120자 초과 · scripts/top-pages.ts:46, scripts/top-pages-report.ts:27 · 출력 포맷과 이스케이프 식을 헬퍼로 분리 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#47
+- [todo] 리뷰 후속: 원문이 없어 무조건 걸러질 Ars를 대체 스크래핑 목록에 남겨둠 · scripts/fetch-llm-news.ts:35-40 · 스크래핑 항목은 summary가 null이라 :193에서 전부 탈락, 대체 경로 자체가 무의미 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#54
+- [todo] 리뷰 후속: 실측 스크립트가 실제 수집과 다른 Accept 헤더·타임아웃(20초 대 15초)을 씀 · scripts/audit-feeds.ts:9-13 · 429 같은 차단 판정이 실제 수집과 다를 수 있으니 헤더를 공유할 것 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#54
+- [todo] 리뷰 후속: 재추가 금지 테스트가 피드 이름으로만 막음 · src/lib/__tests__/feeds-config.test.ts:15 · 이름을 바꾸면 그대로 통과하고, 원문을 주는 새 주소로 같은 매체를 되살릴 때도 막힘. URL 기준 검사가 맞음 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#54
+- [todo] 리뷰 후속: IndexNow 제출 목록이 색인에서 뺀 기사 주소도 그대로 보낸다 · src/app/api/indexnow/route.ts:27-28 · 사이트맵과 같은 제외 기준을 맞춰야 한다 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
+- [todo] 리뷰 후속: 영어 판이 없으면 테스트가 검사 없이 통과한다 · src/app/(site)/news/[slug]/__tests__/robots.test.ts:28 · 영어 판이 있는 얇은 기사를 골라 반드시 검사하게 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
+- [todo] 리뷰 후속: 개발 모드에서는 캐시 없이 페이지 요청마다 기사 2천여 개를 다시 읽는다 · src/lib/news.ts:216 · 기존 기사 목록 캐시를 같이 쓰도록 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
+- [todo] 리뷰 후속: llms-full.txt 에 색인에서 뺀 기사가 그대로 들어간다 · src/app/llms-full.txt/route.ts:10 · 의도한 것인지 정하고 기준을 맞춘다 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
+- [todo] 리뷰 후속: AdFit 폭별 광고 요청 수를 375·1280·1536px 실제 크롬에서 재고 docs/ux-evidence 에 캡처 남기기 · docs/BACKLOG.md:21 · 완료 조건의 캡처가 이번에 빠지고 코드 기준 추정만 남음 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#56
+- [todo] 리뷰 후속: 오너가 300×250 단위 ID를 주면 NEXT_PUBLIC_ADFIT_UNIT_RECT2 를 .env.example·AdFitUnit 설정·기사 하단에 배선하고 테스트 추가 · src/components/AdFitUnit.tsx:15 · 지금은 문서에만 있는 이름 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#56
