@@ -18,7 +18,12 @@ const TEMP_PREFIX = path.join(os.tmpdir(), 'ai-guide-generate-');
 const REWRITE_FOLLOW_UP = `직전 출력의 영어 부분은 영문판 다이제스트 파일(\`===EN_START===\` ~ \`===EN_END===\`)입니다.
 출력 형식이 고정돼 있어 같은 구조를 다시 내보내지 않았습니다. 앞서 낸 블록을 그대로 쓰시면 됩니다.`;
 
-const article = (lang: 'ko' | 'en'): string => `---
+const URL_LEAD = 'https://example.com/story';
+const URL_RELATED = 'https://other.example.org/story';
+const KO_BODY = '가나다라마바사아자차'.repeat(90);
+const EN_BODY = Array.from({ length: 360 }, () => 'word').join(' ');
+
+const article = (lang: 'ko' | 'en', body = lang === 'ko' ? KO_BODY : EN_BODY, urls = [URL_LEAD, URL_RELATED]): string => `---
 title: "Title ${lang}"
 lang: ${lang}
 date: 2026-11-01
@@ -26,10 +31,9 @@ slug: stub-story
 summary: "summary"
 tags: ["AI"]
 sources:
-  - title: "Source"
-    url: https://example.com/story
+${urls.map((url) => `  - title: "Source"\n    url: ${url}`).join('\n')}
 ---
-Body ${lang}`;
+${body}`;
 
 const GOOD_OUTPUT = `===SLUG_START===
 stub-story
@@ -53,7 +57,7 @@ exit "\${STUB_EXIT:-0}"
 
 const SUMMARY = 'Lorem ipsum source text that carries real reporting beyond the headline itself. '.repeat(3);
 
-type RunOptions = { exit?: number; stderr?: string };
+type RunOptions = { exit?: number; stderr?: string; env?: Record<string, string> };
 
 type Harness = {
   tmp: string;
@@ -64,10 +68,43 @@ type Harness = {
   published: () => string[];
   articles: () => string[];
   record: () => string[];
+  called: () => boolean;
 };
 
 function copy(relative: string, repo: string): void {
   fs.cpSync(path.join(REPO_ROOT, relative), path.join(repo, relative), { recursive: true });
+}
+
+type Story = { title: string; url: string; source: string; publishedAt: string; summary: string; related?: object[] };
+
+const RELATED_ITEM = {
+  title: 'Stub story, second outlet',
+  url: URL_RELATED,
+  source: 'Other',
+  publishedAt: '2026-11-01',
+  summary: SUMMARY,
+};
+const LEAD_ITEM: Story = {
+  title: 'Stub story',
+  url: URL_LEAD,
+  source: 'Example',
+  publishedAt: '2026-11-01',
+  summary: SUMMARY,
+  related: [RELATED_ITEM],
+};
+
+function writeWorklist(repo: string, items: Story[]): void {
+  fs.writeFileSync(path.join(repo, 'scripts/worklist.json'), JSON.stringify({ generatedAt: '2026-11-01T00:00:00.000Z', items }));
+}
+
+function writeTodaysArticle(repo: string, slug: string): void {
+  const dir = path.join(repo, 'src/content/news/en');
+  fs.mkdirSync(dir, { recursive: true });
+  const today = new Date().toISOString().split('T')[0];
+  fs.writeFileSync(
+    path.join(dir, `${today}-${slug}.md`),
+    `---\ntitle: "Earlier ${slug}"\nlang: en\ndate: ${today}\nslug: ${slug}\nsummary: "earlier"\ntags: ["AI"]\nsources: []\n---\nBody\n`,
+  );
 }
 
 function setupRepo(repo: string): void {
@@ -79,16 +116,7 @@ function setupRepo(repo: string): void {
   copy('src/types', repo);
   fs.symlinkSync(NODE_MODULES, path.join(repo, 'node_modules'));
   fs.writeFileSync(path.join(repo, 'scripts/_published.json'), '{\n  "urls": []\n}\n');
-  fs.writeFileSync(path.join(repo, 'scripts/worklist.json'), JSON.stringify({
-    generatedAt: '2026-11-01T00:00:00.000Z',
-    items: [{
-      title: 'Stub story',
-      url: 'https://example.com/story',
-      source: 'Example',
-      publishedAt: '2026-11-01',
-      summary: SUMMARY,
-    }],
-  }));
+  writeWorklist(repo, [LEAD_ITEM]);
 }
 
 function setup(): Harness {
@@ -121,7 +149,7 @@ function setup(): Harness {
         STUB_STDOUT: stdoutFile,
         STUB_STDERR: stderrFile,
         STUB_EXIT: String(options.exit ?? 0),
-      }),
+      }, options.env),
     });
   };
   return {
@@ -140,6 +168,7 @@ function setup(): Harness {
       return fs.readdirSync(dir, { recursive: true }).map(String).filter((file) => file.endsWith('.md'));
     },
     record: () => fs.readFileSync(recordFile, 'utf8').trim().split('\n'),
+    called: () => fs.existsSync(recordFile),
   };
 }
 
@@ -159,7 +188,7 @@ describe('generate-news.ts', () => {
 
     expect(result.status).toBe(0);
     expect(h.articles()).toHaveLength(2);
-    expect(h.published()).toEqual(['https://example.com/story']);
+    expect(h.published()).toEqual([URL_LEAD, URL_RELATED]);
     expect(h.rawFiles()).toEqual([]);
   });
 
@@ -205,7 +234,7 @@ describe('generate-news.ts', () => {
   });
 
   it('still rejects an article the quality gate refuses, and saves why', () => {
-    const headlineOnly = GOOD_OUTPUT.replace('Body ko', '보도 제목과 요약 수준으로만 확인된다.');
+    const headlineOnly = GOOD_OUTPUT.replace(KO_BODY, `보도 제목과 요약 수준으로만 확인된다.${KO_BODY}`);
     const result = h.run(headlineOnly);
 
     expect(result.status).toBe(2);
@@ -214,5 +243,73 @@ describe('generate-news.ts', () => {
     expect(h.published()).toEqual([]);
     expect(savedRaw()).toContain('reason: invalid-article');
   });
-});
 
+  it('rejects a pair whose Korean body is too short, exits 1 as quality-rejected and records no URL', () => {
+    const shortKo = GOOD_OUTPUT.replace(KO_BODY, '짧은 본문');
+    const result = h.run(shortKo);
+
+    expect(result.status).toBe(1);
+    expect(result.stdout).toMatch(/\(quality-rejected\)/);
+    expect(result.stderr).toMatch(/quality gate 'stub-story'.*ko: body is \d+ chars/);
+    expect(h.articles()).toEqual([]);
+    expect(h.published()).toEqual([]);
+    expect(savedRaw()).toContain('reason: quality-rejected');
+  });
+
+  it('rejects a pair that cites only one of the supplied sources', () => {
+    const oneSource = GOOD_OUTPUT.replace(`  - title: "Source"\n    url: ${URL_RELATED}\n`, '');
+    const result = h.run(oneSource);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toMatch(/cites 1 distinct source/);
+    expect(h.articles()).toEqual([]);
+  });
+
+  it('rejects a pair that cites a URL it was never given', () => {
+    const invented = GOOD_OUTPUT.split(URL_RELATED).join('https://invented.example/x');
+    const result = h.run(invented);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toMatch(/source url was not supplied: https:\/\/invented\.example\/x/);
+  });
+
+  it('does not call the model for a story with a single outlet', () => {
+    writeWorklist(h.repo, [{ ...LEAD_ITEM, related: undefined }]);
+    const result = h.run(GOOD_OUTPUT);
+
+    expect(result.status).toBe(1);
+    expect(result.stdout).toMatch(/1 too-few-sources/);
+    expect(result.stdout).toMatch(/article pair\(s\) written/); // publish-local.sh reads exit 1 + this line as "nothing new"
+    expect(h.called()).toBe(false);
+    expect(h.published()).toEqual([]);
+  });
+
+  it('does not call the model once the daily limit is reached', () => {
+    writeTodaysArticle(h.repo, 'earlier-one');
+    writeTodaysArticle(h.repo, 'earlier-two');
+    const result = h.run(GOOD_OUTPUT);
+
+    expect(result.status).toBe(1);
+    expect(result.stdout).toMatch(/1 daily-limit/);
+    expect(result.stdout).toMatch(/2\/2 published today/);
+    expect(h.called()).toBe(false);
+  });
+
+  it('lets NEWS_DAILY_LIMIT raise the cap', () => {
+    writeTodaysArticle(h.repo, 'earlier-one');
+    writeTodaysArticle(h.repo, 'earlier-two');
+    const result = h.run(GOOD_OUTPUT, { env: { NEWS_DAILY_LIMIT: '3' } });
+
+    expect(result.status).toBe(0);
+    expect(h.articles().filter((file) => file.includes('stub-story'))).toHaveLength(2);
+  });
+
+  it('skips a promotional story without calling the model', () => {
+    writeWorklist(h.repo, [{ ...LEAD_ITEM, title: '4 days left: TechCrunch Founder Summit passes' }]);
+    const result = h.run(GOOD_OUTPUT);
+
+    expect(result.status).toBe(1);
+    expect(result.stdout).toMatch(/1 promotional/);
+    expect(h.called()).toBe(false);
+  });
+});

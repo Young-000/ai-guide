@@ -149,8 +149,8 @@ export function Footer(): JSX.Element {
         </section>
 
         <p className="mt-6 text-xs text-slate-500">
-          © {new Date().getFullYear()} AIWire. 본 사이트의 일부 콘텐츠는 AI 도구의 보조를 받아
-          작성되며 편집자가 검수합니다.
+          © {new Date().getFullYear()} AIWire. 뉴스 기사는 AI가 작성해 자동으로 게재하며 사람이
+          검수하지 않습니다.
         </p>
       </div>
     </footer>

@@ -22,11 +22,12 @@ export type QuarantineOptions = {
   now?: () => Date;
 };
 
-export type RunCounts = { written: number; failed: number; skipped: number };
+/** `rejected`: well-formed pairs the quality gate (news-quality.ts) refused. They are not generation failures. */
+export type RunCounts = { written: number; failed: number; skipped: number; rejected?: number };
 
 export type RunVerdict = {
   exitCode: 0 | 1 | 2;
-  label: 'ok' | 'nothing-new' | 'generation-failed';
+  label: 'ok' | 'nothing-new' | 'generation-failed' | 'quality-rejected';
 };
 
 /** The slug becomes a file name, so it must not be able to carry a path. */
@@ -175,5 +176,6 @@ export function quarantineInvalidArticles(
 export function classifyGenerationRun(counts: RunCounts): RunVerdict {
   if (counts.written > 0) return { exitCode: 0, label: 'ok' };
   if (counts.failed > 0) return { exitCode: 2, label: 'generation-failed' };
+  if ((counts.rejected ?? 0) > 0) return { exitCode: 1, label: 'quality-rejected' };
   return { exitCode: 1, label: 'nothing-new' };
 }

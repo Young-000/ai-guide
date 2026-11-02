@@ -59,6 +59,31 @@ export function hasSourceSubstance(item: FeedItem): boolean {
   return sourceSubstance(item).length >= MIN_SOURCE_CHARS;
 }
 
+/**
+ * 행사·티켓·후원 홍보는 뉴스가 아니다 (2026-11-02 점검: 11/01 발행 5건 중 2건이 TechCrunch Founder Summit 등록 안내).
+ * 2026-06~11 발행 기사 1,224건의 출처 제목에 대어 보고 고른 목록이다. "deal"·"sponsored" 같은 낱말 하나로는 막지 않는다 —
+ * 'Anthropic signs $35B cloud deal'(보도)과 'OpenAI Testing Sponsored Agents'(보도)가 걸리기 때문이다.
+ */
+const PROMOTION_TITLE_PATTERNS: RegExp[] = [
+  /\b\d+\s+(?:days?|hours?|weeks?)\s+(?:left|to go)\b/i,
+  /\b(?:early[- ]bird|last chance|register (?:now|today|before|by)|get your (?:pass|tickets?)|tickets? (?:are )?(?:on sale|now available)|save up to \$?\d+|promo code|rsvp|webinar)\b/i,
+  /\bfounder summit\b|\btechcrunch (?:disrupt|sessions|all stage)\b|\bdisrupt 20\d\d\b|\bstartup battlefield\b|\bbraindate\b/i,
+];
+const PROMOTION_BODY_PATTERN = /\b(?:sponsored (?:content|post|article)|paid partnership|advertorial)\b/i;
+const PROMOTION_BODY_SCAN_CHARS = 300;
+
+export function isPromotionalItem(item: FeedItem): boolean {
+  const title = plainText(item.title);
+  if (PROMOTION_TITLE_PATTERNS.some((pattern) => pattern.test(title))) return true;
+  const lead = plainText(item.summary ?? '').slice(0, PROMOTION_BODY_SCAN_CHARS);
+  return PROMOTION_BODY_PATTERN.test(lead);
+}
+
+/** 기사로 쓸 만한 원문: 제목 말고 읽을 본문이 있고, 홍보가 아니다. */
+export function isWritableSource(item: FeedItem): boolean {
+  return hasSourceSubstance(item) && !isPromotionalItem(item);
+}
+
 export type SourceSubstanceCount = { source: string; passing: number; total: number };
 
 /** 피드별로 원문 통과 수/전체 수를 센다 (피드 정리 근거 — `npm run audit:feeds`). 처음 나온 순서를 지킨다. */

@@ -8,7 +8,7 @@ const EMBED_IFRAME = `<iframe src="${BASE_URL}/embed/ai-news" width="100%" heigh
 export const metadata: Metadata = {
   title: '소개 | AIWire',
   description:
-    'AIWire는 AI·LLM 분야의 최신 소식을 매일 한국어와 영어로 정리하는 미디어입니다. 출처를 명시하고 핵심만 요약·해설합니다.',
+    'AIWire는 AI·LLM 분야의 뉴스를 AI가 한국어와 영어로 요약·해설해 자동으로 게재하는 사이트입니다. 사람이 쓰거나 검수하지 않으며, 모든 기사에 출처를 밝힙니다.',
   alternates: { canonical: `${BASE_URL}/about` },
 };
 
@@ -20,19 +20,18 @@ export default function AboutPage(): JSX.Element {
       <section className="mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-3">우리가 하는 일</h2>
         <p className="text-gray-700 leading-relaxed">
-          AIWire는 AI·LLM(대형 언어 모델) 분야의 최신 동향을 매일{' '}
-          <strong>한국어와 영어</strong>로 정리해 전달하는 뉴스 미디어입니다. 학술 논문 발표부터
-          주요 AI 기업의 제품 업데이트, 정책 동향, 연구 결과까지 — 핵심만 추려 빠르게 읽을 수
-          있도록 요약·해설합니다.
+          AIWire는 AI·LLM(대형 언어 모델) 분야의 뉴스를 <strong>한국어와 영어</strong>로 요약·해설해
+          싣는 사이트입니다. 기사는 AI가 해외 매체의 원문을 읽고 자동으로 작성해 게재하며,{' '}
+          <strong>게재 전에 사람이 읽거나 사실을 확인하는 단계는 없습니다.</strong>
         </p>
         <p className="mt-4 text-gray-700 leading-relaxed">
-          인터넷에 넘쳐나는 AI 관련 정보 중 실제로 중요한 내용을 선별해, 바쁜 독자도 하루 5분
-          안에 AI 업계 핵심 흐름을 파악할 수 있도록 하는 것이 우리의 목표입니다.
+          바쁜 독자가 AI 업계 소식을 빠르게 훑어볼 수 있게 하는 것이 목표입니다. 중요한 판단에는
+          기사 아래의 원문 링크를 직접 확인해 주세요.
         </p>
       </section>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">편집 원칙</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">작성 원칙</h2>
         <ol className="space-y-5">
           <li className="flex gap-4">
             <span
@@ -44,8 +43,8 @@ export default function AboutPage(): JSX.Element {
             <div>
               <p className="font-semibold text-gray-900">출처 명시</p>
               <p className="mt-1 text-sm text-gray-700">
-                모든 기사에는 원문 출처 링크를 첨부합니다. 독자가 직접 원문을 확인할 수 있도록
-                출처 기관과 URL을 함께 표기합니다.
+                모든 기사에는 근거로 쓴 원문 링크를 첨부하고, 새로 게재하는 기사는 두 곳 이상을 밝힙니다.
+                독자가 직접 원문을 확인할 수 있도록 매체명과 URL을 함께 표기합니다.
               </p>
             </div>
           </li>
@@ -59,8 +58,8 @@ export default function AboutPage(): JSX.Element {
             <div>
               <p className="font-semibold text-gray-900">재작성·요약 (복제 금지)</p>
               <p className="mt-1 text-sm text-gray-700">
-                원문을 그대로 복사하지 않습니다. 각 기사는 편집팀이 직접 읽고 핵심 내용을
-                재작성·요약합니다. 인용이 필요한 경우 명확히 표시합니다.
+                원문을 그대로 복사하지 않습니다. AI가 원문에서 확인되는 사실만 골라 자기 문장으로
+                요약하고, 인용이 필요한 경우 인용임을 표시합니다.
               </p>
             </div>
           </li>
@@ -72,10 +71,11 @@ export default function AboutPage(): JSX.Element {
               3
             </span>
             <div>
-              <p className="font-semibold text-gray-900">AI 보조 작성 고지</p>
+              <p className="font-semibold text-gray-900">AI 작성 고지</p>
               <p className="mt-1 text-sm text-gray-700">
-                일부 기사는 AI 도구를 활용해 초안을 작성하며, 편집자가 사실 확인 및 최종 검수를
-                거쳐 게재합니다. 모든 게재 콘텐츠는 편집자의 검토를 통과한 것입니다.
+                뉴스 기사는 AI가 작성해 자동으로 게재하며, 사람이 검수하지 않습니다. 대신 게재 전에
+                자동 검사를 거칩니다. 형식, 출처 두 곳 이상, 최소 분량을 확인하고 기준에 못 미치면
+                게재하지 않습니다. 이 검사는 내용이 사실인지까지 가려내지는 못합니다.
               </p>
             </div>
           </li>
@@ -87,10 +87,10 @@ export default function AboutPage(): JSX.Element {
               4
             </span>
             <div>
-              <p className="font-semibold text-gray-900">사실 확인 및 정정</p>
+              <p className="font-semibold text-gray-900">오류 신고와 정정</p>
               <p className="mt-1 text-sm text-gray-700">
-                명백한 오류나 오해를 유발하는 내용이 포함된 경우 정정 기사를 게재하거나 기존
-                기사를 수정합니다. 수정 내역은 기사 하단에 명시합니다.
+                오류나 오해를 부르는 내용을 알려 주시면 확인한 뒤 기사를 고치거나 내립니다.
+                문의 페이지로 알려 주세요.
               </p>
             </div>
           </li>

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     'ChatGPT 사용법', 'Claude 사용법', 'AI 도구 추천', 'AI 활용법',
     '인공지능 뉴스', 'AI 도구 비교', 'AI 미디어',
   ],
-  authors: [{ name: 'AIWire 편집팀' }],
+  authors: [{ name: 'AIWire' }],
   robots: { index: true, follow: true },
   // Google Search Console 소유권 확인 메타. env가 있을 때만 태그 출력(없으면 undefined → 미출력).
   // metadata는 서버에서 평가되므로 non-public env 사용 가능.

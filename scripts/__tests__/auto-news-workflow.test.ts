@@ -7,6 +7,19 @@ const WORKFLOW = readFileSync(
   'utf8',
 );
 
+describe('auto-news workflow trigger', () => {
+  // 2026-11-02: the schedule ran every 5 hours with no ANTHROPIC_API_KEY, so every run failed, while the local
+  // cron (scripts/publish-local.sh) is the real publisher. Two publishers also raced on scripts/_published.json.
+  it('does not run on a schedule', () => {
+    expect(WORKFLOW).not.toMatch(/^\s*schedule:/m);
+    expect(WORKFLOW).not.toMatch(/cron:/);
+  });
+
+  it('can still be started by hand', () => {
+    expect(WORKFLOW).toMatch(/^\s*workflow_dispatch:/m);
+  });
+});
+
 describe('auto-news workflow failure visibility', () => {
   it('has a step that runs only when an earlier step failed', () => {
     expect(WORKFLOW).toMatch(/- name: Notify on failure\n\s+if: failure\(\)/);
