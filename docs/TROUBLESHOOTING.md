@@ -43,6 +43,18 @@ git diff main...feature/situation-based-pivot --stat
 3. data/ 디렉토리의 JSON 파일 형식 검증
 4. Next.js App Router 파일 구조 확인 (page.tsx, layout.tsx)
 
+### 발행 result=generation-failed
+
+**증상**: `~/.claude/logs/ai-guide-publish.status` 에 `result=generation-failed`, 로그에 `Malformed output` 또는 `generation error`
+
+**확인 순서**:
+1. 경고 줄 끝에 찍힌 파일을 연다 (`~/.claude/state/ai-guide-failed/raw-output/`). 머리에 사유·제목·URL, 그 아래 모델·CLI 원문이 있다.
+2. `reason: cli-error` 또는 `api-error` — 머리글 아래 `error:` 줄을 본다. `You've hit your weekly limit` 는 다음 리셋까지 대기, `Not logged in` 은 `~/.claude/secrets/teamY/claude-cli.env` 토큰 점검.
+3. `reason: malformed` — 마커가 없는 출력이다. 설명문이면 무언가가 답을 다시 쓰게 한 것이니 `scripts/claude-cli-args.ts` 의 격리 플래그가 유지되는지 본다.
+4. `reason: invalid-article: …` — 품질 검증이 거부한 것이다. 검증을 낮추지 말고 생성 지침을 고친다.
+
+**2026-11-01 사례**: 전역 Stop 훅이 재작성을 시켜 stdout 에 두 번째 답만 남았다. CLI 를 설정·도구 없이 저장소 밖에서 실행하도록 고쳤다 (`docs/LESSONS.md`).
+
 ---
 
-*마지막 업데이트: 2026-02-13*
+*마지막 업데이트: 2026-11-01*
