@@ -89,32 +89,18 @@ describe('sourceSubstance', () => {
   });
 });
 
-describe('generate-news wiring', () => {
-  it('filters headline-only items before taking the per-run cap', () => {
-    const script = readFileSync(join(process.cwd(), 'scripts', 'generate-news.ts'), 'utf8');
-
-    expect(script).toMatch(/worklist\.items\.filter\(hasSourceSubstance\)/);
-    expect(script.indexOf('filter(hasSourceSubstance)')).toBeLessThan(script.indexOf('.slice(0, MAX_ARTICLES)'));
-  });
-
-  /* 리뷰 #50: 0쌍을 쓰고 exit 0 이면 조용히 멈춘다. publish-local.sh 는 요약 줄이 있는 exit 1 을 "새 글 없음"으로 읽는다. */
-  it('headline-only 로 전부 걸러지면 요약 줄을 찍고 exit 1', () => {
-    const script = readFileSync(join(process.cwd(), 'scripts', 'generate-news.ts'), 'utf8');
-    const block = script.slice(script.indexOf('if (items.length === 0)'), script.indexOf('const generationGuide'));
-
-    expect(block).toMatch(/article pair\(s\) written/);
-    expect(block).toMatch(/process\.exit\(headlineOnly > 0 \? 1 : 0\)/);
-  });
-});
-
+/*
+  generate-news 쪽 동작(제목만 있는 항목을 상한 전에 거르기, 요약 줄과 exit 1)은 news-plan.test.ts 와
+  scripts/__tests__/generate-news.test.ts 가 실제로 돌려 본다 (2026-11-02, 소스 문자열 검사에서 교체).
+*/
 describe('fetch-llm-news wiring', () => {
   /* 리뷰 #50 CRITICAL: 최신 8건을 먼저 자르면 원문 있는 첫 항목(10/25 실측 12번째)이 worklist 에 오지 못한다. */
-  it('filters headline-only items before the MAX_ITEMS cap', () => {
+  it('builds the stories (headline-only, promotion and outlet filters) before the MAX_ITEMS cap', () => {
     const script = readFileSync(join(process.cwd(), 'scripts', 'fetch-llm-news.ts'), 'utf8');
-    const filterAt = script.indexOf('.filter(hasSourceSubstance)');
+    const buildAt = script.indexOf('buildStories(');
 
-    expect(filterAt).toBeGreaterThan(-1);
-    expect(filterAt).toBeLessThan(script.indexOf('.slice(0, MAX_ITEMS)'));
+    expect(buildAt).toBeGreaterThan(-1);
+    expect(buildAt).toBeLessThan(script.indexOf('.slice(0, MAX_ITEMS)'));
   });
 });
 

@@ -167,6 +167,17 @@ describe('classifyGenerationRun', () => {
       label: 'generation-failed',
     });
   });
+
+  it('is "quality-rejected" (exit 1, not a failure) when the model wrote pairs the quality gate refused', () => {
+    expect(classifyGenerationRun({ written: 0, failed: 0, skipped: 0, rejected: 2 })).toEqual({
+      exitCode: 1,
+      label: 'quality-rejected',
+    });
+  });
+
+  it('still reports a real generation failure next to quality rejections', () => {
+    expect(classifyGenerationRun({ written: 0, failed: 1, skipped: 0, rejected: 1 }).label).toBe('generation-failed');
+  });
 });
 
 describe('validateGeneratedPair', () => {

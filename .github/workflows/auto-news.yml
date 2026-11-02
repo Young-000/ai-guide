@@ -1,8 +1,8 @@
 name: Auto-publish AI News Digest
 
+# No schedule (2026-11-02): the local cron (scripts/publish-local.sh) publishes. This job needs an
+# ANTHROPIC_API_KEY secret that does not exist, so every scheduled run failed. Start it by hand if a key is added.
 on:
-  schedule:
-    - cron: '0 */5 * * *'  # every 5 hours
   workflow_dispatch:
 
 permissions:

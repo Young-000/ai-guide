@@ -36,18 +36,30 @@ src/
 scripts/
 ├── fetch-llm-news.ts   # RSS 수집 -> worklist.json
 ├── generate-news.ts    # Anthropic API로 ko/en 다이제스트 생성 -> src/content/news/
+├── claude-cli-args.ts  # 로컬 claude CLI 인자 (격리 플래그 포함)
+├── claude-cli-run.ts   # 로컬 claude CLI 실행, 실패 시 출력 보존
+├── raw-output-store.ts # 생성 실패 원문을 저장소 밖에 저장
 ├── validate-news.ts    # 미커밋 기사 파일별 검증, 불량은 src/content/_quarantine/ 로 격리
 ├── rotate-log.ts       # 발행 로그 7일 보관 + gzip
 └── publish-local.sh    # 로컬 발행 사이클 (위 설명)
 ```
 
-자동 발행 파이프라인: `.github/workflows/auto-news.yml` (5시간 간격 cron) — fetch-news -> generate-news -> build check -> commit & push.
+자동 발행 파이프라인: 로컬 크론 `scripts/publish-local.sh` — fetch-news -> generate-news -> build check -> commit & push.
+`.github/workflows/auto-news.yml` 은 2026-11-02 부터 schedule 없이 수동 실행(workflow_dispatch)만 남겼다 (API 키가 없어 매 실행 실패하던 중복 경로).
+
+발행 품질 게이트 (2026-11-02, 문턱은 `src/lib/news-quality.ts` 한 곳):
+- 수집(`fetch-llm-news.ts`): 제목만 있는 항목·행사/티켓 홍보(`isPromotionalItem`)를 빼고, 같은 사건(`src/lib/news-dedupe.ts`)을 묶어 **출처 매체 2곳 이상**인 묶음만 worklist 에 둔다. 오늘 이미 쓴 사건도 뺀다.
+- 생성 전(`generate-news.ts` → `planGeneration`): 하루 상한(`dailyLimit` 2, `NEWS_DAILY_LIMIT` 로 덮어씀, 0 = 중지)과 회차 상한을 적용한다. 걸러진 항목은 모델을 부르지 않는다.
+- 생성 후(`checkArticleQuality`): 한국어 본문 공백 제외 800자·영어 350단어 이상, 인용 출처 2개 이상이고 모델에 준 URL만 허용. 미달은 쓰지 않고 `quality-rejected`(exit 1, 실패 아님)로 센다. 원문은 `raw-output/` 에 남는다.
+- `/about`·푸터·이용약관은 "AI가 작성해 자동 게재, 사람 검수 없음"이라고 쓴다 (`automation-disclosure.test.ts` 가 사람 검수 문구를 막는다). 실제 검수 단계가 생기기 전에는 되돌리지 않는다.
 
 로컬 발행(`scripts/publish-local.sh`, 크론 5회/일)은 파일별로 안전하다 (2026-10-17):
 - `generate-news` 는 쓰기 전에 ko/en 쌍을 빌드와 같은 규칙으로 검증한다 (`src/lib/news-validate.ts`). 실패한 쌍은 쓰지 않고 `_published.json` 에도 넣지 않는다.
 - `validate-news` 가 남은 미커밋 기사를 다시 검사해 불량 파일(과 번역 짝)을 `src/content/_quarantine/` 로 옮긴다 (삭제 아님, 사유는 `QUARANTINE.log`). 격리 폴더는 git 에 커밋된다.
 - 빌드가 그래도 실패하면 아무것도 발행하지 않고 산출물을 `~/.claude/state/ai-guide-failed/` 에 스냅샷한 뒤 트리를 되돌리고 exit 3.
-- 종료코드: 0 정상·새 글 없음, 2 생성 전부 실패, 3 빌드 실패. 매 실행 한 줄이 `~/.claude/logs/ai-guide-publish.status` 에 쌓인다.
+- 생성 실패는 모델·CLI 원문을 `~/.claude/state/ai-guide-failed/raw-output/` 에 남긴다 (최근 50개, 경로는 경고 줄에 찍힌다). 확인 순서는 `docs/TROUBLESHOOTING.md`.
+- `claude -p` 는 설정·훅·MCP·도구·자동 메모리 없이 저장소 밖에서 돈다 (`scripts/claude-cli-args.ts`, `claude-cli-run.ts`). 전역 Stop 훅이 답을 다시 쓰게 해 완성된 기사가 버려졌다 (2026-11-01).
+- 종료코드: 0 정상·새 글 없음, 2 생성 전부 실패, 3 빌드 실패. 품질 게이트만 거절한 회차는 exit 0 `nothing-new` 계열로 끝나고 상태 파일에는 `result=quality-rejected` 로 남는다. 매 실행 한 줄이 `~/.claude/logs/ai-guide-publish.status` 에 쌓인다.
 - 로그는 실행 시작 때 7일 초과분을 gzip(`~/.claude/logs/archive/`)한다 (`npm run rotate-log`).
 
 ## 진행상황
@@ -106,7 +118,7 @@ npm run publish:local    # 로컬 전체 사이클: fetch → 생성(키리스) 
 > 작업 기준(`OPS_PREPUSH_JOB_BASE` = fetch 한 `origin/main`)을 넘겨 여러 커밋을 올린다 — 그래서 **로컬 main 에
 > 쌓인 커밋은 검토 여부와 관계없이 다음 발행 때 함께 올라간다.** 발행 외의 작업은 로컬 main 에 커밋하지 말고
 > feature 브랜치 → PR 로 한다.
-CI(`auto-news.yml`)는 러너에 claude CLI 인증이 없어 여전히 `ANTHROPIC_API_KEY`가 있어야 동작.
+CI(`auto-news.yml`)는 러너에 claude CLI 인증이 없어 `ANTHROPIC_API_KEY`가 있어야 동작하고, 스케줄은 꺼져 있다.
 
 ## Known Issues (프로젝트 고유)
 

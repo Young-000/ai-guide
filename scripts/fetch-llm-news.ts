@@ -3,7 +3,9 @@ import { join } from 'node:path';
 import { getAllNews } from '../src/lib/news';
 import { parseFeed, dedupeItems } from '../src/lib/news-feed';
 import type { FeedItem } from '../src/lib/news-feed';
-import { hasSourceSubstance } from '../src/lib/news-source';
+import { NEWS_QUALITY } from '../src/lib/news-quality';
+import { buildStories, isCoveredToday } from '../src/lib/news-plan';
+import type { Story } from '../src/lib/news-plan';
 import {
   fetchTrendingKeywords,
   isAiRelatedKeyword,
@@ -16,12 +18,13 @@ type PublishedState = { urls: string[] };
 type TrendingSeed = { keyword: string; rank: number };
 type Worklist = {
   generatedAt: string;
-  items: FeedItem[];
+  items: Story[];
   trendingSeeds: TrendingSeed[];
 };
 
 const MAX_ITEMS = 8;
 const ROOT = join(__dirname, '..');
+const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD, same day key generate-news uses
 
 // Browser-like headers to avoid 403 blocks
 const BROWSER_HEADERS = {
@@ -187,13 +190,22 @@ async function main(): Promise<void> {
   // Dedup against published + existing articles
   const freshItems = dedupeItems(allItems, publishedUrls, existingTitles);
 
-  // Headline-only items (Google News: title + outlet) are dropped BEFORE the cap. Cutting the
-  // newest 8 first left no item with source text in the worklist (2026-10-25: the first one was #12).
-  const writable = freshItems.filter(hasSourceSubstance);
-  console.log(`  with source text: ${writable.length} of ${freshItems.length} fresh item(s)`);
+  // Only items worth writing about reach the worklist (src/lib/news-plan.ts): no headline-only items, no event or
+  // ticket promotions, and only events covered by at least NEWS_QUALITY.minSources outlets (the lead plus related
+  // items). All of it happens BEFORE the cap, so a later item that qualifies still gets its slot. Events with too few
+  // outlets are not marked published, so they group again on a later run once a second outlet covers them.
+  const todaysArticles = getAllNews('en')
+    .filter((article) => article.date === TODAY)
+    .map(({ title, summary, sources }) => ({ title, summary, sources }));
+  const stories = buildStories(freshItems, { minSources: NEWS_QUALITY.minSources });
+  const uncovered = stories.filter((story) => !isCoveredToday(story, todaysArticles));
+  console.log(
+    `  stories with ${NEWS_QUALITY.minSources}+ outlets: ${stories.length} of ${freshItems.length} fresh item(s)` +
+      `, ${stories.length - uncovered.length} already covered today`,
+  );
 
   // Sort newest-first (nulls last), cap to MAX_ITEMS
-  const sorted = writable
+  const sorted = uncovered
     .slice()
     .sort((a, b) => {
       if (!a.publishedAt && !b.publishedAt) return 0;

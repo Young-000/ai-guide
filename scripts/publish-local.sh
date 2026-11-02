@@ -113,6 +113,12 @@ fi
 if [ "$GENERATE_EXIT" = "1" ] && ! grep -q 'article pair(s) written' <<<"$GENERATE_OUT"; then
   GENERATE_EXIT=4
 fi
+# A run whose only outcome was "the quality gate refused what the model wrote" is a quiet day with a
+# different label, so the status file tells it apart from "nothing new" (prompt regression watch).
+NOTHING_NEW_RESULT="nothing-new"
+if [ "$GENERATE_EXIT" = "1" ] && grep -q '(quality-rejected)' <<<"$GENERATE_OUT"; then
+  NOTHING_NEW_RESULT="quality-rejected"
+fi
 if [ "$GENERATE_EXIT" != "0" ] && [ "$GENERATE_EXIT" != "1" ]; then
   RESULT="generation-error"
   echo "✗ generate-news crashed (exit $GENERATE_EXIT)."
@@ -226,7 +232,7 @@ publish_to_origin() {
 #    does not (that blind spot once trapped 36 articles locally).
 PUBLISH_PATHS=(src/content/news src/content/_quarantine scripts/_published.json)
 if [ -z "$(git status --porcelain -- "${PUBLISH_PATHS[@]}")" ]; then
-  RESULT="nothing-new"
+  RESULT="$NOTHING_NEW_RESULT"
   echo "ℹ No new articles generated (0 items or all duplicates) — nothing to publish."
   # An earlier run may have committed and then failed to push. Never report that as healthy.
   UNPUSHED="$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)"
