@@ -263,3 +263,8 @@
 - [dropped] (IndexNow 제외 기준 맞추기 줄에 묶음 — 같은 제외 기준) 리뷰 후속: llms-full.txt 에 색인에서 뺀 기사가 그대로 들어간다 · src/app/llms-full.txt/route.ts:10 · 의도한 것인지 정하고 기준을 맞춘다 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
 - [todo] 리뷰 후속: AdFit 폭별 광고 요청 수를 375·1280·1536px 실제 크롬에서 재고 docs/ux-evidence 에 캡처 남기기 · docs/BACKLOG.md:21 · 완료 조건의 캡처가 이번에 빠지고 코드 기준 추정만 남음 — owner:qa — since:2026-11-01 — link:Young-000/ai-guide#56
 - [dropped] (오너가 단위 ID를 주기 전엔 할 일이 없음 — PENDING-OWNER-ACTIONS 가 추적, ID가 오면 새 줄) 리뷰 후속: 오너가 300×250 단위 ID를 주면 NEXT_PUBLIC_ADFIT_UNIT_RECT2 를 .env.example·AdFitUnit 설정·기사 하단에 배선하고 테스트 추가 · src/components/AdFitUnit.tsx:15 · 지금은 문서에만 있는 이름 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#56
+
+## PD 비주얼 스윕 (2026-11-03)
+
+- [todo] **[스윕]** `/news` 첫 화면에서 hottrend 생필품 최저가 카드(`<StaplePrices placement="news" />`, src/app/(site)/news/page.tsx:77)를 뺀다 — AI 뉴스를 보러 온 독자 앞에 생수·라면·기저귀 칩 8개가 첫 기사보다 먼저 나온다. 쉐어링크 계열(trend-radar)은 2026-11-02 휴면 처리됐다. 필요하면 푸터 링크 1줄만 남긴다. acceptance: 390×844 캡처에서 첫 기사 카드 제목이 첫 화면 위쪽 절반에 보임 + StaplePrices 테스트 갱신 + docs/ux-evidence 캡처 (근거: 원칙2·원칙6, 390px 첫 화면에서 '생필품, 오늘 제일 싼 건?' 카드가 섹션 칩 아래를 차지해 첫 기사가 y≈630px에서야 시작) — owner:designer — since:2026-11-03 — link:-
+- [todo] **[스윕]** `/news` 첫 화면을 '오늘 꼭 알아야 할 AI 소식' 톱 카드 1장으로 시작한다 — 지금은 일반적인 제목, 두 줄로 꺾여 '니다.'만 남는 부제, 회색 '섹션' 라벨, 건수(235·47·240·534·170)가 붙은 칩 5개, 아카이브 링크 2개 순서로 우리 분류부터 보여 준다. 최신 기사 1건을 큰 카드로 올리고 '왜 중요한지' 한 줄 판정(기존 요약 사용)과 CTA 1개('기사 읽기')를 넣는다. 섹션 칩은 건수를 빼고 가로 스크롤 1줄로 줄인다. 부제는 390px에서 한 줄에 들어가게 줄인다. acceptance: 390×844 첫 화면에 톱 카드 제목·판정 줄·CTA 1개가 모두 보이고 칩은 1줄 + docs/ux-evidence 캡처 + 독립 시각 리뷰 (근거: 원칙1·원칙7, 첫 화면 위쪽 60%가 콘텐츠 목록과 아카이브 탐색에 쓰이고 판정형 답이 없음) — owner:designer — since:2026-11-03 — link:-
