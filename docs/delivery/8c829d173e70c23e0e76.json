@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "task": "일간 측정 기록에 검색 유입과 direct 비율 한 줄 추가 — docs/metrics 일간 파일에 `search_trends.site_visits` 의 검색 유입(google·bing·duckduckgo·yahoo 등) 합계와 direct 비율을 붙인다(읽기만). verify: 고정 입력 테스트 + 하루치 실행 출력. (근거: 사람 1,421 중 검색 19 — 지금 기록은 총량만 있어 크롤러 모양 방문과 실제 검색 독자를 구분하지 못한다)",
+  "state": "done",
+  "reviewed_head": "8ed05b8509672d572ac1ea7861bb0f38c010a112",
+  "verified_head": "8ed05b8509672d572ac1ea7861bb0f38c010a112",
+  "merge_commit": "9090b9eed6e59e386a1765efa46c75ad7a885bcf",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/60",
+  "review": "APPROVE:  - `printVisitSources`는 site_visits 합계가 funnel 사람 수와 다르면 `Visit sources withheld`만 찍고 끝냅니다. 7일 중 빠진 날이 있을 때도 쓰지 않습니다.\n  - 두 경우 모두 테스트가 있습니다(`revenue-funnel-cli.test.ts:90`, observedDays=1 케이스).\n  - 사람 방문이 0이면 0%나 NaN 대신 \"unknown\"을 찍습니다(`visit-sources.test.ts:40`).\n- **[통과] 보안과 규칙:** 읽기 전용 GET만 보냅니다(헤더 테스트로 확인). 스키마는 `search_trends`이고 public은 쓰지 않습니다. 비밀값을 코드에 박아 두지 않았습니다.\n- **[통과] 방향:** 백로그 줄은 `[review]`로 바뀌었고 다른 저장소 PR(#145) 의존도 적혀 있습니다. \"검색 리퍼러 방문\"을 METRICS의 GSC 클릭과 다른 이름으로 구분해 지표를 새로 정의하지 않았습니다.\n\nFOLLOWUP: site_visits 조회가 실패하면 기존 3개 숫자까지 출력되지 않음 · scripts/revenue-funnel.ts:86 · 소스 줄만 보류하고 funnel 줄은 계속 찍게\nFOLLOWUP: 기간이 덜 찬 날에도 쓰지 않을 site_visits를 매번 조회함 · scripts/revenue-funnel.ts:86 · 완전한 7일일 때만 읽게 바꾸면 불필요한 호출과 실패 경로가 줄어듦\nFOLLOWUP: ChatGPT가 붙이는 utm_source=chatgpt.com 유입은 medium=unknown이라 검색 줄에서 빠짐 · scripts/revenue-funnel-report.ts:56 · 지표 정의에 AI 어시스턴트 유입을 따로 셀지 정해 둘 것\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "executor_member": "data-01",
+  "reviewer_member": "qa-01",
+  "owner_team": "data-analyst",
+  "task_id": "backlog:c939cd159f4a59b4b303",
+  "source": "backlog",
+  "role": "data-analyst",
+  "reviewer_role": "qa",
+  "executor_model": "claude-opus-5-5",
+  "executor_effort": "high",
+  "reviewer_model": "claude-opus-5-5",
+  "reviewer_effort": "high",
+  "recorded_at": 1793778840
+}
