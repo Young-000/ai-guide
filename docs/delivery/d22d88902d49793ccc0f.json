@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "task": "행사·홍보성 RSS 항목 거르기 — \"N days left\", \"Founder Summit\", \"register\", \"sponsored\" 같은 행사 광고 제목을 `src/lib/news-source.ts` 판정에서 뉴스가 아닌 것으로 건너뛴다. verify: 고정 제목 목록 테스트(행사 광고 → 건너뜀, 일반 기사 → 통과). (근거: 이번 주 반복 실패 3건 중 1건이 TechCrunch 행사 홍보 글 — 써도 가치가 없는 원문)",
+  "state": "done",
+  "reviewed_head": "f25cb8d3cd4665644978aee4494db48f0ac95c82",
+  "verified_head": "f25cb8d3cd4665644978aee4494db48f0ac95c82",
+  "merge_commit": "c29b2a602aca1286d78347c5f575fc5777a5cd60",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/59",
+  "review": "APPROVE: cripts/fetch-llm-news.ts:200`의 `buildStories` 안에서 `news-plan.ts:60`이 `items.filter(isWritableSource)`로 거릅니다.<br>• 생성 전: `news-plan.ts:78`이 홍보 글을 `'promotional'`로 건너뜁니다. |\n| 백로그 검증 조건(고정 제목 목록 테스트) | PASS | `npx jest src/lib/__tests__/news-source-promo.test.ts` 결과 `Tests: 16 passed, 16 total`. 행사 광고 7건은 걸러지고, 단어만 겹치는 일반 기사 5건은 통과합니다(예: \"$35B cloud deal\", \"Sponsored Agents\" 보도). |\n| 원래 요구와 다른 점 | PASS | 백로그는 \"register\"·\"sponsored\" 같은 낱말 하나도 걸러 달라고 했습니다. 구현은 \"register now\", \"sponsored content\"처럼 구절로만 거릅니다. 낱말 하나로 거르면 실제 보도까지 걸리기 때문이고, 그 이유가 `news-source.ts:62-66` 주석과 테스트에 남아 있습니다. 요구에서 벗어난 것이 아니라 일부러 좁힌 것입니다. |\n| 화면(UI) 변경 | 해당 없음 | tsx·css·컴포넌트 변경이 없어 스크린샷 확인이 필요 없습니다. |\n| `docs/NORTHSTAR.md` 변경 | 없음 | — |\n| Playwright 기준 이미지 변경 | 없음 | — |\n| 보안·자격증명·Supabase | 해당 없음 | 문서 한 줄만 바뀌었습니다. |\n\n`gh pr view 58`은 이 환경에서 TLS 인증서 확인 오류로 실패했습니다. 그래서 #58이 머지됐다는 근거는 GitHub 상태가 아니라 main 이력에 있는 `ba4eb1b`(#58)입니다.\n\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "executor_member": "eng-01",
+  "reviewer_member": "qa-01",
+  "owner_team": "software-engineer",
+  "task_id": "backlog:e58789afa99497ea2fed",
+  "source": "backlog",
+  "role": "developer",
+  "reviewer_role": "qa",
+  "executor_model": "claude-sonnet-5-5",
+  "executor_effort": "medium",
+  "reviewer_model": "claude-opus-5-5",
+  "reviewer_effort": "high",
+  "recorded_at": 1793768900
+}
