@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "task": "발행 상태가 하루 내내 실패면 경보 — `~/.claude/logs/ai-guide-publish.status` 에서 최근 24시간 `result=ok` 가 0이면 알린다 — ops-scripts `publish-watchdog.sh` 는 라이브 sitemap 최신 날짜가 2일 지나야 알리므로, 상태 파일 규칙을 같은 문제 id·상태 변경 시에만 알리는 방식으로 추가한다. verify: 고정 상태 파일 3종(정상·부분 실패·전부 실패) 테스트(`test-publish-watchdog.sh`). (근거: 이번 주 실패율 46% — 하루 전부 실패해도 이틀째까지 아무도 모른다) (무커밋 종료 1회)",
+  "state": "done",
+  "reviewed_head": "ac190728f27e53081bc016f58618a0985d15f78b",
+  "verified_head": "ac190728f27e53081bc016f58618a0985d15f78b",
+  "merge_commit": "a7f8d451b59aff18737223637a463743eccf3c9d",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/61",
+  "review": "APPROVE: gs/ai-guide-publish.status`의 실제 줄이 `ts=… result=nothing-new generated=0 quarantined=0 built=no pushed=no exit=0`입니다. 교훈에 적힌 7개 키와 같습니다.\n- **[PASS] 문제 id에 시간을 넣지 않는 기존 방식**\n  - 근거: `publish-watchdog.sh:64`에 `add_problem \"aiwire:stale\"`가 있습니다.\n- **[PASS] 보안**\n  - 비밀값, 경로 노출 위험, 실행 코드가 없습니다. 형식도 LESSONS 상단에 날짜를 붙여 한 줄로 넣는 규칙을 지켰습니다.\n- **[주의] 테스트 파일 경로가 틀림**\n  - 교훈에는 `team/`에 있다고 적혀 있지만, 실제 위치는 `~/.claude/scripts/team/test/test-publish-watchdog.sh`입니다. 승인을 막을 정도는 아닙니다.\n\n**나중에 고칠 것 (정해진 형식)**\n\nFOLLOWUP: 백로그의 24시간 경보 줄이 아직 ai-guide 백로그에 [todo]로 남아 있어 사이클이 또 집는다 · docs/BACKLOG.md:36 · ops-scripts 태스크로 옮기거나 blocked로 표시할 것\nFOLLOWUP: 교훈에 적힌 테스트 파일 경로가 틀렸다(실제 team/test/test-publish-watchdog.sh) · docs/LESSONS.md:5 · 다음 사람이 그 경로에서 못 찾는다\nFOLLOWUP: \"24시간 result=ok 0건\" 규칙대로면 하루 상한·품질 거절로 nothing-new만 이어지는 정상인 날도 경보가 난다 · docs/BACKLOG.md:36 · 마지막 ok가 11-04 10:18이고 그 뒤로 nothing-new만 있음, 실패 계열(generation-failed·error·build-failed)만 세야 한다\n\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "executor_member": "platform-01",
+  "reviewer_member": "security-01",
+  "owner_team": "platform-engineer",
+  "task_id": "backlog:4f90ac02b6d650577ff1",
+  "source": "backlog",
+  "role": "platform-engineer",
+  "reviewer_role": "security-engineer",
+  "executor_model": "claude-sonnet-5-5",
+  "executor_effort": "medium",
+  "reviewer_model": "claude-opus-5-5",
+  "reviewer_effort": "high",
+  "recorded_at": 1793836498
+}
