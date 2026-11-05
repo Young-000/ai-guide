@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "task": "리뷰 후속: IndexNow 제출 목록이 색인에서 뺀 기사 주소도 그대로 보낸다 · src/app/api/indexnow/route.ts:27-28 · 사이트맵과 같은 제외 기준을 맞춰야 한다(llms-full.txt 도 같은 기준으로 맞추거나 넣는 이유를 주석으로 남긴다)",
+  "state": "done",
+  "reviewed_head": "eb4e4b70ed97decbcdfcd286b4ff90e34d6149fd",
+  "verified_head": "eb4e4b70ed97decbcdfcd286b4ff90e34d6149fd",
+  "merge_commit": "96266bef3783e1b2f782c23126b3a903532bd7f7",
+  "pull_request": "https://github.com/Young-000/ai-guide/pull/62",
+  "review": "APPROVE: 합니다.\n\n**[FAIL, 차단 안 함] `llms.txt`는 아직 얇은 기사를 포함한다**\n- `src/app/llms.txt/route.ts:7`이 `getAllNews('ko')`를 거르지 않고 넘깁니다.\n- 그래서 `llms-txt.ts:15`의 \"Latest Korean articles\" 목록에 얇은 기사가 들어갈 수 있습니다. LESSONS에 새로 적은 교훈이 막으려는 바로 그 누락입니다.\n\n### 검증 결과\n- `bash scripts/verify.sh`: 타입 체크 ✅, lint ✅ (`No ESLint warnings or errors`), build ✅. test는 87개 중 86 suite가 통과하고 1개가 실패했습니다.\n  - 실패한 1개는 `scripts/__tests__/revenue-funnel-cli.test.ts`입니다. 이 브랜치와 무관한 파일이고, 원인은 `listen EPERM: operation not permitted 127.0.0.1`로 샌드박스가 로컬 포트를 막은 것입니다.\n  - 같은 파일을 샌드박스 밖에서 돌리면 `Tests: 3 passed, 3 total`입니다.\n- 이 브랜치는 main 최신 커밋 위에 있습니다. merge-base와 main이 모두 `f92dc1f`이고, main에만 있는 커밋은 없습니다.\n\nFOLLOWUP: llms-full 얇은 기사 테스트가 수정 전에도 통과함 · src/app/llms-full.txt/__tests__/route.test.ts:22 · 최근 30건 안의 얇은 기사를 고르거나 목록을 주입해 검사해야 실제로 회귀를 잡음\nFOLLOWUP: llms.txt 최근 한국어 기사 목록이 얇은 기사를 거르지 않음 · src/app/llms.txt/route.ts:7 · 사이트맵·IndexNow·llms-full과 같은 getThinArticleSlugs 기준으로 맞춰야 함\nVERDICT: APPROVE | codex: APPROVE | semgrep: 0 findings | migration-lint: skipped",
+  "executor_member": "eng-01",
+  "reviewer_member": "qa-01",
+  "owner_team": "software-engineer",
+  "task_id": "Young-000/ai-guide#55",
+  "source": "backlog",
+  "role": "developer",
+  "reviewer_role": "qa",
+  "executor_model": "claude-sonnet-5-5",
+  "executor_effort": "medium",
+  "reviewer_model": "claude-opus-5-5",
+  "reviewer_effort": "high",
+  "recorded_at": 1793852612
+}
