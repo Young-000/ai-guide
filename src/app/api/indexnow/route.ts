@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAllNews } from '@/lib/news';
+import { getAllNews, getThinArticleSlugs } from '@/lib/news';
 import { submitUrls } from '@/lib/indexnow';
 import { BASE_URL } from '@/lib/site';
 import { createTokenBucketRateLimiter } from '@/lib/rate-limit';
@@ -22,10 +22,17 @@ const rateLimiter = createTokenBucketRateLimiter(RATE_LIMIT_CAPACITY, RATE_LIMIT
 
 // Collects the URLs worth pinging IndexNow about: the home, the news index,
 // and every published Korean + English article. Kept small and deterministic.
+// Thin articles (noindex on the page, absent from the sitemap) are skipped:
+// submitting them would ask search engines to crawl pages we told them not to index.
 function collectUrls(): string[] {
+  const thinSlugs = getThinArticleSlugs();
   const urls: string[] = [`${BASE_URL}/`, `${BASE_URL}/news`, `${BASE_URL}/en/news`];
-  for (const n of getAllNews('ko')) urls.push(`${BASE_URL}/news/${n.slug}`);
-  for (const n of getAllNews('en')) urls.push(`${BASE_URL}/en/news/${n.slug}`);
+  for (const n of getAllNews('ko')) {
+    if (!thinSlugs.has(n.slug)) urls.push(`${BASE_URL}/news/${n.slug}`);
+  }
+  for (const n of getAllNews('en')) {
+    if (!thinSlugs.has(n.slug)) urls.push(`${BASE_URL}/en/news/${n.slug}`);
+  }
   return urls;
 }
 
