@@ -2,6 +2,7 @@
 
 ## 2026-11-01 주간
 
+- 2026-11-05 얇은 기사(`getThinArticleSlugs`)를 색인에서 빼는 자리는 robots·사이트맵 말고도 IndexNow(`api/indexnow/route.ts`)와 `llms-full.txt` 가 더 있었다 — 새 URL 목록을 만들 때마다 같은 함수를 거치는지 `grep getThinArticleSlugs src` 로 대조한다.
 - 2026-11-05 `publish-watchdog.sh` 와 `test-publish-watchdog.sh` 는 이 저장소가 아니라 claude-ops-scripts(`~/.claude/scripts/team/`)에 있고 야간 샌드박스는 그 경로에 쓰기를 막는다(`touch` → Operation not permitted). "24시간 result=ok 0건 경보" 백로그는 ai-guide 사이클로는 구현할 수 없으니 ops-scripts 쪽 태스크로 옮긴다. 상태 파일 `ai-guide-publish.status` 는 `ts= result= generated= quarantined= built= pushed= exit=` 한 줄 형식이고 문제 id 는 `publish:no-ok-24h` 처럼 시간이 안 들어가게 잡는다(기존 규칙 `aiwire:stale` 과 같은 방식).
 - 2026-11-04 `docs/metrics/<날짜>.md` 는 이 저장소가 아니라 claude-ops-scripts `team/metrics-snapshot.py` 가 `npm run funnel` 출력을 정규식으로 읽어 쓴다 — 새 숫자를 남기려면 funnel 출력과 그 어댑터 패턴을 두 저장소에서 같이 바꾼다. 어댑터는 숫자 5개까지만 남기고(`found[:5]`) ai-guide 는 이제 5칸이 다 찼다. 작성기 확인은 `OS_METRICS_CMD_AI_GUIDE=... metrics-snapshot.sh --dry-run --only ai-guide` 로 실데이터 미리보기를 본다.
 - **매출 원천이 7일 동안 조용히 비어 있었다.** `ad-channels` 로그가 10-26~11-01 전부 크롬 프로필 잠김(SingletonLock)으로 끝났고 `yesterdayEarnings` 줄이 없다. "적립 0"과 "못 읽음"은 다른 사건이다 — 주간 판정 전에 원천 로그에 그날 값이 실제로 찍혔는지부터 본다.
