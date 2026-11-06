@@ -265,3 +265,8 @@
 - [dropped] (IndexNow 제외 기준 맞추기 줄에 묶음 — 같은 제외 기준) 리뷰 후속: llms-full.txt 에 색인에서 뺀 기사가 그대로 들어간다 · src/app/llms-full.txt/route.ts:10 · 의도한 것인지 정하고 기준을 맞춘다 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#55
 - [todo] 리뷰 후속: AdFit 폭별 광고 요청 수를 375·1280·1536px 실제 크롬에서 재고 docs/ux-evidence 에 캡처 남기기 · docs/BACKLOG.md:21 · 완료 조건의 캡처가 이번에 빠지고 코드 기준 추정만 남음 — owner:qa — since:2026-11-01 — link:Young-000/ai-guide#56
 - [dropped] (오너가 단위 ID를 주기 전엔 할 일이 없음 — PENDING-OWNER-ACTIONS 가 추적, ID가 오면 새 줄) 리뷰 후속: 오너가 300×250 단위 ID를 주면 NEXT_PUBLIC_ADFIT_UNIT_RECT2 를 .env.example·AdFitUnit 설정·기사 하단에 배선하고 테스트 추가 · src/components/AdFitUnit.tsx:15 · 지금은 문서에만 있는 이름 — owner:dev — since:2026-11-01 — link:Young-000/ai-guide#56
+
+## PD 비주얼 스윕 (2026-11-06)
+
+- [todo] **[스윕]** /news 첫 화면에서 생필품 최저가 카드(`StaplePrices placement="news"`, `src/app/(site)/news/page.tsx:77`)를 뺀다 — AI 뉴스 목록의 첫 기사보다 위에 다른 사이트(hottrend.news) 생필품 홍보가 가장 큰 덩어리로 앉아 있다. 남길 거면 목록 아래 쿠팡 배너 자리로 내린다(트렌드레이더는 2026-11-02 휴면). verify: 390px 캡처에서 첫 화면 안에 기사 카드 2개 이상 + 생필품 카드 없음, docs/ux-evidence 캡처 (근거: 원칙1·2, 화면 관찰: 390×844 첫 화면에 기사는 0.8건만 잘려 보이고 그 위를 "생수·라면·휴지" 칩 카드가 차지함) — owner:designer — since:2026-11-06 — link:-
+- [todo] **[스윕]** /news 상단을 "오늘 꼭 알아야 할 AI 소식 1건" 판정형 카드로 시작하게 바꾼다 — 제목 아래 바로 오늘의 핵심 기사(제목 + 왜 중요한지 한 줄 + "기사 읽기" CTA 1개)를 두고, 섹션 칩은 그 아래 가로 스크롤 한 줄로 내리며 기사 수 숫자(237·537 등)와 "섹션" 라벨은 뺀다. 부제에 `break-keep` 을 줘 "정리했습/니다" 같은 단어 중간 줄바꿈을 막는다. verify: 390px 캡처에서 첫 스크롤 안에 핵심 기사 카드·CTA 1개, 단어 중간 줄바꿈 없음, 독립 시각 리뷰 (근거: 원칙1·6·7, 화면 관찰: 첫 화면이 제목·칩 5개·숫자·아카이브 링크 = "우리 창고 목차"로 시작하고 무엇이 중요한지 판정이 없음) — owner:designer — since:2026-11-06 — link:-
